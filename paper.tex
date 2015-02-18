@@ -1,0 +1,66 @@
+\documentclass{elsarticle}
+
+\usepackage{url}
+\usepackage[english,french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{paralist}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}                                  
+\usepackage{multirow}
+
+\usepackage{epstopdf}
+\usepackage{epsfig}
+
+%% Bibtex
+\usepackage[numbers]{natbib}
+
+\usepackage{tikz}
+\usetikzlibrary{plotmarks,shapes}
+
+\usepackage{subcaption}
+
+%paralist
+\renewcommand*\descriptionlabel[1]{%
+\scshape #1}
+\renewcommand\paradescriptionlabel[1]{%
+\scshape #1}
+
+
+
+\hypersetup{
+  colorlinks,
+  citecolor=black,
+  filecolor=black,
+  linkcolor=black,
+  urlcolor=black
+}
+
+\title{Distributed Collaborative Editing}
+
+\author{}
+
+\date{}
+
+
+%%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
+\begin{document}
+
+\selectlanguage{english}
+
+\maketitle
+
+\input{./input/abstract.tex}
+\input{./input/introduction.tex}
+\input{./input/conclusion.tex}
+
+\bibliographystyle{abbrv}
+\raggedright
+\bibliography{bibliographie}
+\clearpage
+
+\end{document}
