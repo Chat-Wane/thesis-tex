@@ -1,0 +1,37 @@
+
+\subsection{WOOT}
+
+WOOT~\cite{oster2006data} est historiquement reconnu comme étant le premier
+type de données répliqué sans résolution de conflits. Cette approche associe un
+identifiant unique et non-mutable à chaque element de la sequence partagée. Les
+identifiants font réference aux deux élements entourant l'endroit de
+l'insertion. Par exemple, en considérant la chaine de caractères ``thse'',
+insérer le caractère ``è'' en troisième position lui allouera un identifiant
+référençant les identifiants du ``h'' et du ``s''. De plus, un identifiant de
+site et un compteur local à ce site sont ajoutés afin de lever toute ambiguité
+pouvant être induite par la concurrence. Finalement, on obtient
+$\mathcal{I}: \mathcal{I} \times \mathcal{D} \times \mathcal{A} \times
+\mathcal{I}$.
+
+Le principal problème de cette approche concerne les operations de suppression.
+En effet, l'ordre des élements est garanti par leurs identifiants. En
+particulier, cet ordonancement se base dans un premier temps sur les références
+contenues dans les identifiants. Ainsi, on ne peut placer un élement et son
+identifiant dans la sequence si l'une de ses références vient à manquer. C'est
+pour cette raison qu'une suppression cache seulement cet identifiant à
+l'utilisateur, alors qu'il se trouve toujours dans le modèle. En d'autres
+termes, toutes les operations impactent le modèle de manière définitive. On
+peut alors se retrouver avec une séquence apparement vide, alors qu'elle
+contient un très grand nombre d'élements cachés.
+
+Le second problème concerne la complexité temporelle de l'algorithme permettant
+d'ordonner la séquence. Tout d'abord, elle dépend de la totalité des operations
+effectuées sur la sequence. Ensuite, l'algorithme récursif, bien qu'élégant,
+possède une complexité quadratique.
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../paper"
+%%% End:
