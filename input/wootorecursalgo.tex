@@ -26,12 +26,18 @@
   \If{$|\mathcal{S}'| = 0$}
   \State $result \leftarrow indexOf(\mathcal{S},\,q)$;
   \Else
+  \State \textbf{let}  $d_{min} \leftarrow \infty$;
+  \For{$i \leftarrow 0$ \textbf{to} $|\mathcal{S}'|$}
+  \State \textbf{let} $p',\,\delta',\,\alpha ',\,d',\,q' \leftarrow
+  \mathcal{S}'[i]$;
+  \State $d_{min} \leftarrow min(d_{min},\, d')$;
+  \EndFor
   \State \textbf{let} $tempP,\,tempQ \leftarrow p,\,q$;
   \State \textbf{let} $found,\, j \leftarrow \bot,\,0$;
   \While{$(j<|\mathcal{S'}| \wedge \neg found)$}
-  \State \textbf{let} $p',\,\delta',\,\alpha',\,q' \leftarrow \mathcal{S}'[j]$;
-  \State\LINEIFTHEN{$((p' \leq_{\mathcal{S}} p) \wedge
-    (q \leq_{\mathcal{S}} q'))$}
+  \State \textbf{let} $p',\,\delta',\,\alpha',\,d',\,q' \leftarrow
+  \mathcal{S}'[j]$;
+  \State\LINEIFTHEN{$(d' = d_{min})$}
   {$tempP,\, tempQ \leftarrow tempQ,\, \mathcal{S}'[j]$};
   \State\LINEIFTHEN{$(tempQ <_{\mathcal{I}} i)$}
   {$found,\, result \leftarrow \top,\, getIndex(tempP,\,i,\,tempQ)$}
