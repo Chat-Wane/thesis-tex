@@ -1,0 +1,43 @@
+
+\subsection{Logoot}
+
+Logoot~\cite{weiss2009logoot} appartient à la classe de données utilisant des
+identifiants sous forme de liste. Ainsi, ces identifiants sont de taille
+variable. Dans ce type d'approches, la difficulté consiste à réduire la taille
+de ces identifiants.
+
+Contrairement à WOOT, un identifiant ne fait pas référence aux voisins de la
+position d'insertion. L'identifiant est un élément d'un ensemble dense en
+lui-même\footnote{Pour deux éléments appartenant à l'ensemble, il existe
+  toujours un élément situé entre ceux-ci.}. Logoot utilise donc les
+identifiants voisins à l'insertion pour générer un nouvel identifiant qui est,
+en utilisant un ordre lexicographique, positionné au milieu de ceux-ci. On
+obtient
+$\mathcal{I}: \langle \mathbb{N} \times \mathcal{D}\rangle^{+} \times
+\mathcal{A}$.
+
+Puisque les identifiants ne font pas référence aux voisins, ils sont
+autonomes. Conséquemment, lors de suppressions, Logoot ne se contente pas de
+cacher l'élément ciblé, mais le supprime réellement de la structure. Les
+complexités spatiale et temporelle concernent donc exclusivement les opérations
+d'insertion. De plus, le coût d'une opération est réparti plus équitablement
+entre local et distant. Cela est extrêmement important lorsque l'on considère
+que pour toute opération local, l'ensemble des utilisateurs doivent exécuter la
+partie distante de l'opération.
+
+\begin{algorithm}
+  \input{./input/logootalgo.tex}
+  \caption{\label{algo:logoot}Logoot.}
+\end{algorithm}
+
+\begin{algorithm}
+  \input{./input/logootallocalgo.tex}
+  \caption{\label{algo:logootalloc}Allocation des identifiants de Logoot.}
+\end{algorithm}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../paper"
+%%% ispell-local-dictionary: "francais"
+%%% End:
