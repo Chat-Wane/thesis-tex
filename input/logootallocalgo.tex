@@ -30,9 +30,9 @@
 
   \State \textbf{let} $toAdd \leftarrow random(min(interval,\,boundary))+1$;
 
-  \For{$j \leftarrow depth-1$ \textbf{to} $0$}
-  \State \textbf{let} $toAdd, \, copy[j]  \leftarrow divmod(copy[j] + toAdd)$;
-  \EndFor
+  \State \LINEFOR{$j \leftarrow depth-1$ \textbf{to} $0$}
+  {$toAdd, \, copy[j]  \leftarrow divmod(copy[j] + toAdd)$;}
+
 
   \State \Return $\langle copy,\, \alpha\rangle$;
   \EndFunction

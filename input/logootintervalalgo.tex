@@ -19,25 +19,12 @@
 \newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
 
 \begin{algorithmic}[1]
-  \Function{getIndex}{$p\in\mathcal{I},\, i\in\mathcal{I},\, q\in\mathcal{I}$}
-  \State \textbf{let} $result$;
-  \State \textbf{let} $\mathcal{S}' \leftarrow subseq(\mathcal{S},\,p,\,q)$;
-  \hfill \comment{get the elements between $p$ and $q$ in $\mathcal{S}$}
-  \If{$|\mathcal{S}'| = 0$}
-  \State $result \leftarrow indexOf(\mathcal{S},\,q)$;
-  \Else
-  \State \textbf{let} $tempP,\,tempQ \leftarrow p,\,q$;
-  \State \textbf{let} $found,\, j \leftarrow \bot,\,0$;
-  \While{$(j<|\mathcal{S'}| \wedge \neg found)$}
-  \State \textbf{let} $p',\,\delta',\,\alpha',\,q' \leftarrow \mathcal{S}'[j]$;
-  \State\LINEIFTHEN{$((p' \leq_{\mathcal{S}} p) \wedge
-    (q \leq_{\mathcal{S}} q'))$}
-  {$tempP,\, tempQ \leftarrow tempQ,\, \mathcal{S}'[j]$};
-  \State\LINEIFTHEN{$(tempQ <_{\mathcal{I}} i)$}
-  {$found,\, result \leftarrow \top,\, getIndex(tempP,\,i,\,tempQ)$}
-  \State $j \leftarrow j + 1$;
+  \Function{getInterval}{$p\in\mathcal{I},\, q\in\mathcal{I}$}
+  \State \textbf{let} $depth,\, interval \leftarrow 0,\, 0$;
+  \State \textbf{let} $pIsLower \leftarrow true$;
+  \While{$interval \leq 0$}
+  \State \LINEIF{$(depth < |p| && !pIsLower)$}{};
+  \State \LINEIF{$(depth < |q|)$}{}
   \EndWhile
-  \EndIf
-  \State \Return $result$;
   \EndFunction
 \end{algorithmic}
