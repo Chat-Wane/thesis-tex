@@ -1,14 +1,30 @@
-\documentclass[elsart1p]{elsarticle}
+\documentclass[12pt,french,fancyChapter,fancyPart,squeezeCommittee]{these-LUNAM}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french,english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\RequirePackage[bookmarks,%
+                colorlinks,%
+                urlcolor=blue,%
+                citecolor=blue,%
+                linkcolor=blue,%
+                hyperfigures,%
+                pagebackref,%
+                pdfcreator=LaTeX,%
+                breaklinks=true,%
+                pdfpagelayout=SinglePage,%
+                bookmarksopen=true,%
+                bookmarksopenlevel=2]{hyperref}
 
 \usepackage{url}
-\usepackage[english,french]{babel}
-\usepackage[utf8]{inputenc}
 \usepackage{algorithm}
 \usepackage{paralist}
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{amssymb}
 
+\usepackage{times}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{hyperref}                                  
@@ -32,30 +48,38 @@
 \scshape #1}
 
 
-
-\hypersetup{
-  colorlinks,
-  citecolor=black,
-  filecolor=black,
-  linkcolor=black,
-  urlcolor=black
-}
-
+\titre{Edition Collaborative Répartie}
+\soustitre{soustitre}
 \title{Distributed Collaborative Editing}
+\subtitle{subtitle}
 
-\author{}
-
+\author{M.}{Brice}{Nédelec}
+\discipline{Informatique et applications}
+\institution{UN}
+\doctoralschool{Sciences et technologies de l'information, et mathématiques}
+\laboratory{Laboratoire d'informatique de Nantes-Atlantique (LINA)}
 \date{}
 
+\reviewer{M.}{Prenom}{Nom}{Position}{Location}
+\reviewer*{M.}{Prenom}{Nom}{Position}{Location} %% * is not present the d-day
+
+\examiner{M.}{Meow}{Miaw}{Miou}{Miou}
+\examiner{M.}{Meow}{Miaw}{Miou}{Miou}
+\examiner{M.}{Meow}{Miaw}{Miou}{Miou}
+\president{M.}{Miaw}{Miou}{Mew}{Meow}
+
+\guest{Mme}{Miou}{Mi}{aw}{Miou}
+
+\supervisor{M.}{Pascal}{Molli}{Professeur}{Université de Nantes}
+\cosupervisor{M.}{Achour}{Mostefaoui}{Professeur}{Université de Nantes}
 
 %%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
 \begin{document}
 
-\selectlanguage{french}
+\input{./input/abstract.tex}
 
 \maketitle
 
-%% \input{./input/abstract.tex}
 \input{./input/introduction.tex}
 
 \input{./input/relatedwork.tex}
@@ -69,5 +93,11 @@
 \raggedright
 \bibliography{bibliographie}
 \clearpage
+
+\backmatter
+
+\tableofcontents
+\listoftables
+\listoffigures
 
 \end{document}

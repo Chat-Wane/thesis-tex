@@ -23,8 +23,8 @@
   \State \textbf{let} $depth,\, interval \leftarrow 0,\, 0$;
   \State \textbf{let} $pIsLower \leftarrow true$;
   \While{$interval \leq 0$}
-  \State \LINEIF{$(depth < |p| && !pIsLower)$}{};
-  \State \LINEIF{$(depth < |q|)$}{}
+  \State \LINEIFTHEN{$(depth < |p| \wedge !pIsLower)$}{};
+  \State \LINEIFTHEN{$(depth < |q|)$}{};
   \EndWhile
   \EndFunction
 \end{algorithmic}
