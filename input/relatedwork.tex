@@ -17,32 +17,32 @@ outils actuels ne sont pas entièrement satisfaisants sur des problématiques
   documents etc.).
 \end{inparaenum}
 
-Un éditeurs collaboratif répartis peut être décomposé en plusieurs couches:
-\begin{asparadesc}
-\item [La couche application] qui est elle-même divisée en trois sous-couches:
+Ce chapitre a pour mission de détailler les différents aspects liés à ces
+outils. Un éditeurs collaboratif répartis peut être décomposé en plusieurs
+couches qui constitueront les axes de ce chapitre.
+\begin{inparaenum}[(1)]
+\item \emph{La couche éditeur} composée:
   \begin{inparaenum}[(i)]
-  \item La couche \emph{document} qui représente le document, contenant des
-    caractères, des lignes, des paragraphes etc. L'utilisateur peut directement
-    intéragir avec celle-ci, et il s'attends à ce que les changements se
-    propagent à la couche application des autres utilisateurs impliqués dans
-    l'édition.
-  \item La couche \emph{causalité} qui définit les contraintes d'ordre sur les
-    modifications émises depuis le document. Un exemple de contrainte: tous les
-    caractères doivent être insérés dans l'ordre où ils furent tappés.
-  \item La couche \emph{anti-entropy} qui assure que toutes les répliques d'un
-    document partagé finiront par être identiques.
+  \item d'un \emph{document} contenant des caractères, des lignes, des
+    paragraphes etc. L'utilisateur peut directement intéragir avec celle-ci, et
+    il s'attends à ce que les changements se propagent à la couche application
+    des autres utilisateurs impliqués dans l'édition;
+  \item d'un traqueur de relation de \emph{causalité} qui définit les
+    contraintes d'ordre sur les modifications émises depuis le document. Un
+    exemple de contrainte: tous les caractères doivent être insérés dans
+    l'ordre où ils furent tappés;
+  \item d'un protocole d'\emph{anti-entropy} qui assure que toutes les
+    répliques d'un document partagé finiront par être identiques.
   \end{inparaenum}
-\item [La couche réseau] qui est elle-même divisée en deux sous-couches:
+\item \emph{La couche réseau} composée:
   \begin{inparaenum}[(i)]
-  \item La couche d'\emph{appartenance} qui lie les membres du réseau entre
-    eux. La résultante des liens entre les membres peut être représentée sous
-    forme de graphe. Il est alors possible de modeler ce graphe selon certaines
-    attentes. Par exemple, selon plus court chemin moyen, etc.
-  \item La couche de \emph{diffusion} qui permet d'envoyer un message aux
+  \item d'un protocole d'\emph{appartenance} qui lie les membres du réseau
+    entre eux. La résultante des liens entre les membres peut être représentée
+    sous forme de graphe. Il est alors possible de modeler ce graphe selon
+    certaines attentes. Par exemple, selon plus court chemin moyen, etc.
+  \item d'un protocole de \emph{diffusion} qui permet d'envoyer un message aux
     membres appartenant au réseau. L'efficacité de cette couche peut dépendre
     de la couche d'appartenance.
   \end{inparaenum}
-\end{asparadesc}
-
-
+\end{inparaenum}
 
