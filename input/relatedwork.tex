@@ -1,5 +1,48 @@
 
-\chapter{État de l'art}
+\chapter{Éditeurs collaboratifs répartis}
 
-Cette section présente l'état de l'art des types de données répliqués sans
-résolution de conflits dédiés aux séquences.
+Les outils d'édition collaborative répartis sont des applications qui
+permettent de répartir le travail de rédaction d'un document selon les trois
+dimensions suivantes: le temps, l'espace, et les organismes (REF). Par exemple,
+un Français, un Américain et un Australien peuvent travailler sur un même
+document, tous ensemble ou a des intervals de temps différents.  Le document
+résultant de cette collaboration est le produit de l'expertise de chacun des
+collaborateurs. Ainsi, (REF) montre que la qualité des articles Wikipédia est
+similaire à la qualité des articles de English (MACHIN TRUC). Toutefois, les
+outils actuels ne sont pas entièrement satisfaisants sur des problématiques
+\begin{inparaenum}[(i)]
+\item liées à l'éthique (e.g. censure, vie privée, intelligence economique
+  etc.) et
+\item liées au passage à l'échelle (e.g. nombre de collaborateurs, taille des
+  documents etc.).
+\end{inparaenum}
+
+Un éditeurs collaboratif répartis peut être décomposé en plusieurs couches:
+\begin{asparadesc}
+\item [La couche application] qui est elle-même divisée en trois sous-couches:
+  \begin{inparaenum}[(i)]
+  \item La couche \emph{document} qui représente le document, contenant des
+    caractères, des lignes, des paragraphes etc. L'utilisateur peut directement
+    intéragir avec celle-ci, et il s'attends à ce que les changements se
+    propagent à la couche application des autres utilisateurs impliqués dans
+    l'édition.
+  \item La couche \emph{causalité} qui définit les contraintes d'ordre sur les
+    modifications émises depuis le document. Un exemple de contrainte: tous les
+    caractères doivent être insérés dans l'ordre où ils furent tappés.
+  \item La couche \emph{anti-entropy} qui assure que toutes les répliques d'un
+    document partagé finiront par être identiques.
+  \end{inparaenum}
+\item [La couche réseau] qui est elle-même divisée en deux sous-couches:
+  \begin{inparaenum}[(i)]
+  \item La couche d'\emph{appartenance} qui lie les membres du réseau entre
+    eux. La résultante des liens entre les membres peut être représentée sous
+    forme de graphe. Il est alors possible de modeler ce graphe selon certaines
+    attentes. Par exemple, selon plus court chemin moyen, etc.
+  \item La couche de \emph{diffusion} qui permet d'envoyer un message aux
+    membres appartenant au réseau. L'efficacité de cette couche peut dépendre
+    de la couche d'appartenance.
+  \end{inparaenum}
+\end{asparadesc}
+
+
+
