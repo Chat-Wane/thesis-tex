@@ -3,7 +3,7 @@
 
 %% requière contexte de distribution
 
-%% Réplication optimiste
+%% #1 réplication optimiste
 La réplication optimiste (ou réplication paresseuse) est une strategie de
 réplication où chacun des utilisateurs possède une copie locale des données et
 peut directement effectuer des modifications sur celle-ci. Le résultat de
@@ -13,6 +13,7 @@ exemple, le gestionnaire de versions décentralisé nommé Git (REF), ou la base
 de données répliquées Riak (REF) sont des représentants de cette classe de
 réplication.
 
+%% #2 brewer's theorem
 Le théorème CAP (\emph{Consistency, Availability, Partition tolerence}) (REF)
 démontre qu'il est impossible pour une application répartie de garantir à la
 fois
@@ -25,6 +26,7 @@ Dans le cadre d'un éditeur collaboratif, le critère de disponibilité est
 important, et les partitions réseaux inévitables. Sachant cela, le critère
 concernant la cohérence forte est sacrifié.
 
+%% #3 cohérence
 Le critère de cohérence auquel on aspire se nomme \emph{cohérence à terme}. La
 cohérence à terme spécifie simplement que toutes les répliques d'une donnée
 partagée convergent vers un état identique après réceptions de tous les
@@ -35,37 +37,88 @@ délègue ces préocupations au developpeur d'applications. Ce dernier peut donc
 l'ajuster aux besoins specifiques rencontrés, et payer un coût qui est fonction
 de ces besoins.
 
+
+\subsection{Transformés operationnels}
 Dans le cadre d'un éditeur collaborative répartis, les plus anciennes approches
 appartenant à la réplication optimiste se nomment \emph{transformés
   operationnels} (OT) (REF). Le principe de celles-ci consiste à envoyer les
 opérations locales aux autres editeurs qui sont ensuite chargés de les
 executer, mais en les transformant vis-à-vis du document courant. (EXEMPLE).
+(TP1 et TP2).
+
+Ces approches définissent un ensemble d'opérations applicables sur le
+document. Outre l'insertion et la suppression de chaines de caractères,
+certaines approches OT (REF) proposent des opérations plus complexes, comme par
+exemple la copie ou le déplacement de chaines de caractères. Toutefois, due au
+règle de transformations, cette large gamme d'opérations implique un nombre de
+couple d'opérations à spécifier d'autant plus grand. Le developpeur doit se
+montrer prudent afin d'assurer la correction de son éditeur. (GOOGLE WAVE).
+
+Les approches OT proposent un compromis sur la complexité temporelle des
+opérations. En général, l'opération locale possède la même complexité
+temporelle que son homologue non-répartie. En revanche, les opérations
+distantes sont plus couteuses et fonction du nombre d'opérations à transformer.
+Hélas, ce dernier dépend du contexte d'utilisation et peut s'avérer difficile à
+prédire. Il est fonction de la latence réseau, du nombre d'utilisateurs, du
+type de document, du logiciel utilisé, etc.
+
+\subsection{Type commutatifs}
+Plus récement sont apparus les approches basées sur les \emph{types de données
+  répliqués sans résolution de conflits} (CRDTs) (REF). Il existe des CRDTs
+pour les ensembles, les compteurs, les graphes, les séquences etc. Dans ce
+manuscript, nous nous interesserons aux CRDTs pour séquences, la structure de
+données la plus proche d'un document.
+
+Un CRDT pour séquences est un type de données abstrait représentant une
+séquence. Il propose deux opérations basiques: l'insertion et la suppression
+d'un élement (e.g. un caractère, une ligne, un paragraphe etc.). Ces deux
+opérations sont commutatives, c'est à dire qu'elles peuvent être intégrées dans
+n'importe quel ordre, à une exception près : une opération de suppression d'un
+élement spécifique doit toujours suivre l'insertion de ce dernier.
+
+Les CRDTs pour séquences associent à chaque élement un identifiant unique et
+immuable. Ainsi la séquence peut être représenté par un ensemble de couples
+$\langle element,\, identifier \rangle$. Un ordre total sur l'ensemble des
+identifiants permet de retrouver la séquence, et donc le document.  Lorsque
+l'un des auteurs du document partagé éffectue une opération d'insertion, un
+identifiant doit être généré en fonction des identifiants voisins à
+l'insertion.
+
+\subsection{Pierres tombales}
+Une famille de CRDTs, appelés CRDTs à pierre tombale (ou certificat de décès)
+(REFs ) réference explicitement les identifiants voisins à l'insertion dans
+l'identifiant généré. Historiquement, le premier de ces CRDTs, et plus
+représentatif, se nomme WOOT (REF).
+
+Le principal problème de cette approche concerne les operations de suppression.
+En effet, l'ordre des élements est garanti par leurs identifiants. En
+particulier, cet ordonancement se base dans un premier temps sur les références
+contenues dans les identifiants. Ainsi, on ne peut placer un élement et son
+identifiant dans la sequence si l'une de ses références vient à manquer. C'est
+pour cette raison qu'une suppression cache seulement cet identifiant à
+l'utilisateur, alors qu'il se trouve toujours dans le modèle. En d'autres
+termes, toutes les operations impactent le modèle de manière définitive. On
+peut alors se retrouver avec une séquence apparement vide, alors qu'elle
+contient un très grand nombre d'élements cachés.
+
+Le second problème concerne la complexité temporelle de l'algorithme permettant
+d'ordonner la séquence. Tout d'abord, elle dépend de la totalité des operations
+effectuées sur la sequence. Ensuite, l'algorithme récursif, bien qu'élégant,
+possède une complexité cubique.
+
+\begin{algorithm}
+  \input{./input/lseq/wootalgo.tex}
+  \caption{\label{algo:woot}WOOT.}
+\end{algorithm}
+
+\begin{algorithm}
+  \input{./input/lseq/wootrecursalgo.tex}
+  \caption{\label{algo:wootrecurs}Cherche l'indice où insérer le nouvel
+    élement dans WOOT.}
+\end{algorithm}
 
 
-Sequence data structures considered in this paper (for collaborative
-editing) belong to the optimistic class of replication. Each replica owner (a
-collaborator) directly performs operations on its local copy and informs the
-other owners by broadcasting these operations. The consistency criteria ensured
-by such optimistic replication is called strong eventual
-consistency~\cite{shapiro2011comprehensive} upon the assumption of the eventual
-delivery of operations, i.e., they guarantee that all replicas will eventually
-converge to an identical state when the system becomes quiescent. This
-consistency criterion is weaker than sequential consistency and linearisability
-and is not comparable with causal consistency, yet strong enough for
-collaborative edition~\cite{shapiro2011comprehensive}.
-
-Sequence replicated data structures (\emph{sequence} for short) are the closest
-structures that can implement a shared document. A sequence provides two
-\emph{commutative operations}: insert and delete. Indeed, these operations can
-be integrated in any order as soon as the deletion of an element is integrated
-after its insertion.
-
-The sequence is composed of elements and a unique and immutable identifier is
-associated with each of these elements. The sequence can be seen as a set of
-pairs $\langle element, identifier \rangle$. A total order is assumed on
-identifiers and this order relation allows seeing the set of pairs as a
-sequence. The projection of a sequence on the elements builds the document.
-
+\subsection{Identifiants à taille variable}
 When a collaborator performs an insert operation, it first allocates the
 identifier of the element to insert. For instance, let us consider a sequence
 $QWTY$ with the unique, immutable, and totally ordered integer identifiers $1$,
