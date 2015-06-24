@@ -5,13 +5,84 @@
 
 \subsection{Transformés opérationnels}
 
+Les outils d'édition collaboratifs répartis peuvent être divisés en deux
+classes. Les approches à \emph{transformés
+  opérationnels}~\cite{sun2009contextbased, sun1998operational} (OT) sont les
+plus anciennes et s'appliquent à un large champs d'applications tels que
+l'édition de texte, l'édition d'images etc. Dans le cadre de l'édition de texte,
+OT, en plus des usuels opérations \emph{insert} et \emph{delete}, apportent des
+opérations ciblant les chaînes de caractères, à savoir \emph{move}, \emph{cut --
+  paste}, etc. Toutefois, l'analyse de correction nécessite d'examiner chaque
+paire d'opérations ainsi que leurs paramètres. En conséquence, lors de
+l'écriture du papier \cite{imine2003proving}, peu d'approches étaient réellement
+correctes. De plus, cette classe d'approches peut être divisé en deux
+sous-classes: les approches centralisées et les approches décentralisées. Les
+premières réarrangent les opérations sur un serveur
+central~\cite{nichols1995high} afin de faciliter la convergence. Toutefois, la
+topologie elle-même implique un point individuel de défaillance, des problèmes
+de respect de la vie privée, des problèmes d'intelligence économique, des
+problèmes de censure, et enfin, de passage à l'échelle. Les approches
+décentralisées~\cite{sun2009contextbased}, quant à elle, nécessitent un vecteur
+de version afin d'identifier les contextes de génération des opérations
+reçues. Elles transforment les arguments de l'opération reçue par rapport aux
+opérations concurrentes dans le but d'exécuter de manière cohérente l'opération
+sans avoir à défaire et réexecuter ces opérations. De ce fait, bien que
+l'exécution locale d'une opération soit très efficace, l'exécution des
+opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
+environnements maîtrisés, OT reste efficace.
+
 \subsection{Structures de données répliquées sans résolution de conflits}
+
+Plus récemment, les approches à base de \emph{structures de données répliqués
+  sans résolution de conflits}~\cite{shapiro2011comprehensive,
+  shapiro2011conflict} (CRDTs) commencèrent à émerger. Ces approches partagent
+le coût de calcul entre la partie locale et la partie distante de la réplication
+optimiste. Tandis que les CRDTs améliorent de manière significative la
+complexité temporelle des opérations comparé aux approches OT décentralisées,
+ils cachent leur complexité dans l'occupation mémoire. Les CRDTs pour séquences
+peuvent être divisés en deux.
 
 \subsubsection{Pierres tombales}
 
+Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
+  conway2014language, grishchenko2010deep, oster2006data,
+  preguica2009commutative, roh2011replicated, weiss2007wooki, wu2010partial,
+  Yu2012stringwise} qui marquent simplement les éléments supprimés afin de les
+cacher à l'utilisateur. Bien que supprimé, ces pierres tombales existent
+toujours dans la structure sous-jacente et continuent d'avoir un impact sur les
+performances. Ainsi, la complexité dépend de l'ensemble des opérations
+\emph{insert} et \emph{delete} ayant été effectué sur le document. Cela devient
+problématique dans certains documents particulièrement assujettis à vandalisme
+(e.g. Wikipedia). La conséquence étant qu'un document n'ayant en apparence que
+peu de contenu consomme beaucoup de mémoire du fait des nombreuses pierres
+tombales cachées.
+
 \subsubsection{Identifiants de taille variable}
 
+Les approches utilisant des identifiants de taille
+variable~\cite{preguica2009commutative, andre2013supporting,
+  weiss2009logoot}. Contrairement aux approches basées sur les pierres tombales,
+les éléments supprimés disparaissent complètement de la structure. En
+contrepartie, les identifiants encodent un ordre total permettant de les placer
+dans le document indépendamment des autres éléments. La complexité spatiale de
+ces identifiants est cruciale et dépend seulement des opérations d'insertion.
+
 \subsection{Stratégie d'allocation d'identifiants}
+
+Dans la littérature, deux genres de stratégies d'allocations d'identifiants
+existent. Tout d'abord, considérons l'insertion de l'élément $b$ entre les
+éléments $a$ et $c$ dont les identifiants respectifs sont $id_a$ et $id_c$ avec
+$id_a<id_c$. Dans tous les cas, une fonction d'allocation cherche à allouer le
+plus petit identifiant possible. Ainsi, l'identifiant généré à une taille
+maximum de $min(|id_a|,\, |id_c|)+1$. La première stratégie consiste à allouer
+une position aléatoire entre les deux identifiants afin d'éviter au maximum les
+conflits dûs à la concurrence. Toutefois, cette stratégie consume en moyenne la
+moitié de l'espace entre deux identifiants. La seconde stratégie provient
+d'observations faites sur un corpus de textes favorable à l'édition de gauche à
+droite. Dans ce genre de cas, la stratégie consiste à rapprocher les
+identifiants générés du précédent identifiant (e.g. $id_b$ proche de
+$id_a$). Toutefois, lorsque le comportement d'édition ne suit pas celui attendu,
+la taille des identifiants croît très rapidement.
 
 %%% Local Variables:
 %%% mode: latex

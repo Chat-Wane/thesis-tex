@@ -1,11 +1,83 @@
 
 \section{État de l'art}
 
+Les protocoles d'échantillonnage aléatoire de pairs permettent à chaque pair
+d'obtenir une vue partielle $\mathcal{P}$ des membres du réseau $\mathcal{N}$.
+Ils remplissent ces vues avec les références de pairs choisies aléatoirement
+parmi $\mathcal{N}$ en suivant une distribution uniforme et en utilisant
+seulement des connaissances locales. Leur but est de converger vers un réseau
+dont certaines propriétés sont semblables à celles des graphes
+aléatoires~\cite{erdos1959random}. En particulier, ils assurent de manière
+efficace la connectivité du réseau, la robustesse, la dissémination des
+informations etc. Un large éventail de protocoles basés sur le \emph{gossip}
+utilisent ce genre d'échantillonnage aléatoire (par exemple, la gestion de
+topologies~\cite{jelasity2009tman, dabek2004vivaldi}).
+
 \subsection{Voisinages à taille fixe}
+
+Parmi ces protocoles d'échantillonnage aléatoire, la plupart utilise une vue
+partielle dont la taille est fixée~\cite{tolgyeski2009adaptive,
+  eugster2003lightweight, voulgaris2005cyclon}. Ainsi, ils doivent connaître
+\emph{a priori} la taille maximum du réseau afin de se paramétrer. Changer ces
+paramètres après la création du réseau n'est pas sans risques. Ainsi, en
+utilisant de telles approches, il est possible de maintenir 7 connections
+actives dans le navigateur quand bien même 4 étaient suffisante. L'instant
+d'après, ces approches continuent de maintenir ces 7 connections alors que la
+croissance du réseau fait qu'il en requière 10. De ce fait, les vues partiels
+sont souvent surdimensionnées ce qui implique un coût supplémentaire.
 
 \subsection{Éstimateurs de taile réseau}
 
+Il est possible d'utiliser un estimateur de taille réseau afin d'introduire de
+l'adaptativité dans ces protocoles. Ces estimateurs utilisent soit
+\begin{itemize}
+\item des techniques d'échantillonnage~\cite{mane05network, ganesh2007peer,
+    kostoulas2007active} qui analysent un sous ensemble du réseau
+  et en déduisent la taille du réseau en utilisant des fonctions probabilistes,
+\item des techniques d'esquisse~\cite{flajolet2008hyperloglog,
+    baquero2012extrema} qui utilisent des \emph{hash} afin de compresser un
+  grand nombre d'informations et en déduire la taille du réseau grâce aux
+  collisions,
+\item des techniques de moyennes~\cite{jelasity2004epidemic, blasa2011symmetric}
+  qui utilisent des fonctions d'agrégation convergeant aux cours des échanges
+  vers une valeur dépendant de la taille du réseau.
+\end{itemize}
+Malheureusement, bien que ces techniques puissent être très précises dans leur
+estimation, elles impliquent un coût en trafic non-négligeable.
+
 \subsection{Voisinages à taille variable}
+
+Le seul représentant d'une approche adaptative-par-conception se nomme
+\SCAMP~\cite{ganesh2001scamp, ganesh2003peer}.  En effet, la taille des vues
+partielles de ses pairs est variable et grandit de manière logarithmique comparé
+à la taille du réseau. Néanmoins, \SCAMP souffre d'autres défauts. En
+particulier, il dissémine systématiquement les connexions de manière aléatoire
+dans le réseau. Ainsi, le pair à l'origine de l'établissement de la connexion
+peut se trouver à plusieurs sauts du pair acceptant d'établir la connexion. Dans
+WebRTC, il est nécessaire de faire un aller-retour pour établir une
+connexion. Cela a impact fort sur la probabilité d'échec de \SCAMP. En effet,
+soit $P_f$ la probabilité qu'un élément dans le chemin de dissémination (soit un
+pair, soit une connexion) crash/parte pendant un saut du \emph{three way
+  handshake}, sans possibilité de rétablissement. Soit $P_E$ la probabilité
+qu'une connexion ne puisse être menée à bien. Sans le \emph{three-way
+  handshake}, $P_E$ est:
+\begin{equation}
+  P_{E,\,1way}^{Scamp}= 1 - (1-P_f)^{k+1}
+\end{equation}
+Cela correspond à la probabilité de chaque élément (arc ou pair) dans le chemin
+de taille $k+1$ reste actif pendant qu'il achemine le message (dans tous les
+autres cas, ils sont autorisés à partir ou crash). Dans le contexte WebRTC, le
+ticket d'offre doit être renvoyé à l'émetteur. Conséquemment, les éléments dans
+le chemin de dissémination n'ont pas le droit de partir/crash avant que le
+ticket leur soit retourné. Nous obtenons donc:
+\begin{align} P_{E,\,3way}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
+                                     \ldots (1-P_f)^2) \nonumber \\
+                                   &=1-(1-P_f)^{k^2+3k+2}
+\end{align}
+En d'autres termes, le premier arc et pair choisis doivent rester actif durant
+$2k+2$ sauts, le second $2k$ sauts etc. La classe de complexité d'échec de
+\SCAMP augmente. Cela entraîne une forte diminution du nombre de connections au
+cours du temps, mettant en danger la connectivité du réseau.
 
 %%% Local Variables:
 %%% mode: latex

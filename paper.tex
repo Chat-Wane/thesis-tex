@@ -48,6 +48,11 @@
 \renewcommand\paradescriptionlabel[1]{%
 \scshape #1}
 
+\usepackage{xspace}
+\newcommand{\SCAMP}[0]{\textsc{Scamp}\xspace}
+\newcommand{\CYCLON}[0]{\textsc{Cyclon}\xspace}
+\newcommand{\SPRAY}[0]{\textsc{Spray}\xspace}
+\newcommand{\PEERSIM}[0]{\textsc{PeerSim}\xspace}
 
 \titre{Edition Collaborative Répartie}
 \soustitre{soustitre}
@@ -77,10 +82,12 @@
 %%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
 \begin{document}
 
-\input{./input/abstract.tex}
 
 \maketitle
 
+\tableofcontents
+
+\input{./input/abstract.tex}
 \input{./input/prologue/index.tex}
 \input{./input/lseq/index.tex}
 \input{./input/spray/index.tex}
@@ -94,7 +101,7 @@
 
 \backmatter
 
-\tableofcontents
+
 \listoftables
 \listoffigures
 
