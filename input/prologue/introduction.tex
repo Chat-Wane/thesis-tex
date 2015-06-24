@@ -1,6 +1,87 @@
 
 \section{Introduction}
 
+Ces dernières années, l'interêt pour les outils collaboratifs n'a eu de cesse
+d'augmenter. En particulier, les éditeurs
+collaboratifs~\cite{ellis1991groupware} répartis permettent de distribuer la
+charge d'écriture d'un document sur les trois dimensions que sont: le temps,
+l'espace, et les organisations. Leur utilité ne faisant aucun doute, ces outils
+possèdent actuellement de nombreuses limitations. Lorsque l'éditeur est basé sur
+un serveur central (par exemple Google Docs~\cite{nichols1995high}), se posent
+alors des problèmes liés au point individuel de défaillance, respect de la vie
+privée, intelligence économique, censure, et passage à l'échelle. Lorsque
+l'éditeur est décentralisé, se posent toujours les problèmes de passage à
+l'échelle: nombre d'utilisateurs, concurrence, taille de document etc.
+
+Les éditeurs collaboratifs décentralisés utilisent la réplication
+optimiste~\cite{saito2005optimistic} afin de garantir accessibilité et
+réactivité des documents partagés. Dans ce type de réplication, chaque
+collaborateur possède une réplique locale du document et exécute directement ses
+modifications dessus, qui seront partagés dans un second temps à l'ensemble des
+participants. Les répliques du documents peuvent diverger temporairement, mais
+convergent inéluctablement vers un état identique.
+
+ans ce manuscrit, nous nous intéressons aux structures de données répliquées
+sans résolution de conflits~\cite{shapiro2011comprehensive, shapiro2011conflict}
+(CRDTs) appartenant au paradigme de réplication optimiste. Les CRDTs pour
+séquences~\cite{ahmed2011evaluating, conway2014language, grishchenko2010deep,
+  oster2006data, preguica2009commutative, roh2011replicated, weiss2007wooki,
+  wu2010partial, Yu2012stringwise, andre2013supporting, weiss2009logoot}
+(structure la plus proche du document) fournissent deux opérations pour modifier
+la séquence : l'insertion et la suppression d'un élément. Dans le cadre d'un
+document et selon la granularité choisie, ces éléments peuvent être des
+caractères, des lignes, des paragraphes etc. Ces deux opérations sont
+commutatives, i.e., l'ordre d'intégration de ces opérations n'importe pas. Lors
+d'une insertion, le CRDT génère un identificateur unique et immuable qui lui
+servira à ordonner la séquence. L'une des familles de CRDTs pour séquence
+utilise des identifiants dont la taille est
+variable~\cite{preguica2009commutative,
+  andre2013supporting,weiss2009logoot}. Dans ces approches, la principale
+difficulté consiste à conserver des identifiants de petite taille. La première
+contribution présentée dans ce manuscrit concerne une stratégie d'allocation
+d'identifiants dont la taille est polylogarithmique par rapport au nombre
+d'insertions effectuées sur la séquence~\cite{nedelec2013lseq,
+  nedelec2013concurrency}.
+
+Les CRDTs garantissent la cohérence à terme~\cite{bailis2013eventual} sous
+l'hypothèse que les opérations arrivent à tous les participants de manière
+inéluctable. Les CRDTs nécessitent donc un mécanisme de diffusion des
+messages. La dissémination épidémique~\cite{demers1987epidemic,
+  eugster2003lightweight, birman1999bimodal} (ou rumeur) est un moyen efficace
+d'y parvenir. Chaque pair choisit une liste de pairs et envoie le message. Lors
+de la réception d'un tel message, le pair peut choisir d'arrêter la diffusion du
+message, ou de le transmettre à son tour à une liste de pairs. Ainsi, selon
+toute probabilité, tous les pairs reçoivent le message. Pour obtenir les liste
+de pairs, le mécanisme de dissémination peut s'appuyer sur les protocoles
+d'échantillonnage aléatoire de pairs~\cite{jelasity2007gossip,
+  voulgaris2005cyclon, ganesh2001scamp, tolgyeski2009adaptive,
+  eugster2003lightweight}. Ces derniers maintiennent chez chaque pair une liste
+de voisins comme vue partielle du réseau entier. Les réseaux générés partagent
+de nombreuses similarités avec les graphes aléatoires~\cite{erdos1959random}. En
+particulier, ils permettent de maintenir efficacement la connectivité du réseau,
+la dissémination d'information, la robustesse aux défaillances etc. La seconde
+contribution présentée dans ce manuscrit concerne un protocole d'échantillonnage
+aléatoire dont les vues partielles s'adaptent automatiquement à la taille du
+réseau, convergeant en temps exponentiel vers une topologie montrant des
+similarités avec les graphes aléatoires, et utilisant seulement des interactions
+de proche en proche.
+
+Comparé aux approches décentralisées, les éditeurs collaboratifs centralisés ont
+l'avantage d'être facile d'accès pour l'utilisateur. Par exemple, Google Docs
+est accessible depuis un navigateur web quelconque. Partager un document est
+aisé puisqu'il s'agit simplement de donner un lien que le collaborateur puisse
+adresser. Toutefois, la récente technologie
+WebRTC\footnote{\url{http://www.webrtc.org}} comble ce fossé en permettant la
+communication de navigateur à navigateur, et ce, même avec des configurations
+réseau complexes impliquant firewall, proxy, ou NAT (Network Address
+Translation). En particulier, WebRTC étend le champs d'utilisateurs aux
+dispositifs limités en ressource comme les smartphones, tablettes etc. Dans la
+troisième partie de ce manuscrit est présenté CRATE (CollaboRATive Editor), un
+éditeur collaboratif décentralisé et réparti dont le coeur est composé de LSEQ
+(la stratégie d'allocation présenté en première partie) et Spray (le protocole
+d'échantillonnage présenté en seconde partie) et accessible depuis un navigateur
+web.
+
 \subsection{Général}
 
 \subsection{Motivations}
