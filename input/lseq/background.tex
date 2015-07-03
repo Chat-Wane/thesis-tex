@@ -3,21 +3,61 @@
 
 \subsection{Réplication optimiste}
 
+La réplication optimiste~\cite{demers1987epidemic, saito2005optimistic} est un
+paradigme de réplication qui consiste à copier la donnée partagée chez chaque
+utilisateur. De cette façon, ces derniers peuvent directement modifier les
+copies, et ce, même en cas de déconnexions.  Ainsi, les données sont toujours
+disponibles et réactives aux changements effectués. Dans un second temps, les
+modifications sont disséminées aux autres possesseurs de cette donnée partagée
+où elles sont appliquées à la copie locale.
+
+D'après le théorème CAP~\cite{gilbert2002brewer} (\emph{Consistency,
+  Availability, Partition tolerence}), il est impossible de passer à l'échelle
+tout en garantissant à la fois un fort niveau de cohérence, la disponibilité de
+la donnée partagée, et la tolérence aux pannes. La réplication optimiste choisit
+de sacrifier le critère de cohérence au profit de la disponibilité et de la
+tolérence aux pannes: lorsque tous les changements ont été réçu et appliqués par
+tous les participants, les copies doivent converger vers un état identique. Il
+s'agit du critère de cohérence correspondant à la cohérence à terme (ou
+cohérence inéluctable). Bien qu'il soit possible de garantir d'avantages de
+propriétés, notament sur l'ordonnancement des modifications, nous nous
+intéresserons principalement à ce critère de cohérence.
+
+\begin{figure}
+  \centering
+  \input{./input/lseq/optimisticexample.tex}
+  \caption{\label{fig:optimisticexample}Exemple d'execution d'un protocole de
+    réplication optimiste. Il existe trois copies d'une séquence initialement
+    vide. La première copie insère 'QWE' et en dissémine l'information. La
+    troisième copie réçoit l'opération et l'applique localement. Cette copie
+    insère 'RTY' à la suite de 'QWE' afin d'obtenir 'QWERTY' et envoie
+    l'information aux deux autres copies. Quel que soit l'ordre de reception, le
+    protocole garantie que les copies convergent vers un état identique, ici, la
+    séquence 'QWERTY'.}
+\end{figure}
+
+Les outils d'édition collaboratifs utilisant la réplication optimiste peuvent
+être divisés en deux catégories. Les premiers utilisent les transformés
+opérationnels~\cite{sun2009contextbased, sun1998operational} qui, lors de la
+réception d'une modification, en change les paramêtres égards des opérations
+concurrentes. Les seconds utilisent un type de données
+commutatif~\cite{shapiro2011comprehensive, shapiro2011conflict} où l'envoie
+n'est pas l'opération mais son résultat qui, après reception, est intégré à la
+structure. 
+
 \subsection{Transformés opérationnels}
 
-Les outils d'édition collaboratifs répartis peuvent être divisés en deux
-classes. Les approches à \emph{transformés
-  opérationnels}~\cite{sun2009contextbased, sun1998operational} (OT) sont les
-plus anciennes et s'appliquent à un large champs d'applications tels que
-l'édition de texte, l'édition d'images etc. Dans le cadre de l'édition de texte,
-OT, en plus des usuels opérations \emph{insert} et \emph{delete}, apportent des
-opérations ciblant les chaînes de caractères, à savoir \emph{move}, \emph{cut --
-  paste}, etc. Toutefois, l'analyse de correction nécessite d'examiner chaque
-paire d'opérations ainsi que leurs paramètres. En conséquence, lors de
-l'écriture du papier \cite{imine2003proving}, peu d'approches étaient réellement
-correctes. De plus, cette classe d'approches peut être divisé en deux
-sous-classes: les approches centralisées et les approches décentralisées. Les
-premières réarrangent les opérations sur un serveur
+Les approches à transformés opérationnels~\cite{sun2009contextbased,
+  sun1998operational} (OT) sont les plus anciennes et s'appliquent à un large
+champs d'applications tels que l'édition de texte, l'édition d'images etc. Dans
+le cadre de l'édition de texte, OT, en plus des usuels opérations \emph{insert}
+et \emph{delete}, apportent des opérations ciblant les chaînes de caractères, à
+savoir \emph{move}, \emph{cut -- paste}, etc. Toutefois, l'analyse de correction
+nécessite d'examiner chaque paire d'opérations ainsi que leurs paramètres. En
+conséquence, lors de l'écriture du papier \cite{imine2003proving}, peu
+d'approches étaient réellement correctes. De plus, cette classe d'approches peut
+être divisé en deux sous-classes: les approches centralisées et les approches
+décentralisées. Les premières réarrangent les opérations sur un serveur
 central~\cite{nichols1995high} afin de faciliter la convergence. Toutefois, la
 topologie elle-même implique un point individuel de défaillance, des problèmes
 de respect de la vie privée, des problèmes d'intelligence économique, des

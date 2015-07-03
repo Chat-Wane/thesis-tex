@@ -1,22 +1,25 @@
-\documentclass[12pt,french,fancyChapter,fancyPart,squeezeCommittee]{these-LUNAM}
+\documentclass[12pt,french,fancyChapter,fancyPart]{these-LUNAM}
 
 \usepackage[utf8]{inputenc}
 \usepackage[french,english]{babel}
 \usepackage[T1]{fontenc}
 
 \usepackage{textcomp}
-\RequirePackage[bookmarks,%
-                colorlinks,%
-                urlcolor=blue,%
-                citecolor=blue,%
-                linkcolor=blue,%
-                hyperfigures,%
-                pagebackref,%
-                pdfcreator=LaTeX,%
-                breaklinks=true,%
-                pdfpagelayout=SinglePage,%
-                bookmarksopen=true,%
-                bookmarksopenlevel=2]{hyperref}
+%\RequirePackage[bookmarks,%
+%                colorlinks,%
+%                urlcolor=blue,%
+%                citecolor=blue,%
+%                linkcolor=blue,%
+%                hyperfigures,%
+%                pagebackref,%
+%                pdfcreator=LaTeX,%
+%                breaklinks=true,%
+%                pdfpagelayout=SinglePage,%
+%                bookmarksopen=true,%
+%                bookmarksopenlevel=2]{hyperref}
+
+\usepackage{minitoc}
+\setcounter{minitocdepth}{2}
 
 \usepackage{url}
 \usepackage{algorithm}
@@ -39,6 +42,8 @@
 
 \usepackage{tikz}
 \usetikzlibrary{plotmarks,shapes}
+\usetikzlibrary{arrows.meta}
+\tikzset{>={Latex[width=3pt,length=4pt]}}
 
 \usepackage{subcaption}
 
@@ -82,17 +87,18 @@
 %%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
 \begin{document}
 
+\dominitoc
 
 \maketitle
 
 \tableofcontents
 
 \input{./input/abstract.tex}
-\input{./input/prologue/index.tex}
+\input{./input/introduction/index.tex}
 \input{./input/lseq/index.tex}
 \input{./input/spray/index.tex}
 \input{./input/crate/index.tex}
-\input{./input/epilogue/index.tex}
+\input{./input/conclusion/index.tex}
 
 \bibliographystyle{abbrv}
 \raggedright
