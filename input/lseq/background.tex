@@ -69,7 +69,7 @@ opérations concurrentes dans le but d'exécuter de manière cohérente l'opéra
 sans avoir à défaire et réexecuter ces opérations. De ce fait, bien que
 l'exécution locale d'une opération soit très efficace, l'exécution des
 opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
-environnements maîtrisés, OT reste efficace.
+environnements maîtrisés, OT reste efficace (\TODO{REF hybrid paper}).
 
 \subsection{Structures de données partagées pour séquences}
 
@@ -114,7 +114,7 @@ l'identifiant généré référence simplement les identifiants voisins à
 l'insertion. Par exemple, considérons la chaine QWETY dont les identifiants
 respectifs à chaque caractère sont $i_Q$,$i_W$,\ldots,$i_Y$. Lors de l'insertion
 du caractère R entre les caractères E et T, l'identifiant généré est composé de
-$i_E$ et $i_T$ respectivement référencé comme étant la borne inferieur et
+$i_E$ et $i_T$ respectivement référencés comme étant la borne inferieur et
 supérieur du nouvel élement. Lors de l'intégration, un \TODO{diagramme de Hasse}
 permet de retrouver l'ordre des élements de la séquence, même en présence
 d'opérations concurrentes. WOOT illustre bien la nécessité de conserver des
@@ -126,7 +126,7 @@ La complexité de ces approches dépend de l'ensemble des opérations d'insertio
 ayant jamais été effectué sur le document. Cela devient problématique dans
 certains documents particulièrement assujettis à vandalisme (e.g. Wikipedia). La
 conséquence étant qu'un document n'ayant en apparence que peu de contenu
-consomme beaucoup de mémoire du fait des nombreuses pierres tombales cachées.
+consomme beaucoup de ressources du fait des nombreuses pierres tombales cachées.
 
 \TODO{Garbage collect}.
 
@@ -138,7 +138,7 @@ variable~\cite{preguica2009commutative, andre2013supporting,
 les éléments supprimés disparaissent complètement de la structure. En
 contrepartie, les identifiants encodent un ordre total permettant de les placer
 dans le document indépendamment des autres éléments. La complexité spatiale de
-ces identifiants est cruciale et dépend seulement des opérations d'insertion.
+ces identifiants est cruciale et dépend du nombre d'opérations d'insertion.
 
 \subsection{Stratégie d'allocation d'identifiants}
 
@@ -156,6 +156,23 @@ droite. Dans ce genre de cas, la stratégie consiste à rapprocher les
 identifiants générés du précédent identifiant (e.g. $id_b$ proche de
 $id_a$). Toutefois, lorsque le comportement d'édition ne suit pas celui attendu,
 la taille des identifiants croît très rapidement.
+
+\begin{figure*}
+  \centering
+  \subfloat[Comportement d'édition attendu]
+  [\label{fig:compliant}Le comportement d'édition correspond aux attentes
+  de la stratégie d'allocation]
+  {\includegraphics[width=0.48\textwidth]{./img/compliant.eps}}
+  \hspace{10pt}
+  \subfloat[Comportement d'édition inattendu]
+  [\label{fig:motivating}Le comportement d'édition va à l'encontre des attentes
+  de la stratégie d'allocation]
+  {\includegraphics[width=0.48\textwidth]{./img/motivating.eps}}
+  \caption{\label{fig:allocation}Spectre de documents Wikipedia sous différent
+    comportements d'édition antagonistes. La figure du haut représente la
+    révision à laquelle la ligne a été insérée, i.e., sa date de naissance.  La
+    figure du bas représente la taille de l'identifiant associé à chaque ligne.}
+\end{figure*}
 
 %%% Local Variables:
 %%% mode: latex
