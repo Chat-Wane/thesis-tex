@@ -71,31 +71,64 @@ l'exécution locale d'une opération soit très efficace, l'exécution des
 opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
 environnements maîtrisés, OT reste efficace.
 
-\subsection{Structures de données répliquées sans résolution de conflits}
+\subsection{Structures de données partagées pour séquences}
 
 Plus récemment, les approches à base de \emph{structures de données répliqués
   sans résolution de conflits}~\cite{shapiro2011comprehensive,
-  shapiro2011conflict} (CRDTs) commencèrent à émerger. Ces approches partagent
-le coût de calcul entre la partie locale et la partie distante de la réplication
-optimiste. Tandis que les CRDTs améliorent de manière significative la
-complexité temporelle des opérations comparé aux approches OT décentralisées,
-ils cachent leur complexité dans l'occupation mémoire. Les CRDTs pour séquences
-peuvent être divisés en deux.
+  shapiro2011conflict} (CRDTs) commencèrent à émerger. Ces types de structure
+abstraits possèdent la particularité de fournir des opérations commutatives.
+Plus précisément, le résultat de l'éxecution locale de chaque opération est
+envoyé aux possésseurs de réplique et peut directement être intégré à cette
+dernière.  En d'autres termes, l'ordre d'intégration des opérations n'importe
+pas. Cela permet de grandement alléger, voir supprimer, le coût d'ordonnancement
+des opérations. Ce genre de structure existe pour les compteurs, les ensembles,
+les graphes orientés acycliques (DAG) etc. Dans ce manuscrit, nous nous
+interesserons aux séquences.
+
+Une importante différence entre les approches basées sur OT et les approches
+basées sur les CRDTs réside dans la répartition des coûts algorithmiques entre
+execution locale et intégration distante. En effet, OT propose des opérations
+sans coût additionnel localement, mais dont le coût est élevé à l'intégration.
+En revanche, les approches CRDTs répartissent les coûts entre la partie locale
+et l'intégration.  L'impact étant d'autant plus important qu'une opération local
+génére autant d'intégrations que de répliques.
+
+Tandis que les CRDTs améliorent de manière significative la complexité
+temporelle des opérations comparé aux approches OT décentralisées, ils
+dissimulent leur complexité dans l'occupation mémoire. En effet, afin d'assurer
+la convergence des répliques, une opération d'insertion alloue un identifiant
+unique  À cet égard, deux types d'approche CRDT existent.
 
 \subsubsection{Pierres tombales}
 
 Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
   conway2014language, grishchenko2010deep, oster2006data,
   preguica2009commutative, roh2011replicated, weiss2007wooki, wu2010partial,
-  Yu2012stringwise} qui marquent simplement les éléments supprimés afin de les
-cacher à l'utilisateur. Bien que supprimé, ces pierres tombales existent
-toujours dans la structure sous-jacente et continuent d'avoir un impact sur les
-performances. Ainsi, la complexité dépend de l'ensemble des opérations
-\emph{insert} et \emph{delete} ayant été effectué sur le document. Cela devient
-problématique dans certains documents particulièrement assujettis à vandalisme
-(e.g. Wikipedia). La conséquence étant qu'un document n'ayant en apparence que
-peu de contenu consomme beaucoup de mémoire du fait des nombreuses pierres
-tombales cachées.
+  Yu2012stringwise} marquent simplement les éléments supprimés et les cachent à
+l'utilisateur. Bien que supprimées, ces pierres tombales existent toujours dans
+la structure sous-jacente et continuent d'avoir un impact sur les performances.
+
+Le premier representant historique appartenant à cette famille de CRDT se nomme
+WOOT~\cite{oster2006data}. Lors de l'insertion d'un élement dans la sequence,
+l'identifiant généré référence simplement les identifiants voisins à
+l'insertion. Par exemple, considérons la chaine QWETY dont les identifiants
+respectifs à chaque caractère sont $i_Q$,$i_W$,\ldots,$i_Y$. Lors de l'insertion
+du caractère R entre les caractères E et T, l'identifiant généré est composé de
+$i_E$ et $i_T$ respectivement référencé comme étant la borne inferieur et
+supérieur du nouvel élement. Lors de l'intégration, un \TODO{diagramme de Hasse}
+permet de retrouver l'ordre des élements de la séquence, même en présence
+d'opérations concurrentes. WOOT illustre bien la nécessité de conserver des
+pierres tombales après suppression d'un élement. En effet, si l'on supprime un
+élement référencé par d'autres élements, alors ces derniers ne peuvent plus être
+placé dans le diagramme.
+
+La complexité de ces approches dépend de l'ensemble des opérations d'insertions
+ayant jamais été effectué sur le document. Cela devient problématique dans
+certains documents particulièrement assujettis à vandalisme (e.g. Wikipedia). La
+conséquence étant qu'un document n'ayant en apparence que peu de contenu
+consomme beaucoup de mémoire du fait des nombreuses pierres tombales cachées.
+
+\TODO{Garbage collect}.
 
 \subsubsection{Identifiants de taille variable}
 
