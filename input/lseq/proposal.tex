@@ -1,9 +1,34 @@
 
 \section{LSEQ : une stratégie d'allocation polylogarithmique}
 
+\LSEQ (abréviation pour \emph{polyLogarithimic SEQuence}) est une stratégie
+d'allocation d'identifiants dont la taille est variable à la génération. Pour
+générer ses identifiants immuables et uniques, \LSEQ utilise un arbre
+exponentiel comme structure de données, deux sous-stratégies d'allocations avec
+objectifs antagonistes, et un composant permettant de choisir la stratégie.
+
 \subsection{Principe général}
 
+Le principe général de \LSEQ consiste à amortir les mauvais choix d'identifiants
+par un ensemble suffisant d'identifiants dont la taille est
+satisfaisante. Puisqu'il n'existe pas de stratégie d'allocation parfaite sans
+connaissance préalable de la séquence d'édition, \LSEQ cherche a être assez
+général pour gérer la plupart des comportements d'édition.
+
+
 \subsection{Arbre exponentiel}
+
+Un arbre exponentiel est une structure d'arbre dont chaque élément de l'arbre
+possède k-fois plus de fils que son parent. Par exemple, si l'on fixe $k$ à $2$,
+un élément dont le parent possède $4$ fils en possède $8$. Dans ce cas, il y a
+une augmentation quadratique du nombre de fils en fonction de la profondeur qui
+s'ajoute à l'augmentation commune de l'arbre.
+
+\TODO{figure}
+
+Un identifiant \LSEQ est un suite d'entiers représentant le chemin de l'élément
+dans l'arbre. Pour encoder cette suite d'entiers
+
 
 \subsection{Sous-stratégies d'allocation}
 

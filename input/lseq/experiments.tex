@@ -1,31 +1,45 @@
 
 \section{Experimentations}
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \includegraphics{./img/logoot.eps}
-  \caption{\label{fig:logoot}Logoot comme référence de stratégie d'allocation.}
-\end{figure}
+  \subfloat[Référentiel Logoot]
+  [\label{fig:logoot}Logoot comme stratégie d'allocation référentielle.]
+  {\includegraphics[width=0.48\textwidth]{./img/logoot.eps}}
+  \hspace{10pt}
+  \subfloat[Alternance de stratégies]
+  [\label{fig:robin}Alternance de stratégie d'allocation antagonistes.]
+  {\includegraphics[width=0.48\textwidth]{./img/robin.eps}}
+\end{figure*}
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \includegraphics{./img/robin.eps}
-  \caption{\label{fig:logoot}Alternance de stratégie d'allocation antagonistes.}
-\end{figure}
+  \subfloat[Augmentation de l'espace d'allocation]
+  [\label{fig:double}Augmentation de l'espace d'allocation en fonction de 
+  la profondeur de l'arbre.]
+  {\includegraphics[width=0.48\textwidth]{./img/double.eps}}
+  \hspace{10pt}
+  \subfloat[Alternance et augmentation de l'espace d'allocation]
+  [\label{fig:lseq}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
+  {\includegraphics[width=0.48\textwidth]{./img/lseq.eps}}
+\end{figure*}
 
-\begin{figure}
-  \centering
-  \includegraphics{./img/double.eps}
-  \caption{\label{fig:logoot}Augmentation de l'espace d'allocation en fonction de 
-    la profondeur de l'arbre.}
-\end{figure}
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \includegraphics{./img/lseq.eps}
-  \caption{\label{fig:logoot}LSEQ en tant que combinaison de l'alternance et de
-    l'augmentation.}
-\end{figure}
+  \subfloat[Utilisateur unique]
+  [\label{fig:one}Augmentation de l'espace d'allocation en fonction de 
+  la profondeur de l'arbre.]
+  {\includegraphics[width=0.48\textwidth]{./img/oneuser.eps}}
+  \hspace{10pt}
+  \subfloat[Alternance et augmentation de l'espace d'allocation]
+  [\label{fig:ten}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
+  {\includegraphics[width=0.48\textwidth]{./img/tenusers.eps}}
+  \caption{Spectre de document artificiel générés par insertion répétée de caractère
+  en queue.}
+\end{figure*}
+
+
 
 \begin{figure*}
   \centering
