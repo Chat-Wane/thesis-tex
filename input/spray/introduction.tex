@@ -1,6 +1,52 @@
 
 \section{Introduction}
 
+L'échantillonnage de pairs constitue le mécanisme fondamental de nombreuses
+applications distribué à large échelle, que ce soit sur l'info-nuagique (REF) ou
+en pair-à-pair. Les services de dissémination d'informations (REF),
+d'aggrégation, de gestion de réseau sont basés sur l'échantillonnage de pairs et
+la récente arrivée de WebRTC ouvre la possibilité de déployer de telles
+applications dans les navigateurs, que ce soit sur portable, smartphone, etc. 
+Dans ce contexte, WebRTC simplifie drastiquement le deploiement, même dans le
+cadre de systèmes réseaux complèxes impliquant parefeu, proxies, et Net Address
+Translation (NAT).
+
+Malheureusement, WebRTC a de nombreuses containtes qui rendent les services
+d'échantillonnage de pairs soit innéficaces, soit peu fiables. Sachant que les
+navigateurs peuvent tourner sur de petit dispositifs aux ressources limitées,
+conserver le nombre de connections aussi peu nombreuse que possible est un enjeu
+majeur. Cependant, les services d'échantillonnage de pairs tels que \CYCLON
+n'adapte pas leur nombre de connections aux nombres de pairs dans le réseau. Par
+exemple, un utilisateurs peut maintenir 10 connexions actives avec des
+navigateurs distants lorsque seulement 6 sont suffisantes. A l'opposé, le
+protocole d'échantillonnage de pairs nommé \SCAMP est adaptatif. Toutefois, il
+utilise dissémine systématiquement les connections aléatoirement dans le réseau
+ce qui est beaucoup plus couteux et prompt à l'échec dans le contexte WebRTC.
+
+Dans cette section, nous présentons \SPRAY, un protocole d'échantillonnage
+aléatoire inspiré à la fois de \SCAMP et de \CYCLON. Comparé à l'état de l'art,
+\begin{inparaenum}
+\item \SPRAY adapte dynamiquement le voisinage de chaque pairs. Ainsi le nombre
+  de connections augmente logarithmiquement par rapport à la taille du réseau.
+\item \SPRAY n'utilise que des interactions de voisin à voisin pour établir les
+  connections. Ainsi, celles-ci sont établies en temps constant.
+\item \SPRAY converge rapidement vers une topologie possédant des propriétés
+  similaires à celles des graphes aléatoires. Ainsi, le réseau est robuste aux
+  défaillances massives, dissémine les informations de manière efficiace, etc.
+\end{inparaenum}
+Les expériences montre l'adaptivité de \SPRAY et mette en évidence ses
+améliorations face à \CYCLON et \SCAMP, à un prix minime.
+  
+
+
+
+\subsection{Champs d'applications}
+
+\subsubsection{Dissémination d'informations}
+\subsubsection{Gestion de topologies réseau}
+
+\subsection{WebRTC}
+
 WebRTC permet la communication en temps réel entre navigateurs web et ce, même
 en présence de configurations réseaux complexes impliquant firewall, proxy, ou
 NAT (Network Address Translation). Toutefois, WebRTC ne gère ni l'adressage, ni
@@ -26,12 +72,6 @@ modernes disponibles sur les smartphones, les tablettes, etc. Dans ce contexte,
 il est impératif de conserver autant que possible un petit nombre de connections
 afin de réduire le trafic réseau et limiter la consommation de ressources.
 
-\subsection{Champs d'applications}
-
-\subsubsection{Dissémination d'informations}
-\subsubsection{Gestion de topologies réseau}
-
-\subsection{WebRTC}
 
 \subsubsection{Facilité d'accès}
 \subsubsection{Contraintes supplémentaires}
