@@ -135,9 +135,151 @@ $\Delta$ de temps. Tout d'abord, la fonction incrémente l'age de chacun des
 voisins dans la vue partielle $\mathcal{P}$. Ensuite, le pair le plus âgé $q$
 est choisit afin d'initier un échange. Si le pair $q$ ne peut être joint (car il
 est parti ou a crash), alors le pair $p$ éxecute la fonction qui gère ce cas
-(voir la section suivante). 
+(voir la section suivante). Ceci est répété jusqu'à ce que $p$ trouve un pair
+avec qui communiquer. Ainsi, le vieillissement comme héritage de \CYCLON permet
+d'accélérer la suppression des références invalides. Une fois que le pair
+initiateur $p$ a trouvé un pair avec qui effectuer l'échange, il selectionne un
+échantillon de sa vue partielle tout en excluant la référence à $q$ et en
+s'incluant lui-même. La taille de l'échantillon correspond à la moitié de la
+taille de la vue partielle avec au minimum $1$ pair : sa propre référence
+(cf. Line~\ref{line:samplesize}). La réponse de $q$ contient également la moitié
+de sa vue partielle. Puisque les pairs ne peuvent apparaitre plusieurs fois dans
+$\mathcal{P}$, les pairs impliqués dans le processus d'échange peuvent envoyer
+des références cet autre pair ($p$ envoie des références $q$ à $q$). Sans
+procédures supplémentaires, ce genre de comportement peut créer des boucles
+locales ($q$ a $q$ dans sa vue partielle) ce qui est hautement indésirable. Les
+lignes~\ref{line:replace1},~\ref{line:replace2} permettent de remplacer les
+auto-références dans l'échantillon. Enfin, chez les deux pairs, l'échantillon envoyé 
+est supprimé de la vue partielle, et l'échantillon réçu est ajouté.
+
+La figure~\ref{fig:cyclicexample} décrit le méchanisme périodique de \SPRAY. Ce
+scénario suit celui de la figure~\ref{fig:joiningexample}: le pair $p_1$ vient
+de rejoindre le réseau. Le pair $p_6$ initie un échange avec $p_1$ (qui est ici
+le plus vieux dans sa vue partielle). $p_6$ choisit
+$\left\lceil{|\mathcal{P}_6|\div 2}\right\rceil = 1$ aléatoirement parmis son
+voisinnage. Dans ce cas, il choisit $p_9$ parmis $\{p_9,\,p_8,\,p_7\}$. Il
+envoie à $p_1$ cet échantillon auquel est ajoutée sa propre identité. En
+réponse, le pair $p_1$ choisit
+$\left\lceil{|\mathcal{P}_1|\div 2}\right\rceil = 1$ pair de sa vue
+partielle. L'échantillon composé du seul voisin $p_2$ est envoyé. Immédiatement
+après, $p_1$ peut supprimer l'échantillon envoyé et intégrer celui réçu
+résultant en une vue partielle composée de $\{p_6,\, p_9\}$. De la même façon,
+après réception de l'échantillon de $p_1$, $p_6$ supprime et intègre les
+échantillons adéquats, résultant en une vue partielle composée de
+$\{p_2,\,p_7,\,p_8\}$.
+
+La procédure d'échange tend à réduire l'écart de taille des vues partielles. De
+plus, elle disperse les références aux pairs afin de supprimer les groupes trop
+denses dûes à la procédure d'entrée dans le réseau.
+
+En ce qui concerne le temps de converge de l'algorithme de mélange, il existe
+une relation proche entre \SPRAY et le protocole d'aggrégation proactive
+présenté dans~\cite{jelasity2004epidemic, montresor2004robust}. Celui-ci déclare
+que, sous l'hypothèse d'un échantillonnage suffisamment aléatoire, la valeur
+moyenne $\mu$ et la variance $\sigma^2$ a un cycle $i$ sont :
+\begin{center}
+  $\mu_i = {1\over{|\mathcal{N}|}} \sum\limits_{x \in \mathcal{N}} a_{i,\,x}$
+  \hfill
+  $\sigma^2_i = {1\over{|\mathcal{N}|-1}}\sum\limits_{x \in \mathcal{N}}
+  (a_{i,\,x} - \mu_i)^2$
+\end{center}
+avec $a_{i,\,x}$ la valeur stockée par le pair $p_x$ au cycle $i$. La variance
+estimée doit converger en 0 au cours des cycles. En d'autres termes, les valeurs
+se rapprochent les unes des autres au cours des cycles. Dans le cas de \SPRAY,
+cette valeur $a_{i,\,x}$ est la taille de la vue partiel du pair $p_x$ au cycle
+$i$. En effet, chaque échange du pair $p_1$ et du pair $p_2$ est une aggrégation
+dont le résultat est :
+$|\mathcal{P}_1|\approx|\mathcal{P}_2|\approx{(|\mathcal{P}_1| +
+  |\mathcal{P}_2|) \div 2}$.
+De plus, à chaque cycle, chaque pair est impliqué dans un protocole d'échange au
+moins une fois (celui qu'ils initient), and, dans le meilleur des cas
+$1+Poisson(1)$ (celui qu'ils initient et, en moyenne, celui qu'ils réçoivent
+d'un autre pair). Cette relation étant établie, nous en déduisons que la taille
+des vues partielles des pairs de \SPRAY converge en temps exponentiel vers la
+moyenne globale. De plus, chaque cycle réduit la variance du système global à un
+taux compris entre ${1\div 2}$ et $1\div ({2\sqrt{\text{e}}})$.
 
 \subsection{Quitter le réseau}
+
+Avec \SPRAY, les pairs peuvent quitter le réseau sans alerter qui que ce
+soit. Nous ne faisons pas de distinctions particulières entre les départs et les
+crashs. Toutefois, le protocole doit réagir à ces deux cas. En effet, sans
+réactions, le réseau pourrait s'éffondrer pour cause de suppression d'arcs trop
+zélé. Lorsqu'un pair rejoint le réseau, il y injecte $1+\ln(|\mathcal{N}|)$
+arcs. Néanmoins, après plusieurs échanges, la vue partielle du pair rejoignant
+le réseau est remplie par d'autres références. Ainsi, quand il quitte le réseau,
+il entraine la suppression de $\ln(|\mathcal{N}|)$ arcs de sa vue partielle, et
+$\ln(|\mathcal{N}|)$ arcs des pairs l'ayant dans leur vue partielle. Par
+conséquent, sans moyens de gérer les départs, $2\ln(\mathcal{N}|)$ arcs sont
+supprimés au lieu des $1+\ln(|\mathcal{N}|)$. Afin d'y remedier, chaque pair qui
+détecte un crash peut rétablir une connexion avec l'un de ces voisins en
+introduisant un doublon (doublon qui disparaitra rapidement après quelques
+protocoles d'échange). La probabilité de réétablir une connexion est
+$1-1\div{|\mathcal{P}|}$. Puisque ${|\mathcal{P}|}\approx \ln(|\mathcal{N}|)$
+pairs ont detecté le crash dans leur vue partielle, il est probable qu'ils
+recréent tous la connexion perdue, à l'exception d'un pair. De ce fait,
+lorsqu'un pair quitte le réseau, il entraine la suppression d'un nombre d'arcs
+correspondant approximativement au nombre d'arcs ajouté lors de la dernière
+entrée de pair.
+
+\begin{algorithm}[h]
+  \input{./input/spray/unreachablealgo.tex}
+  \caption{\label{algo:unreachable}The crash/departure handler of \SPRAY.}
+\end{algorithm}
+
+L'algorithme~\ref{algo:unreachable} montre la manière selon laquelle \SPRAY gère
+les départs et crashs. La fonction $onPeerDown$ montre la réaction de \SPRAY
+lorsque le pair $q$ est detecté comme parti ou défaillant. Dans un premier
+temps, la fonction compte les occurences du pair $q$ dans la vue partielle et
+les supprimes. Dans un second temps, une boucle ajoute de manière probabiliste
+des doublons de références à des pairs déjà connus. La probabilité dépend de la
+taille de la vue partielle avant la suppression.
+
+\begin{figure*}
+  \centering
+  \subfloat[Figure A][Peer $p_1$ crashes.]{
+    \input{./input/spray/crashexampleA.tex}}
+  \hspace{10pt}
+  \subfloat[Figure B][The peers $p_{3-5}$ notice that they cannot
+  reach $p_1$ anymore.]{
+    \input{./input/spray/crashexampleB.tex}}
+  \hspace{10pt}
+  \subfloat[Figure C][The peers $p_3$ and $p_5$ choose to establish
+  a duplicate with one of their existing neighbor.]{
+    \input{./input/spray/crashexampleC.tex}}
+  \caption{\label{fig:crashexample}Example of \SPRAY's crash/leaving
+    handler. }
+\end{figure*}
+
+La figure~\ref{fig:crashexample} montre le fonctionnement de la gestion des
+pairs detecté comme étant parti ou défaillant. Le pair $p_1$ quitte le réseau
+sans en informer le réseau. Avec lui, $7$ connexions sont inutilisables. Les
+pairs $p_3$, $p_4$, et $p_5$ ont toujours une référence vers $p_1$ dans leur vue
+partielle. Le pair $p_5$ a $1-{1\div{|\mathcal{P}_5|}}={2\div{3}}$ chances de
+remplacer la connexion. Dans ce cas, il double la référence à $p_{13}$. De la
+même manière, $p_3$ et $p_4$ détectent $p_1$ comme étant injoignable et agissent
+en conséquence. Seul $p_3$ crée un doublon remplaçant. Au total, $5$ connexions
+ont été supprimées.
+
+L'exemple montre que certains des pairs ont rétabli une connexion lorsqu'ils ont
+détécté qu'un pair était injoignable. La probabilité dépend de la vue partielle
+de chacun de ces pairs. En moyenne, l'un de ces pairs va vraisemblablement
+supprimer l'arc inutilisable alors que les autres vont simplement le
+remplacer. Dans l'exemple, le pair $p_1$ a injecté $5$ arcs lors de son entrée
+dans le réseau. $7-2 = 5$ arcs ont été supprimés lors de son départ. Le nombre
+global d'arcs dans le réseau reste d'ordre logarithmique comparé à la taille du
+réseau. Toutefois, nous remarquons que la connectivité n'est pas entièrement
+garantie (seulement avec la forte probabilité impliquée par les graphes
+aléatoires). En effet, si le pair $p_1$ est le seul pont entre deux groupes de
+pairs, ajouter des arcs n'est pas suffisant pour garantir la connectivité.
+
+L'algorithme~\ref{algo:unreachable} montre aussi que \SPRAY distingue les pairs
+qui sont injoignables des arcs inutilisables. En effet, la fonction $onArcDown$
+gère les connexions dont la création a échoué. Ces arcs sont systématiquement
+remplacés par un doublon. De ce fait, le nombre d'arc reste bien constant. La
+distinction $onPeerDown$ avec $onArcDown$ est necessaire car la première doit
+supprimer une petite quantité d'arcs. Sans cette suppression, le nombre d'arcs
+augmenterait de manière incontrollée avec les entrées et sorties de pairs.
 
 %%% Local Variables:
 %%% mode: latex

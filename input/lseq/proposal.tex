@@ -28,9 +28,9 @@ possède $16$ etc. Dans ce cas, il y a une augmentation quadratique du nombre de
 fils en fonction de la profondeur qui s'ajoute à l'augmentation commune de
 l'arbre. Ainsi, un arbre exponentiel de profondeur $k$ peut accueillir 
 \begin{equation}
-  \N_k = \N_{k-1} + k * k!
+  N_k = N_{k-1} + k * k!
 \end{equation}
-identifiants, avec $\N_1 = base\_de\_depart$.
+identifiants, avec $N_1 = base\_de\_depart$.
 
 
 \TODO{figure}
@@ -44,7 +44,7 @@ l'augmentation de la taille du document.
 Un identifiant \LSEQ est un suite d'entiers représentant le chemin de l'élément
 dans l'arbre. Pour encoder cette suite d'entiers notée $[p_1.p_2\ldots p_k]$, il
 faut $1$ bit supplémentaire à chaque profondeur de l'arbre. En d'autres termes,
-$log_2(p_k) = log_2(p_{k-1})$.
+$\log_2(p_k) = \log_2(p_{k-1})$.
 
 \subsection{Sous-stratégies d'allocation}
 

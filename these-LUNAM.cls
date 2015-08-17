@@ -142,9 +142,9 @@
 %%%%%%%%%%   CHARGEMENT DE PAQUETAGES   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \if@inDraftMode
-   \PassOptionsToClass{\@pt@size, twoside, draft}{book}
+   \PassOptionsToClass{\@pt@size, oneside, draft}{book}
 \else
-   \PassOptionsToClass{\@pt@size, twoside, final}{book}
+   \PassOptionsToClass{\@pt@size, oneside, final}{book}
 \fi
 \LoadClass{book}
 
