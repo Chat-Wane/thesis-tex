@@ -2,8 +2,10 @@
 \section{LSEQ : une stratégie d'allocation polylogarithmique}
 
 \LSEQ (abréviation pour \emph{polyLogarithimic SEQuence}) est une stratégie
-d'allocation d'identifiants dont la taille est variable à la génération. Pour
-générer ses identifiants immuables et uniques, \LSEQ utilise un arbre
+d'allocation d'identifiants dont la taille est variable à la génération. Elle
+alloue des identifiants dont la compléxité en espace dont la borne supérieur est
+de l'ordre du polylogarithme comparé au nombre d'insertions dans la séquence.
+Pour générer ses identifiants immuables et uniques, \LSEQ utilise un arbre
 exponentiel comme structure de données, deux sous-stratégies d'allocations avec
 objectifs antagonistes, et un composant permettant de choisir la stratégie.
 
@@ -28,9 +30,8 @@ possède $16$ etc. Dans ce cas, il y a une augmentation quadratique du nombre de
 fils en fonction de la profondeur qui s'ajoute à l'augmentation commune de
 l'arbre. Ainsi, un arbre exponentiel de profondeur $k$ peut accueillir 
 \begin{equation}
-  N_k = N_{k-1} + k * k!
+  n = \sum\limits_{i=0}^{k} 2^{(i^2-i)/2}\,\, identifiants.
 \end{equation}
-identifiants, avec $N_1 = base\_de\_depart$.
 
 
 \TODO{figure}
@@ -43,8 +44,24 @@ l'augmentation de la taille du document.
 
 Un identifiant \LSEQ est un suite d'entiers représentant le chemin de l'élément
 dans l'arbre. Pour encoder cette suite d'entiers notée $[p_1.p_2\ldots p_k]$, il
-faut $1$ bit supplémentaire à chaque profondeur de l'arbre. En d'autres termes,
-$\log_2(p_k) = \log_2(p_{k-1})$.
+faut $1$ bit supplémentaire à chaque profondeur de l'arbre. 
+
+\begin{table}
+  \centering
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    & Random & Monotonic & Worst \\ \cmidrule{2-4}
+    Id.size & $O(\sqrt{log\,n})$ & $O(log\,n)$ & $O(n)$ \\ \midrule
+    Id.bit-length & \multicolumn{3}{c}{ $\sum\limits_{i=1}^{k}b+i =
+      kb + k(k+1)/2 = O(k^2)$} \\ \midrule
+    Space complexity & $O(log\,n)$ & $O((log\,n)^2)$ &
+    $O(n^2)$ \\ \bottomrule
+  \end{tabular}
+  \caption{Spatial complexity of \LSEQ. Where $n$ is the number
+    of insert operations performed. $k$ is the size of an identifier, i.e.,
+    the number of concatenations. And $b$ the starting bit-length of numbers
+    composing the identifiers.}
+\end{table}
 
 \subsection{Sous-stratégies d'allocation}
 

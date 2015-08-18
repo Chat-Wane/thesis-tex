@@ -173,6 +173,43 @@ la taille des identifiants croît très rapidement.
     a length of 1 while the tree of the worst case grows up to a depth of 6.}
 \end{figure}
 
+La figure~\ref{fig:allocpathexample} illustre les difficultés rencontrées lors
+de l'allocation d'identifiants. La figure représente la structure d'arbre
+permettant de représenter deux séquences utilisant la fonction d'allocation
+suivante : la branche la plus à gauche et la plus petite profondeur de l'arbre
+possible. Dans les deux cas, la séquence finale est QWERTY. Toutefois, les
+lettres ne sont pas insérées dans un ordre identique. Dans le premier cas, Q est
+inséré à l'index 0, suivit de W à l'index 1, suivit de E à l'index 2 etc. Cette
+séquence d'opérations d'insertions $[(Q,\,0)$, $(W,\,1)$, $(E,\,2)$\ldots$]$ est
+nommée \emph{séquence d'édition}. Dans le second cas, la lettre Y est inséré à
+l'index 0, suivit du T à l'index 0 qui va décaler le Y en index 1, etc. La
+séquence d'édition qui correspond à ce cas est : $[(Y,\,0)$, $(T,\,0)$,
+$(R,\,0)$\ldots$]$.
+\begin{itemize}
+\item Cas n°1 : la fonction $allocPath$ alloue la branche la plus à gauche
+  possible. Par conséquent, la séquence d'édition $[(Q,\,0)$, $(W,\,1)$,
+  $(E,\,2)$\ldots$]$ conduit aux chemins suivant $\langle [1],\,Q\rangle$,
+  $\langle [2],\, W \rangle$, $\langle [3],\, E\rangle$, etc. Dans ce cas, la
+  profondeur de l'arbre n'augmente jamais. À cet égard, la fonction $allocPath$
+  est très efficace.
+\item Cas n°2 : la séquence d'édition $[(Y,\,0)$, $(T,\,0)$, $(R,\,0)$\ldots$]$
+  implique une augmentation de la profondeur de l'arbre à chaque nouvelle
+  insertion d'élément. En effet, le chemin est choisit est toujours celui qui
+  est le petit possible. Les éléments suivant ne béneficie pas de suffisament de
+  place à la profondeur courante de l'arbre, d'où la nécessité d'augmenter sa
+  pronfondeur. Les chemins en résultant sont : $\langle [1],\, Y\rangle$,
+  $\langle[0.1],\,T\rangle$, $\langle[0.0.1],\, R\rangle$, etc. La taille des
+  chemins alloués augmente très rapidement.
+\end{itemize}
+
+Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
+longueur des chemins alloués. Malheureusement, l'ordre d'insertion des éléments
+ni l'ordre d'insertion des éléments, ni la taille finale de la séquence ne
+peuvent être prédits. Les travaux précédents font souvent l'hypothèse d'un
+comportement d'édition de gauche-à-droite basés sur observations. Toutefois,
+il existe des documents écrit par l'homme dont le comportement ne correspond pas
+à celui-ci.
+
 \begin{figure*}
   \centering
   \subfloat[Comportement d'édition attendu]
