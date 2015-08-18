@@ -93,6 +93,12 @@ En revanche, les approches CRDTs répartissent les coûts entre la partie locale
 et l'intégration.  L'impact étant d'autant plus important qu'une opération local
 génére autant d'intégrations que de répliques.
 
+\begin{algorithm}
+  \input{input/lseq/crdtabstractalgo.tex}
+  \caption{\label{algo:crdtabstract}General outlines of a sequence with
+    variable-size identifiers.}
+\end{algorithm}
+
 Tandis que les CRDTs améliorent de manière significative la complexité
 temporelle des opérations comparé aux approches OT décentralisées, ils
 dissimulent leur complexité dans l'occupation mémoire. En effet, afin d'assurer
@@ -156,6 +162,16 @@ droite. Dans ce genre de cas, la stratégie consiste à rapprocher les
 identifiants générés du précédent identifiant (e.g. $id_b$ proche de
 $id_a$). Toutefois, lorsque le comportement d'édition ne suit pas celui attendu,
 la taille des identifiants croît très rapidement.
+
+\begin{figure}
+  \centering
+  \input{input/lseq/allocpathexample.tex}
+  \caption{\label{fig:allocpathexample} Two trees filled with the resulting
+    identifiers of two different permutations resulting in an identical
+    sequence $QWERTY$. They use the same function $allocPath$ which allocates
+    the leftmost branch in the tree. All paths of the nearly optimal case have
+    a length of 1 while the tree of the worst case grows up to a depth of 6.}
+\end{figure}
 
 \begin{figure*}
   \centering

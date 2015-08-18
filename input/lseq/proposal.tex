@@ -51,6 +51,31 @@ $\log_2(p_k) = \log_2(p_{k-1})$.
 
 \subsection{Choix de stratégie}
 
+
+\begin{algorithm}
+  \input{input/lseq/allocpathalgo.tex}
+  \caption{\label{algo:allocpath}Allocation of the path.}
+\end{algorithm}
+
+\begin{figure}
+  \centering
+  \input{input/lseq/lseqtreeexample.tex}
+  \caption{\label{fig:lseqtreeexample} Example of \LSEQ's exponential trees
+    with two antagonist editing behaviours to create the sequence of characters
+    $QWERTY$. Thanks to its hash function, \LSEQ transfers the allocation of
+    paths to the sub-allocation functions designed for front-editing and
+    end-editing at first and second level respectively for this
+    example. Furthermore, the arity is doubled at each level of the
+    tree. Contrarily to the example given in Figure~\ref{fig:allocpathexample},
+    the trees do not grow linearly.}
+\end{figure}
+
+\begin{algorithm}
+  \input{input/lseq/allocdesalgo.tex}
+  \caption{\label{algo:allocdes}Allocation of the disambiguator.}
+\end{algorithm}
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../paper"
