@@ -14,24 +14,24 @@ où elles sont appliquées à la copie locale.
 D'après le théorème CAP~\cite{gilbert2002brewer} (\emph{Consistency,
   Availability, Partition tolerence}), il est impossible de passer à l'échelle
 tout en garantissant à la fois un fort niveau de cohérence, la disponibilité de
-la donnée partagée, et la tolérence aux pannes. La réplication optimiste choisit
+la donnée partagée, et la tolérance aux pannes. La réplication optimiste choisit
 de sacrifier le critère de cohérence au profit de la disponibilité et de la
-tolérence aux pannes: lorsque tous les changements ont été réçu et appliqués par
+tolérance aux pannes: lorsque tous les changements ont été reçus et appliqués par
 tous les participants, les copies doivent converger vers un état identique. Il
 s'agit du critère de cohérence correspondant à la cohérence à terme (ou
 cohérence inéluctable). Bien qu'il soit possible de garantir d'avantages de
-propriétés, notament sur l'ordonnancement des modifications, nous nous
+propriétés, notamment sur l'ordonnancement des modifications, nous nous
 intéresserons principalement à ce critère de cohérence.
 
 \begin{figure}
   \centering
   \input{./input/lseq/optimisticexample.tex}
-  \caption{\label{fig:optimisticexample}Exemple d'execution d'un protocole de
+  \caption{\label{fig:optimisticexample}Exemple d'exécution d'un protocole de
     réplication optimiste. Il existe trois copies d'une séquence initialement
     vide. La première copie insère 'QWE' et en dissémine l'information. La
-    troisième copie réçoit l'opération et l'applique localement. Cette copie
+    troisième copie reçoit l'opération et l'applique localement. Cette copie
     insère 'RTY' à la suite de 'QWE' afin d'obtenir 'QWERTY' et envoie
-    l'information aux deux autres copies. Quel que soit l'ordre de reception, le
+    l'information aux deux autres copies. Quel que soit l'ordre de réception, le
     protocole garantie que les copies convergent vers un état identique, ici, la
     séquence 'QWERTY'.}
 \end{figure}
@@ -39,10 +39,10 @@ intéresserons principalement à ce critère de cohérence.
 Les outils d'édition collaboratifs utilisant la réplication optimiste peuvent
 être divisés en deux catégories. Les premiers utilisent les transformés
 opérationnels~\cite{sun2009contextbased, sun1998operational} qui, lors de la
-réception d'une modification, en change les paramêtres égards des opérations
+réception d'une modification, en change les paramètres égards des opérations
 concurrentes. Les seconds utilisent un type de données
 commutatif~\cite{shapiro2011comprehensive, shapiro2011conflict} où l'envoie
-n'est pas l'opération mais son résultat qui, après reception, est intégré à la
+n'est pas l'opération mais son résultat qui, après réception, est intégré à la
 structure. 
 
 \subsection{Transformés opérationnels}
@@ -77,27 +77,21 @@ Plus récemment, les approches à base de \emph{structures de données répliqu�
   sans résolution de conflits}~\cite{shapiro2011comprehensive,
   shapiro2011conflict} (CRDTs) commencèrent à émerger. Ces types de structure
 abstraits possèdent la particularité de fournir des opérations commutatives.
-Plus précisément, le résultat de l'éxecution locale de chaque opération est
-envoyé aux possésseurs de réplique et peut directement être intégré à cette
+Plus précisément, le résultat de l'exécution locale de chaque opération est
+envoyé aux possesseur de réplique et peut directement être intégré à cette
 dernière.  En d'autres termes, l'ordre d'intégration des opérations n'importe
 pas. Cela permet de grandement alléger, voir supprimer, le coût d'ordonnancement
 des opérations. Ce genre de structure existe pour les compteurs, les ensembles,
 les graphes orientés acycliques (DAG) etc. Dans ce manuscrit, nous nous
-interesserons aux séquences.
+intéresserons aux séquences.
 
 Une importante différence entre les approches basées sur OT et les approches
 basées sur les CRDTs réside dans la répartition des coûts algorithmiques entre
-execution locale et intégration distante. En effet, OT propose des opérations
+exécution locale et intégration distante. En effet, OT propose des opérations
 sans coût additionnel localement, mais dont le coût est élevé à l'intégration.
 En revanche, les approches CRDTs répartissent les coûts entre la partie locale
 et l'intégration.  L'impact étant d'autant plus important qu'une opération local
-génére autant d'intégrations que de répliques.
-
-\begin{algorithm}
-  \input{input/lseq/crdtabstractalgo.tex}
-  \caption{\label{algo:crdtabstract}General outlines of a sequence with
-    variable-size identifiers.}
-\end{algorithm}
+génère autant d'intégrations que de répliques.
 
 Tandis que les CRDTs améliorent de manière significative la complexité
 temporelle des opérations comparé aux approches OT décentralisées, ils
@@ -114,18 +108,18 @@ Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
 l'utilisateur. Bien que supprimées, ces pierres tombales existent toujours dans
 la structure sous-jacente et continuent d'avoir un impact sur les performances.
 
-Le premier representant historique appartenant à cette famille de CRDT se nomme
-WOOT~\cite{oster2006data}. Lors de l'insertion d'un élement dans la sequence,
+Le premier représentant historique appartenant à cette famille de CRDT se nomme
+WOOT~\cite{oster2006data}. Lors de l'insertion d'un élément dans la séquence,
 l'identifiant généré référence simplement les identifiants voisins à
-l'insertion. Par exemple, considérons la chaine QWETY dont les identifiants
+l'insertion. Par exemple, considérons la chaîne QWETY dont les identifiants
 respectifs à chaque caractère sont $i_Q$,$i_W$,\ldots,$i_Y$. Lors de l'insertion
 du caractère R entre les caractères E et T, l'identifiant généré est composé de
-$i_E$ et $i_T$ respectivement référencés comme étant la borne inferieur et
-supérieur du nouvel élement. Lors de l'intégration, un \TODO{diagramme de Hasse}
-permet de retrouver l'ordre des élements de la séquence, même en présence
+$i_E$ et $i_T$ respectivement référencés comme étant la borne inférieur et
+supérieur du nouvel élément. Lors de l'intégration, un \TODO{diagramme de Hasse}
+permet de retrouver l'ordre des éléments de la séquence, même en présence
 d'opérations concurrentes. WOOT illustre bien la nécessité de conserver des
-pierres tombales après suppression d'un élement. En effet, si l'on supprime un
-élement référencé par d'autres élements, alors ces derniers ne peuvent plus être
+pierres tombales après suppression d'un élément. En effet, si l'on supprime un
+élément référencé par d'autres éléments, alors ces derniers ne peuvent plus être
 placé dans le diagramme.
 
 La complexité de ces approches dépend de l'ensemble des opérations d'insertions
@@ -146,7 +140,35 @@ contrepartie, les identifiants encodent un ordre total permettant de les placer
 dans le document indépendamment des autres éléments. La complexité spatiale de
 ces identifiants est cruciale et dépend du nombre d'opérations d'insertion.
 
-\subsection{Stratégie d'allocation d'identifiants}
+\begin{algorithm}
+  \input{input/lseq/crdtabstractalgo.tex}
+  \caption{\label{algo:crdtabstract} Patron des algorithmes de séquences avec
+    identifiants de taille variable.}
+\end{algorithm}
+
+L'algorithme~\ref{algo:crdtabstract} présente les grandes lignes des CRDTs pour
+séquences dont les identifiants ont une taille qui diffère lors de la
+génération. L'algorithme est divisé en deux parties qui correspondent à
+l'exécution locale et l'exécution distante de la réplication
+optimiste. Celles-ci sont elles-mêmes divisées en deux types d'évènements
+correspondant aux opérations d'insertions et de suppression d'un
+élément. L'algorithme met en lumière trois points :
+\begin{itemize}
+\item La signature des opérations est différentes de celle des opérations sur
+  les séquences non-partagées. En effet, la position d'insertion d'un élément est
+  désignée par deux bornes que sont les éléments adjacents à l'insertion, au lieu
+  d'un indice dans la séquence.
+\item Un identifiant est généré localement lors de l'insertion d'un élément. Par
+  conséquent, la complexité est répartie entre la génération locale de
+  l'identifiant, et son positionnement à distance.
+\item La fonction $allocPath$ désigne la fonction servant à générer un chemin
+  dans l'arbre. La fonction $allocDes$ garantie l'unicité des identifiants ainsi
+  que la possibilité d'insérer entre deux identifiants même si ces derniers ont
+  un chemin identique.  Ce cas peut se présenter lors d'insertions concurrentes.
+\end{itemize}
+
+
+\subsubsection{Stratégie d'allocation d'identifiants}
 
 Dans la littérature, deux genres de stratégies d'allocations d'identifiants
 existent. Tout d'abord, considérons l'insertion de l'élément $b$ entre les
@@ -163,15 +185,22 @@ identifiants générés du précédent identifiant (e.g. $id_b$ proche de
 $id_a$). Toutefois, lorsque le comportement d'édition ne suit pas celui attendu,
 la taille des identifiants croît très rapidement.
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \input{input/lseq/allocpathexample.tex}
-  \caption{\label{fig:allocpathexample} Two trees filled with the resulting
-    identifiers of two different permutations resulting in an identical
-    sequence $QWERTY$. They use the same function $allocPath$ which allocates
-    the leftmost branch in the tree. All paths of the nearly optimal case have
-    a length of 1 while the tree of the worst case grows up to a depth of 6.}
-\end{figure}
+  \subfloat[Allocation quasi-optimale]
+  [Cas d'une allocation quasi-optimale]
+  {\input{./input/lseq/allocpathexampleA.tex}}
+  \hspace{40pt}
+  \subfloat[Pire cas d'allocation]
+  [Pire cas d'allocation]
+  {\input{./input/lseq/allocpathexampleB.tex}}
+  \caption{\label{fig:allocpathexample} Deux arbres remplis d'identifiants
+    résultant de deux séquences d'édition différentes et dont la séquence finale
+    est identique : $QWERTY$. L'allocation des identifiants se fait selon le
+    même algorithme qui alloue la branche la plus à gauche de l'arbre. L'arbre
+    quasiment optimal ne possède que des branches de profondeur 1 tandis que
+    l'arbre pire cas atteint une profondeur de 6.}
+\end{figure*}
 
 La figure~\ref{fig:allocpathexample} illustre les difficultés rencontrées lors
 de l'allocation d'identifiants. La figure représente la structure d'arbre
@@ -195,20 +224,20 @@ $(R,\,0)$\ldots$]$.
 \item Cas n°2 : la séquence d'édition $[(Y,\,0)$, $(T,\,0)$, $(R,\,0)$\ldots$]$
   implique une augmentation de la profondeur de l'arbre à chaque nouvelle
   insertion d'élément. En effet, le chemin est choisit est toujours celui qui
-  est le petit possible. Les éléments suivant ne béneficie pas de suffisament de
+  est le petit possible. Les éléments suivant ne bénéficie pas de suffisamment de
   place à la profondeur courante de l'arbre, d'où la nécessité d'augmenter sa
-  pronfondeur. Les chemins en résultant sont : $\langle [1],\, Y\rangle$,
+  profondeur. Les chemins en résultant sont : $\langle [1],\, Y\rangle$,
   $\langle[0.1],\,T\rangle$, $\langle[0.0.1],\, R\rangle$, etc. La taille des
   chemins alloués augmente très rapidement.
 \end{itemize}
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
-longueur des chemins alloués. Malheureusement, l'ordre d'insertion des éléments
-ni l'ordre d'insertion des éléments, ni la taille finale de la séquence ne
-peuvent être prédits. Les travaux précédents font souvent l'hypothèse d'un
-comportement d'édition de gauche-à-droite basés sur observations. Toutefois,
-il existe des documents écrit par l'homme dont le comportement ne correspond pas
-à celui-ci.
+longueur des chemins alloués. Malheureusement, ni l'ordre d'insertion des
+éléments, ni la taille finale de la séquence ne peuvent être prédits avec
+exactitude. C'est pourquoi les travaux précédents font souvent l'hypothèse d'un
+comportement d'édition de gauche-à-droite basés sur observations. Toutefois, il
+existe des documents écrit par l'homme dont le comportement ne correspond pas à
+celui-ci.
 
 \begin{figure*}
   \centering
@@ -226,6 +255,24 @@ il existe des documents écrit par l'homme dont le comportement ne correspond pa
     révision à laquelle la ligne a été insérée, i.e., sa date de naissance.  La
     figure du bas représente la taille de l'identifiant associé à chaque ligne.}
 \end{figure*}
+
+Les figures~\ref{fig:compliant} et~\ref{fig:motivating} montrent deux
+comportements d'éditions présent sur des pages extraites de Wikipedia. La partie
+supérieure de ces figures donne une vue globale du comportement d'édition sur la
+page. Elle indique la numéro de la révision à laquelle une ligne a été
+insérée. Ainsi, plus une barre est haute, plus la ligne a été insérée
+récemment. Le spectre de la figure~\ref{fig:compliant} montre que les nouveaux
+éléments de la séquence sont principalement ajoutés en fin. À l'opposé, le
+spectre de la figure~\ref{fig:motivating} montre que les nouveaux éléments de la
+séquence sont principalement ajoutés en tête. La partie inférieure de ces
+figures montre la taille de la représentation binaire de l'identifiant associé à
+chaque élément du document. \TODO{Présenter la stratégie d'allocation}. Ainsi,
+nous observons que les identifiants dans le document comportant 12k lignes mais
+principalement édité en fin a des identifiants n'excédant pas 256 bits. En
+revanche, le document possédant seulement 170 lignes édité en tête a des
+identifiants atteignant déjà les 320 bits.
+
+\TODO{Définition du problème}
 
 %%% Local Variables:
 %%% mode: latex

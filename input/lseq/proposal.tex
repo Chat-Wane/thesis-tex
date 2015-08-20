@@ -1,7 +1,7 @@
 
 \section{LSEQ : une stratégie d'allocation polylogarithmique}
 
-\LSEQ (abréviation pour \emph{polyLogarithimic SEQuence}) est une stratégie
+\LSEQ (abréviation de \emph{polyLogarithimic SEQuence}) est une stratégie
 d'allocation d'identifiants dont la taille est variable à la génération. Elle
 alloue des identifiants dont la compléxité en espace dont la borne supérieur est
 de l'ordre du polylogarithme comparé au nombre d'insertions dans la séquence.
@@ -74,18 +74,24 @@ faut $1$ bit supplémentaire à chaque profondeur de l'arbre.
   \caption{\label{algo:allocpath}Allocation of the path.}
 \end{algorithm}
 
-\begin{figure}
+\begin{figure*}
   \centering
-  \input{input/lseq/lseqtreeexample.tex}
-  \caption{\label{fig:lseqtreeexample} Example of \LSEQ's exponential trees
-    with two antagonist editing behaviours to create the sequence of characters
-    $QWERTY$. Thanks to its hash function, \LSEQ transfers the allocation of
-    paths to the sub-allocation functions designed for front-editing and
-    end-editing at first and second level respectively for this
-    example. Furthermore, the arity is doubled at each level of the
-    tree. Contrarily to the example given in Figure~\ref{fig:allocpathexample},
-    the trees do not grow linearly.}
-\end{figure}
+  \subfloat[\LSEQ sur comportement d'édition de gauche à droite]
+  [\LSEQ sur un comportement d'édition de gauche à droite]
+  {\input{input/lseq/lseqtreeexampleA.tex}}
+  \hspace{10pt}
+  \subfloat[\LSEQ sur comportement d'édition de droite à gauche]
+  [\LSEQ sur un comportement d'édition de droite à gauche]
+  {\input{input/lseq/lseqtreeexampleB.tex}}
+  \caption{\label{fig:lseqtreeexample} Arbre exponentiel de \LSEQ sur deux
+    comportements d'édition antagonistes créant la séquence QWERTY. Dans cet
+    exemple, La fonction $h$ de hachage défère l'allocation du chemin aux
+    sous-stratégies d'allocation prévus pour l'édition en tête et l'édition en
+    fin au premier et second niveau respectivement. De plus, l'arité de l'arbre
+    est doublée à chaque niveau. Contrairement aux exemples de la
+    figure~\ref{fig:allocpathexample}, la profondeur de ces arbres n'augmente
+    pas linéairement.}
+\end{figure*}
 
 \begin{algorithm}
   \input{input/lseq/allocdesalgo.tex}
