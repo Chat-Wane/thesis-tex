@@ -133,9 +133,11 @@ unique  À cet égard, deux types d'approche CRDT existent.
 Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
   conway2014language, grishchenko2010deep, oster2006data,
   preguica2009commutative, roh2011replicated, weiss2007wooki, wu2010partial,
-  Yu2012stringwise} marquent simplement les éléments supprimés et les cachent à
-l'utilisateur. Bien que supprimées, ces pierres tombales existent toujours dans
-la structure sous-jacente et continuent d'avoir un impact sur les performances.
+  Yu2012stringwise} se caractérisent par la manière dont les suppressions sont
+traitées. En effet, lors de l'opération $delete$, ces approches marquent
+simplement les éléments supprimés afin de les cacher à l'utilisateur. Bien que
+supprimées, ces pierres tombales existent toujours dans la structure
+représentant la séquence et continuent d'impacter sur les performances.
 
 Le premier représentant historique appartenant à cette famille de CRDT se nomme
 WOOT~\cite{oster2006data}. Lors de l'insertion d'un élément dans la séquence,
@@ -144,12 +146,9 @@ l'insertion. Par exemple, considérons la chaîne QWETY dont les identifiants
 respectifs à chaque caractère sont $i_Q$,$i_W$,\ldots,$i_Y$. Lors de l'insertion
 du caractère R entre les caractères E et T, l'identifiant généré est composé de
 $i_E$ et $i_T$ respectivement référencés comme étant la borne inférieur et
-supérieur du nouvel élément. Lors de l'intégration, un \TODO{diagramme de Hasse}
-permet de retrouver l'ordre des éléments de la séquence, même en présence
-d'opérations concurrentes. WOOT illustre bien la nécessité de conserver des
-pierres tombales après suppression d'un élément. En effet, si l'on supprime un
-élément référencé par d'autres éléments, alors ces derniers ne peuvent plus être
-placé dans le diagramme.
+supérieur du nouvel élément. Lors de l'intégration, un diagramme de Hasse permet
+de retrouver l'ordre des éléments de la séquence, même en présence d'opérations
+concurrentes. 
 
 \begin{figure}
   \centering
@@ -161,31 +160,54 @@ placé dans le diagramme.
     ordonnancement de la séquence.}
 \end{figure}
 
+La figure~\ref{fig:lseq:wootexample} illustre la nécessité de conserver les
+pierres tombales. Elle montre le diagramme de Hasse généré lors du scenario
+suivant : Tout d'abord, un utilisateur écrit AZERTY. Ensuite, les deux premiers
+caractères sont supprimés afin d'être remplacés par les caractères QW. La
+séquence finale est QWERTY. Toutefois, les identifiants ne sont pas modifiables,
+et l'identifiant du caractère E référence l'identifiant de Z, lui-même
+référençant l'identifiant de A. Par conséquent, supprimer complètement les
+identifiants de A et/ou de Z revient à rendre l'identifiant de E non
+positionnable, et tout ceux qui en dépendent par transitivité.
+
 La complexité de ces approches dépend de l'ensemble des opérations d'insertions
 ayant jamais été effectué sur le document. Cela devient problématique dans
 certains documents particulièrement assujettis à vandalisme (e.g. Wikipedia). La
 conséquence étant qu'un document n'ayant en apparence que peu de contenu
 consomme beaucoup de ressources du fait des nombreuses pierres tombales cachées.
 
-\TODO{Garbage collect}.
+Des méchanismes liés au ramasse-miettes décentralisés (REF) peuvent être
+déployés afin de pallier ces problèmes de pierres tombales. Toutefois, ceux-ci
+sont extrêmement coûteux, la difficulté étant qu'un élément ne peut être
+entièrement supprimé que si toutes les répliques \TODO{l'ont bel et bien
+  supprimé}. De cette façon, plus aucun nouvel identifiant ne peut désormais le
+référencer et l'ordonnencement n'en dépend plus. \TODO{Obtenir cette
+  connaissance requière de savoir l'état de chaque réplique
+  distante}. \TODO{Contrainte de topologie.}
 
 \subsubsection{Identifiants de taille variable}
 
 Les approches utilisant des identifiants de taille
-variable~\cite{preguica2009commutative, andre2013supporting,
-  weiss2009logoot}. Contrairement aux approches basées sur les pierres tombales,
-les éléments supprimés disparaissent complètement de la structure. En
-contrepartie, les identifiants encodent un ordre total permettant de les placer
-dans le document indépendamment des autres éléments. La complexité spatiale de
-ces identifiants est cruciale et dépend du nombre d'opérations d'insertion.
+variable~\cite{andre2013supporting, preguica2009commutative, weiss2009logoot}
+sont caractérisées par la forme de leurs identifiants dont la taille, comme leur
+nom l'indique, peut varier à la génération. Ainsi, la taille d'un identifiant
+peut être différente de la taille d'un autre identifiant. Néanmoins, cela
+n'affecte pas leur caractère immuable après génération.
+
+Contrairement aux approches basées sur les pierres tombales, les éléments
+supprimés disparaissent complètement de la structure. En contrepartie, les
+identifiants encodent un ordre total permettant de les placer dans le document
+indépendamment des autres éléments. La complexité spatiale de ces identifiants
+est cruciale et dépend du nombre d'opérations d'insertion effectuées sur le
+document.
 
 \begin{algorithm}
   \input{input/lseq/crdtabstractalgo.tex}
-  \caption{\label{algo:crdtabstract} Patron des algorithmes de séquences avec
+  \caption{\label{algo:lseq:crdtabstract} Patron des algorithmes de séquences avec
     identifiants de taille variable.}
 \end{algorithm}
 
-L'algorithme~\ref{algo:crdtabstract} présente les grandes lignes des CRDTs pour
+L'algorithme~\ref{algo:lseq:crdtabstract} présente les grandes lignes des CRDTs pour
 séquences dont les identifiants ont une taille qui diffère lors de la
 génération. L'algorithme est divisé en deux parties qui correspondent à
 l'exécution locale et l'exécution distante de la réplication
