@@ -69,7 +69,36 @@ opérations concurrentes dans le but d'exécuter de manière cohérente l'opéra
 sans avoir à défaire et réexecuter ces opérations. De ce fait, bien que
 l'exécution locale d'une opération soit très efficace, l'exécution des
 opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
-environnements maîtrisés, OT reste efficace (\TODO{REF hybrid paper}).
+environnements maîtrisés, OT reste efficace~\cite{mehdi2014merging}.
+
+\begin{figure}
+  \centering
+  \input{input/lseq/otexample.tex}
+  \caption{\label{fig:lseq:otexample}Exemple de transformé opérationnel
+    garantissant la convergence lors d'opérations concurrentes. L'opération de
+    suppression des 3 premiers caractères sur la copie 3 (RTY) est transformée
+    afin de supprimer les 3 caractères à l'index 3 sur les autres copies.}
+\end{figure}
+
+La figure~\ref{fig:lseq:otexample} illustre le principe de fonctionnement des
+approches basées sur les transformés opérationnels. Dans ce scenario, les copies
+sont toutes initialisées avec la séquence RTY. Ensuite, tandis que la copie 1
+insère les 3 caractères QWE en tête de la séquence pour obtenir QWERTY, la copie
+3 supprime ses trois caractères pour obtenir la séquence vide. Avant la
+dissémination de ces opérations, les copies ne sont pas identiques. Les copies
+1, 2, et 3 ont respectivement les séquences [QWERTY], [RTY], []. Lorsque la
+copie 1 réçoit l'opération de suppression, elle détecte que cette dernière est
+en concurrence avec des opérations déjà intégrées, en l'occurence,
+$insert(QWE,\,0)$. Son objectif est alors de déterminer l'impact que cette
+opération concurrente a eu sur l'opération réçue afin d'en adapter les
+arguments. Ici, l'insertion a décalé la séquence RTY de 3 positions vers la
+droite. Par conséquent, La suppression, de part sa position, est elle aussi
+décalée de 3 positions vers la droite. La résultat de la transformation est
+$delete(3,\,3)$.  La copie 3, lorsqu'elle réçoit l'opération d'insertion,
+detecte elle aussi que cette dernière est concurrente. Toutefois, la
+transformation est sans effet sur ses arguments. La copie 2, selon l'ordre de
+réception, se comporte comme la copie 1 ou la copie 3. À terme, les trois copies
+convergent vers une séquence identique QWE.
 
 \subsection{Structures de données partagées pour séquences}
 
