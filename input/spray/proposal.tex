@@ -152,7 +152,26 @@ lignes~\ref{line:replace1},~\ref{line:replace2} permettent de remplacer les
 auto-références dans l'échantillon. Enfin, chez les deux pairs, l'échantillon envoyé 
 est supprimé de la vue partielle, et l'échantillon réçu est ajouté.
 
-La figure~\ref{fig:cyclicexample} décrit le méchanisme périodique de \SPRAY. Ce
+\begin{figure*}
+  \centering
+  \subfloat[Figure A]
+  [Peer $p_6$ initiates the exchange with $p_1$ by sending to the
+  latter the multiset $\{p_6,\,p_9\}$.]{
+    \input{./input/spray/cyclicexampleA.tex}}
+  \hspace{10pt}
+  \subfloat[Figure B][Peer $p_1$ receives the $p_6$'s message. 
+  It sends back the multiset $\{p_2\}$ and adds $\{p_6,\,p_9\}$ to its 
+  partial view.]{
+    \input{./input/spray/cyclicexampleB.tex}}
+  \hspace{10pt}
+  \subfloat[Figure C][Peer $p_6$ receives the $p_1$'s response, it
+  adds $\{p_2\}$ to its partial view.]{
+    \input{./input/spray/cyclicexampleC.tex}}
+  \caption{\label{fig:spray:cyclicexample}Example of the \SPRAY's shuffling
+    protocol. }
+\end{figure*}
+
+La figure~\ref{fig:spray:cyclicexample} décrit le méchanisme périodique de \SPRAY. Ce
 scénario suit celui de la figure~\ref{fig:joiningexample}: le pair $p_1$ vient
 de rejoindre le réseau. Le pair $p_6$ initie un échange avec $p_1$ (qui est ici
 le plus vieux dans sa vue partielle). $p_6$ choisit

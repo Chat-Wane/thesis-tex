@@ -151,6 +151,16 @@ pierres tombales après suppression d'un élément. En effet, si l'on supprime u
 élément référencé par d'autres éléments, alors ces derniers ne peuvent plus être
 placé dans le diagramme.
 
+\begin{figure}
+  \centering
+  \input{input/lseq/wootexample.tex}
+  \caption{\label{fig:lseq:wootexample}Le diagramme de Hasse du modèle WOOT
+    représentant la séquence QWERTY. Tout d'abord, la chaîne de caractères
+    AZERTY fut écrite. Les caractères AZ sont supprimés et remplacé par QW, d'où
+    l'embranchement. Bien que supprimé, le caractère Z est indispensable au bon
+    ordonnancement de la séquence.}
+\end{figure}
+
 La complexité de ces approches dépend de l'ensemble des opérations d'insertions
 ayant jamais été effectué sur le document. Cela devient problématique dans
 certains documents particulièrement assujettis à vandalisme (e.g. Wikipedia). La
