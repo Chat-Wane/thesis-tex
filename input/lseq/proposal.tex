@@ -90,27 +90,91 @@ types d'édition différents (pas nécessairement réaliste) afin de mettre en
 \LSEQ utilise deux sous-stratégies d'allocation d'identifiants dont la finalité
 est antagoniste. En effet, l'une de ces stratégies est adaptée à l'édition
 monotone effectuée de gauche à droite, tandis que l'autre est adaptée à
-l'édition monotone effectuée de droite à gauche.
+l'édition monotone effectuée de droite à gauche. En terme de chemin dans
+l'arbre, la première alloue la branche la plus à gauche en premier, la seconde
+alloue la branche la plus à droite en premier, toutes deux dans le but de
+laisser de l'espace (i.e. des chemins disponibles de même profondeur) pour les
+futures insertions.
 
 \begin{figure*}
   \centering
   \subfloat[Sous-stratégie adaptée à l'édition monotone de gauche à droite]
-  [Sous-stratégie d'allocation adaptée à l'édition monotone de gauche à droite]
+  [\label{fig:lseq:substrategiesexampleA}Sous-stratégie d'allocation adaptée à
+  l'édition monotone de gauche à droite]
   {\input{input/lseq/substrategiesexampleA.tex}}
   \hspace{20pt}
   \subfloat[Sous-stratégie adaptée à l'édition monotone de droite à gauche]
-  [Sous-stratégie d'allocation adaptée à l'édition monotone de droite à gauche]
+  [\label{fig:lseq:substrategiesexampleB}Sous-stratégie d'allocation adaptée à
+  l'édition monotone de droite à gauche]
   {\input{input/lseq/substrategiesexampleB.tex}}
   \caption{\label{fig:lseq:substrategiesexample}Les sous-stratégies employées
     par \LSEQ.}
 \end{figure*}
 
+La figure~\ref{fig:lseq:substrategiesexample} illustre le fonctionnement de
+chacune de ces sous-stratégies. Dans les deux cas, l'utilisateur insère un
+caractère à une position où les identifiants des éléments précédent et suivant
+sont respectivement $[50]$ et $[51]$. L'espace d'allocation doit être agrandi
+afin d'accueillir le nouvel identifiant. La
+figure~\ref{fig:lseq:substrategiesexampleA} montre le cas de la stratégie
+adaptée à l'édition de gauche à droite. Comme la profondeur du chemin a
+augmenté, elle peut choisir d'allouer un chemin allant de $[50.1]$ à
+$[50.99]$. Toutefois, afin de conserver de l'espace pour les futures insertions
+supposées à droite du caractère actuel, elle restreint l'espace d'allocation à
+$[50.1]$ à $[50.20]$ (la constante est fixée arbitrairement). Elle choisit
+aléatoirement parmi cet espace et obtiens le chemin $[50.11]$. De manière
+similaire, la figure~\ref{fig:lseq:substrategiesexampleB} montre le
+fonctionnement de la stratégie adaptée à l'édition de droite à gauche. La
+différence réside dans l'espace qui est restreint à partir de la borne
+supérieur.  Ainsi, le choix de cette stratégie est effectué entre les bornes
+$[50.80]$ et $[50.99]$ et, en définitive, se porte sur le chemin $[50.89]$.
+
+\begin{algorithm}
+  \input{input/lseq/substrategiesalgo.tex}
+  \caption{\label{algo:lseq:substrategies}Sous-stratégies de \LSEQ.}
+\end{algorithm}
+
+Utilisées séparément, aucune de ces deux stratégies d'allocation ne parvient à
+être satisfaisante. Les exemples des figure~\ref{fig:lseq:allocpathexample}
+et~\ref{fig:lseq:allocation} extraits des motivations en sont la preuve. En
+revanche, utilisées ensemble, elles pallient leurs faiblesses respectives.
+
 \subsection{Choix de stratégie}
+
+\LSEQ utilise deux sous-stratégies d'allocations dont l'objectif est
+antagoniste. Pour chaque insertion d' éléments dans la séquence, il faut choisir
+entre les deux sous-stratégies. De plus, lorsque plusieurs utilisateurs sont
+impliqués dans l'édition, les choix peuvent avoir des conséquences dramatiques.
+Par exemple, si dans l'exemple de la figure~\ref{fig:lseq:substrategiesexample}
+deux utilisateurs insèrent un élément avec une stratégie différente, tout
+l'espace qui se trouve entre les deux identifiants risque d'être perdu. Il est
+donc essentiel que tous les possesseurs de la séquence répliquée fassent les
+mêmes choix. De plus, afin de ne privilégier aucun type d'édition, il faut que
+la fréquence de choix de chacun des deux types de stratégies soit égale.
+
+Dans ce but, \LSEQ utilise une fonction de hachage initialisée par une graine
+cachée dans le document, et qui, pour chaque profondeur de l'arbre, assigne une
+sous-stratégie d'allocation particulière.
 
 \begin{algorithm}
   \input{input/lseq/allocpathalgo.tex}
   \caption{\label{algo:lseq:allocpath}Allocation of the path.}
 \end{algorithm}
+
+\subsection{Synthèse}
+
+\LSEQ utilise 3 composants afin de pouvoir allouer des identifiants dont la
+complexité spatiale est, dans le cadre de l'édition collaborative, bornée par le
+polylogarithme du nombre d'insertions effectués sur la séquence. Ces trois
+composants sont
+\begin{inparaenum}[(i)]
+\item l'arbre exponentiel comme structure de données qui permet d'adapter la
+  taille de l'identifiant afin de refléter la taille du document;
+\item deux sous-stratégies d'allocations afin d'adapter le choix du chemin au
+  comportement d'édition;
+\item une fonction de hachage commune à toutes les répliques afin d'assigner à chaque
+ profondeur de l'arbre une même sous-stratégie d'allocation.
+\end{inparaenum}
 
 \begin{figure*}
   \centering
@@ -121,15 +185,18 @@ l'édition monotone effectuée de droite à gauche.
   \subfloat[\LSEQ sur comportement d'édition de droite à gauche]
   [\LSEQ sur un comportement d'édition de droite à gauche]
   {\input{input/lseq/lseqtreeexampleB.tex}}
-  \caption{\label{fig:lseqtreeexample} Arbre exponentiel de \LSEQ sur deux
+  \caption{\label{fig:lseq:lseqtreeexample} Arbre exponentiel de \LSEQ sur deux
     comportements d'édition antagonistes créant la séquence QWERTY. Dans cet
     exemple, La fonction $h$ de hachage défère l'allocation du chemin aux
     sous-stratégies d'allocation prévus pour l'édition en tête et l'édition en
     fin au premier et second niveau respectivement. De plus, l'arité de l'arbre
     est doublée à chaque niveau. Contrairement aux exemples de la
-    figure~\ref{fig:allocpathexample}, la profondeur de ces arbres n'augmente
-    pas linéairement.}
+    figure~\ref{fig:lseq:allocpathexample}, la profondeur de ces arbres
+    n'augmente pas de manière linéaire.}
 \end{figure*}
+
+La figure~\ref{fig:lseq:allocpathexample} présente les différents aspects de
+\LSEQ au travers de sa représentation sous forme d'arbre. 
 
 \begin{algorithm}
   \input{input/lseq/allocdesalgo.tex}
