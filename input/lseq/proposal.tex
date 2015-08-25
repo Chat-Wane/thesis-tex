@@ -3,75 +3,113 @@
 
 \LSEQ (abréviation de \emph{polyLogarithimic SEQuence}) est une stratégie
 d'allocation d'identifiants dont la taille est variable à la génération. Elle
-alloue des identifiants dont la compléxité en espace dont la borne supérieur est
-de l'ordre du polylogarithme comparé au nombre d'insertions dans la séquence.
-Pour générer ses identifiants immuables et uniques, \LSEQ utilise un arbre
-exponentiel comme structure de données, deux sous-stratégies d'allocations avec
-objectifs antagonistes, et un composant permettant de choisir la stratégie.
+alloue des identifiants avec une complexité en espace dont la borne supérieur
+est de l'ordre du polylogarithme comparé au nombre d'insertions dans la
+séquence.  Pour générer ses identifiants immuables et uniques, \LSEQ utilise
+\begin{inparaenum}[(i)]
+\item un arbre exponentiel comme structure de données,
+\item deux sous-stratégies d'allocations avec objectifs antagonistes,
+\item et un composant permettant de choisir la stratégie.
+\end{inparaenum}
 
-\subsection{Principe général}
-
-Puisqu'il est complexe de prédire un comportement d'édition, le principe est de
-sacrifier des niveaux de l'arbre sachant qu'à un certain niveau, la récompense
-compensera les pertes. En d'autres termes, même si \LSEQ choisit la mauvaise
-sous-stratégie d'allocation à un certain niveau de l'arbre, à terme, la bonne
-sous-stratégie sera choisie. Grâce à l'augmentation de l'espace d'allocation à
-chaque niveau de l'arbre, les bénéfices vont couvrir les coûts des niveaux
-perdus.
-
+Puisqu'il est complexe de prédire le comportement d'édition des utilisateurs sur
+un document, il est possible que \LSEQ alloue une série d'identifiants dont la
+taille ne serait pas satisfaisante dans l'immédiat. Néanmoins, ce sacrifice
+permet d'atteindre un niveau de l'arbre \LSEQ où les identifiants seront alloués 
+efficacement jusqu'à compenser les pertes des identifiants alloués précédemment.
 
 \subsection{Arbre exponentiel}
 
-A l'opposé d'une structure d'arbre classique, un arbre exponentiel est un arbre
-dont l'arité augmente avec sa profondeur. Ainsi, chacun de ses éléments possède
-$c$-fois plus de fils que son parent. Par exemple, si l'on fixe $c$ à $2$, un
-élément dont le parent possède $4$ fils en possède $8$, et chacun d'entre eux en
-possède $16$ etc. Dans ce cas, il y a une augmentation quadratique du nombre de
-fils en fonction de la profondeur qui s'ajoute à l'augmentation commune de
-l'arbre. Ainsi, un arbre exponentiel de profondeur $k$ peut accueillir 
+Un arbre est un graphe orienté, acyclique, et connexe. En d'autres termes, il
+s'agit d'une structure dont les éléments sont liés entre eux par une relation de
+parenté. Généralement, l'arité d'un arbre (i.e. le nombre de fils qu'un élément
+peut posséder) est limitée par une constante. Par exemple, la
+figure~\ref{fig:lseq:allocpathexample} présente des arbres d'arité
+décimale. Ainsi, chaque élément possède au maximum 10 fils.
+
+Un arbre exponentiel est un arbre dont l'arité augmente avec sa
+profondeur. Ainsi, chaque élément peut posséder $c$-fois plus de fils que son
+parent. Par exemple, avec un arbre exponentiel dont le facteur de croissance est
+2, un élément dont l'arité maximum est $4$ voit chacun de ces fils posséder une
+arité maximum de $8$, etc.  Un tel arbre de profondeur $k$ peut alors accueillir
+:
 \begin{equation}
-  n = \sum\limits_{i=0}^{k} 2^{(i^2-i)/2}\,\, identifiants.
+  n = \sum\limits_{i=0}^{k} 2^{(i^2-i)/2}\,\,\, identifiants.
 \end{equation}
 
-
-\TODO{figure}
-
-Une telle structure a l'avantage d'adapter sa consommation en mémoire à la
-taille du document. En effet, commencer l'édition avec une base de départ faible
-reflète un petit document. Lorsque le document devient plus imposant, la
-profondeur de l'arbre augmente, et par conséquent son arité, reflétant
-l'augmentation de la taille du document.
-
-Un identifiant \LSEQ est un suite d'entiers représentant le chemin de l'élément
-dans l'arbre. Pour encoder cette suite d'entiers notée $[p_1.p_2\ldots p_k]$, il
-faut $1$ bit supplémentaire à chaque profondeur de l'arbre. 
+Chaque lien de parenté est étiqueté et la série de ces étiquettes crée le chemin
+vers un élément de la séquence. La représentation en mémoire de cette série
+dépend de l'arité de l'arbre. Par exemple, les arbres d'arité décimale présents
+dans la figure~\ref{fig:lseq:allocpathexample} ont besoin de $k*\log_2(10)$ bits
+afin de représenter un chemin de profondeur $k$.  En revanche, les chemins \LSEQ
+ont besoin d'un bit additionnel par niveau afin de refléter l'augmentation
+d'arité de l'arbre. Pour représenter en mémoire un chemin de profondeur $k$, un
+arbre exponentiel de facteur d'augmentation $2$ et dont la première profondeur
+nécessite $b$ bits a besoin de :
+\begin{equation}
+  \sum\limits_{i=1}^{k}b+i = kb + k(k+1)/2 = O(k^2) \,\,\, bits.
+\end{equation}
 
 \begin{table}
   \centering
   \begin{tabular}{@{}lccc@{}}
     \toprule
-    & Random & Monotonic & Worst \\ \cmidrule{2-4}
-    Id.size & $O(\sqrt{log\,n})$ & $O(log\,n)$ & $O(n)$ \\ \midrule
-    Id.bit-length & \multicolumn{3}{c}{ $\sum\limits_{i=1}^{k}b+i =
+    & Aléatoire & Monotone & Pire cas \\ \cmidrule{2-4}
+    taille du chemin & $O(\sqrt{log\,n})$ & $O(log\,n)$ & $O(n)$ \\ \midrule
+    taille binaire du chemin & \multicolumn{3}{c}{ $\sum\limits_{i=1}^{k}b+i =
       kb + k(k+1)/2 = O(k^2)$} \\ \midrule
-    Space complexity & $O(log\,n)$ & $O((log\,n)^2)$ &
+    Complexité en espace & $O(log\,n)$ & $O((log\,n)^2)$ &
     $O(n^2)$ \\ \bottomrule
   \end{tabular}
-  \caption{Spatial complexity of \LSEQ. Where $n$ is the number
-    of insert operations performed. $k$ is the size of an identifier, i.e.,
-    the number of concatenations. And $b$ the starting bit-length of numbers
-    composing the identifiers.}
+  \caption{Complexité spatiale de \LSEQ avec $n$ le nombre d'opérations
+    d'insertion effectuées sur la séquence; $k$ la profondeur d'un chemin;
+    $b$ la taille binaire nécessaire pour représenter le chemin de profondeur 1.}
 \end{table}
+
+Une telle structure a l'avantage d'adapter sa consommation en mémoire à la
+taille du document. En effet, commencer l'édition avec une petite arité reflète
+la petite taille du document. Au contraire, lorsque le document devient plus
+imposant, la profondeur de l'arbre \LSEQ augmente. Par conséquent, l'arité à
+cette profondeur augmente elle aussi.
+
+Nous nous intéressons maintenant à l'analyse en complexité spatiale lors de 3
+types d'édition différents (pas nécessairement réaliste) afin de mettre en
+évidence le comportement d'allocation de \LSEQ, à savoir:
+\begin{asparadesc}
+\item [Édition aléatoire:] insertions d'éléments à des positions aléatoires dans
+  la séquence.
+\item [Édition monotone:] insertions d'éléments à des positions adjacentes
+  successivement. Par exemple, la figure~\ref{fig:lseq:allocpathexample} présente
+  deux types d'édition monotone.
+\item [Édition pire cas:] insertions d'éléments aux pires positions possibles
+  résultant en une augmentation de la profondeur de l'arbre à chaque insertion.
+\end{asparadesc}
 
 \subsection{Sous-stratégies d'allocation}
 
+\LSEQ utilise deux sous-stratégies d'allocation d'identifiants dont la finalité
+est antagoniste. En effet, l'une de ces stratégies est adaptée à l'édition
+monotone effectuée de gauche à droite, tandis que l'autre est adaptée à
+l'édition monotone effectuée de droite à gauche.
+
+\begin{figure*}
+  \centering
+  \subfloat[Sous-stratégie adaptée à l'édition monotone de gauche à droite]
+  [Sous-stratégie d'allocation adaptée à l'édition monotone de gauche à droite]
+  {\input{input/lseq/substrategiesexampleA.tex}}
+  \hspace{20pt}
+  \subfloat[Sous-stratégie adaptée à l'édition monotone de droite à gauche]
+  [Sous-stratégie d'allocation adaptée à l'édition monotone de droite à gauche]
+  {\input{input/lseq/substrategiesexampleB.tex}}
+  \caption{\label{fig:lseq:substrategiesexample}Les sous-stratégies employées
+    par \LSEQ.}
+\end{figure*}
 
 \subsection{Choix de stratégie}
 
-
 \begin{algorithm}
   \input{input/lseq/allocpathalgo.tex}
-  \caption{\label{algo:allocpath}Allocation of the path.}
+  \caption{\label{algo:lseq:allocpath}Allocation of the path.}
 \end{algorithm}
 
 \begin{figure*}

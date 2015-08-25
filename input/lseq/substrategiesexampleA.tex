@@ -1,0 +1,25 @@
+\begin{tikzpicture}[scale=1]
+  \small
+  \draw [<-] (2.625,-16pt)--( 2.625, -26pt)  node[anchor=north] {insertion};
+
+  \draw  (1.25,60pt)-- ( 3.75, 60pt);
+  \draw  (0,0)-- (5, 0);
+  
+  \draw [dashed] (2.5,3pt) to[out=90,in=280] (1.25,55pt);
+  \draw [->,ultra thick,dashed] (2.5,3pt) to[out=90,in=280] (1.6,55pt);
+  \draw [dashed] (2.85,3pt) to[out=90,in=280] (3.75,55pt);  
+  
+  \draw [->,thick, color=black] (1.25,77pt) -- node[anchor=south]{$+20$}
+  (1.9,77pt);
+  \draw [dashed, color=black] (1.9,77pt) -- (1.9,57pt);
+
+
+  \draw (0,1pt) -- (0,-3pt) node[anchor=north] {0};
+  \draw (5,1pt) -- (5,-3pt) node[anchor=north] {$100$};
+  \draw (1.25,57pt) -- (1.25,61pt) node[anchor=east] {0};
+  \draw (1.6,57pt) -- (1.6,61pt) node[anchor=south] {\textbf{11}};
+  \draw (3.75,57pt) -- (3.75,61pt) node[anchor=west] {$100$};
+  \draw (2.5,1pt) -- (2.5,-3pt) node[anchor=north] {\textbf{50}};
+  \draw (2.85,1pt) -- (2.85,-3pt) node[anchor=north] {$51$};
+
+\end{tikzpicture}

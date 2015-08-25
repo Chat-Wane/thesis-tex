@@ -26,8 +26,8 @@ intéresserons principalement à ce critère de cohérence.
 \begin{figure}
   \centering
   \input{./input/lseq/optimisticexample.tex}
-  \caption{\label{fig:optimisticexample}Exemple d'exécution d'un protocole de
-    réplication optimiste. Il existe trois copies d'une séquence initialement
+  \caption{\label{fig:lseq:optimisticexample}Exemple d'exécution d'un protocole
+    de réplication optimiste. Il existe trois copies d'une séquence initialement
     vide. La première copie insère 'QWE' et en dissémine l'information. La
     troisième copie reçoit l'opération et l'applique localement. Cette copie
     insère 'RTY' à la suite de 'QWE' afin d'obtenir 'QWERTY' et envoie
@@ -255,7 +255,7 @@ la taille des identifiants croît très rapidement.
   \subfloat[Pire cas d'allocation]
   [Pire cas d'allocation]
   {\input{./input/lseq/allocpathexampleB.tex}}
-  \caption{\label{fig:allocpathexample} Deux arbres remplis d'identifiants
+  \caption{\label{fig:lseq:allocpathexample} Deux arbres remplis d'identifiants
     résultant de deux séquences d'édition différentes et dont la séquence finale
     est identique : $QWERTY$. L'allocation des identifiants se fait selon le
     même algorithme qui alloue la branche la plus à gauche de l'arbre. L'arbre
@@ -263,7 +263,7 @@ la taille des identifiants croît très rapidement.
     l'arbre pire cas atteint une profondeur de 6.}
 \end{figure*}
 
-La figure~\ref{fig:allocpathexample} illustre les difficultés rencontrées lors
+La figure~\ref{fig:lseq:allocpathexample} illustre les difficultés rencontrées lors
 de l'allocation d'identifiants. La figure représente la structure d'arbre
 permettant de représenter deux séquences utilisant la fonction d'allocation
 suivante : la branche la plus à gauche et la plus petite profondeur de l'arbre
@@ -303,35 +303,35 @@ celui-ci.
 \begin{figure*}
   \centering
   \subfloat[Comportement d'édition attendu]
-  [\label{fig:compliant}Le comportement d'édition correspond aux attentes
+  [\label{fig:lseq:compliant}Le comportement d'édition correspond aux attentes
   de la stratégie d'allocation]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/compliant.eps}}
   \hspace{10pt}
   \subfloat[Comportement d'édition inattendu]
-  [\label{fig:motivating}Le comportement d'édition va à l'encontre des attentes
+  [\label{fig:lseq:motivating}Le comportement d'édition va à l'encontre des attentes
   de la stratégie d'allocation]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/motivating.eps}}
-  \caption{\label{fig:allocation}Spectre de documents Wikipedia sous différent
+  \caption{\label{fig:lseq:allocation}Spectre de documents Wikipedia sous différent
     comportements d'édition antagonistes. La figure du haut représente la
     révision à laquelle la ligne a été insérée, i.e., sa date de naissance.  La
     figure du bas représente la taille de l'identifiant associé à chaque ligne.}
 \end{figure*}
 
-Les figures~\ref{fig:compliant} et~\ref{fig:motivating} montrent deux
+Les figures~\ref{fig:lseq:compliant} et~\ref{fig:lseq:motivating} montrent deux
 comportements d'éditions présent sur des pages extraites de Wikipedia. La partie
 supérieure de ces figures donne une vue globale du comportement d'édition sur la
 page. Elle indique la numéro de la révision à laquelle une ligne a été
 insérée. Ainsi, plus une barre est haute, plus la ligne a été insérée
-récemment. Le spectre de la figure~\ref{fig:compliant} montre que les nouveaux
-éléments de la séquence sont principalement ajoutés en fin. À l'opposé, le
-spectre de la figure~\ref{fig:motivating} montre que les nouveaux éléments de la
-séquence sont principalement ajoutés en tête. La partie inférieure de ces
-figures montre la taille de la représentation binaire de l'identifiant associé à
-chaque élément du document. \TODO{Présenter la stratégie d'allocation}. Ainsi,
-nous observons que les identifiants dans le document comportant 12k lignes mais
-principalement édité en fin a des identifiants n'excédant pas 256 bits. En
-revanche, le document possédant seulement 170 lignes édité en tête a des
-identifiants atteignant déjà les 320 bits.
+récemment. Le spectre de la figure~\ref{fig:lseq:compliant} montre que les
+nouveaux éléments de la séquence sont principalement ajoutés en fin. À l'opposé,
+le spectre de la figure~\ref{fig:lseq:motivating} montre que les nouveaux
+éléments de la séquence sont principalement ajoutés en tête. La partie
+inférieure de ces figures montre la taille de la représentation binaire de
+l'identifiant associé à chaque élément du document. \TODO{Présenter la stratégie
+  d'allocation}. Ainsi, nous observons que les identifiants dans le document
+comportant 12k lignes mais principalement édité en fin a des identifiants
+n'excédant pas 256 bits. En revanche, le document possédant seulement 170 lignes
+édité en tête a des identifiants atteignant déjà les 320 bits.
 
 \TODO{Définition du problème}
 
