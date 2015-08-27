@@ -37,11 +37,11 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 \begin{figure*}
   \centering
   \subfloat[Référentiel Logoot]
-  [\label{fig:logoot}Logoot comme stratégie d'allocation référentielle.]
+  [\label{fig:lseq:logoot}Logoot comme stratégie d'allocation référentielle.]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/logoot.eps}}
   \hspace{10pt}
   \subfloat[Alternance de stratégies]
-  [\label{fig:robin}Alternance de stratégie d'allocation antagonistes.]
+  [\label{fig:lseq:robin}Alternance de stratégie d'allocation antagonistes.]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/robin.eps}}
   \caption{Résultat des expérimentations impliquant une structure d'arbre avec
     arité constante.}
@@ -58,7 +58,7 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
   alloués dans un arbre dont l'arité est constante ($2^{10}$). La stratégie
   d'allocation examinée est adaptée à l'édition en fin. Ce système correspond à
   aux composants de Logoot.
-\item [Résultat:] La figure~\ref{fig:logoot} présente le nombre d'insertions sur
+\item [Résultat:] La figure~\ref{fig:lseq:logoot} présente le nombre d'insertions sur
   l'axe des abscisses (avec une échelle logarithmique en base décimale). L'axe
   des ordonnées correspondent à la taille moyenne des identifiants (en
   bits). Comme attendu, la taille moyenne des identifiants augmente lors de l'
@@ -82,25 +82,105 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 \ \\
 
 \begin{asparadesc}
-\item [Objectif:] Montrer que l'alternance en mode round-robin des
-  sous-stratégies d'allocation.
-\item [Description:]
-\item [Résultat:]
-\item [Explication:]
+\item [Objectif:] Montrer que l'alternance des sous-stratégies d'allocation par
+  profondeur équilibre la taille des identifiants alloués lors de l'édition
+  monotone de droite à gauche et de gauche à droite. Cette alternance n'a aucun
+  impact sur l'édition aléatoire.
+\item [Description:] Les mesures concernent la taille moyenne (en bits) des
+  chemins alloués pour les identifiants. Les mesures sont effectuées à 100,
+  1000, 5000, 10000, 50000, et 100000 insertions. La stratégie d'allocation
+  consiste à alterner les sous-stratégies d'allocations adaptées à l'édition
+  monotone. Ainsi, si les profondeurs paires de l'arbre ont une sous-stratégie
+  adaptée à l'édition de gauche à droite, les profondeurs impaires de l'arbre
+  ont une sous-stratégie adaptée à l'édition de droite à gauche. Les chemins
+  sont choisis dans un arbre dont l'arité maximum est constante et égale à
+  $2^{10}$.
+\item [Résultat:] La figure~\ref{fig:lseq:robin} présente les résultats de cette
+  expérimentation. L'axe des abscisses représente le nombre d'insertions
+  effectués dans la séquence sur une échelle logarithmique en base
+  décimale. L'axe des ordonnées présente la taille binaire moyenne des chemins
+  des identifiants. La figure~\ref{fig:lseq:robin} montre que pour les deux
+  comportements d'édition, la forme de courbe est identique avec une
+  augmentation linéaire en fonction du nombre insertions. La courbe
+  correspondant à l'édition de gauche à droite est très légèrement meilleur. La
+  taille des identifiants lors de l'édition aléatoire identique à celle de la
+  figure~\ref{fig:lseq:logoot}. En d'autres termes, l'alternance de
+  sous-stratégies n'améliore ni n'empire l'allocation d'identifiants lors de
+  l'édition aléatoire.
+\item [Explication:] En comparaison des résultats de la
+  figure~\ref{fig:lseq:logoot}, la taille des identifiants lors de l'édition
+  monotone est deux fois plus élevée. En effet, l'alternance de sous-stratégie
+  évite le pire cas de la première expérimentation. Cette amélioration coûte un
+  niveau de l'arbre tous les deux niveaux lorsque la sous-stratégie assignée à
+  ce niveau est inadaptée. La complexité spatiale reste linéaire comparée au
+  nombre d'insertions lors d'édition monotone. La complexité spatiale lors de
+  l'édition monotone reste logarithmique car l'arbre représentant la séquence
+  devient équilibré.
 \end{asparadesc}
 
 \begin{figure*}
   \centering
   \subfloat[Augmentation de l'espace d'allocation]
-  [\label{fig:double}Augmentation de l'espace d'allocation en fonction de 
+  [\label{fig:lseq:double}Augmentation de l'espace d'allocation en fonction de 
   la profondeur de l'arbre.]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/double.eps}}
   \hspace{10pt}
   \subfloat[Alternance et augmentation de l'espace d'allocation]
-  [\label{fig:lseq}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
+  [\label{fig:lseq:lseq}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/lseq.eps}}
+  \caption{Résultat des expérimentations impliquant une structure d'arbre exponentiel.}
 \end{figure*}
 
+\ \\
+
+\begin{asparadesc}
+\item [Objectif:] Montrer que l'utilisation d'un arbre exponentiel améliore la
+  complexité spatiale des identifiants alloués lorsque le comportement d'édition
+  est conforme à celui attendu. Montrer que cette amélioration implique une
+  aggravation des identifiants alloués lors de l'édition pire cas.
+\item [Description:] Les mesures concernent la taille moyenne (en bits) des
+  chemins alloués pour les identifiants. Les mesures sont effectuées à 100,
+  1000, 5000, 10000, 50000, 100000, et 500000 insertions. La stratégie
+  d'allocation est adaptée à l'édition de gauche à droite. Les chemins sont
+  choisis dans un arbre exponentiel dont l'arité maximum commence à $2^{5}$.
+\item [Résultat:] La figure~\ref{fig:lseq:double} présente les résultats de
+  cette expérimentation. L'axe des abscisses représente le nombre d'insertions
+  effectués dans la séquence sur une échelle logarithmique en base
+  décimale. L'axe des ordonnées présente la taille binaire moyenne des chemins
+  des identifiants. Les résultats confirment les analyses en complexité de la
+  section~\ref{sec:lseq:proposal}. Tout d'abord, lors de l'édition monotone de
+  gauche à droite, la taille des identifiants augmente de manière
+  polylogarithmique comparé au nombre d'insertions effectuées dans la séquence.
+  Cette amélioration implique une dégradation de la complexité spatiale lors du
+  pire comportement d'édition possible, ici, l'édition monotone de droite à
+  gauche. Dans ce cas, la complexité spatiale est quadratique comparé au nombre
+  d'insertions effectuées dans la séquence. Enfin, comme les expérimentations
+  précédentes, la complexité de l'édition aléatoire est
+  logarithmique. Toutefois, les résultats de l'édition aléatoire sont meilleurs
+  en valeur absolue.
+\item [Explications:] La stratégie d'allocation employée est adaptée à l'édition
+  de gauche à droite. Ainsi, lorsque le comportement d'édition suit cette
+  hypothèse, l'une des branches de l'arbre exponentiel se remplit efficacement.
+  Plus la profondeur de l'arbre grandit, plus les éléments peuvent accueillir
+  d'éléments en tant que fils. Cette stratégie suppose qu'une augmentation de la
+  profondeur reflète un document grandissant. Malheureusement, lorsque
+  l'augmentation est due à un comportement d'édition non prévu, l'allocation
+  perd d'autant plus d'espace. D'où l'augmentation quadratique lors du pire cas
+  d'édition. De façon similaire aux expérimentations précédentes, l'édition
+  aléatoire résulte en un arbre équilibré, d'où l'augmentation logarithmique des
+  identifiants. La taille de départ de l'arbre exponentiel étant plus faible
+  ($2^{5}$ contre $2^{10}$), la représentation binaire des identifiants est
+  meilleure en valeur absolue.
+\end{asparadesc}
+
+\ \\
+
+\begin{asparadesc}
+\item [Objectif:]
+\item [Description:]
+\item [Résultat:]
+\item [Explication:]
+\end{asparadesc}
 
 \subsubsection{Simulations avec concurrence}
 
