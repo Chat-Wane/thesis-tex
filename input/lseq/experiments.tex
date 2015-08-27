@@ -176,10 +176,29 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 \ \\
 
 \begin{asparadesc}
-\item [Objectif:]
-\item [Description:]
-\item [Résultat:]
-\item [Explication:]
+\item [Objectif:] Montrer que la stratégie d'allocation \LSEQ comme composition
+  de l'alternance de sous-stratégies antagonistes adaptées à l'édition monotone
+  avec un arbre exponentiel permet de remédier au pire cas des précédentes
+  expérimentations tout obtenant une complexité polylogarithmique à ces types
+  d'édition.
+\item [Description:] Les mesures concernent la taille moyenne (en bits) des
+  chemins alloués pour les identifiants. Les mesures sont effectuées à 100,
+  1000, 5000, 10000, 50000, 100000, 500000, et 1000000 insertions. La stratégie
+  d'allocation est \LSEQ. Ainsi, deux sous-stratégies d'allocations adaptés à
+  l'édition monotone sont assignées successivement à chaque niveau de l'arbre
+  exponentiel. Ce dernier possède une arité maximum de départ de $2^5$.
+\item [Résultat:] La figure~\ref{fig:lseq:lseq} présente les résultats de cette
+  expérimentation. L'axe des abscisses représente le nombre d'insertions
+  effectués dans la séquence sur une échelle logarithmique en base
+  décimale. L'axe des ordonnées présente la taille binaire moyenne des chemins
+  des identifiants. Comme attendu, les deux types d'édition monotone possède le
+  même profil, à savoir, une augmentation polylogarithmique de la taille des
+  identifiants comparé au nombre d'insertions effectuées dans la séquence. La
+  taille moyenne des identifiants alloués par \LSEQ lors de l'édition aléatoire
+  augmente logarithmiquement.
+\item [Explication:] \LSEQ se comporte bien dans les deux types d'édition
+  monotone car lorsque un niveau de l'arbre exponentiel est perdu, le niveau
+  qui suit en compense les pertes.
 \end{asparadesc}
 
 \subsubsection{Simulations avec concurrence}
@@ -195,9 +214,15 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
   [\label{fig:ten}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
   {\includegraphics[width=0.48\textwidth]{./img/lseq/tenusers.eps}}
   \caption{Spectre de document artificiel générés par insertion répétée de caractère
-  en queue.}
+  en fin.}
 \end{figure*}
 
+\begin{asparadesc}
+\item [Objectif:]
+\item [Description:]
+\item [Résultat:]
+\item [Explication:]
+\end{asparadesc}
 
 \subsubsection{Simulations sur traces Wikipedia}
 
