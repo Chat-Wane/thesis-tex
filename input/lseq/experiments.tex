@@ -34,18 +34,26 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 
 \subsubsection{Simulations sans concurrence}
 
-\begin{figure*}
+\begin{figure}
   \centering
-  \subfloat[Référentiel Logoot]
-  [\label{fig:lseq:logoot}Logoot comme stratégie d'allocation référentielle.]
-  {\includegraphics[width=0.48\textwidth]{./img/lseq/logoot.eps}}
-  \hspace{10pt}
-  \subfloat[Alternance de stratégies]
-  [\label{fig:lseq:robin}Alternance de stratégie d'allocation antagonistes.]
-  {\includegraphics[width=0.48\textwidth]{./img/lseq/robin.eps}}
-  \caption{Résultat des expérimentations impliquant une structure d'arbre avec
-    arité constante.}
-\end{figure*}
+  \includegraphics[width=.8\textwidth]{./img/lseq/logoot.eps}
+  \caption{\label{fig:lseq:logoot}Stratégie d'allocation de référence adaptée à
+    l'édition de gauche à droite utilisant un arbre d'arité maximum
+    constante. Cette configuration correspond à Logoot.}
+\end{figure}
+
+% \begin{figure*}
+%   \centering
+%   \subfloat[Référentiel Logoot]
+%   [\label{fig:lseq:logoot}Logoot comme stratégie d'allocation référentielle.]
+%   {\includegraphics[width=0.48\textwidth]{./img/lseq/logoot.eps}}
+%   \hspace{10pt}
+%   \subfloat[Alternance de stratégies]
+%   [\label{fig:lseq:robin}Alternance de stratégie d'allocation antagonistes.]
+%   {\includegraphics[width=0.48\textwidth]{./img/lseq/robin.eps}}
+%   \caption{Résultat des expérimentations impliquant une structure d'arbre avec
+%     arité constante.}
+% \end{figure*}
 
 \begin{asparadesc}
 \item [Objectif:] Montrer que la stratégie impliquant la structure d'arbre dont
@@ -80,6 +88,16 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 \end{asparadesc}
 
 \ \\
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{./img/lseq/robin.eps}
+  \caption{\label{fig:lseq:robin}Stratégie d'allocation alternant deux
+    sous-stratégies antagonistes utilisant un arbre d'arité maximum
+    constante. L'une adaptée à l'édition de gauche à droite, l'autre adaptée à
+    l'édition de droite à gauche.}
+\end{figure}
+
 
 \begin{asparadesc}
 \item [Objectif:] Montrer que l'alternance des sous-stratégies d'allocation par
@@ -118,18 +136,25 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
   devient équilibré.
 \end{asparadesc}
 
-\begin{figure*}
+% \begin{figure*}
+%   \centering
+%   \subfloat[Augmentation de l'espace d'allocation]
+%   [\label{fig:lseq:double}Augmentation de l'espace d'allocation en fonction de 
+%   la profondeur de l'arbre.]
+%   {\includegraphics[width=0.48\textwidth]{./img/lseq/double.eps}}
+%   \hspace{10pt}
+%   \subfloat[Alternance et augmentation de l'espace d'allocation]
+%   [\label{fig:lseq:lseq}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
+%   {\includegraphics[width=0.48\textwidth]{./img/lseq/lseq.eps}}
+%   \caption{Résultat des expérimentations impliquant une structure d'arbre exponentiel.}
+% \end{figure*}
+
+\begin{figure}
   \centering
-  \subfloat[Augmentation de l'espace d'allocation]
-  [\label{fig:lseq:double}Augmentation de l'espace d'allocation en fonction de 
-  la profondeur de l'arbre.]
-  {\includegraphics[width=0.48\textwidth]{./img/lseq/double.eps}}
-  \hspace{10pt}
-  \subfloat[Alternance et augmentation de l'espace d'allocation]
-  [\label{fig:lseq:lseq}\LSEQ comme combinaison de l'alternance et de l'augmentation.]
-  {\includegraphics[width=0.48\textwidth]{./img/lseq/lseq.eps}}
-  \caption{Résultat des expérimentations impliquant une structure d'arbre exponentiel.}
-\end{figure*}
+  \includegraphics[width=.8\textwidth]{./img/lseq/double.eps}
+  \caption{\label{fig:lseq:double}Stratégie d'allocation adaptée à l'édition de
+    gauche à droite utilisant un arbre exponentiel.}
+\end{figure}
 
 \ \\
 
@@ -172,6 +197,14 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
   ($2^{5}$ contre $2^{10}$), la représentation binaire des identifiants est
   meilleure en valeur absolue.
 \end{asparadesc}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=.8\textwidth]{./img/lseq/lseq.eps}
+  \caption{\label{fig:lseq:lseq}Stratégie d'allocation utilisant deux
+    sous-stratégies antagonistes adaptées aux éditions monotones et utilisant un
+    arbre exponentiel. Cette configuration correspond à \LSEQ.}
+\end{figure}
 
 \ \\
 
@@ -218,7 +251,9 @@ Github~\footnote{\url{https://github.com/Chat-Wane/HumbleSimulator}}.
 \end{figure*}
 
 \begin{asparadesc}
-\item [Objectif:]
+\item [Objectif:] \TODO{À refaire!} Montrer l'importance d'une fonction
+  d'assignation de sous-stratégie commune à tous les possesseurs de la séquence
+  répliquée.
 \item [Description:]
 \item [Résultat:]
 \item [Explication:]

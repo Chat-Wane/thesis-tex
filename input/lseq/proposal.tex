@@ -178,13 +178,9 @@ composants sont
 
 \begin{figure*}
   \centering
-  \subfloat[\LSEQ sur comportement d'édition de gauche à droite]
-  [\LSEQ sur un comportement d'édition de gauche à droite]
-  {\input{input/lseq/lseqtreeexampleA.tex}}
+  \subfloat {\input{input/lseq/lseqtreeexampleA.tex}}
   \hspace{10pt}
-  \subfloat[\LSEQ sur comportement d'édition de droite à gauche]
-  [\LSEQ sur un comportement d'édition de droite à gauche]
-  {\input{input/lseq/lseqtreeexampleB.tex}}
+  \subfloat {\input{input/lseq/lseqtreeexampleB.tex}}
   \caption{\label{fig:lseq:lseqtreeexample} Arbre exponentiel de \LSEQ sur deux
     comportements d'édition antagonistes créant la séquence QWERTY. Dans cet
     exemple, La fonction $h$ de hachage défère l'allocation du chemin aux
@@ -196,12 +192,47 @@ composants sont
 \end{figure*}
 
 La figure~\ref{fig:lseq:allocpathexample} présente les différents aspects de
-\LSEQ au travers de sa représentation sous forme d'arbre. 
+\LSEQ au travers de sa représentation sous forme d'arbre. À gauche, la figure
+présente les sous-stratégies d'allocation employées à chaque profondeur de
+l'arbre. Ainsi, la fonction de hachage $h$ désigne la sous-stratégie adaptée à
+l'édition monotone de gauche à droite pour le premier niveau, la sous-stratégie
+adaptée à l'édition monotone de droite à gauche pour le second niveau, etc. À
+droite, la figure présente l'arité maximum de l'arbre exponentiel aux différents
+niveau de l'arbre. Ainsi, le premier élément de l'arbre peut acceuillir 32 fils,
+eux-même peuvent en accueuillir 64, etc. La figure présente le résultat de
+l'allocation effectuée par \LSEQ lors des comportements d'édition monotone
+similaires à la figure~\ref{fig:lseq:allocpathexample}. Dans le cas de l'édition
+montone de gauche à droite, \LSEQ doit insérer un premier élément entre les
+chemins [0] et [32]. Comme l'espace est suffisant pour accueuillir le nouvel
+élément à cette profondeur de l'arbre, \LSEQ en appelle à la fonction de hachage
+$h$ afin de déférer l'allocation de l'identifiant à une sous-stratégie adaptée à
+l'édition monotone. Ici, il s'agit de la sous-stratégie adaptée à l'édition de
+gauche à droite qui cherche à conserver de l'espace à droite de la branche pour
+les futures insertions. Ainsi, \LSEQ passe d'un espace d'allocation de [0]-[32]
+à un espace d'allocation plus restreint [0]-[10]. Le chemin [1] est
+aléatoirement choisit dans cet exemple. Ensuite, les caractères WERTY ont inséré
+successivement et obtiennent respectivement les chemins [8], [9], [12], [17], et
+[21]. Similairement à l'exemple de la figure~\ref{fig:lseq:allocpathexampleA},
+l'arbre contenant la séquence partagée reste de profondeur 1. Dans le second
+type de comportement d'édition, le premier caractère inséré est le Y, suivit du
+T, du R, du E, du W, et enfin du Q. Lorsque \LSEQ doit allouer à ce premier
+caractère un identifiant, il va le faire de manière identique au précédent
+exemple. Toutefois, lorsque le caractère T est inséré, il n'y plus d'espace
+entre les chemins [0] et [1]. La profondeur de l'arbre doit augmenter afin
+d'accueillir le nouvel élément. Ce second niveau d'arbre peut accueillir deux
+fois plus de fils que son parent, soit 64. L'allocation se fait donc entre les
+bornes [0.0] et [0.64]. Puisque la fonction de hachage désigne la sous-stratégie
+adaptée à l'édition monotone de droite à gauche, l'espace d'allocation est
+restreint à [0.54]-[0.64]. Dans ce cas, le caractère T se voit attribué le
+chemin [0.57]. Les caractères REWQ sont associées aux chemins [0.56], [0.53],
+[0.48], et [0.44] respectivement. Dans ce cas, et contrairement à l'exemple de
+la figure~\ref{fig:lseq:allocpathexampleB}, la profondeur de l'arbre n'atteint
+que 2 niveaux.
 
-\begin{algorithm}
-  \input{input/lseq/allocdesalgo.tex}
-  \caption{\label{algo:allocdes}Allocation of the disambiguator.}
-\end{algorithm}
+% \begin{algorithm}
+%   \input{input/lseq/allocdesalgo.tex}
+%   \caption{\label{algo:allocdes}Allocation of the disambiguator.}
+% \end{algorithm}
 
 
 %%% Local Variables:

@@ -13,15 +13,18 @@ où elles sont appliquées à la copie locale.
 
 D'après le théorème CAP~\cite{gilbert2002brewer} (\emph{Consistency,
   Availability, Partition tolerence}), il est impossible de passer à l'échelle
-tout en garantissant à la fois un fort niveau de cohérence, la disponibilité de
-la donnée partagée, et la tolérance aux pannes. La réplication optimiste choisit
-de sacrifier le critère de cohérence au profit de la disponibilité et de la
-tolérance aux pannes: lorsque tous les changements ont été reçus et appliqués par
-tous les participants, les copies doivent converger vers un état identique. Il
-s'agit du critère de cohérence correspondant à la cohérence à terme (ou
-cohérence inéluctable). Bien qu'il soit possible de garantir d'avantages de
-propriétés, notamment sur l'ordonnancement des modifications, nous nous
-intéresserons principalement à ce critère de cohérence.
+tout en garantissant à la fois la cohérence, la disponibilité, et la tolérance
+aux pannes. 
+
+
+La réplication optimiste choisit de sacrifier le critère de cohérence au profit
+de la disponibilité et de la tolérance aux pannes: lorsque tous les changements
+ont été reçus et appliqués par tous les participants, les copies doivent
+converger vers un état identique. Il s'agit du critère de cohérence
+correspondant à la cohérence à terme (ou cohérence inéluctable). Bien qu'il soit
+possible de garantir d'avantages de propriétés, notamment sur l'ordonnancement
+des modifications, nous nous intéresserons principalement à ce critère de
+cohérence.
 
 \begin{figure}
   \centering
@@ -236,7 +239,7 @@ existent. Tout d'abord, considérons l'insertion de l'élément $b$ entre les
 éléments $a$ et $c$ dont les identifiants respectifs sont $id_a$ et $id_c$ avec
 $id_a<id_c$. Dans tous les cas, une fonction d'allocation cherche à allouer le
 plus petit identifiant possible. Ainsi, l'identifiant généré à une taille
-maximum de $min(|id_a|,\, |id_c|)+1$. La première stratégie consiste à allouer
+maximum de $max(|id_a|,\, |id_c|)+1$. La première stratégie consiste à allouer
 une position aléatoire entre les deux identifiants afin d'éviter au maximum les
 conflits dûs à la concurrence. Toutefois, cette stratégie consume en moyenne la
 moitié de l'espace entre deux identifiants. La seconde stratégie provient
@@ -249,7 +252,7 @@ la taille des identifiants croît très rapidement.
 \begin{figure*}
   \centering
   \subfloat[Allocation quasi-optimale]
-  [Cas d'une allocation quasi-optimale]
+  [\label{fig:lseq:allocpathexampleA}Cas d'une allocation quasi-optimale]
   {\input{./input/lseq/allocpathexampleA.tex}}
   \hspace{40pt}
   \subfloat[Pire cas d'allocation]
