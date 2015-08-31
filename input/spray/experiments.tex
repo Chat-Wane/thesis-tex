@@ -99,38 +99,156 @@ plate-forme Github\footnote{\url{http://github.com/justayak/peersim-spray}}.
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/avgpath.eps}
-  \caption{\label{fig:avgpath}The average shortest path length of \SPRAY and
-    \CYCLON. The x-axis denotes the number of peers in the network on a
+  \caption{\label{fig:spray:avgpath}The average shortest path length of \SPRAY
+    and \CYCLON. The x-axis denotes the number of peers in the network on a
     $\log_{10}$ scale (from 100 to 100k peers) while the y-axis denotes the
     average shortest path length of the network.}
 \end{figure}
 
+\ \\
+
+\begin{asparadesc}
+\item [Objectif:] Observer comment l'adaptabilité influence la taille du plus
+  court chemin moyen, i.e., l'efficacité de la dissémination d'informations.
+\item [Description:] La taille du plus petit chemin moyen est calculée en
+  comptant le nombre de sauts (de voisin en voisin) d'un pair pour parvenir à
+  tous les autres pairs. En d'autres termes, cette métrique indique le temps
+  qu'une information, sous la forme d'un message, peut voyager et atteindre tous
+  les pairs au moins une fois. Afin d'effectuer la moyenne, nous choisissons
+  aléatoirement un sous-ensemble de pairs appartenant au réseau. Ce procédé est
+  répété sur 100 exécutions afin d'éviter tous les effets de bord dus à
+  l'indéterminisme des protocoles d'échantillonnages. Les expérimentations
+  concernent \CYCLON configurés de façon optimale pour différentes tailles de
+  réseau. Le \CYCLON avec une taille de vue partielle de 7 cible environ 1.1k
+  pairs. Le \CYCLON avec une taille de vue partielle de 9 cible environ 8.1k
+  pairs. Le \CYCLON avec une taille de vue partielle de 11 cible environ 60k
+  pairs. Lors de toutes ces simulations, les mesures sont effectuées après
+  convergence. Celles-ci sont faites lorsque la taille du réseau atteint 0.1k,
+  0.5k, 1k, 5k, 10k, 50k, et 100k pairs. 
+\item [Résultats:] La figure~\ref{fig:spray:avgpath} montre que \CYCLON et
+  \SPRAY ont tous deux un chemin moyen relativement petit. Ainsi, les
+  informations peuvent être disséminées à tous les membres du réseau très
+  rapidement. La figure~\ref{fig:spray:avgpath} montre aussi que chaque
+  exécution de \CYCLON prise séparément peut être divisée en trois phases.  Tout
+  d'abord, la phase où les vues partielles de \CYCLON sont trop grandes
+  dissémine l'information plus rapidement que \SPRAY. Lors les vues partielles
+  sont optimales, \CYCLON et \SPRAY montrent des résultats similaires. Enfin,
+  \SPRAY montre une meilleure efficacité lorsque les vues partielles de \CYCLON
+  sont trop petites. Malgré tout, \SPRAY s'adapte mieux que \CYCLON à la taille
+  du réseau car l'inclinaison de cette première est inférieure à n'importe
+  quelle configuration de cette dernière.
+\item [Explication:] Les mesures sont toutes effectuées après convergence,
+  lorsque le réseau possède une topologie qui est proche d'un graphe aléatoire.
+  Dans de tel graphe, le diamètre et la taille du plus court chemin moyen
+  restent petits. La seconde observation concerne chacune des configurations de
+  \CYCLON comparée à \SPRAY. Une taille de vue partielle surestimée pour \CYCLON
+  est meilleure en terme de connexité entre pairs et résulte dans de plus courts
+  chemins en moyenne. En revanche, dès que cette taille devient insuffisante
+  pour le réseau, \SPRAY devient plus efficace car il possède de plus grandes
+  vues partielles. Puisque \SPRAY suit toujours la taille optimale de vue
+  partielle, il passe mieux à l'échelle en terme de taille réseau.
+\end{asparadesc}
+
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/histo.eps}
-  \caption{\label{fig:histo}The in-degree distribution of \CYCLON and
+  \caption{\label{fig:spray:histo}The in-degree distribution of \CYCLON and
     \SPRAY. The x-axis denotes the in-degree in number of nodes while the
     y-axis indicates the percentage of peers with such in-degree. The top
     figure is dedicated to the runs concerning \CYCLON while the bottom figure
     concerns \SPRAY.}
 \end{figure}
 
+\ \\
+
+\begin{asparadesc}
+\item [Objectif:] Montrer comment l'adaptabilité influence la distribution des
+  connexions entrantes, i.e., la charge parmi les pairs.
+\item [Description:] Les connexions entrantes d'un pair montre à quel point ce
+  pair est représenté dans les vues partielles des autres pairs. La distribution
+  des connexions entrantes permet de mettre en lumière l'existence de pairs avec
+  une faible connexité, et les groupes fortement liés. Cela influence
+  directement la robustesse du réseau. Dans cette expérimentation, \CYCLON est
+  configuré avec une vue partielle contenant 7 voisins (optimal pour 1.1k
+  pairs). Les mesures sont faites après convergence avec les tailles de réseau
+  suivantes: 0.1k, 1k, 100k, 500k pairs.
+\item [Résultat:] Le haut et le bas de la figure~\ref{fig:spray:histo} montrent
+  la distribution des connexions entrantes pour \CYCLON et \SPRAY,
+  respectivement. Nous observons que \CYCLON possède une distribution identique,
+  quelle que soit la taille du réseau. Ainsi, la distribution d'un réseau de
+  0.1k pairs est identique à celle de 500k pairs, avec une moyenne aux environs
+  de 7 et un fort pic à cette valeur. À l'opposé, la distribution des connexions
+  entrantes de \SPRAY suit la taille du réseau. La figure~\ref{fig:spray:histo}
+  montre aussi que les pairs sont très concentrés autour des valeurs
+  moyennes. Par exemple, lors de l'exécution du protocole \SPRAY avec 500k
+  pairs, la moyenne est de 13.37 avec 88\% des pairs compris entre 12 et 14
+  inclus. Cela signifie que la charge est très équilibrée parmi les
+  pairs. Puisque chaque pair est aussi important que son voisin en terme de
+  connectivité,le réseau est résistant aux défaillances.
+\item [Explication:] Une fois configuré, \CYCLON doit gérer tous les réseaux,
+  quelle que soit leur taille, avec une vue partielle dont la taille est
+  constante. Proportionnelement, le nombre de fois qu'un pair est référencé dans
+  les vues partielles ne change pas comparé à la taille réseau. En effet, le
+  nombre d'arcs qu'un pair apporte lorsqu'il se connecte au réseau constitue
+  autant d'arcs le ciblant après quelques protocoles d'échanges. Puisque la
+  taille de la vue partielle est constante, le degré des connexions entrantes
+  reste stable. En revanche, dans \SPRAY, chaque pair rejoignant le réseau
+  augmente le nombre d'arcs dans le réseau. Ainsi, le degré de connexions
+  entrantes de chaque pair grossit pour refléter la taille du réseau. Par
+  conséquent, la distribution de \SPRAY se décale lentement vers de plus hautes
+  valeurs lorsque la taille du réseau augmente. \SPRAY ne possède pas de pics
+  sur les valeurs moyennes car celles-ci sont des valeurs qui tombent entre deux
+  entiers. Par exemple, si la taille moyenne des vues partielles est 6.5, cela
+  signifie que la moitié de celle-ci ont une taille de 6, et l'autre moitié une
+  taille de 7. De tels réseaux sont robustes aux défaillances car aucun pair
+  n'est plus important que son voisin en terme de connectivité. Ainsi, si un
+  pair en particulier s'éteint, les pairs le référençant possèdent d'autres
+  voisins avec qui communiquer pour continuer de disséminer les informations.
+\end{asparadesc}
+
 \begin{figure*}
   \centering
-  \subfloat[Figure A][\label{fig:churnA}The x-axis denotes the
+  \subfloat[Figure A][\label{fig:spray:churnA}The x-axis denotes the
   elapsed time in cycles. The upper graph y-axis shows the number of total
   connections in the overlay while the lower graph y-axis shows the variance
   $\sigma^2$ of the partial view sizes in the network.]{
     \includegraphics[width=0.47\textwidth]{img/spray/churn.eps}}
   \hspace{10pt}
-  \subfloat[Figure B][\label{fig:churnB}The x-axis denotes the
+  \subfloat[Figure B][\label{fig:spray:churnB}The x-axis denotes the
   elapsed time in cycles. The y-axis denotes the average partial view size.]{
     \includegraphics[width=0.47\textwidth]{img/spray/avgpv.eps}}
-  \caption{\label{fig:churn}\CYCLON (partial view size configured to 9) and
-    \SPRAY in a dynamic network. 2.5k peers join the network at cycles $0$,
+  \caption{\label{fig:spray:churn}\CYCLON (partial view size configured to 9)
+    and \SPRAY in a dynamic network. 2.5k peers join the network at cycles $0$,
     $10$, $20$, and $30$. Then 5k peers leave at cycle $40$. Finally 2.5k peers
     join at cycles $60$ and $70$. The final network contains 10k members.}
 \end{figure*}
+
+\ \\
+
+\begin{asparadesc}
+\item [Objectif:] Montrer comment l'influence de l'adaptabilité sur un réseau
+  dont la taille varie au court du temps.
+\item [Description:] Cette expérimentation se concentre sur un réseau dynamique
+  dont les membres rejoignent et quittent le système lorsqu'ils le
+  souhaitent. Les exécutions concernent les protocoles d'échantillonnage \CYCLON
+  et \SPRAY. La configuration de \CYCLON cible un réseau de taille 8.1k
+  pairs. Ainsi, les vues partielles sont trop grandes lors de cette simulation
+  qui implique au maximum 1k pairs. Lors de la première moitié de la simulation,
+  4 groupes successifs comportant 250 pairs rejoignent le réseau. L'intervalle
+  de temps entre ces entrées groupées est de 10 cycles. Ainsi, le réseau
+  initialement vide contient 1k pairs au bout de 40 cycles. Ensuite, la moitié
+  des membres du réseau le quitte (500 pairs). Enfin, 2 groupes de 250 pairs
+  rejoignent le réseau à nouveau faisant passer la taille de celui-ci à 1k
+  pairs. Les mesures concernent
+  \begin{inparaenum}[(i)]
+  \item le nombre de connexions dans le réseau au cours des cycles,
+  \item la variance de la taille des vues partielles au cours des cycles,
+  \item la taille moyenne des vues partielles au cours du temps.
+  \end{inparaenum}
+\item [Résultat:]
+\item [Explication:]
+\end{asparadesc}
+
 
 \begin{figure}
   \centering
