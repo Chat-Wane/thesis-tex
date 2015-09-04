@@ -245,21 +245,112 @@ plate-forme Github\footnote{\url{http://github.com/justayak/peersim-spray}}.
   \item la variance de la taille des vues partielles au cours des cycles,
   \item la taille moyenne des vues partielles au cours du temps.
   \end{inparaenum}
-\item [Résultat:]
-\item [Explication:]
+\item [Résultat:] La figure~\ref{fig:spray:churn} montre les résultats de cette
+  expérimentation. L'axe des abscisses représente les cycles (i.e. une mesure
+  arbitraire de temps). La partie haute de la figure~\ref{fig:spray:churnA}
+  montre le nombre de connections établies dans le réseau (échelle
+  $\times 10^3$) tandis que la partie basse de la figure montre la variance de
+  taille des vues partielles parmis les pairs. En ce qui concerne \SPRAY, nous
+  observons qu'à chaque groupe rejoignant le réseau, le nombre de connections
+  augmente afin de refléter cette augmentation. Ces observations concordent avec
+  les mesures sur la variance. En effet, à chaque groupe rejoignant le réseau,
+  la variance augmente soudainement. Ensuite, elle décroît exponentiellement et
+  converge vers 0 en moins de 10 cycles. La variance est plus élevée lorsque la
+  taille du réseau est basse. Par exemple, le premier groupe de 250 pairs
+  conduit à la plus forte hausse de variance. Au $40^{ème}$ cycle, la moitié des
+  pairs quittent le réseau. Approximativement la moitié des connections sont
+  supprimées mais n'influent pas sur la variance. Les 10 cycles suivant montre
+  une très faible diminution du nombre d'arcs. Enfin, de nouveaux groupes de
+  pairs sont réintroduits dans le réseau et mène au même conclusions que
+  précédemment. \CYCLON montre le même genre de comportement. Néanmoins, le
+  nombre d'arcs est invariablement supérieurs à celui de \SPRAY (entre 1000 et
+  2500 connexions supplémentaires). La figure~\ref{fig:spray:churnB} montre la
+  taille moyenne des vues partielles de \SPRAY et de \CYCLON. Comme prévu,
+  \CYCLON converge immédiatement vers la taille de vue partielle planifiée lors
+  de sa configuration (9 voisins). À l'opposé, la taille de vue partielle
+  moyenne de \SPRAY augmente logarithmiquement tandis que la taille du réseau
+  augmente. Lorsque les départs de pairs surviennent au cycle 40, \CYCLON
+  supprime les liens morts tout en remplissant les vues partielles afin
+  d'atteindre la taille de vue partielle de sa configuration initiale. \SPRAY
+  supprime seulement les arcs nécessaire afin de refléter la nouvelle taille
+  réseau. À la fin de la simulation, les pairs utilisant \SPRAY ont une vue
+  partielle contenant 6.6 voisins en moyenne (rappel: $\ln(1000)\approx 6.9$).
+\item [Explication:] Puisque les vues partielles de \SPRAY s'adaptent à la
+  taille du réseau, le nombre de connexions augmente lorsque des membres
+  s'ajoute au réseau. Les pics de variance correspondent à la partie du
+  protocole où les pairs rejoignent le réseau. Cette disparité provient du fait
+  que les nouveaux arrivant commencent avec une petite vue partielle. Les pics
+  sont plus petits lorsque le réseau est plus grand. En effet, les pairs étant
+  présent avant que le nouveau groupe rejoigne le réseau ont eu quelques cycles
+  d'échanges afin d'équilibrer leur vue partielle. Par conséquent, le poids des
+  nouveaux arrivant est proportionnellement plus faible. Le départ des 500 pairs
+  au cycle 40 ne perturbe pas la variance car ils sont effectués de manière
+  aléatoire. Ainsi, aucun pair ne souffre plus qu'un autre des départs. La très
+  petite décroissance du nombre d'arcs après les départs est due au fait que les
+  pairs restant réalisent que les pairs sont injoignables seulement après
+  quelques cycles. 
 \end{asparadesc}
 
 
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/resilience.eps}
-  \caption{\label{fig:resilience}Robustness of \CYCLON and \SPRAY to massive
-    failures. The x-axis denotes the percentage of peers removed at once in a
-    network containing 10k members. The y-axis denotes the number of
+  \caption{\label{fig:spray:resilience}Robustness of \CYCLON and \SPRAY to
+    massive failures. The x-axis denotes the percentage of peers removed at once
+    in a network containing 10k members. The y-axis denotes the number of
     components over the current network size (after the removals). The
     measurements concern the weak and strong components which basically means
     the number clusters in undirected or directed graph respectively.}
 \end{figure}
+
+\begin{asparadesc}
+\item [Objectif:] Montrer que \SPRAY and \CYCLON sont tous deux robustes aux
+  défaillances massives.
+\item [Description:] Compter le nombre de composantes fortement connexes dans un
+  réseau permet d'estimer la surface atteignable par les protocoles de
+  dissémination d'informations. Par exemple, il y a deux composantes fortement
+  connexes dans un réseau dont une partie peut atteindre l'autre sans que
+  l'inverse soit vrai. Compter le nombre de composantes faiblement connexes dans
+  une réseau permet d'estimer le moment où celui-ci n'est plus réparable. Un
+  réseau est réparables si après quelques échanges de vues partielles, les
+  informations peuvent être disséminées à tous les participants encore dans le
+  réseau. \CYCLON est configuré pour obtenir des vues partielles contenant 9
+  voisins. Le réseau compte 10k membres. Nous effectuons les suppressions de
+  pairs après convergence des approches. Nous supprimons les pairs en une fois,
+  allant de 25\% à 95\% par paliers de 5\% ce qui représente 16 exécutions par
+  approche. La dernière mesure est effectuée à 99\% de suppressions. Les mesures
+  sont effectuées immédiatement après les suppressions. Ces dernières concernent
+  un pourcentage de pairs aléatoirement choisis parmi les 10k pairs.
+\item [Résultat:] La figure~\ref{fig:spray:resilience} montre le ratio de
+  composantes fortement/faiblement connexes du réseau après les suppressions de
+  pairs. Tout d'abord, la figure montre que les deux protocoles
+  d'échantillonnage de pairs, \SPRAY et \CYCLON, ne souffrent de comportement
+  défaillant qu'après un haut pourcentage de suppressions, \CYCLON étant
+  légèrement meilleur dans ce cas. La figure~\ref{fig:spray:resilience} montre
+  que la dissémination d'informations (les composantes fortement connexes)
+  commencent se dégrader lentement dès 45\%, et plus rapidement à
+  70\%. Heureusement, la figure~\ref{fig:spray:resilience} nous montre aussi que
+  ces approches sont capables de se réparer de ce clustering jusqu'à de haut
+  taux de suppressions. En effet, les composantes faiblement connexes ne
+  commencent à augmenter qu'à partir de 70\%, ce qui signifie que des parties du
+  réseau sont complètement disjointes et donc, hors de toute possibilité de
+  réparation.
+\item [Explication:] Les protocoles d'échantillonnage de pairs \CYCLON et \SPRAY
+  affichent de très similaires résultats car \CYCLON est configuré pour une
+  taille de réseau de 10k pairs, tandis que \SPRAY s'ajuste automatiquement à
+  cette taille de réseau. Par conséquent, leur nombre d'arcs est très
+  proche. Ici, \CYCLON possède légèrement plus de connexions (car \SPRAY possède
+  une part d'aléatoire) et aucun doublon dans les vues partielles (\SPRAY
+  possède un faible taux de doublons,
+  cf. Figure~\ref{fig:spray:duplicates}). Afin de mettre en dangers la
+  dissémination d'information, il est nécessaire de supprimer un fort taux de
+  pairs. En effet, chaque pair revêt grossièrement la même importance que son
+  voisin. Ainsi, supprimer des pairs aléatoirement parmi ceux-ci n'affectent pas
+  énormément le réseau en entier. Le réseau est capable de se réparer car les
+  protocoles d'échantillonnage ne dépendent que d'arcs unidirectionnels pour
+  fonctionner. Ainsi, s'il subsiste un lien entre deux composantes fortement
+  connexes, les échanges de vues partielles permettent de réparer cela.
+\end{asparadesc}
 
 
 \begin{figure}
