@@ -135,6 +135,8 @@
 \DeclareOption{10pt}{\gdef\@pt@size{10pt}}
 \DeclareOption{11pt}{\gdef\@pt@size{11pt}}
 \DeclareOption{12pt}{\gdef\@pt@size{12pt}}
+\DeclareOption{twoside}{\gdef\@side{twoside}}
+\DeclareOption{oneside}{\gdef\@side{oneside}}
 
 \ExecuteOptions{version, francais, final, 12pt, fancyChapter, fancyPart, nosqueezeCommittee}
 \ProcessOptions\relax
@@ -142,12 +144,13 @@
 %%%%%%%%%%   CHARGEMENT DE PAQUETAGES   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \if@inDraftMode
-   \PassOptionsToClass{\@pt@size, oneside, draft}{book}
+   \PassOptionsToClass{\@pt@size, \@side, draft}{book}
 \else
-   \PassOptionsToClass{\@pt@size, oneside, final}{book}
+   \PassOptionsToClass{\@pt@size, \@side, final}{book}
 \fi
 \LoadClass{book}
 
+\RequirePackage{ragged2e}
 \RequirePackage{amsmath}
 \RequirePackage{xcolor}
    \if@greyCover
@@ -158,12 +161,12 @@
       \definecolor{@bandeaucolor}{RGB}{190, 190, 190}
       \definecolor{@titlecolor}{RGB}{116, 116, 116}
    \else
-      \definecolor{@doctoratcolor}{RGB}{255, 50, 10}
-      \definecolor{@verticalgreen}{RGB}{236, 240, 223}
+      \definecolor{@doctoratcolor}{HTML}{000000}%%{RGB}{255, 50, 10}
+      \definecolor{@verticalgreen}{HTML}{E7EFE7}%%{RGB}{236, 240, 223}
       \definecolor{@horizontalgray}{gray}{0.97265}
-      \definecolor{@textgray}{gray}{0.5}
-      \definecolor{@bandeaucolor}{RGB}{200, 200, 60}
-      \definecolor{@titlecolor}{RGB}{49, 132, 155}
+      \definecolor{@textgray}{HTML}{000000}%%{gray}{0.5}
+      \definecolor{@bandeaucolor}{HTML}{C9E1C9}%%{RGB}{200, 200, 60}
+      \definecolor{@titlecolor}{HTML}{000000}%%{RGB}{49, 132, 155}
    \fi
 \RequirePackage{graphicx}
 \RequirePackage[a4paper]{geometry}
@@ -1174,75 +1177,70 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fond de page des 1re et 4e de couverture
 %
+ 
+\newcommand{\@drawbackground} { % Horizontal grey-green box
+  \noindent\raisebox{0pt}[0pt][0pt]
+  {\colorbox{@verticalgreen}
+    {\makebox[0.5\textwidth]
+      {\raisebox{-\textheight}
+        {~}}}}
+  
+  \vspace{4\baselineskip}{
+    \noindent\hspace{0.45\textwidth}
+    \raisebox{0pt}[0pt][0pt]
+    {\color{@horizontalgray}
+      \rule{0.55\textwidth}
+      {2.5\baselineskip}}
+    \hspace{-0.45\textwidth}
+  }
+  
+  \renewcommand{\sfdefault}{phv}
+  \renewcommand{\rmdefault}{ptm}
+  \renewcommand{\ttdefault}{pcr}
+  \sffamily
+  \fontsize{12pt}{14pt}
+  \selectfont
+  
+  \noindent\makebox[0.55\textwidth][r]
+  {\Hugecover\textbf{\textcolor{@doctoratcolor}
+      {Th\`ese de Doctorat}}}
 
-\newcommand{\@drawbackground}
-   { % Horizontal grey-green box
-   \noindent\raisebox{0pt}[0pt][0pt]
-                     {\colorbox{@verticalgreen}
-                               {\makebox[0.5\textwidth]
-                                        {\raisebox{-\textheight}
-                                                  {~}}}}
-
-   \vspace{4\baselineskip}
-
-   {
-   \noindent\hspace{0.45\textwidth}
-            \raisebox{0pt}[0pt][0pt]
-                     {\color{@horizontalgray}
-                      \rule{0.55\textwidth}
-                           {2.5\baselineskip}}
-            \hspace{-0.45\textwidth}
-   }
-
-   \renewcommand{\sfdefault}{phv}
-   \renewcommand{\rmdefault}{ptm}
-   \renewcommand{\ttdefault}{pcr}
-   \sffamily
-   \fontsize{12pt}{14pt}
-   \selectfont
-
-   \noindent\makebox[0.55\textwidth][r]
-                    {\Hugecover\textbf{\textcolor{@doctoratcolor}
-                                                 {Th\`ese de Doctorat}}}
-
-   {
-   \noindent\color{@bandeaucolor}
-            \rule{0.55\textwidth}
-                 {2.5\baselineskip}
-            \color{@horizontalgray}
-            \rule{0.45\textwidth}
-                 {2.5\baselineskip}
-   }
-
-   \vspace{3\baselineskip}
-
-   {
-   \noindent\hspace{0.45\textwidth}
-            \raisebox{0pt}[0pt][0pt]
-                     {\color{@horizontalgray}
-                      \rule{0.55\textwidth}
-                           {2.5\baselineskip}}
-            \hspace{-0.45\textwidth}
-   }
-
-   \vspace{-15\baselineskip}
-   \includegraphics[width=4.5cm]{logos/LUNAM-CUE}
-   \hfill
-   \hfill
-   \hfill
-   \ifx\@cosupervisingforeigninstitution\@empty
-   \else
-      \raisebox{\@cosupervisingforeigninstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@cosupervisingforeigninstitutionlogowidth]{logos/\@cosupervisingforeigninstitutionlogo}}~
-      \hfill
-   \fi
-   \ifx\@coinstitution\@empty
-   \else
-      \raisebox{\@coinstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@coinstitutionlogowidth]{logos/\@coinstitutionlogo}}~
-      \hfill
-   \fi
-   \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
-   \vspace{11\baselineskip}
-   }
+  {
+    \noindent\color{@bandeaucolor}
+    \rule{0.55\textwidth}
+    {2.5\baselineskip}%
+    \color{@horizontalgray}
+    \rule{0.45\textwidth}
+    {2.5\baselineskip}
+  }
+  
+  \vspace{3\baselineskip} {
+    \noindent\hspace{0.45\textwidth}
+    \raisebox{0pt}[0pt][0pt]
+    {\color{@horizontalgray}
+      \rule{0.55\textwidth}
+      {2.5\baselineskip}}
+    \hspace{-0.45\textwidth}
+  }
+  
+  \vspace{-15\baselineskip}
+  \includegraphics[width=4.5cm]{logos/LUNAM-CUE}
+  \hfill
+  \hfill
+  \hfill
+  \ifx\@cosupervisingforeigninstitution\@empty
+  \else
+  \raisebox{\@cosupervisingforeigninstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@cosupervisingforeigninstitutionlogowidth]{logos/\@cosupervisingforeigninstitutionlogo}}~
+  \hfill
+  \fi
+  \ifx\@coinstitution\@empty
+  \else
+  \raisebox{\@coinstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@coinstitutionlogowidth]{logos/\@coinstitutionlogo}}~
+  \hfill
+  \fi
+  \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
+  \vspace{11\baselineskip}
+}
 
 %%%%%%%%%%%%%%%%%%%%
 % 1re de couverture
@@ -1427,231 +1425,218 @@
    \fi
 } % \maketitle
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Quatri`eme de couverture
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quatrième de couverture %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \global\newcount\@startingPage
 
 \newcommand{\makecover}{%
-   \singlespacing
-   \newgeometry{margin=1.5cm}
-   \cleardoublepage % go to odd page
-   \phantom{placeholder} % doesn't appear on page
-   \newpage % on even page
-   \thispagestyle{empty} % no numbering
-   \@startingPage\thepage\relax
-      {
-      \@drawbackground
-      \vspace{-5.5\baselineskip}
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
-      \sffamily
-      \fontsize{12pt}{14pt}
-      \selectfont
-      \begin{quote}
-         \begin{flushleft}
-            \textbf{\Largecover\textcolor{@textgray}{\@author}}
-         \end{flushleft}
-         \ifx\@\@titre\@empty
-            \ClassError{these-LUNAM}
-                       {Le titre en franc,ais est obligatoire, utilisez la macro \string\titre\ / A French title is mandatory, use \string\titre}
-                       {}
-         \fi
-         \begin{flushleft}
-            \textbf{\textcolor{@textgray}{\@titre}}
-            \ifx\@soustite\@empty
-               \relax
-            \else
-               \par
-               \textcolor{@textgray}{\@soustitre}
-            \fi
-         \end{flushleft}
-         \ifx\@\@title\@empty
-            \ClassError{these-LUNAM}
-                       {Le titre en anglais est obligatoire, utilisez la macro \string\title\ / An English title is mandatory, use \string\title}
-                       {}
-         \fi
-         \begin{flushleft}
-            \textbf{\textcolor{@textgray}{\@title}}
-            \ifx\@subtitle\@empty
-               \relax
-            \else
-               \par
-               \textcolor{@textgray}{\@subtitle}
-            \fi
-         \end{flushleft}
-      \end{quote}
-
-      \vfill
-
-      \noindent
-      \hfill\parbox[t][][b]
-            {0.47\textwidth}
-            {\makebox[0.47\textwidth]{\usebox{\@resumeBoxGlobal}}}
-      \hfill
-      \hfill\parbox[t][][b]
-            {0.47\textwidth}
-            {\makebox[0.47\textwidth]{\usebox{\@abstractBoxGlobal}}}
-      \hfill
-
-      \vfill
-
-      \noindent
-      \hfill\parbox[t][][b]
-            {0.47\textwidth}
-            {\makebox[0.47\textwidth]{\usebox{\@motsclesBoxGlobal}}}
-      \hfill
-      \hfill\parbox[t][][b]
-            {0.47\textwidth}
-            {\makebox[0.47\textwidth]{\usebox{\@keywordsBoxGlobal}}}
-      \hfill
-
-      \vfill
-
-      \hspace{0.45\textwidth}\raisebox{-2.2\baselineskip}
-                                      [0pt][0pt]
-                                      {\colorbox{@bandeaucolor}
-                                                {\parbox[s]
-                                                        [2\baselineskip]
-                                                        [c]
-                                                        {0.55\textwidth}
-                                                        {~\hfill
-                                                         \textcolor{white}
-                                                                   {L'UNIVERSIT\'E NANTES ANGERS LE MANS}
-                                                         \hfill~}}}%
-      }%
-   \ifnum \thepage > \@startingPage\relax
+  \singlespacing
+  \newgeometry{margin=1.5cm}
+  \cleardoublepage % go to odd page
+  \phantom{placeholder} % doesn't appear on page
+  \newpage % on even page
+  \thispagestyle{empty} % no numbering
+  \@startingPage\thepage\relax
+  {
+    \@drawbackground
+    \vspace{-5.0\baselineskip}
+    \renewcommand{\sfdefault}{phv}
+    \renewcommand{\rmdefault}{ptm}
+    \renewcommand{\ttdefault}{pcr}
+    \sffamily
+    \fontsize{12pt}{14pt}
+    \selectfont
+    \begin{quote}
+      \begin{flushleft}
+        \textbf{\Largecover\textcolor{@textgray}{\@author}}
+      \end{flushleft}
+      \ifx\@\@titre\@empty
       \ClassError{these-LUNAM}
-                 {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}
-                 {}%
-   \fi%
-   \restoregeometry%
-} % \makecover
+      {Le titre en franc,ais est obligatoire, utilisez la macro \string\titre\ / A French title is mandatory, use \string\titre}
+      {}
+      \fi
+      \begin{flushleft}
+        \textbf{\textcolor{@textgray}{\@titre}}
+        \ifx\@soustite\@empty
+        \relax
+        \else
+        \par
+        \textcolor{@textgray}{\@soustitre}
+        \fi
+      \end{flushleft}
+      \ifx\@\@title\@empty
+      \ClassError{these-LUNAM}
+      {Le titre en anglais est obligatoire, utilisez la macro \string\title\ / An English title is mandatory, use \string\title}
+      {}
+      \fi
+      \begin{flushleft}
+        \textbf{\textcolor{@textgray}{\@title}}
+        \ifx\@subtitle\@empty
+        \relax
+        \else
+        \par
+        \textcolor{@textgray}{\@subtitle}
+        \fi
+      \end{flushleft}
+    \end{quote}
+    
+    \vfill
+    
+    \noindent
+    \hfill\parbox[t][][b]
+    {0.47\textwidth}
+    {\makebox[0.47\textwidth]{\usebox{\@resumeBoxGlobal}}}
+    \hfill
+    \hfill\parbox[t][][b]
+    {0.47\textwidth}
+    {\makebox[0.47\textwidth]{\usebox{\@abstractBoxGlobal}}}
+    \hfill
+    
+    \vfill
+    
+    \noindent
+    \hfill\parbox[t][][b]
+    {0.47\textwidth}
+    {\makebox[0.47\textwidth]{\usebox{\@motsclesBoxGlobal}}}
+    \hfill
+    \hfill\parbox[t][][b]
+    {0.47\textwidth}
+    {\makebox[0.47\textwidth]{\usebox{\@keywordsBoxGlobal}}}
+    \hfill
+    
+    \vfill
+    
+    \hspace{0.45\textwidth}\raisebox{-2.2\baselineskip}
+    [0pt][0pt]
+    {\colorbox{@bandeaucolor}
+      {\parbox[s]
+        [2\baselineskip]
+        [c]
+        {0.55\textwidth}
+        {~\hfill
+          \textcolor{white}
+          {L'UNIVERSIT\'E NANTES ANGERS LE MANS}
+          \hfill~}}}%
+  }%
+  \ifnum \thepage > \@startingPage\relax
+  \ClassError{these-LUNAM}
+  {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}
+  {}%
+  \fi%
+  \restoregeometry%
+}
 
 \AtEndDocument{\makecover}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% R'esum'e en franc,ais
-%
+%%%%%%%%%%
+% Résumé %
+%%%%%%%%%%
 
 \newsavebox{\@resumeBox}
 \newbox{\@resumeBoxGlobal}
 
-\newenvironment{resume}
-   {
-   \newgeometry{margin=1.5cm}
-   \begin{lrbox}{\@resumeBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
-      \smallcover\sffamily
-      \begin{minipage}{0.47\textwidth}
-         \begin{flushleft}
-            \selectlanguage{french}
-            \textbf{R\'esum\'e}\par
-   }
-   {
-         \end{flushleft}
-      \end{minipage}
-   \end{lrbox}
-   \restoregeometry
-   \global\setbox\@resumeBoxGlobal=\vbox{\copy\@resumeBox}
-   }
-
-%%%%%%%%%%%%%%%%%%%%%%%%
-% R'esum'e en anglais
-%
+\newenvironment{resume} {
+  \newgeometry{margin=1.5cm}
+  \begin{lrbox}{\@resumeBox}%
+    \renewcommand{\sfdefault}{phv}
+    \renewcommand{\rmdefault}{ptm}
+    \renewcommand{\ttdefault}{pcr}
+    \smallcover\sffamily
+    \begin{minipage}{0.47\textwidth}
+      \justify\footnotesize
+      \selectlanguage{french}
+      \textbf{R\'esum\'e}\par\setlength{\parindent}{0cm}}{
+    \end{minipage}
+  \end{lrbox}
+  \restoregeometry
+  \global\setbox\@resumeBoxGlobal=\vbox{\copy\@resumeBox}
+}
+  
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
 
 \newsavebox{\@abstractBox}
 \newbox{\@abstractBoxGlobal}
 
-\newenvironment{abstract}
-   {
-   \newgeometry{margin=1.5cm}
-   \begin{lrbox}{\@abstractBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
-      \smallcover\sffamily
-      \begin{minipage}{0.47\textwidth}
-         \begin{flushleft}
-            \selectlanguage{english}
-            \textbf{Abstract}\par
-   }
-   {
-         \end{flushleft}
-      \end{minipage}
-   \end{lrbox}
-   \restoregeometry
-   \global\setbox\@abstractBoxGlobal=\vbox{\copy\@abstractBox}
-   }
+\newenvironment{abstract} {
+  \newgeometry{margin=1.5cm}
+  \begin{lrbox}{\@abstractBox}%
+    \renewcommand{\sfdefault}{phv}
+    \renewcommand{\rmdefault}{ptm}
+    \renewcommand{\ttdefault}{pcr}
+    \smallcover\sffamily
+    \begin{minipage}{0.47\textwidth}
+      \justify\footnotesize 
+      \selectlanguage{english}
+      \textbf{Abstract}\par\setlength{\parindent}{0cm}}{
+    \end{minipage}
+  \end{lrbox}
+  \restoregeometry
+  \global\setbox\@abstractBoxGlobal=\vbox{\copy\@abstractBox}
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mots cl'es en franc,ais
-%
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
 
 \newsavebox{\@keywordsBox}
 \newbox{\@keywordsBoxGlobal}
 
-\newenvironment{keywords}
-   {
-   \newgeometry{margin=1.5cm}
-   \begin{lrbox}{\@keywordsBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
-      \smallcover\sffamily
-      \begin{minipage}{0.47\textwidth}
-         \begin{flushleft}
-            \selectlanguage{english}
-            \textbf{Key Words}\par
-   }
-   {
-         \end{flushleft}
-      \end{minipage}
-   \end{lrbox}
-   \restoregeometry
-   \global\setbox\@keywordsBoxGlobal=\vbox{\copy\@keywordsBox}
-   }
+\newenvironment{keywords}{
+  \newgeometry{margin=1.5cm}
+  \begin{lrbox}{\@keywordsBox}%
+    \renewcommand{\sfdefault}{phv}
+    \renewcommand{\rmdefault}{ptm}
+    \renewcommand{\ttdefault}{pcr}
+    \smallcover\sffamily
+    \begin{minipage}{0.47\textwidth}
+      \begin{flushleft} \footnotesize \vspace{0.5cm}
+        \selectlanguage{english}
+        \textbf{Key Words}\par}{
+      \end{flushleft}
+    \end{minipage}
+  \end{lrbox}
+  \restoregeometry
+  \global\setbox\@keywordsBoxGlobal=\vbox{\copy\@keywordsBox}
+}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%
-% Mots cl'es en anglais
-%
+%%%%%%%%%%%%%
+% Mots clés %
+%%%%%%%%%%%%%
 
 \newsavebox{\@motsclesBox}
 \newbox{\@motsclesBoxGlobal}
 
-\newenvironment{motscles}
-   {
-   \newgeometry{margin=1.5cm}
-   \begin{lrbox}{\@motsclesBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
-      \smallcover\sffamily
-      \begin{minipage}{0.47\textwidth}
-         \begin{flushleft}
-            \selectlanguage{french}
-            \textbf{Mots cl\'es}\par
-   }
-   {
-         \end{flushleft}
-      \end{minipage}
-   \end{lrbox}
-   \restoregeometry
-   \global\setbox\@motsclesBoxGlobal=\vbox{\copy\@motsclesBox}
-   }
+\newenvironment{motscles}{
+  \newgeometry{margin=1.5cm}
+  \begin{lrbox}{\@motsclesBox}%
+    \renewcommand{\sfdefault}{phv}
+    \renewcommand{\rmdefault}{ptm}
+    \renewcommand{\ttdefault}{pcr}
+    \smallcover\sffamily
+    \begin{minipage}{0.47\textwidth}
+      \begin{flushleft} \footnotesize \vspace{0.5cm}
+        \selectlanguage{french}
+        \textbf{Mots cl\'es}\par}{
+      \end{flushleft}
+    \end{minipage}
+  \end{lrbox}
+  \restoregeometry
+  \global\setbox\@motsclesBoxGlobal=\vbox{\copy\@motsclesBox}
+}
 
 %%%%%%%%%%   AUTRES MISES EN FORME   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\def\cleardoublepage{\clearpage\thispagestyle{empty}%
-  \ifodd\c@page\else
-    \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}
+\def\cleardoublepage{
+  \clearpage\thispagestyle{empty}%
+  \ifodd\c@page\else%
+  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% En-t^etes de chapitres accord'es à la couverture
+% En-têtes de chapitres accordés à la couverture
 %
 
 \if@fancyChapter

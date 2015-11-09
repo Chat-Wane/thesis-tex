@@ -1,4 +1,4 @@
-\documentclass[francais, 12pt, fancyChapter]{these-LUNAM}
+\documentclass[francais, 12pt, fancyChapter, oneside]{these-LUNAM}
 
 \usepackage[utf8]{inputenc}
 \usepackage[french,english]{babel}
@@ -40,9 +40,6 @@
 \usepackage{epsfig}
 \usepackage{subfig}
 
-
-
-
 %% Bibtex
 \usepackage[numbers]{natbib}
 
@@ -64,10 +61,8 @@
 \newcommand{\SPRAY}[0]{\textsc{Spray}\xspace}
 \newcommand{\PEERSIM}[0]{\textsc{PeerSim}\xspace}
 
-\titre{Edition Collaborative Répartie}
-\soustitre{soustitre}
-\title{Distributed Collaborative Editing}
-\subtitle{subtitle}
+\titre{Édition collaborative décentralisée}
+\title{Decentralized Collaborative Editing in Real-Time}
 
 \author{M.}{Brice}{Nédelec}
 \discipline{Informatique et applications}
@@ -92,31 +87,29 @@
 %%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
 \newcommand{\TODO}[1]{\textcolor{red}{#1}}
 
+
+
 \begin{document}
 
+\maketitle
+
 \dominitoc
-
-% \maketitle
-
 % \tableofcontents
+% \listoftables
+% \listoffigures
 
-%\input{./input/abstract.tex}
-%\input{./input/introduction/index.tex}
-\input{./input/lseq/index.tex}
+\input{./input/abstract.tex}
+% \input{./input/introduction/index.tex}
+% \input{./input/lseq/index.tex}
 \input{./input/spray/index.tex}
-%\input{./input/crate/index.tex}
-%\input{./input/conclusion/index.tex}
+% \input{./input/crate/index.tex}
+% \input{./input/conclusion/index.tex}
 
 \bibliographystyle{abbrv}
 \raggedright
 \bibliography{bibliographie}
-%%\clearpage
 
-%%\backmatter
-
-%%\listoftables
-%%\listoffigures
-
+% \backmatter
 \end{document}
 
 %%% Local Variables:
