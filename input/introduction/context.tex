@@ -1,20 +1,33 @@
 
-Ces dernières années, l'interêt pour les outils collaboratifs n'a eu de cesse
-d'augmenter. En particulier, les éditeurs
-collaboratifs~\cite{ellis1991groupware} répartis permettent de distribuer la
-charge d'écriture d'un document sur les trois dimensions que sont: le temps,
-l'espace, et les organisations. Leur utilité ne faisant aucun doute, ces outils
-possèdent actuellement de nombreuses limitations. Lorsque l'éditeur est basé sur
-un serveur central (par exemple Google Docs~\cite{nichols1995high}), se posent
-alors des problèmes liés au point individuel de défaillance, respect de la vie
-privée, intelligence économique, censure, et passage à l'échelle. Lorsque
-l'éditeur est décentralisé, se posent toujours les problèmes de passage à
-l'échelle: nombre d'utilisateurs, concurrence, taille de document etc.
+\section{Contexte}
 
-Les applications pair-à-pairs place chaque utilisateur dans le rôle de client et
-serveur. Ainsi, non seulement les utilisateurs profitent de l'application
-normalement, mais participent au bon fonctionnement de celle-ci. Dès lors, le
-serveur central n'est plus nécessaire.
+L'adoption des outils collaboratifs par le grand public n'a eu de cesse
+d'augmenter ces dernières décénies. En particulier, les éditeurs
+collaboratifs~\cite{ellis1991groupware} remportent un vif succès puisqu'ils
+permettent de répartir la charge d'écriture d'un document entre différents
+auteurs. Ainsi, quelle que soit l'heure, quel que soit le lieu, un utilisateur
+peut écrire son document numérique en association avec ses collaborateurs dont
+il ferat bénéficier son expertise. La combinaison de ces expertises permet de
+produire des documents de meilleure qualité. Ainsi, l'encyclopédie
+\emph{Wikipédia} est le résultat de la collaboration de millions d'auteurs dont
+la version anglaise possède une fiabilité combarable à l'\emph{Encyclop\ae{}dia
+Britannica}~\cite{giles2005internet}.
+
+Bien qu'étant d'une utilité indéniable, les éditeurs collaboratifs actuels ne
+sont pas sans défaut. Les éditeurs basés sur serveur central, tel que Google
+Docs~\cite{nichols1995high}, posent des problèmes liés à la confidentialité et
+au passage à l'échelle. L'inquiètude du public vis-à-vis des fournisseurs de
+services s'est avérée légitime~\cite{gellman2013us}. Les éditeurs débarassés de
+serveur central résolvent les problèmes de confidentialité. Toutefois, les
+problèmes de passage à l'échelle deumeurent.
+
+%% Les applications pair-à-pairs place chaque utilisateur dans le rôle de client
+%% et serveur. Ainsi, non seulement les utilisateurs profitent de l'application
+%% normalement, mais participent au bon fonctionnement de celle-ci. Dès lors, le
+%% serveur central n'est plus nécessaire.
+
+Afin de garantir des documents accessibles et réactifs, les éditeurs
+collaboratifs utilisent la réplication optimiste 
 
 Les éditeurs collaboratifs décentralisés utilisent la réplication
 optimiste~\cite{saito2005optimistic} afin de garantir accessibilité et
@@ -85,3 +98,7 @@ troisième partie de ce manuscrit est présenté CRATE (CollaboRATive Editor), u
 d'échantillonnage présenté en seconde partie) et accessible depuis un navigateur
 web.
 
+%%% Local Variables:
+%%% mode: plain-tex
+%%% TeX-master: "../../paper"
+%%% End:
