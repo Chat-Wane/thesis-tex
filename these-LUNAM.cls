@@ -1184,7 +1184,7 @@
     {\makebox[0.5\textwidth]
       {\raisebox{-\textheight}
         {~}}}}
-  
+
   \vspace{4\baselineskip}{
     \noindent\hspace{0.45\textwidth}
     \raisebox{0pt}[0pt][0pt]
@@ -1193,7 +1193,6 @@
       {2.5\baselineskip}}
     \hspace{-0.45\textwidth}
   }
-  
   \renewcommand{\sfdefault}{phv}
   \renewcommand{\rmdefault}{ptm}
   \renewcommand{\ttdefault}{pcr}
@@ -1208,7 +1207,7 @@
   {
     \noindent\color{@bandeaucolor}
     \rule{0.55\textwidth}
-    {2.5\baselineskip}%
+    {2.5\baselineskip}
     \color{@horizontalgray}
     \rule{0.45\textwidth}
     {2.5\baselineskip}
@@ -1240,11 +1239,12 @@
   \fi
   \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
   \vspace{11\baselineskip}
+
 }
 
-%%%%%%%%%%%%%%%%%%%%
-% 1re de couverture
-%
+%%%%%%%%%%%%%%%%%%%%%%
+% 1ère de couverture %
+%%%%%%%%%%%%%%%%%%%%%%
 
 \renewcommand{\maketitle}{% Contr^ole de la pr'esence des informations obligatoires
    \ifx\@titre\@empty
@@ -1431,15 +1431,14 @@
 
 \global\newcount\@startingPage
 
-\newcommand{\makecover}{%
-  \singlespacing
+\newcommand{\makecover}{
   \newgeometry{margin=1.5cm}
   \cleardoublepage % go to odd page
+  \singlespacing
   \phantom{placeholder} % doesn't appear on page
   \newpage % on even page
   \thispagestyle{empty} % no numbering
-  \@startingPage\thepage\relax
-  {
+  \@startingPage\thepage\relax{
     \@drawbackground
     \vspace{-5.0\baselineskip}
     \renewcommand{\sfdefault}{phv}
@@ -1520,12 +1519,12 @@
           {L'UNIVERSIT\'E NANTES ANGERS LE MANS}
           \hfill~}}}%
   }%
-  \ifnum \thepage > \@startingPage\relax
-  \ClassError{these-LUNAM}
-  {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}
+  \ifnum \thepage > \@startingPage\relax%
+  \ClassError{these-LUNAM}%
+  {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}%
   {}%
   \fi%
-  \restoregeometry%
+%  \restoregeometry%
 }
 
 \AtEndDocument{\makecover}
@@ -1631,9 +1630,9 @@
 %%%%%%%%%%   AUTRES MISES EN FORME   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \def\cleardoublepage{
-  \clearpage\thispagestyle{empty}%
-  \ifodd\c@page\else%
-  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}%
+  \clearpage\thispagestyle{empty}
+  \ifodd\c@page\else
+  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % En-têtes de chapitres accordés à la couverture
