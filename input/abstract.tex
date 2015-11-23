@@ -1,59 +1,41 @@
 
 \begin{resume}
-  Un éditeur collaboratif réparti ne devrait admettre aucune limite sur le
-  nombre d'auteurs, sur le lieu ou l'heure, ou de tierces parties. Cette thèse
-  s'intéresse aux approches décentralisées dont la topologie elle-même permet de
-  résoudre les problèmes de confidentialité. Toutefois, restent les problèmes de
-  passages à l'échelle. Nos contributions ciblent deux niveaux de l'application
-  répartie.  Tout d'abord, nous proposons une fonction d'allocation
-  d'identifiants uniques, immuables, et totalement ordonnés garantissant que
-  chaque utilisateur voit une copie identique du document. À chaque caractère
-  est associé son identifiant. La taille de ces derniers est bornée de manière
-  polylogarithmique par rapport à la taille du document. Ce faible surcoût
-  induit par la structure de données et dépendant uniquement de la taille du
-  document rend l'approche adéquate pour l'édition collaborative de grands
-  documents. Dans un second temps, et afin de guarantir une propagation des
-  modifications efficaces, nous proposons un protocole d'échantillonnage
-  aléatoire de pairs fournissant une vue partielle à chaque pair. La taille de
-  cette dernière grandit et rapetisse logarithmiquement par rapport à la taille
-  du réseau. Sans connaissance globale, celui-ci converge rapidement vers une
-  topologie possédant des propriétés similaires à celles des graphes
-  aléatoires. Le surcoût de cette approche est une redondance dans les vues
-  locales dont la proportion devient négligeable lorsque le réseau
-  grandit. Puisque la diffusion des modifications hérite de l'adaptivité de ce
-  protocole d'échantillonnage, le traffic généré lors de l'édition reflète la
-  taille du réseau et est équitablement réparti entre les membres.
+  La récente apparition de la communication de navigateur-à-navigateur a
+  transformé le programme le plus largement répendu en récéptacle à applications
+  web réparties. Chaque navigateur web devient un candidat pour le Fog Computing
+  mélant les avantages du Cloud et du Edge. Cette thèse se concentre sur
+  l'édition collaborative temps réel. Nos contributions comprennent
+  \begin{inparaenum}[(i)]
+  \item un protocole d'échantillonnage aléatoire de pairs qui adapte son
+    fonctionnement à la taille du réseau sans utiliser de connaissances
+    globales;
+  \item une structure de données répartie dont la compléxité spatiale est bornée
+    sous-linéairement comparé à la taille de la séquence.
+  \end{inparaenum}
 \end{resume}
 
 \begin{motscles}
-  Édition collaborative, décentralisé, temps réel, passage à l'échelle,
-  structure répartie de séquence, échantillonnage aléatoire de pairs.
+  Fog computing, édition collaborative, décentralisé, temps réel, passage à
+  l'échelle, structure répartie de séquence, échantillonnage aléatoire de pairs.
 \end{motscles}
 
 \begin{abstract}
-  Collaborative editors should not limit the number of authors, place or time,
-  or involve third parties. This thesis focus on decentralized approaches the
-  topology of which solves privacy concerns. Still, scalability issues
-  remain. Our contributions target two level of the distributed
-  application. First, to guarantee scalable consistent documents, we provide an
-  algorithm that allocates unique and immutable identifiers to each
-  character. The size of identifiers is sublinearly upper-bounded by the
-  document size. Ordering the identifiers using a lexicographical order allows
-  retrieving identical documents. The small overhead induced by this data
-  structure only depends of the document which makes it suitable for
-  collaborative authoring of large documents. Second, to guarantee scalable
-  propagation of changes, we propose a random peer sampling protocol that
-  provides each peer with a local view logarithmically scaling to the network
-  size. Without any global knowledge, the network quickly converges to a
-  topology exposing properties similar to those of random graphs. It costs
-  redundancy in views which becomes negligible as the network grows. This
-  protocol is suitable for large-scale applications requiring broadcast since
-  the latter inherits the scalability of the former.
+  Enabling browser-to-browser communication transformed the most widely spread
+  program into a receptacle for distributed web applications. Each browser
+  becomes an edge-of-the-network candidate for Fog Computing bringing the best
+  of both Cloud and Edge. This thesis focuses on real-time collaborative editing. Our
+  contributions include
+  \begin{inparaenum}[(i)]
+  \item an random peer sampling protocol that adapts its operation to the
+    network size without any global knowledge;
+  \item a distributed data structure for sequences that enjoys a sub-linear
+    upper bound on its space complexity regarding the sequence size.
+  \end{inparaenum}
 \end{abstract}
 
 \begin{keywords}
-  Collaborative editing, decentralized, real-time, scalable, distributed
-  sequence structure, random peer sampling.
+  Fog computing, collaborative editing, decentralized, real-time, scalable,
+  distributed sequence structure, random peer sampling.
 \end{keywords}
 
 %%% Local Variables:
