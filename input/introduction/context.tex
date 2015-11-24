@@ -1,13 +1,32 @@
 
 \section{Contexte}
 
-La récente possibilité de communiquer de navigateur-à-navigateur via WebRTC a
-transformé l'un des programmes les plus répendus en récéptacle à applications
-web réparties. Chaque navigateur est en mesure de fournir ses capacités de
-calcul, de stockage, ou de bande passante en tant qu'arrête au service du
-\emph{Fog Computing}. Ce paradigme combine les avantages du \emph{Cloud} --
-telles que la persistence, ou la facilité de déploiments d'applications -- et
-les avantages du \TODO{edge-of-the-network} comme la réactivité, ou le nombre.
+De nos jours, le \emph{Cloud Computing} a réussi à imposer son hégémonie. Grâce
+à ses facilités d'utilisation, il libère ses utilisateurs de nombreuses
+préocupations liées aux configurations. Ceux-ci peuvent alors aisément héberger
+leurs applications et données sur des serveurs distants. Par exemple, les
+services apportés par Dropbox, ou Google Drive, ont été largement adoptés par le
+public.  Hélas, les fournisseurs de services possèdent \emph{de facto} les
+données et sont en mesure de les exploiter à leur propre profit. Ces inquiètudes
+vis-à-vis de la confidentialité se sont par ailleurs avérée légitime en 2013
+lors des révélations sur PRISM~\cite{gellman2013us}.
+
+Afin de résoudre ces problématiques de confidentialité, les utilisateurs peuvent
+se débarasser des serveurs centralisés en stockant eux-même leurs données. Les
+opérations sont directement effectuées sur ces données locales avant d'être
+partagées avec les éventuels utilisateurs de ces données. Toutefois, les
+facilités autrefois apportées par le \emph{Cloud} et la centralisation
+n'existent plus. Il est nécéssaire de redéfinir structures de données et
+algorithmes afin de s'adapter à la répartition des utilisateurs.
+
+Plus récement, l'idée d'un \emph{Fog Computing} émerge en tant qu'unificateur
+des deux approches antagonistes susmentionnées, i.e., un \emph{Cloud} dont
+l'infrastructure se rapproche des utilisateurs finaux. L'idée se concrètise avec
+la récente possibilité accordée aux plus répendus des programmes -- les
+navigateurs Web -- de communiquer entre eux grâce à WebRTC. Ainsi chaque
+navigateur, qu'il soit sur smartphone, tablette, ou unité centrale, est capable
+de fournir ses capacités de calcul, de stockage, ou de bande passante au service
+du \emph{Fog Computing}.
 
 L'adoption des outils collaboratifs par le grand public n'a eu de cesse
 d'augmenter ces dernières décénies. En particulier, les éditeurs
