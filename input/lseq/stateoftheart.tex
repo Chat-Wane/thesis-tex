@@ -1,6 +1,8 @@
 
 \section{État de l'art}
 
+\label{lseq:sec:stateoftheart}
+
 \subsection{Réplication optimiste}
 
 La réplication optimiste~\cite{demers1987epidemic, saito2005optimistic} est un
@@ -13,77 +15,92 @@ où elles sont appliquées à la copie locale.
 
 D'après le théorème CAP~\cite{gilbert2002brewer} (\emph{Consistency,
   Availability, Partition tolerence}), il est impossible de passer à l'échelle
-tout en garantissant à la fois la cohérence, la disponibilité, et la tolérance
-aux pannes. 
+tout en garantissant à la fois
+\begin{itemize}
+\item la cohérence : un contrat entre le développeur et la structure qui
+  spécifie comment cette dernière se comporte suivant les opérations effectuées
+  et leur ordonancement. Les contraintes imposées à la structure peuvent être
+  plus ou moins importantes selon les besoins.
+\item la disponibilité : le ratio entre le temps effectif durant lequel
+  l'utilisateur accède à un service et le temps durant lequel il souhaite y
+  accèder. Dans le meilleur cas, le service est toujours disponible. \TODO{La
+    plupart des services \emph{Cloud} proposent de 99 à 100\% (exclus) de
+    disponibilité.}
+\item la tolérance aux pannes : les défaillances n'entrainent pas de defauts
+  dans les propriétés susmentionnées.
+\end{itemize}
 
-
-La réplication optimiste choisit de sacrifier le critère de cohérence au profit
-de la disponibilité et de la tolérance aux pannes: lorsque tous les changements
-ont été reçus et appliqués par tous les participants, les copies doivent
-converger vers un état identique. Il s'agit du critère de cohérence
-correspondant à la cohérence à terme (ou cohérence inéluctable). Bien qu'il soit
-possible de garantir d'avantages de propriétés, notamment sur l'ordonnancement
-des modifications, nous nous intéresserons principalement à ce critère de
-cohérence.
+La réplication optimiste choisit de sacrifier sur le critère de cohérence au
+profit de la disponibilité et de la tolérance aux pannes: lorsque les mêmes
+changements ont été reçus et appliqués par tous les participants, les copies
+convergent vers un état équivalent. Il s'agit du critère de cohérence
+correspondant à la cohérence à terme forte~\cite{shapiro2011conflict} (ou
+cohérence inéluctable forte). Bien qu'il soit possible de garantir d'avantages
+de propriétés, notamment sur l'ordonnancement des modifications, nous nous
+intéresserons principalement à ce critère de cohérence.
 
 \begin{figure}
   \centering
   \input{./input/lseq/optimisticexample.tex}
-  \caption{\label{fig:lseq:optimisticexample}Exemple d'exécution d'un protocole
+  \caption{\label{lseq:fig:optimisticexample}Exemple d'exécution d'un protocole
     de réplication optimiste. Il existe trois copies d'une séquence initialement
     vide. La première copie insère 'QWE' et en dissémine l'information. La
     troisième copie reçoit l'opération et l'applique localement. Cette copie
     insère 'RTY' à la suite de 'QWE' afin d'obtenir 'QWERTY' et envoie
     l'information aux deux autres copies. Quel que soit l'ordre de réception, le
-    protocole garantie que les copies convergent vers un état identique, ici, la
+    protocole garanti que les copies convergent vers un état identique, ici, la
     séquence 'QWERTY'.}
 \end{figure}
 
-Les outils d'édition collaboratifs utilisant la réplication optimiste peuvent
-être divisés en deux catégories. Les premiers utilisent les transformés
-opérationnels~\cite{sun2009contextbased, sun1998operational} qui, lors de la
+La figure~\ref{lseq:fig:optimisticexample} présente un cas de séquence
+répliquée. Quel que soit l'ordre de reception des opérations et leur nature, les
+copies convergent toute vers un état identique : la séquence QWERTY.
+
+Les approches de réplication optimiste pour séquences se divisent en deux
+catégories. Les premiers utilisent les transformés
+opérationnels~\cite{sun1998operational, sun2009contextbased} qui, lors de la
 réception d'une modification, en change les paramètres égards des opérations
 concurrentes. Les seconds utilisent un type de données
 commutatif~\cite{shapiro2011comprehensive, shapiro2011conflict} où l'envoie
 n'est pas l'opération mais son résultat qui, après réception, est intégré à la
-structure. 
+structure.
 
 \subsection{Transformés opérationnels}
 
-Les approches à transformés opérationnels~\cite{sun2009contextbased,
-  sun1998operational} (OT) sont les plus anciennes et s'appliquent à un large
+Les approches à transformés opérationnels~\cite{sun1998operational,
+  sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
 champs d'applications tels que l'édition de texte, l'édition d'images etc. Dans
-le cadre de l'édition de texte, OT, en plus des usuels opérations \emph{insert}
-et \emph{delete}, apportent des opérations ciblant les chaînes de caractères, à
-savoir \emph{move}, \emph{cut -- paste}, etc. Toutefois, l'analyse de correction
-nécessite d'examiner chaque paire d'opérations ainsi que leurs paramètres. En
-conséquence, lors de l'écriture du papier \cite{imine2003proving}, peu
-d'approches étaient réellement correctes. De plus, cette classe d'approches peut
-être divisé en deux sous-classes: les approches centralisées et les approches
-décentralisées. Les premières réarrangent les opérations sur un serveur
-central~\cite{nichols1995high} afin de faciliter la convergence. Toutefois, la
-topologie elle-même implique un point individuel de défaillance, des problèmes
-de respect de la vie privée, des problèmes d'intelligence économique, des
-problèmes de censure, et enfin, de passage à l'échelle. Les approches
-décentralisées~\cite{sun2009contextbased}, quant à elle, nécessitent un vecteur
-de version afin d'identifier les contextes de génération des opérations
-reçues. Elles transforment les arguments de l'opération reçue par rapport aux
-opérations concurrentes dans le but d'exécuter de manière cohérente l'opération
-sans avoir à défaire et réexecuter ces opérations. De ce fait, bien que
-l'exécution locale d'une opération soit très efficace, l'exécution des
+le cadre de l'édition de texte, en plus des usuelles opérations d'insertion et
+de suppression, OT founit des opérations ciblant les chaînes de caractères
+telles que le déplacement, le couper -- coller, etc. Toutefois, l'analyse de
+correction nécessite d'examiner chaque paire d'opérations ainsi que leurs
+paramètres. En conséquence, lors de l'écriture du papier
+\cite{imine2003proving}, peu d'approches étaient réellement correctes. De plus,
+cette classe d'approches peut être divisé en deux sous-classes: les approches
+centralisées et les approches décentralisées. Les premières réarrangent les
+opérations sur un serveur central~\cite{nichols1995high} afin de faciliter la
+convergence. Toutefois, la topologie elle-même implique un point individuel de
+défaillance, des problèmes de confidentialité, des problèmes d'intelligence
+économique, des problèmes de censure, et enfin, de passage à l'échelle. Les
+approches décentralisées~\cite{sun2009contextbased}, quant à elle, nécessitent
+un vecteur de version afin d'identifier les contextes de génération des
+opérations reçues. Elles transforment les arguments de l'opération reçue par
+rapport aux opérations concurrentes dans le but d'exécuter de manière cohérente
+l'opération sans avoir à défaire et réexecuter ces opérations. De ce fait, bien
+que l'exécution locale d'une opération soit très efficace, l'exécution des
 opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
 environnements maîtrisés, OT reste efficace~\cite{mehdi2014merging}.
 
 \begin{figure}
   \centering
   \input{input/lseq/otexample.tex}
-  \caption{\label{fig:lseq:otexample}Exemple de transformé opérationnel
+  \caption{\label{lseq:fig:otexample}Exemple de transformé opérationnel
     garantissant la convergence lors d'opérations concurrentes. L'opération de
     suppression des 3 premiers caractères sur la copie 3 (RTY) est transformée
     afin de supprimer les 3 caractères à l'index 3 sur les autres copies.}
 \end{figure}
 
-La figure~\ref{fig:lseq:otexample} illustre le principe de fonctionnement des
+La figure~\ref{lseq:fig:otexample} illustre le principe de fonctionnement des
 approches basées sur les transformés opérationnels. Dans ce scenario, les copies
 sont toutes initialisées avec la séquence RTY. Ensuite, tandis que la copie 1
 insère les 3 caractères QWE en tête de la séquence pour obtenir QWERTY, la copie
@@ -103,19 +120,18 @@ transformation est sans effet sur ses arguments. La copie 2, selon l'ordre de
 réception, se comporte comme la copie 1 ou la copie 3. À terme, les trois copies
 convergent vers une séquence identique QWE.
 
-\subsection{Structures de données partagées pour séquences}
+\subsection{Structures de données sans résolution de conflits}
 
 Plus récemment, les approches à base de \emph{structures de données répliqués
   sans résolution de conflits}~\cite{shapiro2011comprehensive,
   shapiro2011conflict} (CRDTs) commencèrent à émerger. Ces types de structure
-abstraits possèdent la particularité de fournir des opérations commutatives.
-Plus précisément, le résultat de l'exécution locale de chaque opération est
-envoyé aux possesseur de réplique et peut directement être intégré à cette
-dernière.  En d'autres termes, l'ordre d'intégration des opérations n'importe
-pas. Cela permet de grandement alléger, voir supprimer, le coût d'ordonnancement
-des opérations. Ce genre de structure existe pour les compteurs, les ensembles,
-les graphes orientés acycliques (DAG) etc. Dans ce manuscrit, nous nous
-intéresserons aux séquences.
+abstraits possèdent la particularité de fournir des opérations dont les
+résultats sont commutatifs entre eux.  En d'autres termes, le résultat de
+l'exécution locale de chaque opération est envoyé aux possesseur de réplique et
+peut directement être intégré à cette dernière.  L'ordre d'intégration des
+opérations n'importe pas. Cela permet de grandement alléger, voir supprimer, le
+coût d'ordonnancement des opérations. Ce genre de structure existe pour les
+compteurs, les ensembles, les graphes orientés acycliques (DAG) etc.
 
 Une importante différence entre les approches basées sur OT et les approches
 basées sur les CRDTs réside dans la répartition des coûts algorithmiques entre
@@ -125,13 +141,73 @@ En revanche, les approches CRDTs répartissent les coûts entre la partie locale
 et l'intégration.  L'impact étant d'autant plus important qu'une opération local
 génère autant d'intégrations que de répliques.
 
-Tandis que les CRDTs améliorent de manière significative la complexité
+\TODO{Tandis que les CRDTs améliorent de manière significative la complexité
 temporelle des opérations comparé aux approches OT décentralisées, ils
 dissimulent leur complexité dans l'occupation mémoire. En effet, afin d'assurer
 la convergence des répliques, une opération d'insertion alloue un identifiant
-unique  À cet égard, deux types d'approche CRDT existent.
+unique.}
+
+\subsubsection{Le compteur}
+
+L'exemple du CRDT pour compteur permet d'introduire l'idée sur laquelle ils se
+fondent. \TODO{Par la suite, on note
+  $op_a \times op_b \times \ldots \times op_n$ une séquence d'opérations.}
+
+
+Un compteur est simplement un entier proposant aux utilisateurs de l'incrémenter
+de 1. Si 3 utilisateurs incrémentent chacun leur compteur, les répliques du
+compteur convergeront inéluctablement vers la valeur 3. Dans ce cas, il est
+clair que l'ordre d'intégration des opérations importe peu :
+\begin{equation}
+  Inc_a \times Inc_b = Inc_b \times Inc_a \, \, \, (commutative)
+\end{equation}
+
+Ainsi, l'origine de l'incrémentation ($a$ ou $b$) n'influence pas le résultat.
+Toutefois, il est nécessaire de s'assurer qu'aucune opération n'est appliquée
+plusieurs fois. Ainsi, chaque opération est identifiée de manière unique de telle
+sorte que :
+\begin{equation}
+  Inc_a \times Inc_a = Inc_a \, \, \, (idempotence)
+\end{equation}
+
+Les identifiants accompagnant chaque opération constituent le surcoût des
+approches CRDTs. D'une manière ou d'une autre, il est nécéssaire de les
+enregistrer afin de garantir que la structure progresse continuellement. Par
+exemple, l'implémentation de ce compteur peut se faire sous la forme d'un
+ensemble répertoriant tous les identifiants. Sa valeur est le cardinal de cet
+ensemble.
+
+Considérons maintenant que le compteur propose une opération supplémentaire, à
+savoir la décrémentation de 1. Une implémentation naïve consisterait à supprimer
+un élément de l'ensemble aléatoirement. Toutefois, si deux utilisateurs
+suppriment en concurrence (autrement dit en même temps) le même élément, alors
+le compteur ne serat globalement décrémenté que de 1. Une autre implémentation
+plus coûteuse consiste à associer un identifiant unique par décrémentation et
+les placer dans un ensemble différent. La valeur du compteur est alors égale au
+cardinal des incrémentations moins le cardinal des décrémentations. Cela
+correspond aux approches à pierre tombales décritent en
+section~\ref{lseq:subsubsec:tombstones}. La structure grandit linéairement par
+rapport aux opérations effectuées sur celle-ci.  
+
+Une autre implémentation de ce compteur consiste à sauvegarder un vecteur d'état
+recensant le nombre d'incrémentations et de décrémentations effectuées par
+chaque utilisateur. Ainsi, la structure grandit linéairement par rapport au
+nombre d'utilisateurs ayant jamais effectué une opération sur le compteur
+réparti (\TODO{max(received value)}). Cette optimisation est possible car aucune
+des opérations ne dépend d'une autre pour être menée à bien. La
+section~\ref{lseq:subsubsec:variable} présente un autre type d'optimisation lié
+à la séquence.
+
+Le cas du CRDTs pour compteur met en lumière qu'il existe plusieurs
+implémentations proposant des compromis différent.  Toutefois, quelle que soit
+la structure, elles coûtent beaucoup plus cher que leurs homologues
+non-répartis. Il est nécéssaire d'analyser avec prudence les besoins de
+l'application afin de choisir au mieux son compromis entre temps, espace, et
+communication. La suite de ce chapitre s'attache à décrire les approches CRDTs
+dédiées aux séquences.
 
 \subsubsection{Pierres tombales}
+\label{lseq:subsubsec:tombstones}
 
 Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
   conway2014language, grishchenko2010deep, oster2006data,
@@ -156,14 +232,14 @@ concurrentes.
 \begin{figure}
   \centering
   \input{input/lseq/wootexample.tex}
-  \caption{\label{fig:lseq:wootexample}Le diagramme de Hasse du modèle WOOT
+  \caption{\label{lseq:fig:wootexample}Le diagramme de Hasse du modèle WOOT
     représentant la séquence QWERTY. Tout d'abord, la chaîne de caractères
     AZERTY fut écrite. Les caractères AZ sont supprimés et remplacé par QW, d'où
     l'embranchement. Bien que supprimé, le caractère Z est indispensable au bon
     ordonnancement de la séquence.}
 \end{figure}
 
-La figure~\ref{fig:lseq:wootexample} illustre la nécessité de conserver les
+La figure~\ref{lseq:fig:wootexample} illustre la nécessité de conserver les
 pierres tombales. Elle montre le diagramme de Hasse généré lors du scenario
 suivant : Tout d'abord, un utilisateur écrit AZERTY. Ensuite, les deux premiers
 caractères sont supprimés afin d'être remplacés par les caractères QW. La
@@ -189,6 +265,7 @@ référencer et l'ordonnencement n'en dépend plus. \TODO{Obtenir cette
   distante}. \TODO{Contrainte de topologie.}
 
 \subsubsection{Identifiants de taille variable}
+\label{lseq:subsubsec:variable}
 
 Les approches utilisant des identifiants de taille
 variable~\cite{andre2013supporting, preguica2009commutative, weiss2009logoot}
