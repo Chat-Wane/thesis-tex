@@ -18,15 +18,46 @@
 % \end{itemize}
 
 \begin{itemize}
-\item [\textbf{QR.}] \textbf{Comment proposer un service aussi facile d'accès et
-    de déployement qu'un service \emph{Cloud} sans cependant dépendre de
-    ceux-ci ou en dégrader la qualité?}
+\item [\textbf{QR.}] \textbf{Comment proposer un éditeur collaboratif temps réel
+    dont l'accès et le déployement soit aussi simple que sur le Nuage, dont les
+    performances passent à l'échelle, dont l'usage ne dépende d'aucune autorité
+    centrale?}
   
-  Cette question met en lumière la force des services \emph{Cloud}, à savoir
-  leur facilité d'usage. \TODO{moar}.
+  La première partie de cette question met en lumière la force du Nuage à
+  fournir des services dont l'utilisation et la configuration sont
+  aisées. L'accès à ces services inclut bien souvent une interface web
+  accessible grâce aux navigateurs Internet. Le fait que ces derniers soient
+  présents dans quasiment tous les appareils communiquants modernes participe à
+  l'hégémonie actuelle du Nuage : malgré l'hétérogénéité des appareils utilisés,
+  une simple URL (\emph{Uniform Resource Locator}) permet d'accèder aux services
+  quel que soit la localisation. L'expérience utilisateur ne dépend plus alors
+  qu'à concevoir un site web adaptatif (\emph{responsive}) aux appareils.
+
+  Ce n'est que grâce à la récente introduction de WebRTC~\cite{webrtc} comme
+  protocole de communication de navigateur-à-navigateur que les applications web
+  réparties et décentralisées sont possibles. Dans le contexte de l'édition
+  collaborative, chaque auteur est en mesure d'apporter des modifications au
+  document qu'ils partagent. Chacune de ces modifications doit être envoyées aux
+  autres auteurs afin qu'ils voient le même document. \TODO{Moar?} Cela
+  introduit donc la sous-question suivante:
   \begin{itemize}
-  \item [\textbf{QR A.}] \textbf{Quelles structures de données et quelles
-      algorithmes?}
-  \item [\textbf{QR B.}] \textbf{Quels moyens de communications?}
+  \item [\textbf{QR A.}] \textbf{Quel protocole de dissémination de messages
+      utiliser dont les performances passent à l'échelle, dont le bon
+      fonctionnement soit résistant aux connexions et déconnexions fréquentes
+      (\emph{churn}) possibles dans ce contexte?}    
+  \end{itemize}
+
+  Supposons qu'un tel protocole de communication existe. Les messages
+  transportées par celui-ci se doivent d'être de taille raisonnable, et
+  suffisamment descriptifs pour réconstruire le même document indépendemment de
+  l'auteur recevant le message.
+  \begin{itemize}
+  \item [\textbf{QR B.}] \textbf{\TODO{Quelles structures de données et quelles
+        algorithmes utiliser dont les performances passent à l'échelle?}}
   \end{itemize}
 \end{itemize}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:

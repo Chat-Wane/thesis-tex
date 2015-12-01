@@ -67,10 +67,10 @@
 \newcommand{\PEERSIM}[0]{\textsc{PeerSim}\xspace}
 
 %%\titre{Édition collaborative décentralisée}
-\titre{Naviguer dans le brouillard}
-\soustitre{L'exemple de l'édition collaborative}
-\title{Browsing through the fog}
-\subtitle{The collaborative editing use-case}
+\titre{Editeur sans frontières}
+%%\soustitre{L'exemple de l'édition collaborative}
+\title{Editor Without Borders}
+%%\subtitle{The collaborative editing use-case}
 
 \author{M.}{Brice}{Nédelec}
 \discipline{Informatique et applications}
@@ -94,6 +94,7 @@
 
 %%% % %% % %%% %% % %% % %%% % %%% % %% % %% % % %%% 
 \newcommand{\TODO}[1]{\textcolor{red}{#1}}
+\newcommand{\REF}{\textcolor{purple}{REF}}
 
 
 
@@ -105,9 +106,12 @@
 \tableofcontents
 % \listoftables
 % \listoffigures
-
 \input{./input/abstract.tex}
-%\input{./input/introduction/index.tex}
+
+%% change spacing in the main document
+\setlength{\parskip}{0.5em}
+
+\input{./input/introduction/index.tex}
 \input{./input/lseq/index.tex}
 % \input{./input/spray/index.tex}
 % \input{./input/crate/index.tex}

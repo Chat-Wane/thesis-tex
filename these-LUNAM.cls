@@ -1717,7 +1717,3 @@
 
 \endinput
 
-%%% Local Variables:
-%%% mode: latex
-%%% TeX-master: t
-%%% End:
