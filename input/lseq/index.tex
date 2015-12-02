@@ -4,9 +4,10 @@
 
 \lettrine{L}a maintenance de répliques sur des machines distantes les unes des
 autres est un problème ancien. Dès 1976, les bases de données répliquées font
-leur apparition afin de résoudre les problèmes de défaillances, i.e., le serveur
-possédant les données étant inaccessible, le client peut contacter serveur
-alternatif connu pour posséder les mêmes données afin de satisfaire sa requête.
+leur apparition afin de résoudre les problèmes de
+défaillances~\cite{alsberg1976principle}, i.e., le serveur possédant les données
+étant inaccessible, le client peut contacter serveur alternatif connu pour
+posséder les mêmes données afin de satisfaire sa requête.
 
 Hélas, avec la réplication, la synchronisation de répliques devient le coeur du
 problème. Puisque la communication entre serveurs n'est pas instantanée, les
@@ -51,10 +52,20 @@ critère de cohérence est plus faible mais pouvant atteindre une plus grande
 \label{repl:sec:pessimistic}
 
 L'objectif de la réplication pessimiste est simple. Il consiste à donner
-l'illusion qu'indépendemment du nombre de répliques, il existe une donnée
-unique.
+l'illusion que la donnée manipulée par les utilisateurs est unique,
+indépendemment du nombre de répliques réel. \TODO{L'avantage d'un tel méchanisme
+  est la facilité de raisonnement sur les données car leurs spécifications sont
+  proches de celles proposées normalement.}
+
+Toutefois, chacune des modifications effectuée doit être validée. L'autorité
+décisionnelle diffère en fonction des approches :
+\begin{itemize}
+\item [\textbf{autorité centrale :}]
+\item [\textbf{quorum :}]
+\end{itemize}
 
 \section{Réplication optimiste}
+\label{repl:sec:optimistic}
 
 En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
 centaines de machines pouvant communiquer entre elles au travers de materiels
