@@ -3,11 +3,17 @@
 \chapter{Schémas de réplication}
 
 \lettrine{L}a maintenance de répliques sur des machines distantes les unes des
-autres est un problème ancien. Dès 1976, les bases de données répliquées font
-leur apparition afin de résoudre les problèmes de
-défaillances~\cite{alsberg1976principle}, i.e., le serveur possédant les données
-étant inaccessible, le client peut contacter serveur alternatif connu pour
-posséder les mêmes données afin de satisfaire sa requête.
+autres est un problème ancien. Dès 1975, les bases de données répliquées font
+leur apparition~\cite{johnson1975maintenance} afin de résoudre
+\begin{inparaenum}[(i)]
+\item les problèmes de défaillances~\cite{alsberg1976principle}, i.e., le
+  serveur possédant les données étant inaccessible, le client peut contacter
+  serveur alternatif connu pour posséder les mêmes données afin de satisfaire sa
+  requête;
+\item les problèmes de rapidité d'accès, i.e., le client peut contacter un
+  serveur dont la latence est la plus faible afin de satisfaire plus rapidement
+  sa requête.
+\end{inparaenum}
 
 Hélas, avec la réplication, la synchronisation de répliques devient le coeur du
 problème. Puisque la communication entre serveurs n'est pas instantanée, les
@@ -53,16 +59,31 @@ critère de cohérence est plus faible mais pouvant atteindre une plus grande
 
 L'objectif de la réplication pessimiste est simple. Il consiste à donner
 l'illusion que la donnée manipulée par les utilisateurs est unique,
-indépendemment du nombre de répliques réel. \TODO{L'avantage d'un tel méchanisme
-  est la facilité de raisonnement sur les données car leurs spécifications sont
-  proches de celles proposées normalement.}
+indépendemment du nombre de répliques réel. Grâce à la réplication pessimiste,
+il est facile de raisonner sur les données car leurs spécifications sont proches
+de celles proposées dans un \TODO{contexte sans réplications}.
 
 Toutefois, chacune des modifications effectuée doit être validée. L'autorité
 décisionnelle diffère en fonction des approches :
 \begin{itemize}
-\item [\textbf{autorité centrale :}]
-\item [\textbf{quorum :}]
+\item [\textbf{autorité centrale~\cite{alsberg1976principle} :}] l'un des
+  serveurs est désigné responsable d'une donnée. Ceux qui souhaitent modifier la
+  donnée sont alors dans l'obligation de demander l'accès exclusif pendant la
+  mise en place de cette modification. Dans l'intervalle, les autres répliques
+  ne peuvent soumettre de modifications. Enfin, lorsque la modification est
+  achevée, la main est rendue au serveur qui peut autoriser d'autres
+  modifications. C'est le méchanisme de vérouillage (\emph{lock}).
+\item [\textbf{quorum~\cite{gifford1979weighted} :}] les modifications sont
+  soumises à un vote où un certains nombre de serveurs \TODO{doivent approuver
+    ou non}. \TODO{Serialisation}.
 \end{itemize}
+
+La réplication pessimiste est possible lorsque le nombre de répliques est connu,
+plutôt petit, et \TODO{accessible souvent}. Ces contraintes sont notamment
+satisfaisable dans le \TODO{Nuage}. Les services proposés possèdent d'avantage
+d'assurances quant aux résultats de la manipulation des données. Toutefois, de
+telles guaranties ne sont pas toujours nécéssaire et leur coût élévée n'est
+alors plus justifié. \TODO{La section suivante est.}
 
 \section{Réplication optimiste}
 \label{repl:sec:optimistic}
@@ -70,6 +91,7 @@ décisionnelle diffère en fonction des approches :
 En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
 centaines de machines pouvant communiquer entre elles au travers de materiels
 aux capacités hétérogènes~\cite{demers1987epidemic}.
+
 
 \section{Conclusion}
 
@@ -80,18 +102,18 @@ client-serveur. Chaque utilisateur final possède alors une réplique de la donn
 partagée. Dans ce contexte, il est inenvisageable d'en appeler à la réplication
 pessimiste. 
 
-
-
-
 \chapter{Structure de données sans résolution de conflits}
-\section{Transformés opérationnels}
+
+Ce chapitre à pour but d'introduire les notions et problèmes liés aux structures
+de données sans résolution de conflits (CRDTs). 
+
 \section{Compteur}
 \section{Ensembles}
 \section{Composition}
 \section{Conclusion}
 
 \chapter{Séquences répliquées}
-\section{Introduction}
+\section{Transformés opérationnels}
 \section{Pierre tombales}
 \subsection{Woot}
 \section{Identifiant de taille variable}
