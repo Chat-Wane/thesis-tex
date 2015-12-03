@@ -1,0 +1,61 @@
+
+\chapter{Schémas de réplication}
+
+\minitoc
+
+\lettrine{L}a maintenance de répliques sur des machines distantes les unes des
+autres est un problème ancien. Dès 1975, les bases de données répliquées font
+leur apparition~\cite{johnson1975maintenance} afin de résoudre
+\begin{inparaenum}[(i)]
+\item les problèmes de défaillances~\cite{alsberg1976principle}, i.e., le
+  serveur possédant les données étant inaccessible, le client peut contacter
+  serveur alternatif connu pour posséder les mêmes données afin de satisfaire sa
+  requête;
+\item les problèmes de rapidité d'accès, i.e., le client peut contacter un
+  serveur dont la latence est la plus faible afin de satisfaire plus rapidement
+  sa requête.
+\end{inparaenum}
+
+Hélas, avec la réplication, la synchronisation de répliques devient le coeur du
+problème. Puisque la communication entre serveurs n'est pas instantanée, les
+modifications effectuées sur les données prennent du temps à parvenir aux
+répliques. Cela implique des problèmes de
+\begin{inparaenum}[(i)]
+\item fraîcheur de données -- \emph{est-ce que la donnée que j'obtiens est la
+    plus à jour?} -- et de
+\item modifications concurrentes -- \emph{avec des modifications effectuées sur
+    une même données, au même moment, par deux serveurs distants dont les
+    résultats sont différents. Dois-je conserver les deux modifications, ou
+    dois-je en privilégier une, ou dois-je employer une autre stratégie?}
+\end{inparaenum}
+
+D'après le bien connu théorème CAP~\cite{gilbert2002brewer} (\emph{Consistency,
+  Availability, Partition tolerence}), il est impossible de \TODO{passer à
+  l'échelle} tout en garantissant à la fois \TODO{
+\begin{itemize}
+\item la cohérence : un contrat entre le développeur et la structure qui
+  spécifie comment cette dernière se comporte suivant les opérations effectuées
+  et leur ordonancement. Les contraintes imposées à la structure peuvent être
+  plus ou moins importantes selon les besoins.
+\item la disponibilité : le ratio entre le temps effectif durant lequel
+  l'utilisateur accède à un service et le temps durant lequel il souhaite y
+  accèder. Dans le meilleur cas, le service est toujours disponible. \TODO{La
+    plupart des services \emph{Cloud} proposent de 99 à 100\% (exclus) de
+    disponibilité.}
+\item la tolérance aux pannes : \TODO{les défaillances n'entrainent pas de defauts
+  dans les propriétés susmentionnées}.
+\end{itemize}
+}
+
+Face à ce constat, deux familles de réplication existent proposant différents
+compromis. La section~\ref{repl:sec:pessimistic} décrit succintement les
+approches dîtes pessimistes dont le critère de cohérence est fort mais ne
+pouvant s'appliquer à grande échelle. À l'opposé, la
+section~\ref{repl:sec:optimistic} décrit la réplication optimiste dont le
+critère de cohérence est plus faible mais pouvant atteindre une plus grande
+échelle.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
