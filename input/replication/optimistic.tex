@@ -3,9 +3,50 @@
 
 En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
 centaines de machines pouvant communiquer entre elles au travers de materiels
-aux capacités hétérogènes~\cite{demers1987epidemic}.
+aux capacités hétérogènes~\cite{demers1987epidemic}. \TODO{moar.}
 
+La réplication optimiste~\cite{johnson1975maintenance, saito2005optimistic} est
+un paradigme de réplication consistant à appliquer les modifications directement
+sur la réplique locale.  Ainsi, les données sont toujours disponibles et
+réactives aux changements effectués. Ensuite, les modifications sont disséminées
+aux autres possesseurs de cette donnée partagée où elles sont appliquées. Au
+contraire des approches pessimistes, les approches optimistes ne vérouillent pas
+l'accès aux données lors de modifications. En revanche, le critère de cohérence
+assuré est plus faible. En particulier, les répliques ont l'autorisation d'avoir
+des états temporairement divergeant entre eux :
 
+\begin{itemize}
+\item [\textbf{Cohérence à terme :}] lorsque toutes les modifications ont été
+  reçues et appliquées par toutes les répliques, celle-ci possèdent un état
+  équivalent. Puisque \emph{toutes} les modifications constituent un ensemble
+  peu réaliste dans le cadre d'une éxecution réelle, un définition plus précise
+  porte sur un sous-ensembles de ces modifications :
+\item [\textbf{Cohérence forte à terme~\cite{shapiro2011conflict} :}] les
+  répliques ayant réçu et appliqué les même modifications possèdent un état
+  équivalent.
+\end{itemize}
+
+Ces critères de cohérence posent de nombreux problèmes par leur manque
+d'expressivité. En particulier, l'état équivalent vers lequel les répliques
+convergent n'est pas spécifié. Celui-ci peut n'avoir aucun lien avec l'éxecution
+souhaitée par l'utilisateur. Par exemple, un ensemble dont l'ajout d'éléments
+n'a aucun effet converge vers l'ensemble vide. Il maintient donc la cohérence
+forte à terme.
+
+\begin{figure}
+  \centering
+  \input{./input/replication/optimisticexample.tex}
+  \caption{\label{repl:fig:optimisticexample} Exemple d'éxecution d'un protocole
+    de réplication optimiste.}
+\end{figure}
+
+La figure~\ref{repl:fig:optimisticexample} présente un cas de séquence
+répliquée.  Il existe trois copies d'une séquence initialement vide. La première
+copie insère 'QWE' et en dissémine l'information. La troisième copie reçoit
+l'opération et l'applique localement. Cette copie insère 'RTY' à la suite de
+'QWE' afin d'obtenir 'QWERTY' et envoie l'information aux deux autres
+copies. Quel que soit l'ordre de réception, le protocole garanti que les copies
+convergent vers un état identique, ici, la séquence 'QWERTY'.
 
 %%% Local Variables:
 %%% mode: latex
