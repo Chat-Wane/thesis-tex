@@ -49,52 +49,71 @@ correspondant aux opérations d'insertions et de suppression d'un
   (cf. ligne~\ref{line:allocdes}) afin de garantir l'unicité de l'identifiant.
 \end{itemize}
 
-\begin{figure*}
-  \centering
-  \subfloat[Allocation quasi-optimale]
-  [\label{fig:lseq:allocpathexampleA}Cas d'une allocation quasi-optimale]
-  {\input{./input/replication/allocpathexampleA.tex}}
-  \hspace{40pt}
-  \subfloat[Pire cas d'allocation]
-  [Pire cas d'allocation]
-  {\input{./input/replication/allocpathexampleB.tex}}
-  \caption{\label{fig:lseq:allocpathexample} Deux arbres remplis d'identifiants
-    résultant de deux séquences d'édition différentes et dont la séquence finale
-    est identique : $QWERTY$. L'allocation des identifiants se fait selon le
-    même algorithme qui alloue la branche la plus à gauche de l'arbre. L'arbre
-    quasiment optimal ne possède que des branches de profondeur 1 tandis que
-    l'arbre pire cas atteint une profondeur de 6.}
-\end{figure*}
+% \begin{figure*}
+%   \centering
+%   \subfloat[Allocation quasi-optimale]
+%   [\label{fig:lseq:allocpathexampleA}Cas d'une allocation quasi-optimale]
+%   {\input{./input/replication/allocpathexampleA.tex}}
+%   \hspace{40pt}
+%   \subfloat[Pire cas d'allocation]
+%   [Pire cas d'allocation]
+%   {\input{./input/replication/allocpathexampleB.tex}}
+%   \caption{\label{fig:lseq:allocpathexample} Deux arbres remplis d'identifiants
+%     résultant de deux séquences d'édition différentes et dont la séquence finale
+%     est identique : $QWERTY$. L'allocation des identifiants se fait selon le
+%     même algorithme qui alloue la branche la plus à gauche de l'arbre. L'arbre
+%     quasiment optimal ne possède que des branches de profondeur 1 tandis que
+%     l'arbre pire cas atteint une profondeur de 6.}
+% \end{figure*}
 
-La figure~\ref{fig:lseq:allocpathexample} illustre les difficultés rencontrées lors
-de l'allocation d'identifiants. La figure représente la structure d'arbre
-permettant de représenter deux séquences utilisant la fonction d'allocation
-suivante : la branche la plus à gauche et la plus petite profondeur de l'arbre
-possible. Dans les deux cas, la séquence finale est QWERTY. Toutefois, les
-lettres ne sont pas insérées dans un ordre identique. Dans le premier cas, Q est
-inséré à l'index 0, suivit de W à l'index 1, suivit de E à l'index 2 etc. Cette
-séquence d'opérations d'insertions $[(Q,\,0)$, $(W,\,1)$, $(E,\,2)$\ldots$]$ est
-nommée \emph{séquence d'édition}. Dans le second cas, la lettre Y est inséré à
-l'index 0, suivit du T à l'index 0 qui va décaler le Y en index 1, etc. La
-séquence d'édition qui correspond à ce cas est : $[(Y,\,0)$, $(T,\,0)$,
-$(R,\,0)$\ldots$]$.
-\begin{itemize}
-\item [\textbf{premier cas :}] la fonction $allocPath$ alloue la branche la plus
-  à gauche possible. Par conséquent, la séquence d'édition $[(Q,\,0)$,
-  $(W,\,1)$, $(E,\,2)$\ldots$]$ conduit aux chemins suivant
-  $\langle [1],\,Q\rangle$, $\langle [2],\, W \rangle$,
-  $\langle [3],\, E\rangle$, etc. Dans ce cas, la profondeur de l'arbre
-  n'augmente jamais. À cet égard, la fonction $allocPath$ est très efficace.
-\item [\textbf{second cas :}] la séquence d'édition $[(Y,\,0)$, $(T,\,0)$,
-  $(R,\,0)$\ldots$]$ implique une augmentation de la profondeur de l'arbre à
-  chaque nouvelle insertion d'élément. En effet, le chemin est choisit est
-  toujours celui qui est le petit possible. Les éléments suivant ne bénéficie
-  pas de suffisamment de place à la profondeur courante de l'arbre, d'où la
-  nécessité d'augmenter sa profondeur. Les chemins en résultant sont :
-  $\langle [1],\, Y\rangle$, $\langle[0.1],\,T\rangle$,
-  $\langle[0.0.1],\, R\rangle$, etc. La taille des chemins alloués augmente très
-  rapidement.
-\end{itemize}
+Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
+illustrent les difficultés rencontrées lors de l'allocation des chemins
+composant les identifiants. Les structures d'arbre permettant de représenter les
+séquences utilisent les fonctions d'allocation suivantes : la branche la plus à
+gauche, et la plus petite profondeur de l'arbre possible. Dans les deux cas, la
+séquence finale est 'QWERTY'. Toutefois, les lettres ne sont pas insérées dans
+un ordre identique. Dans le premier cas, 'Q' est inséré à l'index 0, suivit de
+'W' à l'index 1, suivit de 'E' à l'index 2 etc. Cette séquence d'opérations
+d'insertions $[(Q,\,0)$, $(W,\,1)$, $(E,\,2)$\ldots$]$ est nommée \emph{séquence
+  d'édition}. Dans le second cas, la lettre 'Y' est insérée à l'index 0, suivit
+du 'T' à l'index 0 qui va décaler le 'Y' en index 1, etc. La séquence d'édition
+qui correspond à ce cas est : $[(Y,\,0)$, $(T,\,0)$, $(R,\,0)$\ldots$]$.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-15pt}
+  \centering
+  \input{input/replication/allocpathexampleA.tex}
+  \caption{\label{repl:fig:allocpathexampleA}Allocation quasi-optimale}
+  \vspace{-15pt}
+\end{wrapfigure}
+
+\textbf{Premier cas :} la fonction $allocPath$ alloue la branche la plus à
+gauche possible. Par conséquent, la séquence d'édition $[(Q,\,0)$, $(W,\,1)$,
+$(E,\,2)$\ldots$]$ conduit aux chemins suivant $\langle [1],\,Q\rangle$,
+$\langle [2],\, W \rangle$, $\langle [3],\, E\rangle$, etc. Dans ce cas, la
+profondeur de l'arbre n'augmente jamais. À cet égard, la fonction $allocPath$
+est très efficace. Cependant, elle n'est pas totalement optimale puisque pour
+l'arbre est prévu pour accueillir 8 identifiants lorsque seulement 6 sont
+alloués.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \vspace{-15pt}
+  \centering
+  \input{input/replication/allocpathexampleB.tex}
+  \caption{\label{repl:fig:allocpathexampleB}Allocation pire-cas}
+  \vspace{-20pt}
+\end{wrapfigure}
+
+
+\textbf{Second cas :} la séquence d'édition $[(Y,\,0)$, $(T,\,0)$,
+$(R,\,0)$\ldots$]$ implique une augmentation de la profondeur de l'arbre à
+chaque nouvelle insertion d'élément. En effet, le chemin est choisit est
+toujours celui qui est le petit possible. Les éléments suivant ne bénéficie pas
+de suffisamment de place à la profondeur courante de l'arbre, d'où la nécessité
+d'augmenter sa profondeur. Les chemins en résultant sont :
+$\langle [1],\, Y\rangle$, $\langle[0.1],\,T\rangle$,
+$\langle[0.0.1],\, R\rangle$, etc. La taille des chemins alloués augmente très
+rapidement.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni l'ordre d'insertion des
