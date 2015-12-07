@@ -2,14 +2,17 @@
 
 \section{Pierres tombales}
 
-Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
-  conway2014language, grishchenko2010deep, oster2006data,
-  preguica2009commutative, roh2011replicated, weiss2007wooki, wu2010partial,
-  yu2012stringwise} se caractérisent par la manière dont les suppressions sont
-traitées. En effet, lors de l'opération de suppression, ces approches marquent
-simplement les éléments supprimés afin de les cacher à l'utilisateur. Bien que
-supprimées, ces pierres tombales existent toujours dans la structure
-représentant la séquence et continuent d'impacter sur les performances.
+Les structures de données sans résolution de conflits
+(cf. chapitre~\ref{repl:chap:crdts}) pour séquences évitent le coûteux processus
+de detection de concurrence. Les approches de cette famille utilisant des
+pierres tombales~\cite{ahmed2011evaluating, conway2014language,
+  grishchenko2010deep, oster2006data, preguica2009commutative,
+  roh2011replicated, weiss2007wooki, wu2010partial, yu2012stringwise} se
+caractérisent par la manière dont les suppressions sont traitées. En effet, lors
+de l'opération de suppression, ces approches marquent simplement les éléments
+supprimés afin de les cacher à l'utilisateur. Bien que supprimées, ces pierres
+tombales existent toujours dans la structure représentant la séquence et
+continuent d'impacter sur les performances.
 
 \begin{itemize}
 \item [\textbf{WOOT~\cite{oster2006data} :}] le premier représentant historique
@@ -21,6 +24,26 @@ représentant la séquence et continuent d'impacter sur les performances.
   (\REF). Toutefois, cet ordonnancement requière des deux bornes adjacentes
   qu'elles soient déjà intégrées et toujours présentes, d'où les suppressions
   réelles impossibles.
+
+  \begin{figure}
+    \centering
+    \input{input/replication/wootexample.tex}
+    \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
+      représentant la séquence 'QWERTY'. Bien que supprimé, le caractère Z est
+      indispensable au bon ordonnancement de la séquence.}
+  \end{figure}
+
+  La figure~\ref{repl:fig:wootexample} illustre la nécessité de conserver les
+  pierres tombales. Elle montre le diagramme de Hasse généré lors du scenario
+  suivant : Tout d'abord, un utilisateur écrit 'AZERTY'. Ensuite, les deux
+  premiers caractères sont supprimés afin d'être remplacés par les caractères
+  'QW'. La séquence finale est 'QWERTY'. Toutefois, les identifiants ne sont pas
+  modifiables, et l'identifiant du caractère 'E' référence l'identifiant de 'Z',
+  lui-même référençant l'identifiant de 'A'. Par conséquent, supprimer
+  complètement les identifiants de 'A' et/ou de 'Z' revient à rendre
+  l'identifiant de 'E' non positionnable, et tout ceux qui en dépendent par
+  transitivité.
+
 \item [\textbf{Causal tree~\cite{grishchenko2010deep} :}] caractérise
   explicitement les relations causales grâce à une réprésentation sous forme
   d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la
@@ -88,7 +111,8 @@ dégradations de performances :
   de rendre les \TODO{consensus} possibles. \TODO{moar}
 \end{itemize}
 
-
+La section suivante présente une famille de structures pour séquences dont le
+bon fonctionnemement ne requière pas de pierres tombales (\TODO{Treedoc\ldots}).
 
 %%% Local Variables:
 %%% mode: latex
