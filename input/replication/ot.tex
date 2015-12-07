@@ -1,0 +1,55 @@
+
+\section{Transformés opérationnels}
+
+Les approches à transformés opérationnels~\cite{sun1998operational,
+  sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
+champs d'applications tels que l'édition de texte, l'édition d'images etc. Dans
+le cadre de l'édition de texte, en plus des usuelles opérations d'insertion et
+de suppression, OT founit des opérations ciblant les chaînes de caractères
+telles que le déplacement, le couper -- coller, etc. Toutefois, l'analyse de
+correction nécessite d'examiner chaque paire d'opérations ainsi que leurs
+paramètres. En conséquence, lors de l'écriture du papier
+\cite{imine2003proving}, peu d'approches étaient réellement correctes. De plus,
+cette classe d'approches peut être divisé en deux sous-classes: les approches
+centralisées et les approches décentralisées. Les premières réarrangent les
+opérations sur un serveur central~\cite{nichols1995high} afin de faciliter la
+convergence. Toutefois, la topologie elle-même implique un point individuel de
+défaillance, des problèmes de confidentialité, des problèmes d'intelligence
+économique, des problèmes de censure, et enfin, de passage à l'échelle. Les
+approches décentralisées~\cite{sun2009contextbased}, quant à elle, nécessitent
+un vecteur de version afin d'identifier les contextes de génération des
+opérations reçues. Elles transforment les arguments de l'opération reçue par
+rapport aux opérations concurrentes dans le but d'exécuter de manière cohérente
+l'opération sans avoir à défaire et réexecuter ces opérations. De ce fait, bien
+que l'exécution locale d'une opération soit très efficace, l'exécution des
+opérations reçues est très coûteuse en cas de concurrence. Ainsi, confiné aux
+environnements maîtrisés, OT reste efficace~\cite{mehdi2014merging}.
+
+\begin{figure}
+  \centering
+  \input{./input/replication/otexample.tex}
+  \caption{\label{seq:fig:otexample}Exemple de transformé opérationnel
+    garantissant la convergence lors d'opérations concurrentes. L'opération de
+    suppression des 3 premiers caractères sur la copie 3 (RTY) est transformée
+    afin de supprimer les 3 caractères à l'index 3 sur les autres copies.}
+\end{figure}
+
+La figure~\ref{seq:fig:otexample} illustre le principe de fonctionnement des
+approches basées sur les transformés opérationnels. Dans ce scenario, les copies
+sont toutes initialisées avec la séquence 'RTY'. Ensuite, tandis que la copie 1
+insère les 3 caractères 'QWE' en tête de la séquence pour obtenir 'QWERTY', la
+copie 3 supprime ses trois caractères pour obtenir la séquence vide. Avant la
+dissémination de ces opérations, les copies ne sont pas identiques. Les copies
+1, 2, et 3 ont respectivement les séquences [QWERTY], [RTY], []. Lorsque la
+copie 1 réçoit l'opération de suppression, elle détecte que cette dernière est
+en concurrence avec des opérations déjà intégrées, en l'occurence,
+$insert(QWE,\,0)$. Son objectif est alors de déterminer l'impact que cette
+opération concurrente a eu sur l'opération réçue afin d'en adapter les
+arguments. Ici, l'insertion a décalé la séquence RTY de 3 positions vers la
+droite. Par conséquent, La suppression, de part sa position, est elle aussi
+décalée de 3 positions vers la droite. La résultat de la transformation est
+$delete(3,\,3)$.  La copie 3, lorsqu'elle réçoit l'opération d'insertion,
+detecte elle aussi que cette dernière est concurrente. Toutefois, la
+transformation est sans effet sur ses arguments. La copie 2, selon l'ordre de
+réception, se comporte comme la copie 1 ou la copie 3. À terme, les trois copies
+convergent vers une séquence identique 'QWE'.

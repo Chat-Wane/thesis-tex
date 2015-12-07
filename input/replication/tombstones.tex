@@ -1,0 +1,96 @@
+
+
+\section{Pierres tombales}
+
+Les approches utilisant des pierres tombales~\cite{ahmed2011evaluating,
+  conway2014language, grishchenko2010deep, oster2006data,
+  preguica2009commutative, roh2011replicated, weiss2007wooki, wu2010partial,
+  yu2012stringwise} se caractérisent par la manière dont les suppressions sont
+traitées. En effet, lors de l'opération de suppression, ces approches marquent
+simplement les éléments supprimés afin de les cacher à l'utilisateur. Bien que
+supprimées, ces pierres tombales existent toujours dans la structure
+représentant la séquence et continuent d'impacter sur les performances.
+
+\begin{itemize}
+\item [\textbf{WOOT~\cite{oster2006data} :}] le premier représentant historique
+  des CRDTs pour séquences suivit par deux extensions
+  \textbf{WOOTO~\cite{weiss2007wooki}} et
+  \textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
+  identifiant référence les identifiants voisins à l'insertion. Rassemblés, les
+  identifiants peuvent être ordonnés grâce à un diagramme de Hasse
+  (\REF). Toutefois, cet ordonnancement requière des deux bornes adjacentes
+  qu'elles soient déjà intégrées et toujours présentes, d'où les suppressions
+  réelles impossibles.
+\item [\textbf{Causal tree~\cite{grishchenko2010deep} :}] caractérise
+  explicitement les relations causales grâce à une réprésentation sous forme
+  d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la
+  dernière opération observée. En parcourant l'arbre et en appliquant les
+  opérations, la séquence peut être retrouvée. Toutefois, les identifiants sont
+  des horloges vectorielles (\emph{vector clock}) dont la taille est prohibitive
+  (\REF). De plus, il est nécessaire de conserver tous les noeuds de cet arbre
+  causal au cas où une opération y ferait référence.
+\item [\textbf{Partial persistent sequence~\cite{wu2010partial} :}] definit les
+  identifiants dans l'ensemble des nombres rationnels auxquel est ajoutée une
+  limite quant à leur précision. Hélas, cette limite contraint la taille du
+  document maximale. \TODO{Moar?}. \TODO{Maybe falls in the other category.}
+\item [\textbf{Replicated growable array~\cite{roh2011replicated} :}] représente
+  la séquence sous forme de liste supportant les opérations concurrentes. Une
+  table de hachage apporte un accès rapide aux éléments grâce à leurs
+  identifiants. Les éléments incluent une référence au voisin qu'ils précèdent
+  lors de leur insertion. Toutefois, pour ne jamais briser la chaine ainsi
+  construite, les éléments supprimés restes présents indéfinitivement mais
+  cachés de l'utilisateur. \TODO{Double check.}
+\item [\textbf{String-wise~\cite{yu2012stringwise} :}] cible principalement les
+  chaines de caractères pouvant être subdivisées lors d'opérations. Les
+  identifiants référencent alors les chaines adjacentes à l'insertion ainsi que
+  les autres éléments de la chaines si subdivision il y a. De la même manière
+  que pour les approches précédentes, les références rendent les suppressions
+  réelles impossibles.
+\item [\textbf{DiCE~\cite{conway2014language} :}] concentre principalement ses
+  efforts sur les garanties de \TODO{\emph{confluence}} de la séquence. Chaque
+  identifiant référence le voisin qu'il précède à l'insertion. L'ordre des
+  éléments est alors fonction de ces relations de positionnement relatif, et de
+  causalité.
+\end{itemize}
+
+Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
+éléments de séquences répliquées, toutes ces approches s'avèrent pratiques
+lorsque l'historique des opérations doit être conservé. Par exemple, dans le
+cadre de l'encyclopédie \emph{Wikipédia}, conserver toutes les modifications
+éffectuées permet de recouvrer une version vierge de vandalisme; dans le cadre
+de \emph{Git}, il permet de recouvrer une version du code potentiellement sans
+erreurs etc. Malheureusement, ces structures grandissent au moins linéairement
+comparativement au nombre d'opérations effectuées sur la séquence. Cela devient
+paradoxalement problématique, par exemple, lors de vandalisme où même le contenu
+indésirable est conservé indéfinitivement. Survient alors le frustrant constat
+d'avoir à stocker un fichier dont le poid ne reflète pas le contenu visible. De
+plus, les éléments cachés s'accumulent et dégradent \TODO{continuellement} les
+performances du système.
+
+Lorsque conserver l'historique ne constitue pas une contrainte, purger la
+structure de données des éléments cachés constitue une solution potentielle aux
+dégradations de performances :
+
+\begin{itemize}
+\item [\textbf{ramasse-miètes :}] permet de nettoyer une structure de données en
+  vidant de la mémoire les objets qui ne sont plus accessibles par le
+  programme. Le contexte \textbf{réparti} étend le cadre du programme en
+  considérant le local et le distant. Ainsi, supprimer réellement un élément de
+  la séquence revient à s'interroger : \emph{Est-ce que
+    \begin{inparaenum}[(i)]
+    \item toutes les répliques ont supprimé l'élément et
+    \item est-ce que tous les éléments référençant l'élément supprimé ont été
+      intégré localement?
+    \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une
+  réponse à ces deux questions. D'autant plus lorsque les possesseurs de
+  réplique ne sont pas perpétuellement joignables.
+\item [\textbf{core-nebula :}] propose de contraindre la topologie réseau afin
+  de rendre les \TODO{consensus} possibles. \TODO{moar}
+\end{itemize}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
