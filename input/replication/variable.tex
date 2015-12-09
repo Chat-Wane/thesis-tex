@@ -161,7 +161,7 @@ d'allocation efficace.
   \begin{equation}
     \langle
     \alpha ,\,
-    [p_1.p_2\ldots p_k],\,
+    \DARKBLUE{[p_1.p_2\ldots p_k]},\,
     [\langle s_1,\,c_1 \rangle. \langle s_2,\,c_2\rangle \ldots \langle s_k, c_k\rangle ]
     \rangle
   \end{equation}
@@ -228,7 +228,13 @@ d'allocation efficace.
   effectuées sur la séquence. N'étant factorisé en aucune manière, la séquence
   possède une complexité spatiale \textbf{quadratique} $\mathcal{O}(I^2)$.
 
-\item [\textbf{Logoot split~\cite{mehdi2014merging} :}]
+\item [\textbf{Logoot split~\cite{mehdi2014merging} :}] étend Logoot lui offrant
+  la possibilité d'adapter la granularité de l'élément ciblé. Bien que tous les
+  exemples précédent fassent mention de caractères comme éléments de la
+  séquence, Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à
+  la section etc. Cette extension prend pour granularité la chaine de caractère
+  avec la liberté de la séparer si besoin est. \TODO{Comme string-wise.}
+
 \item [\textbf{Treedoc~\cite{shapiro2011comprehensive} :}]
 \end{itemize}
 
