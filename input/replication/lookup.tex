@@ -1,0 +1,48 @@
+\clearpage 
+
+\section{indeOf}
+
+\begin{wrapfigure}{r}{0.6\textwidth}
+  \vspace{-35pt} %% (ugly)
+  \begin{minipage}[t]{0.6\textwidth}
+    \begin{algorithm}[H]
+      \input{input/replication/indexofalgo.tex}
+      \caption{\label{repl:algo:indexof} indexOf.}
+    \end{algorithm}
+  \end{minipage}
+  \vspace{-15pt}
+\end{wrapfigure}
+
+L'algorithme~\ref{repl:algo:indexof} présente le fonctionnement de la fonction
+destinée à retourner l'indice dans la séquence d'un identifiant. Elle est
+primordiale afin d'éffectuer la liaison entre la structure de donnée répliquée
+et la vision accordée à l'utilisateur. Celle-ci est divisée en trois :
+\begin{inparaenum}[(i)]
+\item La fonction \textsc{getIndexesOf} retourne les indices successifs dans les
+  listes triées constituants les fils des nœuds de l'arbre. Celle-ci utilise la
+  fonction \textsc{binaryIndexOf} possédant un compléxité temporelle
+  logarithmique comparée à la taille du tableau trié parcouru.
+\item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
+  séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
+  branches, les noeuds sauvegardent le nombre de sous-branches qu'ils possèdent.
+  La ligne~\ref{repl:line:optimization} définit la façon dont l'arbre est
+  parcouru. Un optimisation consiste à parcourir l'arbre à partir de la borne la
+  plus proche de l'indice à la profondeur concernée.
+\item La fonction \textsc{indexOf} est composées des deux fonctions
+  susmentionnées.
+\end{inparaenum}
+
+\clearpage
+
+\section{get}
+
+\begin{wrapfigure}{r}{0.6\textwidth}
+  \vspace{-35pt} %% (ugly)
+  \begin{minipage}[t]{0.6\textwidth}
+    \begin{algorithm}[H]
+      \input{input/replication/getalgo.tex}
+      \caption{\label{repl:algo:get} get.}
+    \end{algorithm}
+  \end{minipage}
+  \vspace{-15pt}
+\end{wrapfigure}

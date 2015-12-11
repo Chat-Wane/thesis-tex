@@ -1,0 +1,54 @@
+
+\footnotesize
+\algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
+
+\newcommand{\comment}[1]{$\rhd$ #1}
+
+\newcommand{\LINEFOR}[2]{%
+  \algorithmicfor\ {#1}\ \algorithmicdo\ {#2} %
+}
+
+\newcommand{\LINEIFTHEN}[2]{%
+  \algorithmicif\ {#1}\ \algorithmicthen\ {#2} %
+}
+
+\newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
+
+\begin{algorithmic}[1]
+  \Function{getIndexesOf}{$t \in \mathcal{T}$, $i \in \mathcal{I}$}{$\, \rightarrow \mathbb{N}^+$}
+  \State \textbf{let} $[hd\, |\, tl] \leftarrow i$;
+  \State \textbf{let} $\langle \_,\, \_,\, children \rangle \leftarrow t$;
+  \State \textbf{let} $index \leftarrow \DARKBLUE{\textsc{binaryIndexOf}}(children,\, hd)$;
+  \If{$(index < 0 \wedge |tl| > 0)$}
+  \State \Return $[index\, |\, \textsc{getIndexOf}(children[index],\,tl)]$;
+  \Else
+  \State \Return $[index]$;
+  \EndIf
+  \EndFunction
+
+  \Statex
+
+  \Function{getSum}{$t \in \mathcal{T}$, $indexes \in \mathbb{N}^+$}{$\, \rightarrow \mathbb{N}$}
+  \State \textbf{let} $[hd\, |\, tl] \leftarrow indexes$;
+  \State \textbf{let} $\langle \_,\, \_,\, children \rangle \leftarrow t$;
+  \State \textbf{let} $sum \leftarrow 0$;
+  \State \LINEIFTHEN{$(|tl|>0)$}{$sum \leftarrow \textsc{getSum}(children[hd],\,tl)$;}
+  \For{\DARKBLUE{$i$ \textbf{from} 0 \textbf{to} $(hd-1)$}}\label{repl:line:optimization}
+  \State \textbf{let} $\langle elem,\,count,\,\_ \rangle \leftarrow children[i]$;
+  \State \LINEIFTHEN{$(elem)$}{$sum = sum + 1$;}
+  \State $sum = sum + count$;
+  \EndFor
+  \State \Return $sum$;
+  \EndFunction
+
+  \Statex
+
+  \Function{\DARKBLUE{getIndex}}{\DARKBLUE{$t \in \mathcal{T}$, $i \in \mathcal{I}$}}{\DARKBLUE{$\, \rightarrow \mathbb{N}$}}
+  \State \textbf{let} $indexes \leftarrow \textsc{getIndexesOf}(t,\,i)$;
+  \State \LINEIFTHEN{$(indexes[indexes-1]<0)$}{\Return $-1$;}
+  \State \textbf{let} $\langle elem,\, \_,\,\_ \rangle \leftarrow t$;
+  \State \textbf{let} $index \leftarrow \textsc{getSum}(t,\,indexes)$;
+  \State \LINEIFTHEN{$(elem)$}{$index = index + 1$;}
+  \State \Return $index$;
+  \EndFunction
+\end{algorithmic}
