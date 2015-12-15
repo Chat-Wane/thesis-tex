@@ -1,0 +1,46 @@
+
+\footnotesize
+\algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
+
+\newcommand{\comment}[1]{$\rhd$ #1}
+
+\newcommand{\LINEFOR}[2]{%
+  \algorithmicfor\ {#1}\ \algorithmicdo\ {#2} %
+}
+
+\newcommand{\LINEIFTHEN}[2]{%
+  \algorithmicif\ {#1}\ \algorithmicthen\ {#2} %
+}
+
+\newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
+
+\begin{algorithmic}[1]
+  \Function{leftmostBranch}{$t \in \mathcal{T}$}{$\, \rightarrow \mathcal{I}$}
+  \State \textbf{let} $\langle \_,\, path,\, \_\, children \rangle \leftarrow t$;
+  \If {$(|children|=0)$}
+  \State \Return t
+  \Else
+  \State \Return []
+  \EndIf
+  \EndFunction
+
+  \Function{sumFromLeft}{$t \in \mathcal{T}$, $index \in \mathbb{N}$, $id \in \mathcal{I}$}{$\, \rightarrow \mathcal{I}$}
+  \If{$(index = 0)$}
+  \State \Return $[id\, |\, \textsc{leftmostBranch}(t)]$;
+  \Else
+  \State \textbf{let} $i \leftarrow 0$;
+  \State \textbf{let} $\langle \_,\, \_,\, children \rangle \leftarrow t$;
+  \State \textbf{let} $\langle elem,\, count,\, \_ \leftarrow children[i]$;
+  \While {$(index+children)$}
+  \State meow
+  \EndWhile
+  \EndIf
+  \EndFunction
+
+  \Statex
+
+  \Function{get}{$index \in \mathbb{N}$}{$\, \rightarrow \mathcal{I}$}
+  \State fefef
+  \EndFunction
+
+\end{algorithmic}

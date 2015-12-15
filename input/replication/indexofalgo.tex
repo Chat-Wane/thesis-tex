@@ -17,7 +17,7 @@
 \begin{algorithmic}[1]
   \Function{getIndexesOf}{$t \in \mathcal{T}$, $i \in \mathcal{I}$}{$\, \rightarrow \mathbb{N}^+$}
   \State \textbf{let} $[hd\, |\, tl] \leftarrow i$;
-  \State \textbf{let} $\langle \_,\, \_,\, children \rangle \leftarrow t$;
+  \State \textbf{let} $\langle \_,\, \_,\, \_,\, children \rangle \leftarrow t$;
   \State \textbf{let} $index \leftarrow \DARKBLUE{\textsc{binaryIndexOf}}(children,\, hd)$;
   \If{$(index < 0 \wedge |tl| > 0)$}
   \State \Return $[index\, |\, \textsc{getIndexOf}(children[index],\,tl)]$;
@@ -30,11 +30,11 @@
 
   \Function{getSum}{$t \in \mathcal{T}$, $indexes \in \mathbb{N}^+$}{$\, \rightarrow \mathbb{N}$}
   \State \textbf{let} $[hd\, |\, tl] \leftarrow indexes$;
-  \State \textbf{let} $\langle \_,\, \_,\, children \rangle \leftarrow t$;
+  \State \textbf{let} $\langle \_,\, \_, \, \_,\, children \rangle \leftarrow t$;
   \State \textbf{let} $sum \leftarrow 0$;
   \State \LINEIFTHEN{$(|tl|>0)$}{$sum \leftarrow \textsc{getSum}(children[hd],\,tl)$;}
   \For{\DARKBLUE{$i$ \textbf{from} 0 \textbf{to} $(hd-1)$}}\label{repl:line:optimization}
-  \State \textbf{let} $\langle elem,\,count,\,\_ \rangle \leftarrow children[i]$;
+  \State \textbf{let} $\langle elem,\, \_,\, count,\,\_ \rangle \leftarrow children[i]$;
   \State \LINEIFTHEN{$(elem)$}{$sum = sum + 1$;}
   \State $sum = sum + count$;
   \EndFor
@@ -46,7 +46,7 @@
   \Function{\DARKBLUE{getIndex}}{\DARKBLUE{$t \in \mathcal{T}$, $i \in \mathcal{I}$}}{\DARKBLUE{$\, \rightarrow \mathbb{N}$}}
   \State \textbf{let} $indexes \leftarrow \textsc{getIndexesOf}(t,\,i)$;
   \State \LINEIFTHEN{$(indexes[indexes-1]<0)$}{\Return $-1$;}
-  \State \textbf{let} $\langle elem,\, \_,\,\_ \rangle \leftarrow t$;
+  \State \textbf{let} $\langle elem,\, \_,\, \_,\,\_ \rangle \leftarrow t$;
   \State \textbf{let} $index \leftarrow \textsc{getSum}(t,\,indexes)$;
   \State \LINEIFTHEN{$(elem)$}{$index = index + 1$;}
   \State \Return $index$;
