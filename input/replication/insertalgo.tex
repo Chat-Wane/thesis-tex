@@ -27,39 +27,24 @@
 \newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
 
 \begin{algorithmic}[1]
-  \Function{leftmostBranch}{$t \in \mathcal{T}$}{$\, \rightarrow \mathcal{I}$}
-  \State \textbf{let} $\langle \_,\, path,\, \_,\, children \rangle \leftarrow t$;
-  \If {$(|children|=0)$}
-  \State \Return t;
+  \Function{subInsert}
+  {$t \in \mathcal{T},\, indexes \in \mathbb{N}^+,\, i\in\mathcal{I}$}
+  {$\, \rightarrow \mathcal{T}$}
+  \LET {[index \PIPE indexes]}{indexes};
+  \LET {[path \PIPE i]}{i};
+  \LET {\langle \_,\, \_,\, count,\, children\rangle}{t};
+  \If {$(index<0)$}
+  \State \TODO{TODO} 
   \Else
-  \State \Return [$path \,|\, \textsc{leftmostBranch}(children[0])$];
   \EndIf
   \EndFunction
 
   \Statex
 
-  \Function{searchFromLeft}{$t \in \mathcal{T}$, $index \in \mathbb{N}$}{$\, \rightarrow \mathcal{I}$}
-  \If{$(index = 0)$}
-  \State \Return $\textsc{leftmostBranch}(t)$;
-  \Else
-  \LET{i}{0};
-  \LET {\langle elem,\, path,\, \_,\, children \rangle}{t};
-  \State \LINEIFTHEN{$(elem)$}{$index = index + 1$;}
-  \LET {\langle elem,\, \_,\, count,\, cOfC \rangle}{children[i]};
-  \While {$(index+count)<0$}
-  \State \DARKBLUE{$index \leftarrow index + count$}; \label{repl:line:lefttoright}
-  \State \LINEIFTHEN {$(elem)$} {$index = index + 1$;}
-  \State $i = i+1$;
-  \State $\langle elem,\, \_,\, count,\, cOfC \rangle \leftarrow children[i]$;
-  \EndWhile
-  \State \Return $[path \PIPE \textsc{searchFromLeft}(cOfC[i],\, index)]$;
-  \EndIf
-  \EndFunction
-
-  \Statex
-
-  \Function{get}{$t \in \mathcal{T},\, index \in \mathbb{N}$}{$\, \rightarrow \mathcal{I}$}
-  \State \Return $\textsc{searchFromLeft}(t,\, \DARKBLUE{-index})$;
+  \Function{insert}
+  {$t \in \mathcal{T},\, i \in \mathcal{I}$}
+  {$\, \rightarrow \mathcal{T}$}
+  \State \Return $\textsc{subInsert}(t,\,\textsc{getIndexesOf}(t,\, i),\,i)$;
   \EndFunction
 
 \end{algorithmic}
