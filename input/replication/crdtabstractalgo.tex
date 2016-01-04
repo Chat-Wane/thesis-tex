@@ -11,7 +11,8 @@
 \algblockdefx[local]{local}{endLocal}
 [0] {\textbf{LOCAL UPDATE:}}
 
-\algblockdefx[received]{received}{endReceived}
+\algsetblockdefx[received]{received}{endReceived}
+{65535}{}
 [0] {\textbf{RECEIVED UPDATE:}}
 
 \algblockdefx[onInsert]{onLocal}{endOnLocal}
@@ -41,11 +42,11 @@
   
   \local
     \onLocal
-    \State \textbf{let} $path \leftarrow \DARKBLUE{allocPath(p.P,\,q.P)}$; \label{line:allocpath}
-    \State \textbf{let} $dis \leftarrow allocDis(p,\, path,\, q)$; \label{line:allocdes}
-    \State $broadcast('insert',\, \langle path,\, \alpha,\, dis \rangle)$;
+    \State \textbf{let} $path \leftarrow \DARKBLUE{\textsc{allocPath}(p.P,\,q.P)}$; \label{line:allocpath}
+    \State \textbf{let} $dis \leftarrow \textsc{allocDis}(p,\, path,\, q)$; \label{line:allocdes}
+    \State $\textsc{broadcast}('insert',\, \langle path,\, \alpha,\, dis \rangle)$;
     \endOnLocal
-    \INDSTATE $broadcast('delete',\,i)$;
+    \INDSTATE $\textsc{broadcast}('delete',\,i)$;
   \endLocal
   
   \received
@@ -53,6 +54,5 @@
     \State $\mathcal{T} \leftarrow \mathcal{T} \cup i$;
     \endOnRemote
     \INDSTATE $\mathcal{T} \leftarrow \mathcal{T}\, \backslash\, i$; 
-  \endReceived
   
 \end{algorithmic}

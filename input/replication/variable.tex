@@ -158,30 +158,34 @@ d'allocation efficace.
   désambiguateur associé. Ce dernier est composé d'un identifiant unique de
   réplique ainsi qu'un compteur incrémenté à chaque opération. Un identifiant
   est donc :
-  \begin{equation}
+  \begin{equation*}
     \langle
     \alpha ,\,
     \DARKBLUE{[p_1.p_2\ldots p_k]},\,
     [\langle s_1,\,c_1 \rangle. \langle s_2,\,c_2\rangle \ldots \langle s_k, c_k\rangle ]
     \rangle
-  \end{equation}
+  \end{equation*}
   où $\alpha$ est la lettre insérée, $k$ la profondeur de l'identifiant,
   $p_{1\ldots k}$ le chemin dans l'arbre,
   $\langle s_{1\ldots k},\, c_{1\ldots k}\rangle$ les désambiguateurs
-  associées. L'ordre total utilisé pour recouvrer la séquence est l'ordre
-  lexicographique tel que $i_1 < i_2$ si et seulement si :
-  \begin{equation}
-    \begin{multlined}
-      \exists (m > 0)(\forall i < m)\\
-      (i_1.p_i = i_2.p_i \wedge i_1.s_i = i_2.s_i \wedge i_1.c_i = i_2.c_i) \wedge\\
-      ((i_1.p_m < i_2.p_m) \vee\\ (i_1.p_m = i_2.p_m \wedge i_1.s_m < i_2.s_m)
-      \vee\\ (i_1.p_m = i_2.p_m \wedge i_1.s_m = i_2.s_m \wedge i_1.c_m <
-      i_2.c_m))
-    \end{multlined}
-  \end{equation}
+  associés. Soit une position $\ell_i$ constituée du triplet
+  $\langle p_i,\,s_i,\,c_i\rangle$, et un ordre total parmis ceux-ci:
+  \begin{align*}
+    \ell_i < \ell_j \iff & (p_i < p_j) \vee \\
+                         & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
+                         & ((p_i = p_j) \wedge (s_i = s_j) \wedge (c_i < c_j)) \\
+    \ell_i = \ell_j \iff & \neg (\ell_i < \ell_j) \wedge \neg (\ell_j < \ell_i)
+  \end{align*}
+  L'ordre total utilisé pour recouvrer la séquence est l'ordre lexicographique
+  tel que $i_1 < i_2$ si et seulement si :
+  \begin{align*}
+    i_i < i_j \iff & \exists (m > 0)(\forall n < m) (\ell^i_n = \ell^j_n) \wedge (\ell^i_m \
+                     < \ell^j_m) \\
+    i_i = i_j \iff & (\forall n) \ell^i_n = \ell^j_n
+  \end{align*}
   En d'autres termes, l'identifiant $i_1$ précède $i_2$ si et seulement si le
   premier élément de $i_1$ qui les distingues est inférieur. Par ailleurs, par
-  défaut $\langle i.p_d, i.s_d, i.c_d\rangle = \langle 0,\,\_,\,0 \rangle$
+  défaut $\ell_d = \langle 0,\,\_,\,0 \rangle$
   lorsque $d > k$. Les identifiants étant uniques, il existe toujours un tel
   $m$.
 
@@ -235,7 +239,12 @@ d'allocation efficace.
   la section etc. Cette extension prend pour granularité la chaine de caractère
   avec la liberté de la séparer si besoin est. \TODO{Comme string-wise.}
 
-\item [\textbf{Treedoc~\cite{shapiro2011comprehensive} :}]
+\item [\textbf{Treedoc~\cite{shapiro2011comprehensive} :}] représente le
+  document sous forme d'arbre binaire avec parcours infixe.  Ainsi, si l'on
+  considère un élément 'W' dont le chemin est [0], alors un élément 'Q' dont le
+  chemin est [0.0] précède 'W', et un élément 'E' dont le chemin est [0.1]
+  succède 'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à
+    gauche de}, et suffixer le chemin d'un 1 signifie \emph{à droite de}.
 \end{itemize}
 
 

@@ -81,25 +81,26 @@ Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
 lorsque l'historique des opérations doit être conservé. Par exemple, dans le
 cadre de l'encyclopédie \emph{Wikipédia}, conserver toutes les modifications
 éffectuées permet de recouvrer une version vierge de vandalisme; dans le cadre
-de \emph{Git}, il permet de recouvrer une version du code potentiellement sans
-erreurs etc. Malheureusement, ces structures grandissent au moins linéairement
-comparativement au nombre d'opérations effectuées sur la séquence. Cela devient
-paradoxalement problématique, par exemple, lors de vandalisme où même le contenu
-indésirable est conservé indéfinitivement. Survient alors le frustrant constat
-d'avoir à stocker un fichier dont le poid ne reflète pas le contenu visible. De
-plus, les éléments cachés s'accumulent et dégradent \TODO{continuellement} les
-performances du système.
+du gestionnaire de versions \emph{Git}, il permet de recouvrer une version du
+code potentiellement sans erreurs etc. Malheureusement, ces structures
+grandissent au moins linéairement comparativement au nombre d'opérations
+effectuées sur la séquence. Cela devient paradoxalement problématique, par
+exemple, lors de vandalisme où même le contenu indésirable est conservé
+indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
+fichier dont le poid ne reflète pas le contenu visible. De plus, les éléments
+cachés s'accumulent et dégradent \TODO{continuellement} les performances du
+système.
 
 Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés constitue une solution potentielle aux
 dégradations de performances :
 
 \begin{itemize}
-\item [\textbf{ramasse-miètes (\REF) :}] permet de nettoyer une structure de données en
-  vidant de la mémoire les objets qui ne sont plus accessibles par le
-  programme. Le contexte \textbf{réparti} étend le cadre du programme en
-  considérant le local et le distant. Ainsi, supprimer réellement un élément de
-  la séquence revient à s'interroger : \emph{Est-ce que
+\item [\textbf{ramasse-miètes~\cite{abdullahi1998garbage} :}] permet de nettoyer
+  une structure de données en vidant de la mémoire les objets qui ne sont plus
+  accessibles par le programme. Le contexte \textbf{réparti} étend le cadre du
+  programme en considérant le local et le distant. Ainsi, supprimer réellement
+  un élément de la séquence revient à s'interroger : \emph{Est-ce que
     \begin{inparaenum}[(i)]
     \item toutes les répliques ont supprimé l'élément et
     \item est-ce que tous les éléments référençant l'élément supprimé ont été
@@ -107,8 +108,13 @@ dégradations de performances :
     \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une
   réponse à ces deux questions. D'autant plus lorsque les possesseurs de
   réplique ne sont pas perpétuellement joignables.
-\item [\textbf{core-nebula (\REF) :}] propose de contraindre la topologie réseau afin
-  de rendre les \TODO{consensus} possibles. \TODO{moar}
+\item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
+  topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
+  coeur décisionnel prend en charge les choix de suppression réelle des objets.
+  Ce coeur décisionnel étant restraint à un sous-ensemble des membres du réseaux
+  étant toujours accessibles, les décisions peuvent alors être prises de manière
+  fiable. Le reste des participants se conforme alors aux décisions prises par
+  le coeur \TODO{au risque de perdre certaines de leurs modifications}.
 \end{itemize}
 
 La section suivante présente une famille de structures pour séquences dont le
