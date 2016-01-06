@@ -19,11 +19,27 @@
   dépendent bénéficient à leur tour de cette adaptation. \TODO{Moar.}
 
 \item Afin de répondre à la question de recherche \textbf{QR B.}, nous nous
-  sommes interessé aux approches appartenant à la réplication optimiste. Nous
-  proposons \LSEQ qui \TODO{sucharge} les messages avec des metadonnées dont la
-  taille est bornée polylogarithmiquement par rapport à la taille du
-  document. \TODO{Moar.} Nous définissons les conditions sous lesquelles
-  s'appliquent cette borne et en fournissons la preuve.
+  sommes interessé aux approches appartenant à la réplication optimiste, i.e.,
+  un schema de réplication où le document partagé est copié chez chaque
+  utilisateur afin de fournir réactivité et disponibilité. Nous nous intéressons
+  particulièrement à un type de données pour séquences dont les opérations
+  commutent par nature, présentant l'avantage de supporter efficacement les
+  opérations concurrentes. Ces approches associent un identifiant unique et
+  immuable à chacun de leurs éléments. Nous proposons \LSEQ dont la taille des
+  identifiants est bornée polylogarithmiquement par rapport à la taille du
+  document. Nous définissons les conditions sous lesquelles s'appliquent cette
+  borne et en fournissons la preuve. Au travers de simulations, nous validons
+  \LSEQ et ses complexités.
+
+\item Afin de répondre à la question de recherche \textbf{QR.} dans son
+  ensemble, nous avons réunis les deux approches sus-mentionnées dans un éditeur
+  collaboratif décentralisé nommé \CRATE. Ce dernier fonctionne directement dans
+  les navigateurs web. Il permet l'édition de documents n'importe quand,
+  n'importe où, quel que soit le nombre d'auteurs, sans fournisseurs tiers. Nous
+  validons \CRATE aux travers d' expériences réunissant jusqu'à 600 éditeurs sur
+  le banc d'essai Grid'5000. Les résultats confirment le facteur multiplicatif
+  logarithmique de \SPRAY de messages de taille polylogarithmique grâce à \LSEQ.
+
 \end{itemize}
 
 %%% Local Variables:

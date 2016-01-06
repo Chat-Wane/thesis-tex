@@ -53,9 +53,19 @@
   suffisamment descriptifs pour réconstruire le même document indépendemment de
   l'auteur recevant le message.
   \begin{itemize}
-  \item [\textbf{QR B.}] \textbf{\TODO{Quelles structures de données et quelles
-        algorithmes utiliser dont les performances passent à l'échelle?}}
+  \item [\textbf{QR B.}] \textbf{Quelles structures de données et quelles
+      algorithmes utiliser dont les performances passent à l'échelle?}
   \end{itemize}
+  En effet, les auteurs étant distants les uns des autres, les modifications ne
+  sont pas reçues et traitées instantanéments par tous. De ce fait, l'ordre
+  d'application des modifications peut différer parmis les participants. En
+  particulier les modifications concurrentes doivent être soigneusement
+  étudiées. Elles apparaissent lorsque deux auteurs effectuent une modification
+  sans avoir connaissance de celle de leur homologue. Puisqu'aucune ne précède
+  l'autre, elles peuvent être appliquées dans n'importe quel ordre. Toutefois,
+  les structures doivent toujours converger vers un état équivalent. Contraindre
+  l'ordre d'application des opérations s'avère hélas extrêmement coûteux.
+
 \end{itemize}
 
 %%% Local Variables:
