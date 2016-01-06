@@ -6,8 +6,25 @@ Le reste du manuscrit est découpé en 3 parties :
 \begin{itemize}
 \item [\textbf{La première partie :}] décrit le protocole d'échantillonnage
   aléatoire de pairs \SPRAY.
-\item [\textbf{La seconde partie :}] meow
-\item [\textbf{La troisième partie :}] meow
+\item [\textbf{La seconde partie :}] décrit la structure de données répliquée
+  représentant le document partagé. Cette partie est composée des
+  chapitres~\ref{repl:chap:replication},
+  ~\ref{repl:chap:crdts},~\ref{repl:chap:sequences},~\ref{repl:chap:lseq}. Le
+  chapitre~\ref{repl:chap:replication} présente les deux méthodes de réplication
+  de données. Le chapitre~\ref{repl:chap:crdts} présente un type de données
+  appartenant à la réplication dîte optimiste. Ce type de données à pour but
+  d'éviter la difficile tâche de résolution de conflits apparaissant lors
+  d'opérations concurrentes. Il en existe pour les compteurs, les ensembles, les
+  arbres etc. Le chapitre~\ref{repl:chap:sequences} s'intéresse particulièrement
+  à ce type de données pour les séquences. Il en distingue deux familles : les
+  approches utilisant des 'pierres tombales' et les approches dont les
+  métadonnées sont de taille variable à la génération. Le
+  chapitre~\ref{repl:chap:lseq} s'attache à décrire \LSEQ, une stratégie
+  d'allocation de métadonnées dont la taille reste sous-linéaire par rapport à
+  la taille du document.
+\item [\textbf{La troisième partie :}] conclue ce manuscrit de thèse en
+  présentant \CRATE, un éditeur collaboratif décentralisé tournant dans les
+  navigateurs web. 
 \end{itemize}
 
 
