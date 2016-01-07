@@ -4,27 +4,45 @@
 Le reste du manuscrit est découpé en 3 parties :
 
 \begin{itemize}
-\item [\textbf{La première partie :}] décrit le protocole d'échantillonnage
-  aléatoire de pairs \SPRAY.
+\item [\textbf{La première partie :}] décrit le protocole réseau permettant de
+  créer une session d'édition. Elle est composée des
+  chapitres~\ref{diff:chap:rps},~\ref{diff:chap:spray}. Le
+  chapitre~\ref{diff:chap:rps} présente l'état de l'art de ces protocoles
+  d'échantillonnage aléatoire de pairs. Ceux-ci fournissent une vue partielle du
+  réseau à chaque membre laquelle peut être utilisée afin de communiquer à
+  l'ensemble du réseau. Nous en distinguons deux familles : La première fournit
+  des vues dont la taille est constante quelle que soit la taille du réseau, en
+  opposition à la seconde famille qui adapte la taille des vues en fonction du
+  réseau sans toutefois avoir de connaissances globales sur ce dernier. Le
+  chapitre~\ref{diff:chap:spray} décrit \SPRAY, un protocole d'échantillonnage
+  aléatoire de pairs appartenant à cette seconde famille. Les vues s'ajustent
+  automatiquement au logarithme de la taille du réseau.
 \item [\textbf{La seconde partie :}] décrit la structure de données répliquée
   représentant le document partagé. Cette partie est composée des
   chapitres~\ref{repl:chap:replication},
   ~\ref{repl:chap:crdts},~\ref{repl:chap:sequences},~\ref{repl:chap:lseq}. Le
   chapitre~\ref{repl:chap:replication} présente les deux méthodes de réplication
   de données. Le chapitre~\ref{repl:chap:crdts} présente un type de données
-  appartenant à la réplication dîte optimiste. Ce type de données à pour but
-  d'éviter la difficile tâche de résolution de conflits apparaissant lors
-  d'opérations concurrentes. Il en existe pour les compteurs, les ensembles, les
-  arbres etc. Le chapitre~\ref{repl:chap:sequences} s'intéresse particulièrement
-  à ce type de données pour les séquences. Il en distingue deux familles : les
-  approches utilisant des 'pierres tombales' et les approches dont les
-  métadonnées sont de taille variable à la génération. Le
+  appartenant à la réplication dîte optimiste. Ce type de données a pour
+  objectif d'éviter la difficile tâche de résolution de conflits apparaissant
+  lors d'opérations concurrentes. Il en existe pour les compteurs, les
+  ensembles, les arbres etc. Le chapitre~\ref{repl:chap:sequences} s'intéresse
+  particulièrement à ce type de données pour les séquences. Il en distingue deux
+  familles : les approches utilisant des 'pierres tombales' et les approches
+  dont les métadonnées sont de taille variable à la génération. Le
   chapitre~\ref{repl:chap:lseq} s'attache à décrire \LSEQ, une stratégie
   d'allocation de métadonnées dont la taille reste sous-linéaire par rapport à
   la taille du document.
-\item [\textbf{La troisième partie :}] conclue ce manuscrit de thèse en
-  présentant \CRATE, un éditeur collaboratif décentralisé tournant dans les
-  navigateurs web. 
+\item [\textbf{La troisième partie :}] conclue ce manuscrit de thèse. Elle est
+  composé des
+  chapitres~\ref{conclu:chap:crate},~\ref{conclu:chap:conclusion}. Le
+  chapitre~\ref{conclu:chap:crate} présente \CRATE, un éditeur collaboratif
+  décentralisé tournant dans les navigateurs web. Profitant des propriétés de
+  \SPRAY et \LSEQ, \CRATE parvient à adapter le traffic généré par l'édition à
+  la taille de la session et à la taille du document. Le
+  chapitre~\ref{conclu:chap:conclusion} clot se manuscrit en décrivant les
+  perspectives ouvertes par ce type d'application ainsi que les défis qu'il
+  reste à relever.
 \end{itemize}
 
 
