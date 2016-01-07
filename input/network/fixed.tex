@@ -1,0 +1,30 @@
+
+
+\section{Taille fixe}
+
+Les protocoles d'échantillonnage aléatoire de pairs peuplant des vues dont la
+taille est constante possèdent un socle commun à savoir l'échanges périodiques
+de voisinages.
+
+\begin{itemize}
+\item [\textbf{\CYCLON :}] est un protocole où chaque noeud possède une vue
+  partielle dont chaque adresse logique est associée à un âge. Régulièrement,
+  les noeuds initient un mélange (\emph{shuffling}) avec leur voisin le plus
+  âgé. Si la communication est possible, le processus est amorcé et l'âge de
+  tous les voisins est incrémenté, sinon l'adresse est supprimée. Cela permet de
+  supprimer les noeuds considérés partis.
+
+  Lors de ce mélange, le noeud envoit un nombre prédéfinit de ses adresses
+  logiques au noeud choisit, en prenant soin de remplacer l'adresse de son
+  homologue par la sienne propre. Les adresses sont choisies aléatoirement. À la
+  reception, son vis-à-vis choisit un nombre d'adresses équivalent et les lui
+  envoie. Les deux noeuds intègrent alors l'ensemble qu'ils ont réçu. Lorsque
+  l'ensemble obtenu est trop grand pour la taille de vue partielle prédéfinie,
+  des adresses sont supprimées en conservant de préférence les adresses réçues.
+\item [\textbf{Newscast :}]
+\item [\textbf{Lpbcast :}]
+\item [\textbf{HyParView :}]
+\end{itemize}
+
+Afin d'adapter la taille de la vue partielle à la taille du réseau, il serait
+tentant d'utiliser un estimateur.

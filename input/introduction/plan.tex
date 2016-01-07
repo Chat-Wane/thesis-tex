@@ -6,15 +6,15 @@ Le reste du manuscrit est découpé en 3 parties :
 \begin{itemize}
 \item [\textbf{La première partie :}] décrit le protocole réseau permettant de
   créer une session d'édition. Elle est composée des
-  chapitres~\ref{diff:chap:rps},~\ref{diff:chap:spray}. Le
-  chapitre~\ref{diff:chap:rps} présente l'état de l'art de ces protocoles
+  chapitres~\ref{net:chap:rps},~\ref{net:chap:spray}. Le
+  chapitre~\ref{net:chap:rps} présente l'état de l'art de ces protocoles
   d'échantillonnage aléatoire de pairs. Ceux-ci fournissent une vue partielle du
   réseau à chaque membre laquelle peut être utilisée afin de communiquer à
   l'ensemble du réseau. Nous en distinguons deux familles : La première fournit
   des vues dont la taille est constante quelle que soit la taille du réseau, en
   opposition à la seconde famille qui adapte la taille des vues en fonction du
   réseau sans toutefois avoir de connaissances globales sur ce dernier. Le
-  chapitre~\ref{diff:chap:spray} décrit \SPRAY, un protocole d'échantillonnage
+  chapitre~\ref{net:chap:spray} décrit \SPRAY, un protocole d'échantillonnage
   aléatoire de pairs appartenant à cette seconde famille. Les vues s'ajustent
   automatiquement au logarithme de la taille du réseau.
 \item [\textbf{La seconde partie :}] décrit la structure de données répliquée
@@ -37,16 +37,14 @@ Le reste du manuscrit est découpé en 3 parties :
   composé des
   chapitres~\ref{conclu:chap:crate},~\ref{conclu:chap:conclusion}. Le
   chapitre~\ref{conclu:chap:crate} présente \CRATE, un éditeur collaboratif
-  décentralisé tournant dans les navigateurs web. Profitant des propriétés de
-  \SPRAY et \LSEQ, \CRATE parvient à adapter le traffic généré par l'édition à
-  la taille de la session et à la taille du document. Le
+  décentralisé tournant dans les navigateurs web grâce à l'apparition de la
+  recente technologie WebRTC~\cite{webrtc}. Profitant des propriétés de \SPRAY
+  et \LSEQ, \CRATE parvient à adapter le traffic généré par l'édition à la
+  taille de la session et à la taille du document. Le
   chapitre~\ref{conclu:chap:conclusion} clot se manuscrit en décrivant les
   perspectives ouvertes par ce type d'application ainsi que les défis qu'il
   reste à relever.
 \end{itemize}
-
-
-%% La partie ainsi que son sous-découpage.
 
 %%% Local Variables:
 %%% mode: latex

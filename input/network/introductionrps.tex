@@ -1,0 +1,51 @@
+
+\chapter{Échantillonnage aléatoire de pairs}
+\label{net:chap:rps}
+\minitoc
+
+\lettrine{L}e transfert de données d'une machine à une autre est un besoin
+ancien. Il se developpe rapidement sous l'impulsion du projet Arpanet qui
+deviendra plus tard la base de l'Internet. Initialement créé dans le but de
+connecter une machine à une autre, l'échelle évolue afin d'impliquer plusieurs
+machines communicant entre elles. Il s'agit alors d'un réseau de communication.
+
+Les machines d'un réseau sont adressables, i.e., grâce à une métadonnée, il est
+possible de retrouver la machine ciblé afin d'établir un canal de
+communication. Par exemple, une adresse IP (\emph{Internet Protocol}) permet de
+retrouver une machine de manière transparente : Les infrastructures
+sous-jacentes sur l'itinéraire entre les machines, tels que les routeurs, ne
+sont pas connues. Un réseau construit sur de telles adresses logiques est appelé
+réseau superposé (\emph{network overlay}). Un réseau superposé peut être
+construit sur un autre réseau superposé.
+
+Toutes sortes de réseaux superposés existent. Par exemple, si chaque machine
+possède un canal de communication avec chacunes des autres machines, alors la
+topologie correspond à celle d'un graphe complet. La progression quadratique du
+nombre d'arcs en fonction du nombre de noeuds empêche un tel système d'atteindre
+de grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
+qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
+direct d'un noeud. Le défi consiste alors à peupler ces vues avec les liens
+logiques selon les critères souhaités.
+
+Dans ce manuscrit, nous nous intéressons aux protocoles d'échantillonnage
+aléatoire de pairs dont l'objectif est de fournir à chaque machine une vue
+partielle peuplée d'adresses logiques réparties selon une loi uniforme. La
+topologie en résultant est proche de celle des graphes aléatoires. Ces graphes
+possèdent d'interessantes propriétés tels que la tolérence aux pannes --
+lorsqu'un noeud disparait soudainement le graphe reste connecté avec une forte
+probabilité -- un faible diamêtre, etc.
+
+Deux familles d'approches existent quant à la taille des vues partielles :
+\begin{itemize}
+\item [\textbf{Taille fixe :}] fixée lors de la configuration, la taille des
+  vues partielles ne change pas au cours du temps, même si la taille du réseau
+  est susceptible de fluctuer (cf. §\ref{net:sec:fixed}).
+\item [\textbf{Taille variable :}] les machines lorsqu'elles rejoignent le
+  réseau contribue à hauteur du logarithme de la taille du réseau
+  (cf. §\ref{net:sec:variable}).
+\end{itemize}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
