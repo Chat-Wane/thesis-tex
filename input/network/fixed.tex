@@ -7,20 +7,48 @@ taille est constante possèdent un socle commun à savoir l'échanges périodiqu
 de voisinages.
 
 \begin{itemize}
-\item [\textbf{\CYCLON :}] est un protocole où chaque noeud possède une vue
+\item [\textbf{\CYCLON :}] est un protocole où chaque nœud possède une vue
   partielle dont chaque adresse logique est associée à un âge. Régulièrement,
-  les noeuds initient un mélange (\emph{shuffling}) avec leur voisin le plus
+  les nœuds initient un mélange (\emph{shuffling}) avec leur voisin le plus
   âgé. Si la communication est possible, le processus est amorcé et l'âge de
   tous les voisins est incrémenté, sinon l'adresse est supprimée. Cela permet de
-  supprimer les noeuds considérés partis.
+  supprimer les nœuds considérés partis.
 
-  Lors de ce mélange, le noeud envoit un nombre prédéfinit de ses adresses
-  logiques au noeud choisit, en prenant soin de remplacer l'adresse de son
+  Lors de ce mélange, le nœud envoit un nombre prédéfinit de ses adresses
+  logiques au nœud choisit, en prenant soin de remplacer l'adresse de son
   homologue par la sienne propre. Les adresses sont choisies aléatoirement. À la
   reception, son vis-à-vis choisit un nombre d'adresses équivalent et les lui
-  envoie. Les deux noeuds intègrent alors l'ensemble qu'ils ont réçu. Lorsque
+  envoie. Les deux nœuds intègrent alors l'ensemble qu'ils ont réçu. Lorsque
   l'ensemble obtenu est trop grand pour la taille de vue partielle prédéfinie,
-  des adresses sont supprimées en conservant de préférence les adresses réçues.
+  des adresses sont supprimées en conservant de préférence les adresses réçues
+  et en supprimant les duplicats.
+  
+  \begin{figure}
+    \centering
+    \subfloat[Choix aléatoire des pairs dans \CYCLON.]
+    [\label{net:fig:cyclonexampleA} L'initiateur du mélange choisit d'envoyer $n_5$ et lui-même à son plus vieux voisin $n_2$. En retour, il lui propose $n_6$ et $n_7$.]
+    {\input{input/network/cyclonexampleA.tex}}
+    \hspace{35pt}
+    \subfloat[Établissement des connexions après le mélange dans \CYCLON.]
+    [\label{net:fig:cyclonexampleB} Les arcs sont échangés de part et d'autre.]
+    {\input{input/network/cyclonexampleB.tex}}
+    \caption{\label{net:fig:cyclonexample} Exemple de mélange dans \CYCLON. Pour
+      améliorer la lisibilité, seuls les vues partielles du $n_1$ et $n_2$ sont
+      explicitées.}
+  \end{figure}
+  
+  La figure~\ref{net:fig:cyclonexample} décrit un exemple de mélange initié par
+  le nœud $n_1$. Dans cet exemple, les vues partielles sont configurées pour
+  accueillir 4 arcs et en échanger 2 pendant les mélanges. La
+  figure~\ref{net:fig:cyclonexampleA} montre que $n_1$ choisit son plus vieux
+  voisin afin d'initier l'échange, à savoir $n_2$. Il incorpore dans l'échange
+  sa propre identité ainsi que celle d'un arc connu aléatoirement. Le nœud $n_2$
+  réçoit la demande de mélange et choisit 2 nœuds aléatoirement, ici $n_6$ et
+  $n_7$ qu'il envoit à son tour. La figure~\ref{net:fig:cyclonexampleB} montre
+  que les nœuds participants au mélange ont supprimé les arcs qu'ils ont envoyé
+  et ajouté ceux nouvellement reçu. En particulier, l'inversion de l'arc ayant
+  permi le mélange garantit que le graphe reste connexe.
+
 \item [\textbf{Newscast :}]
 \item [\textbf{Lpbcast :}]
 \item [\textbf{HyParView :}]

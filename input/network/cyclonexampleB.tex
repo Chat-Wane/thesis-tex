@@ -1,0 +1,33 @@
+\begin{tikzpicture}[scale=1.2]
+\newcommand\X{40pt}
+\newcommand\Y{25pt}
+
+
+\draw[fill=white]( 0*\X, -2*\Y) node{$n_1$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white]( 1*\X, -2*\Y) node{$n_2$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+
+
+\draw[fill=white](-1*\X, 0*\Y) node{$n_3$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white](-1*\X, -1*\Y) node{$n_4$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white](-1*\X, -3*\Y) node{$n_5$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+
+\draw[fill=white]( 2*\X, -0*\Y) node{$n_6$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white]( 2*\X, -1*\Y) node{$n_7$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white]( 2*\X, -3*\Y) node{$n_8$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+\draw[fill=white]( 2*\X, -4*\Y) node{$n_9$} +(5pt, 5pt) rectangle +(-5pt,-5pt);
+
+\draw[->] (-5+0*\X, -2*\Y) -- (5-1*\X, 0*\Y);
+\draw[->] (-5+0*\X, -2*\Y) -- (5-1*\X, -1*\Y);
+% \draw[->] (-5+0*\X, -2*\Y) -- (5-1*\X, -3*\Y);
+\draw[->, color=darkblue] (5+0*\X, 5-2*\Y) -- (-5+2*\X, 0*\Y);
+\draw[->, color=darkblue] (5+0*\X, 5-2*\Y) -- (-5+2*\X, -1*\Y);
+
+
+\draw[<-, darkblue] (5+0*\X, -2*\Y) -- (-5+1*\X, -2*\Y);
+
+\draw[->, color=darkblue] (-5+1*\X, -5-2*\Y) -- (5-1*\X, -3*\Y);
+% \draw[->] (5+1*\X, -2*\Y) -- (-5+2*\X, 0*\Y);
+% \draw[->] (5+1*\X, -2*\Y) -- (-5+2*\X, -1*\Y);
+\draw[->] (5+1*\X, -2*\Y) -- (-5+2*\X, -3*\Y);
+\draw[->] (5+1*\X, -2*\Y) -- (-5+2*\X, -4*\Y);
+\end{tikzpicture}
