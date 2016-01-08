@@ -18,11 +18,18 @@ sont pas connues. Un réseau construit sur de telles adresses logiques est appel
 réseau superposé (\emph{network overlay}). Un réseau superposé peut être
 construit sur un autre réseau superposé.
 
+\begin{figure}
+  \centering 
+  \input{input/network/completegraph.tex}
+  \caption{\label{net:fig:completegraph}Graphes complets}
+\end{figure}
+
 Toutes sortes de réseaux superposés existent. Par exemple, si chaque machine
 possède un canal de communication avec chacunes des autres machines, alors la
-topologie correspond à celle d'un graphe complet. La progression quadratique du
-nombre d'arcs en fonction du nombre de noeuds empêche un tel système d'atteindre
-de grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
+topologie correspond à celle d'un graphe complet
+(cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
+d'arcs en fonction du nombre de noeuds empêche un tel système d'atteindre de
+grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
 qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
 direct d'un noeud. Le défi consiste alors à peupler ces vues avec les liens
 logiques selon les critères souhaités.
