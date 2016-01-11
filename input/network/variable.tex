@@ -5,9 +5,35 @@
 Les protocoles d'échantillonnage aléatoire de pairs peuplant des vues dont la
 taille n'est pas définie au préalable a pour seul représentant :
 
-\begin{asparadesc}
-\item [\textbf{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :}] est l'acronyme 
-\end{asparadesc}
+\begin{itemize}
+\item [\textbf{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :}] est l'acronyme
+  de \emph{SCAlable Membership Protocol}. Il s'agit d'un protocole
+  d'échantillonnage associant une réaction à certains évenements. En
+  particulier, l'entrée dans le réseau doit permettre d'augmenter la taille
+  moyenne des vues partielles. Cette augmentation est logarithmique et
+  correspond au seuil précis $\Theta (|\mathcal{N}|\log |\mathcal{N}|)$ des
+  graphes aléatoires. Le départ d'un nœud doit entrainer une équivalente
+  diminution.
+
+  Les pairs utilisant \SCAMP maintiennent deux vues partielles correspondants
+  aux arcs entrant et aux arcs sortant.
+
+  Lorsque un nœud rejoins le réseau, il contacte un membre qu'il ajoute
+  directement à sa vue partielle. Ce contact annonce ensuite le nouveau venu au
+  réseau. Pour ce faire, il crée autant de messages d'annonce qu'il possède de
+  voisins et les émets. Chaque nœud recevant ce type de messages est libre
+  d'accepter l'annonce en ajoutant alors l'identité du nouveau venu à sa vue
+  partielle, ou la refuser, auquel cas il réexpedie le message à l'un de ces
+  voisins. Afin de répartir équitablement les annonces, chaque nœud $n_i$ a une
+  probabilité inversement proportionnelle à la taille de sa vue partielle
+  d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
+  de créer une topologie proche de celle des graphes aléatoires. Cependant, la
+  vue partielle du nouveau pair est faiblement peuplée au contraire des pairs
+  plus vieux.
+
+  Lorsqu'un pair souhaite quitter le réseau, il œuvre à préserver la
+  connectivité du réseau. 
+\end{itemize}
 
 
 %%% Local Variables:
