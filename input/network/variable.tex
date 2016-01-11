@@ -29,7 +29,7 @@ dont la taille n'est pas définie au préalable a pour seul représentant :
   d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
   de créer une topologie proche de celle des graphes aléatoires. Cependant, la
   vue partielle du nouveau pair est faiblement peuplée au contraire des pairs
-  plus vieux.
+  plus vieux. Cela met en danger la robustesse du réseau face aux défaillances.
 
   \begin{figure}
     \centering
@@ -37,6 +37,17 @@ dont la taille n'est pas définie au préalable a pour seul représentant :
     \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
       dans \SCAMP.}
   \end{figure}
+
+  La figure~\ref{net:fig:scampexample} montre l'entrée d'un nœud $n_1$ dans un
+  petit réseau \SCAMP composé des nœuds $n_2$, $n_3$, $n_4$ et $n_5$. Dans cet
+  exemple, le nœud $n_1$ contacte $n_2$ et l'ajoute directement à sa vue
+  partielle. $n_2$, possédant 2 voisins, copie l'adresse logique de $n_1$ 2 fois
+  et les dissémines à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il
+  possède une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion
+  est créée entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même
+  façon. Toutefois, il n'accepte pas l'annonce et retransmet le message à son
+  voisin $n_4$. Ce dernier accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au
+  total, 3 arcs ont été créés à l'arrivée du pair $n_1$.
 
 
   Lorsqu'un pair souhaite quitter le réseau, 
