@@ -2,8 +2,8 @@
 
 \section{Taille variable}
 
-Les protocoles d'échantillonnage aléatoire de pairs peuplant des vues dont la
-taille n'est pas définie au préalable a pour seul représentant :
+La famille de protocoles d'échantillonnage aléatoire de pairs peuplant des vues
+dont la taille n'est pas définie au préalable a pour seul représentant :
 
 \begin{itemize}
 \item [\textbf{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :}] est l'acronyme
@@ -31,8 +31,20 @@ taille n'est pas définie au préalable a pour seul représentant :
   vue partielle du nouveau pair est faiblement peuplée au contraire des pairs
   plus vieux.
 
-  Lorsqu'un pair souhaite quitter le réseau, il œuvre à préserver la
-  connectivité du réseau. 
+  \begin{figure}
+    \centering
+    \input{input/network/scampexample.tex}
+    \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
+      dans \SCAMP.}
+  \end{figure}
+
+
+  Lorsqu'un pair souhaite quitter le réseau, 
+  \begin{inparaenum}[(i)]
+  \item il œuvre à préserver la connectivité de ce dernier et
+  \item il emporte avec lui une quantité d'arcs correspondant à l'entrée du
+    dernier pair dans le réseau.
+  \end{inparaenum}
 \end{itemize}
 
 
