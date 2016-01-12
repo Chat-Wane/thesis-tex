@@ -1,0 +1,60 @@
+\section{Rejoindre le réseau}
+
+L'algorithme pour rejoindre le réseau est, dans \SPRAY, la seule manière
+d'introduire de nouveaux arcs dans le réseau. Afin de répondre à la première
+partie de l'énoncé du problème (\REF), ce nombre d'arcs doit augmenter
+logarithmiquement comparé à la taille du réseau. Tout comme dans \SCAMP, nous
+supposons que chacuns des pairs respecte cette contrainte. Dès lors, ces
+derniers utilisent ce savoir afin de propager l'identité du nouvel
+arrivant. L'algorithme~\ref{algo:joining} décrit la façon dont le contact envoie
+la nouvelle identité à son voisinage où elle est intégrée directement à leur vue
+partielle. En définitive, le nombre d'arcs dans le réseau augmente de
+$1+\ln(|\mathcal{N}|)$ et ce, seulement en utilisant des interactions de voisin
+à voisin.
+
+\begin{figure*}
+  \centering
+  \subfloat[Figure A][$p_1$ contacts $p_2$ to join the network. $p_1$ adds
+  $p_2$ to its neighborhood. $p_1$ sends its request to $p_2$.]{
+    \input{./input/network/joiningexampleA.tex}}
+  \hspace{8pt}
+  \subfloat[Figure B][The $onSubs(p_1)$ event is raised at $p_1$
+  which forwards the subscription to $p_1$'s neighborhood.]{
+    \input{./input/network/joiningexampleB.tex}}
+  \hspace{8pt}
+  \subfloat[Figure C][The $onFwdSubs(p_1)$ event is raised at $p_{3-6}$. The
+  peers add $p_1$ to their neighborhood.]{
+    \input{./input/network/joiningexampleC.tex}}
+  \caption{\label{net:fig:joiningexample}Example of the \SPRAY's joining
+    protocol.}
+\end{figure*}
+
+\begin{algorithm}
+\input{input/network/joiningalgo.tex}
+\caption{\label{net:algo:joining}The joining protocol of \SPRAY.}
+\end{algorithm}
+
+La vue partielle est un multiensemble de couples $\langle n,\, age\rangle$ qui
+associe à chaque voisin $n$ l'âge $age$. Ce multiensemble permet de gérer les
+doublons. L'âge joue le même rôle que dans \CYCLON, çàd qu'il accélère la
+suppression des pairs qui sont sortis ou ont crash. L'évenement $onSubs$ est
+appelé chaque fois qu'un pair rejoins le réseau via ce contact. $onSubs$
+redirige l'identité du pairs à tous ses voisins, indépendament de
+l'âge. L'évenement $onFwdSubs$ est déclanché lorsqu'un pair reçoit une telle
+identité redirigée. $onFwdSubs$ ajoute la référence en initialisant son âge à
+$0$.
+
+La figure~\ref{net:fig:joiningexample} décrit un scenario où le pair $p_1$ contacte
+le pair $p_2$ afin de rejoindre le réseau composé de $\{p_2$, $p_2$, $p_4$,
+$p_5$, $p_6\}$. Pour simplifier, la figure ne montre que les arcs nouvellement
+introduit ainsi que le voisinage de $p_1$ et $p_2$. Le pair $p_1$ ajoute
+directement $p_2$ dans sa vue partielle. Ce dernier redirige l'identité de $p_1$
+à chacun de ses voisins.  Chacun de ces voisins ajoute alors $p_1$ à leur vue
+partielle. Au total, \SPRAY établie 5 connexions. Le réseau en résultant est
+connecté.
+
+Malheureusement, les vues partiels des derniers arrivant sont clairement
+déséquilibrés comparé au reste du réseau. De ce fait, ils violent la première
+condition de l'énoncé du problème (\REF). Le processus de mélange décrit dans la
+prochaine section a pour but de ré-équilibrer les vues partielles.
+

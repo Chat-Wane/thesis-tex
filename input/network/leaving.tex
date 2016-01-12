@@ -1,0 +1,82 @@
+\section{Quitter le réseau}
+
+Avec \SPRAY, les pairs peuvent quitter le réseau sans alerter qui que ce
+soit. Nous ne faisons pas de distinctions particulières entre les départs et les
+crashs. Toutefois, le protocole doit réagir à ces deux cas. En effet, sans
+réactions, le réseau pourrait s'éffondrer pour cause de suppression d'arcs trop
+zélé. Lorsqu'un pair rejoint le réseau, il y injecte $1+\ln(|\mathcal{N}|)$
+arcs. Néanmoins, après plusieurs échanges, la vue partielle du pair rejoignant
+le réseau est remplie par d'autres références. Ainsi, quand il quitte le réseau,
+il entraine la suppression de $\ln(|\mathcal{N}|)$ arcs de sa vue partielle, et
+$\ln(|\mathcal{N}|)$ arcs des pairs l'ayant dans leur vue partielle. Par
+conséquent, sans moyens de gérer les départs, $2\ln(\mathcal{N}|)$ arcs sont
+supprimés au lieu des $1+\ln(|\mathcal{N}|)$. Afin d'y remedier, chaque pair qui
+détecte un crash peut rétablir une connexion avec l'un de ces voisins en
+introduisant un doublon (doublon qui disparaitra rapidement après quelques
+protocoles d'échange). La probabilité de réétablir une connexion est
+$1-1\div{|\mathcal{P}|}$. Puisque ${|\mathcal{P}|}\approx \ln(|\mathcal{N}|)$
+pairs ont detecté le crash dans leur vue partielle, il est probable qu'ils
+recréent tous la connexion perdue, à l'exception d'un pair. De ce fait,
+lorsqu'un pair quitte le réseau, il entraine la suppression d'un nombre d'arcs
+correspondant approximativement au nombre d'arcs ajouté lors de la dernière
+entrée de pair.
+
+\begin{algorithm}[h]
+  \input{./input/network/unreachablealgo.tex}
+  \caption{\label{net:algo:unreachable}The crash/departure handler of \SPRAY.}
+\end{algorithm}
+
+L'algorithme~\ref{net:algo:unreachable} montre la manière selon laquelle \SPRAY
+gère les départs et crashs. La fonction $onPeerDown$ montre la réaction de
+\SPRAY lorsque le pair $q$ est detecté comme parti ou défaillant. Dans un
+premier temps, la fonction compte les occurences du pair $q$ dans la vue
+partielle et les supprimes. Dans un second temps, une boucle ajoute de manière
+probabiliste des doublons de références à des pairs déjà connus. La probabilité
+dépend de la taille de la vue partielle avant la suppression.
+
+\begin{figure*}
+  \centering
+  \subfloat[Figure A][Peer $p_1$ crashes.]{
+    \input{./input/network/crashexampleA.tex}}
+  \hspace{10pt}
+  \subfloat[Figure B][The peers $p_{3-5}$ notice that they cannot
+  reach $p_1$ anymore.]{
+    \input{./input/network/crashexampleB.tex}}
+  \hspace{10pt}
+  \subfloat[Figure C][The peers $p_3$ and $p_5$ choose to establish
+  a duplicate with one of their existing neighbor.]{
+    \input{./input/network/crashexampleC.tex}}
+  \caption{\label{net:fig:crashexample}Example of \SPRAY's crash/leaving
+    handler. }
+\end{figure*}
+
+La figure~\ref{net:fig:crashexample} montre le fonctionnement de la gestion des
+pairs detecté comme étant parti ou défaillant. Le pair $p_1$ quitte le réseau
+sans en informer le réseau. Avec lui, $7$ connexions sont inutilisables. Les
+pairs $p_3$, $p_4$, et $p_5$ ont toujours une référence vers $p_1$ dans leur vue
+partielle. Le pair $p_5$ a $1-{1\div{|\mathcal{P}_5|}}={2\div{3}}$ chances de
+remplacer la connexion. Dans ce cas, il double la référence à $p_{13}$. De la
+même manière, $p_3$ et $p_4$ détectent $p_1$ comme étant injoignable et agissent
+en conséquence. Seul $p_3$ crée un doublon remplaçant. Au total, $5$ connexions
+ont été supprimées.
+
+L'exemple montre que certains des pairs ont rétabli une connexion lorsqu'ils ont
+détécté qu'un pair était injoignable. La probabilité dépend de la vue partielle
+de chacun de ces pairs. En moyenne, l'un de ces pairs va vraisemblablement
+supprimer l'arc inutilisable alors que les autres vont simplement le
+remplacer. Dans l'exemple, le pair $p_1$ a injecté $5$ arcs lors de son entrée
+dans le réseau. $7-2 = 5$ arcs ont été supprimés lors de son départ. Le nombre
+global d'arcs dans le réseau reste d'ordre logarithmique comparé à la taille du
+réseau. Toutefois, nous remarquons que la connectivité n'est pas entièrement
+garantie (seulement avec la forte probabilité impliquée par les graphes
+aléatoires). En effet, si le pair $p_1$ est le seul pont entre deux groupes de
+pairs, ajouter des arcs n'est pas suffisant pour garantir la connectivité.
+
+L'algorithme~\ref{net:algo:unreachable} montre aussi que \SPRAY distingue les
+pairs qui sont injoignables des arcs inutilisables. En effet, la fonction
+$onArcDown$ gère les connexions dont la création a échoué. Ces arcs sont
+systématiquement remplacés par un doublon. De ce fait, le nombre d'arc reste
+bien constant. La distinction $onPeerDown$ avec $onArcDown$ est necessaire car
+la première doit supprimer une petite quantité d'arcs. Sans cette suppression,
+le nombre d'arcs augmenterait de manière incontrollée avec les entrées et
+sorties de pairs.
