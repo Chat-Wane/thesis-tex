@@ -2,6 +2,36 @@
 \section{Motivations}
 \label{net:sec:motivations}
 
+Les approches des §\ref{net:sec:fixed} et §\ref{net:sec:variable} présentent des
+limitations. Les approches appartenant à la famille dont les vues partielles
+sont constantes ne sont pas adaptées aux contextes où :
+\begin{itemize}
+\item La taille du réseau fluctue au cours du temps. Par exemple, lorsque les
+  utilisateurs possèdent des habitudes identiques, il peut alors y avoir des
+  heures creuses où le réseau ne compte que peu de membres. À l'inverse, lors
+  d'événements particuliers, beaucoup d'entrées en très peu de temps peuvent
+  avoir lieu.  Les approches de taille fixe ne peuvent configurer la taille de
+  leurs vues partielles au cours du temps. C'est pourquoi les vues partielles
+  sont généralement surdimensionnées afin de pourvoir aux besoins des plus
+  grands réseaux estimés. Lorsque ces réseaux sont plus modestes aux périodes
+  creuses, les nœuds sont surconnectés.
+\item La taille des réseaux d'une même application varie. Par exemple, l'ampleur
+  du groupe collaboratif d'un projet comme \emph{linux} n'est pas comparable à
+  celle d'un projet personnel partagé avec quelques amis. Malgré tout, le
+  développeur d'application doit prévoir large afin de supporter les grands
+  groupes s'ils existent, au détriment des plus petits groupes d'utilisateurs.
+\end{itemize}
+
+L'approche réactive qu'est \SCAMP possède quant à elle la capacité d'ajuster les
+vues partielles de ces membres à la taille du réseau auquel ils
+appartiennent. Malheureusement, cette approche fait face à deux problèmes :
+\begin{itemize}
+\item Les annonces sont systématiquement propagées à plusieurs voisins de
+  distance. \TODO{Moar.}
+\item Le protocole est très peu dynamique au cours du temps. \TODO{Moar.}
+\end{itemize}
+
+
 
 %%% Local Variables:
 %%% mode: latex
