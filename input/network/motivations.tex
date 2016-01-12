@@ -27,8 +27,25 @@ vues partielles de ces membres à la taille du réseau auquel ils
 appartiennent. Malheureusement, cette approche fait face à deux problèmes :
 \begin{itemize}
 \item Les annonces sont systématiquement propagées à plusieurs voisins de
-  distance. \TODO{Moar.}
-\item Le protocole est très peu dynamique au cours du temps. \TODO{Moar.}
+  distance. Ce méchanisme participe à la construction rapide d'une topologie
+  proche de celle des graphes aléatoires. Toutefois, entre l'origine et la
+  destination de l'annonce, toute perte de message empêche l'établissement de la
+  connexion. Cela s'avère particulièrement problématique lorsque l'établissement
+  d'une connexion nécéssite un aller-retour comme c'est le cas dans le contexte
+  WebRTC (cf. §\ref{conclu:sec:webrtc}). En effet, non seulement le message ne
+  doit pas se perdre, mais les nœuds et arcs composants le chemin de l'annonce
+  doivent rester disponible.
+\item Le protocole est très peu dynamique au cours du temps. Si la phase
+  d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
+  relativement bien répartis, \SCAMP doit renouveller les vues partielles afin
+  de mieux intégrer les nouveaux arrivants en peuplant leurs vues partielles et
+  de décharger les nœuds plus anciens. Ainsi, le méchanisme de bail
+  (\emph{lease}) est introduit et consiste à rejoindre à nouveau le réseau après
+  un certains temps. La vue partielle sortante est conservée tandis que la vue
+  partielle entrante est réinitialisée avant d'être naturellement remplie lors
+  de l'entrée dans le réseau. Malheureusement, ce méchanisme tend à faire
+  augmenter le nombre d'arcs dans le réseau de manière non-bornée. De plus,
+  rejoindre à nouveau le réseau confronte au premier problème susmentionné.
 \end{itemize}
 
 
