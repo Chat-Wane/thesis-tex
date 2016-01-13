@@ -1,11 +1,11 @@
 
-\begin{tikzpicture}[scale=1.1]
+\begin{tikzpicture}[scale=1.15]
 
   \newcommand\X{35pt};
   \newcommand\Y{15pt};
 
   \draw[->] (-5+2*\X, 5pt) -- (5+\X, \Y);
-  \draw[->,dashed, very thick]
+  \draw[->,dashed, very thick, color=darkblue]
   (5+\X, 2*\Y)to[out=-20,in=110](2*\X, 5pt); %% 6 -> 2
   \draw[->](2*\X,5pt)to[out=160,in=-70](5+1*\X, 2*\Y); %% 2 -> 6
   \draw[->] (-5+2*\X, -5pt) -- (5+\X, -\Y);

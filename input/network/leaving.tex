@@ -22,11 +22,11 @@ correspondant approximativement au nombre d'arcs ajouté lors de la dernière
 entrée de pair.
 
 \begin{algorithm}[h]
-  \input{./input/network/unreachablealgo.tex}
-  \caption{\label{net:algo:unreachable}The crash/departure handler of \SPRAY.}
+  \input{./input/network/leavingalgo.tex}
+  \caption{\label{net:algo:leaving}The crash/departure handler of \SPRAY.}
 \end{algorithm}
 
-L'algorithme~\ref{net:algo:unreachable} montre la manière selon laquelle \SPRAY
+L'algorithme~\ref{net:algo:leaving} montre la manière selon laquelle \SPRAY
 gère les départs et crashs. La fonction $onPeerDown$ montre la réaction de
 \SPRAY lorsque le pair $q$ est detecté comme parti ou défaillant. Dans un
 premier temps, la fonction compte les occurences du pair $q$ dans la vue
@@ -37,20 +37,20 @@ dépend de la taille de la vue partielle avant la suppression.
 \begin{figure*}
   \centering
   \subfloat[Figure A][Peer $p_1$ crashes.]{
-    \input{./input/network/crashexampleA.tex}}
-  \hspace{10pt}
+    \input{./input/network/leavingexampleA.tex}}
+  \hspace{40pt}
   \subfloat[Figure B][The peers $p_{3-5}$ notice that they cannot
   reach $p_1$ anymore.]{
-    \input{./input/network/crashexampleB.tex}}
-  \hspace{10pt}
+    \input{./input/network/leavingexampleB.tex}}
+  \hspace{40pt}
   \subfloat[Figure C][The peers $p_3$ and $p_5$ choose to establish
   a duplicate with one of their existing neighbor.]{
-    \input{./input/network/crashexampleC.tex}}
-  \caption{\label{net:fig:crashexample}Example of \SPRAY's crash/leaving
+    \input{./input/network/leavingexampleC.tex}}
+  \caption{\label{net:fig:leavingexample}Example of \SPRAY's crash/leaving
     handler. }
 \end{figure*}
 
-La figure~\ref{net:fig:crashexample} montre le fonctionnement de la gestion des
+La figure~\ref{net:fig:leavingexample} montre le fonctionnement de la gestion des
 pairs detecté comme étant parti ou défaillant. Le pair $p_1$ quitte le réseau
 sans en informer le réseau. Avec lui, $7$ connexions sont inutilisables. Les
 pairs $p_3$, $p_4$, et $p_5$ ont toujours une référence vers $p_1$ dans leur vue
