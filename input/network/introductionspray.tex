@@ -13,21 +13,21 @@ periodique dont le but est d'équilibrer les vues partielles en termes de taille
 et d'uniformité sur les pairs références dans celles-ci. Le réseau converge
 rapidement vers une topologie possédant des propriétés similaires à celles des
 graphes aléatoires. Enfin, un pair est capable de quitter le réseau à n'importe
-quel moment sans en notifier le réseau (l'équivalent d'un crash) sans dégrader
-les propriétés du reste du réseau.
+quel moment sans en notifier le réseau (l'équivalent d'une défaillance) sans
+dégrader les propriétés du reste du réseau.
 
 L'obtention de cette propriété d'adaptivité repose essentiellement sur le fait
 de conserver un nombre d'arcs cohérent durant tout le cycle de vie du réseau.
 En effet, en opposition à \CYCLON, \SPRAY est toujours à la limite du nombre
 optimal d'arcs. Comme \SPRAY n'ajoute jamais d'arcs après le processus d'entrée,
-toute suppression d'arcs est définitive et ne doit donc pas être pris à la
-légère. Ainsi, \SPRAY ajoute des arcs dans un premier temps. Dans un second
-temps, le processus periodique de mélange des arcs de \SPRAY préserve tous les
-arcs du réseau.  Dans un troisième temps, le processus de sortie supprime
-précautionneusement quelques arcs. Dans l'idéal, il s'agit du nombre d'arcs
-ajouté par le dernier pair entré dans le réseau.
+toute suppression d'arcs est définitive. De telles décisions ne sont donc pas
+prises à la légère. Ainsi, \SPRAY ajoute des arcs dans un premier temps. Dans un
+second temps, le processus periodique de mélange des arcs de \SPRAY préserve
+tous les arcs du réseau.  Dans un troisième temps, le processus de sortie
+supprime précautionneusement quelques arcs. Dans l'idéal, il s'agit du nombre
+d'arcs ajouté par le dernier pair entré dans le réseau.
 
-Parfois, conserver le nombre d'arcs global constant force les processus de
+Parfois, conserver un nombre d'arcs global constant force les processus de
 mélange et de sortie à créer des doublons dans les vues partielles. Ainsi, une
 vue partielle peut contenir plusieurs fois le même voisin. Toutefois, ces
 doublons restent peu nombreux, et de ce fait, n'ont pas d'impact notable sur la

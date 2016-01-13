@@ -7,7 +7,8 @@
 \algblockdefx[act]{act}{endAct}
   [0] {\textbf{ACTIVE THREAD:}}
 
-\algblockdefx[pas]{pas}{endPas}
+\algsetblockdefx[pas]{pas}{endPas}
+  {65535}{}
   [0] {\textbf{PASSIVE THREAD:}}
 
 
@@ -47,6 +48,5 @@
     \State $\mathcal{P} \leftarrow (\mathcal{P} \setminus sample') \uplus
     sample$; 
     \EndFunction
-  \endPas
-  
+%%  \endPas
 \end{algorithmic}

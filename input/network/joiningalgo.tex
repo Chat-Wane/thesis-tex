@@ -8,7 +8,8 @@
 \algblockdefx[initially]{initially}{endInitially}
   [0] {\textbf{INITIALLY:}} 
 
-\algblockdefx[pas]{pas}{endPas}
+\algsetblockdefx[pas]{pas}{endPas}
+  {65535}{}
   [0] {\textbf{EVENTS:}}
 
 \newcommand{\LINEFOR}[2]{%
@@ -32,13 +33,12 @@
   \pas
   \Function{onSubs}{$o$} \hfill \comment{$o: origin$}
     \State \LINEFOR{\textbf{each} $\langle q,\,\_\, \rangle \in\mathcal{P}$}
-    {$sendTo(q,\, 'fwdSubs',\, o)$;} \label{line:multicast}
+    {$sendTo(q,\, 'fwdSubs',\, o)$;} \label{net:line:multicast}
     \EndFunction
     \Statex
     \Function{onFwdSubs}{$o$} \hfill \comment{$o: origin$}
     \State $\mathcal{P} \leftarrow
     \mathcal{P}\uplus \left\{\langle o,\, 0 \rangle\right\}$;
     \EndFunction
-  \endPas
-  
+%%  \endPas
 \end{algorithmic}
