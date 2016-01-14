@@ -2,7 +2,7 @@
 \small
 \algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
 
-\newcommand{\comment}[1]{$\rhd$ #1}
+\newcommand{\comment}[1]{\hfill $\rhd$ #1}
 
 
 \algblockdefx[initially]{initially}{endInitially}
@@ -25,20 +25,23 @@
 \begin{algorithmic}[1]
   \Statex
   \initially
-    \State $\mathcal{P} \leftarrow \varnothing$;
+    \State $P \leftarrow \varnothing$;
     \hfill \comment{the partial view is a multiset}
     \State $p$ ; \hfill \comment{identity of the local peer}
   \endInitially
   
   \pas
-  \Function{onSubs}{$o$} \hfill \comment{$o: origin$}
-    \State \LINEFOR{\textbf{each} $\langle q,\,\_\, \rangle \in\mathcal{P}$}
-    {$sendTo(q,\, 'fwdSubs',\, o)$;} \label{net:line:multicast}
+  \Function{onSubs}{$o$} \comment{$o: origin$}
+    \If {($|P| = 0$)}
+      \State \textsc{onFwdSub}($o$); \comment{special case: 2-nodes network.}
+    \Else
+      \State \DARKBLUE{\LINEFOR{\textbf{each} $\langle q,\,\_\, \rangle \in P$}
+      {$\textsc{sendTo}(q,\, 'fwdSubs',\, o)$;}}
+    \EndIf
     \EndFunction
     \Statex
-    \Function{onFwdSubs}{$o$} \hfill \comment{$o: origin$}
-    \State $\mathcal{P} \leftarrow
-    \mathcal{P}\uplus \left\{\langle o,\, 0 \rangle\right\}$;
+    \Function{onFwdSubs}{$o$} \comment{$o: origin$}
+    \State $P \leftarrow P \,\DARKBLUE{\uplus} \left\{\langle o,\, 0 \rangle\right\}$;
     \EndFunction
 %%  \endPas
 \end{algorithmic}

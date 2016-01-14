@@ -3,16 +3,17 @@
 \label{net:sec:shuffling}
 
 Au contraire de \CYCLON, \SPRAY mélange des vues partielles dont les tailles
-peuvent être différentes. Ce processus à pour but d'équilibrer les tailles de
-vue partielles ainsi que de mélanger les références à l'interieur de celles-ci.
-Ce processus à pour contrainte de conserver l'exact même nombre d'arcs.
+peuvent être différentes. Ce processus a pour but d'équilibrer les tailles de
+vue partielles ainsi que de mélanger les adresses logiques à l'interieur de
+celles-ci.  Ce processus possède la contrainte de conserver l'exact même nombre
+d'arcs.
 
-Les deux pairs impliqués dans le mélange s'envoient l'un l'autre la moitié de
+Les deux nœuds impliqués dans le mélange s'envoient l'un l'autre la moitié de
 leur vue partielle. Après l'intégration de ces nouvelles références, la taille
 de leur vue partielle tend vers la moyenne, et la somme globale en demeure
 inchangée. Dans ce but, les vues partielles sont des multiensembles. Ainsi, si
-un pair réçoit une référence déjà connue, il la conserve en tant que doublon.
-De cette façon, le nombre d'arcs reste constant.
+un nœud réçoit un arc déjà connue, il le conserve en tant que doublon.  De cette
+façon, le nombre d'arcs reste globalement constant.
 
 Si les doublons ont un impact négatif sur les propriétés du réseau, la plupart
 de ceux-ci disparaissent après le processus de mélange. En proportion, ils
@@ -23,85 +24,87 @@ deviennent négligeable dès lors que le réseau grandit.
   \caption{\label{net:algo:shuffle}The cyclic protocol of \SPRAY.}
 \end{algorithm}
 
-L'algorithme~\ref{net:algo:shuffle} montre la partie periodic de \SPRAY éxécutée
-par chaque pair. Il est divisé en deux parties, à savoir le processus actif qui
-est appelé régulièrement afin d'initier un mélange de vues, et le processus
-passif qui réagit au message du processus actif. Les fonctions qui ne sont pas
-explicitement définies sont les suivantes:
-\begin{itemize}
-\item $incrementAge(view)$ : incrémente l'âge des éléments présent dans la vue
-  $view$ et retourne la vue modifiée.
-\item $getOldest(view)$ : retourne le plus vieu des pairs présent dans la vue.
-\item $getSample(view,\, size)$ : retourne un échantillon de la vue contenant $size$
-  éléments.
-\item $replace(view,\,old,\,new)$ : remplace les occurrences de $old$ par $new$ dans
-  la vue $view$.
-\item $rand()$ : retourne un nombre flottant aléatoire entre $0$ et $1$.
-\end{itemize}
+L'algorithme~\ref{net:algo:shuffle} montre les instructions periodiquement
+éxecutées par chacun des nœuds. Il est divisé en deux parties, à savoir le
+processus actif qui est appelé régulièrement afin d'initier un mélange de vues,
+et le processus passif qui réagit au message du processus actif. Les fonctions
+qui ne sont pas explicitement définies sont les suivantes:
+\begin{inparaenum}[]
+\item $\textsc{incrementAge}(view)$ qui incrémente l'âge des éléments présent
+  dans la vue $view$ et retourne la vue modifiée;
+\item $\textsc{getOldest}(view)$ qui retourne le plus vieux des voisins présent
+  dans la vue partielle $view$;
+\item $\textsc{getSample}(view,\, size)$ qui retourne un échantillon aléatoire
+  de la vue contenant $size$ éléments;
+\item $\textsc{replace}(view,\,old,\,new)$ qui remplace les occurrences de $old$
+  par $new$ dans la vue $view$. Si les doublons sont admis dans la vue
+  partielle, les autoréférences restent hautement indésirables;
+\item $\textsc{rand}()$ qui retourne un nombre flottant aléatoire compris entre
+  $0$ et $1$.
+\end{inparaenum}
 
-Dans le processus actif, la fonction $loop$ est appelée tous les intervals
-$\Delta$ de temps. Tout d'abord, la fonction incrémente l'age de chacun des
-voisins dans la vue partielle $\mathcal{P}$. Ensuite, le pair le plus âgé $q$
-est choisit afin d'initier un échange. Si le pair $q$ ne peut être joint (car il
-est parti ou a crash), alors le pair $p$ éxecute la fonction qui gère ce cas
-(voir la section suivante). Ceci est répété jusqu'à ce que $p$ trouve un pair
-avec qui communiquer. Ainsi, le vieillissement comme héritage de \CYCLON permet
-d'accélérer la suppression des références invalides. Une fois que le pair
-initiateur $p$ a trouvé un pair avec qui effectuer l'échange, il selectionne un
-échantillon de sa vue partielle tout en excluant la référence à $q$ et en
-s'incluant lui-même. La taille de l'échantillon correspond à la moitié de la
-taille de la vue partielle avec au minimum $1$ pair : sa propre référence
-(cf. ligne~\ref{net:line:samplesize}). La réponse de $q$ contient également la moitié
-de sa vue partielle. Puisque les pairs ne peuvent apparaitre plusieurs fois dans
-$\mathcal{P}$, les pairs impliqués dans le processus d'échange peuvent envoyer
-des références cet autre pair ($p$ envoie des références $q$ à $q$). Sans
-procédures supplémentaires, ce genre de comportement peut créer des boucles
-locales ($q$ a $q$ dans sa vue partielle) ce qui est hautement indésirable. Les
-lignes~\ref{net:line:replace1},~\ref{net:line:replace2} permettent de remplacer les
-auto-références dans l'échantillon. Enfin, chez les deux pairs, l'échantillon envoyé 
-est supprimé de la vue partielle, et l'échantillon réçu est ajouté.
+Dans le processus actif, la fonction $loop$ est appelée tous les intervalles
+$\Delta$ de temps. Tout d'abord, la fonction incrémente l'âge de chacun des arcs
+présent dans la vue partielle $P$. Ensuite, le nœud le plus âgé $q$ est choisi
+afin d'initier un mélange. Si le nœud $q$ ne peut être joint -- car parti ou
+défaillant -- alors le nœud $p$ éxécute une fonction appropriée (cf.
+§\ref{net:sec:leaving}) jusqu'à trouver un nœud avec lequel communiquer. Ainsi,
+le vieillissement comme héritage de \CYCLON permet d'accélérer la suppression
+des références obsolètes. Une fois que le nœud initiateur $p$ a trouvé un nœud
+avec qui effectuer l'échange, il selectionne un échantillon de sa vue partielle
+tout en excluant la référence à $q$ et en s'incluant lui-même. La taille de
+l'échantillon correspond à la moitié de la taille de la vue partielle avec au
+minimum $1$ nœud : sa propre référence (cf. ligne~\ref{net:line:samplesize}). 
+
+Lorsque le nœud $q$ réçoit la demande d'échange, l'événement \textsc{onExchange}
+est déclanché. La réponse de $q$ contient également la moitié de sa vue
+partielle. Puisque il existe potentiellement des doublons dans les vues
+partielles, les nœuds pourraient envoyer des références de leur vis-à-vis par
+mégarde ce qui créerait des boucles ($p$ envoie des références de $q$ à
+$q$). Les lignes~\ref{net:line:replace1} et~\ref{net:line:replace2} permettent de
+remplacer les autoréférences dans l'échantillon afin d'éviter ce comportement
+indésirable. Après réception des échantillons respectifs, les nœuds suppriment
+l'échantillon qu'ils ont envoyé avant d'intégrer celui qu'ils ont réçu.
 
 \begin{figure*}
   \centering
-  \subfloat[Figure A]
-  [Peer $p_6$ initiates the exchange with $p_1$ by sending to the
-  latter the multiset $\{p_6,\,p_9\}$.]{
-    \input{./input/network/cyclicexampleA.tex}}
+  \subfloat[Deux nœuds commencent à échanger leurs vues dans \SPRAY.]
+  [Le nœud $n_6$ initie un mélange avec $n_1$ lui envoyant $\{n_6,\,n_9\}$.]
+  {\input{./input/network/cyclicexampleA.tex}}
   \hspace{40pt}
-  \subfloat[Figure B][Peer $p_1$ receives the $p_6$'s message. 
-  It sends back the multiset $\{p_2\}$ and adds $\{p_6,\,p_9\}$ to its 
-  partial view.]{
-    \input{./input/network/cyclicexampleB.tex}}
+  \subfloat[Un nœud \SPRAY receptionne et répond à l'échange.]
+  [Le nœud $n_1$ reçoit le message de $n_6$. En réponse, il envoie le 
+  multiensemble $\{n_2\}$. Il ajoute $\{n_6,\,n_9\}$ à sa vue.]
+  {\input{./input/network/cyclicexampleB.tex}}
   \hspace{10pt}
-  \subfloat[Figure C][Peer $p_6$ receives the $p_1$'s response, it
-  adds $\{p_2\}$ to its partial view.]{
-    \input{./input/network/cyclicexampleC.tex}}
-  \caption{\label{net:fig:cyclicexample}Example of the \SPRAY's shuffling
-    protocol. }
+  \subfloat[Le nœud initiateur réçoit la réponse et établit des connexions.]
+  [Le nœud $n_6$ reçoit la réponse de $n_1$ et ajoute $\{n_2\}$ à sa vue
+  partielle.]
+  {\input{./input/network/cyclicexampleC.tex}}
+  \caption{\label{net:fig:cyclicexample}Exemple du processus de mélange dans \SPRAY.}
 \end{figure*}
 
-La figure~\ref{net:fig:cyclicexample} décrit le méchanisme périodique de \SPRAY. Ce
-scénario suit celui de la figure~\ref{net:fig:joiningexample}: le pair $p_1$ vient
-de rejoindre le réseau. Le pair $p_6$ initie un échange avec $p_1$ (qui est ici
-le plus vieux dans sa vue partielle). $p_6$ choisit
-$\left\lceil{|\mathcal{P}_6|\div 2}\right\rceil = 1$ aléatoirement parmis son
-voisinnage. Dans ce cas, il choisit $p_9$ parmis $\{p_9,\,p_8,\,p_7\}$. Il
-envoie à $p_1$ cet échantillon auquel est ajoutée sa propre identité. En
-réponse, le pair $p_1$ choisit
-$\left\lceil{|\mathcal{P}_1|\div 2}\right\rceil = 1$ pair de sa vue
-partielle. L'échantillon composé du seul voisin $p_2$ est envoyé. Immédiatement
-après, $p_1$ peut supprimer l'échantillon envoyé et intégrer celui réçu
-résultant en une vue partielle composée de $\{p_6,\, p_9\}$. De la même façon,
-après réception de l'échantillon de $p_1$, $p_6$ supprime et intègre les
-échantillons adéquats, résultant en une vue partielle composée de
-$\{p_2,\,p_7,\,p_8\}$.
+La figure~\ref{net:fig:cyclicexample} décrit le méchanisme périodique de
+\SPRAY. Ce scénario suit celui de la figure~\ref{net:fig:joiningexample} : le
+nœud $n_1$ vient de rejoindre le réseau. Le nœud $n_6$ initie un échange avec
+$n_1$ qui est ici le plus vieux nœud de sa vue partielle. $n_6$ choisit
+$\left\lceil{|P_6|\div 2}\right\rceil = 1$ nœud aléatoirement parmi son
+voisinnage. Dans ce cas, il choisit $n_9$ parmi $\{n_9,\,n_8,\,n_7\}$. Il envoie
+à $n_1$ cet échantillon auquel est ajoutée sa propre adresse logique. En
+réponse, le nœud $n_1$ choisit $\left\lceil{|P_1|\div 2}\right\rceil = 1$ nœud
+de sa vue partielle. L'échantillon composé du seul voisin $n_2$ est
+envoyé. Immédiatement après, $n_1$ peut supprimer l'échantillon envoyé et
+intégrer celui réçu résultant en une vue partielle composée de $\{n_6,\, n_9\}$.
+De la même façon, après réception de l'échantillon de $n_1$, $n_6$ supprime et
+intègre les échantillons adéquats, résultant en une vue partielle composée de
+$\{n_2,\,n_7,\,n_8\}$.
 
 La procédure d'échange tend à réduire l'écart de taille des vues partielles. De
-plus, elle disperse les références aux pairs afin de supprimer les groupes trop
-denses dûes à la procédure d'entrée dans le réseau.
+plus, elle disperse les références des nœuds afin de supprimer les groupes trop
+denses dûs au processus d'entrée dans le réseau.
 
-En ce qui concerne le temps de converge de l'algorithme de mélange, il existe
-une relation proche entre \SPRAY et le protocole d'aggrégation proactive
+En ce qui concerne le temps de convergence de l'algorithme de mélange, il existe
+une relation proche entre \SPRAY et le protocole d'aggrégation proactif
 présenté dans~\cite{jelasity2004epidemic, montresor2004robust}. Celui-ci déclare
 que, sous l'hypothèse d'un échantillonnage suffisamment aléatoire, la valeur
 moyenne $\mu$ et la variance $\sigma^2$ a un cycle $i$ sont :
@@ -111,21 +114,20 @@ moyenne $\mu$ et la variance $\sigma^2$ a un cycle $i$ sont :
   $\sigma^2_i = {1\over{|\mathcal{N}|-1}}\sum\limits_{x \in \mathcal{N}}
   (a_{i,\,x} - \mu_i)^2$
 \end{center}
-avec $a_{i,\,x}$ la valeur stockée par le pair $p_x$ au cycle $i$. La variance
+avec $a_{i,\,x}$ la valeur stockée par le nœud $n_x$ au cycle $i$. La variance
 estimée doit converger en 0 au cours des cycles. En d'autres termes, les valeurs
 se rapprochent les unes des autres au cours des cycles. Dans le cas de \SPRAY,
-cette valeur $a_{i,\,x}$ est la taille de la vue partiel du pair $p_x$ au cycle
-$i$. En effet, chaque échange du pair $p_1$ et du pair $p_2$ est une aggrégation
-dont le résultat est :
-$|\mathcal{P}_1|\approx|\mathcal{P}_2|\approx{(|\mathcal{P}_1| +
-  |\mathcal{P}_2|) \div 2}$.
-De plus, à chaque cycle, chaque pair est impliqué dans un protocole d'échange au
-moins une fois (celui qu'ils initient), and, dans le meilleur des cas
-$1+Poisson(1)$ (celui qu'ils initient et, en moyenne, celui qu'ils réçoivent
-d'un autre pair). Cette relation étant établie, nous en déduisons que la taille
-des vues partielles des pairs de \SPRAY converge en temps exponentiel vers la
-moyenne globale. De plus, chaque cycle réduit la variance du système global à un
-taux compris entre ${1\div 2}$ et $1\div ({2\sqrt{\text{e}}})$.
+cette valeur $a_{i,\,x}$ est la taille de la vue partielle du nœud $n_x$ au
+cycle $i$. En effet, chaque échange du nœud $n_1$ et $n_2$ correspond à une
+aggrégation dont le résultat est :
+$|P_1|\approx|P_2|\approx{(|P_1| + |P_2|) \div 2}$.  De plus, à chaque cycle,
+chaque nœud est impliqué dans un protocole d'échange au moins une fois (celui
+qu'il initie), et dans le meilleur des cas $1+Poisson(1)$ (celui qu'il initie
+et, en moyenne, celui qu'il réçoit d'un autre nœud). Cette relation étant
+établie, nous en déduisons que la taille des vues partielles des nœuds de \SPRAY
+converge en temps exponentiel vers la moyenne globale. De plus, chaque cycle
+réduit la variance du système à un taux compris entre ${1\div 2}$ et
+$1\div ({2\sqrt{\text{e}}})$.
 
 %%% Local Variables:
 %%% mode: latex

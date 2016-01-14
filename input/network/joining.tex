@@ -1,20 +1,6 @@
 \section{Rejoindre le réseau}
 \label{net:sec:joining}
 
-Le processus d'entrée d'un nœud dans le réseau est, dans \SPRAY, la seule
-manière d'introduire de nouveaux arcs. Afin de répondre à la première partie de
-l'énoncé du problème~\ref{net:problem:properties}, ce nombre d'arcs doit
-augmenter logarithmiquement comparé à la taille du réseau. Tout comme dans
-\SCAMP, nous supposons que chacuns des nœuds respecte cette contrainte. Dès
-lors, ces derniers utilisent cette supposition afin de propager l'adresse
-logique du nouvel arrivant. L'algorithme~\ref{net:algo:joining} décrit la façon
-dont le contact propage l'annonce à son voisinage où elle est directement
-intégrée à leur vue partielle. En définitive, le nombre d'arcs dans le réseau
-augmente de $1 + \ln |\mathcal{N}|$ et ce, seulement en utilisant des
-interactions de voisin à voisin. Globalement, cela correspond à une augmentation
-de l'ordre de $|\mathcal{N}| \ln |\mathcal{N}|$ arcs, similaire au seuil de
-connexité exigé par les graphes aléatoires~\cite{erdos1959random}.
-
 \begin{figure*}
   \centering
   \subfloat[Un nœud \SPRAY rejoint un réseau.]
@@ -34,6 +20,20 @@ connexité exigé par les graphes aléatoires~\cite{erdos1959random}.
   \caption{\label{net:fig:joiningexample} Exemple de processus d'entrée dans
     le réseau de \SPRAY.}
 \end{figure*}
+
+Le processus d'entrée d'un nœud dans le réseau est, dans \SPRAY, la seule
+manière d'introduire de nouveaux arcs. Afin de répondre à la première partie de
+l'énoncé du problème~\ref{net:problem:properties}, ce nombre d'arcs doit
+augmenter logarithmiquement comparé à la taille du réseau. Tout comme dans
+\SCAMP, nous supposons que chacuns des nœuds respecte cette contrainte. Dès
+lors, ces derniers utilisent cette supposition afin de propager l'adresse
+logique du nouvel arrivant. L'algorithme~\ref{net:algo:joining} décrit la façon
+dont le contact propage l'annonce à son voisinage où elle est directement
+intégrée à leur vue partielle. En définitive, le nombre d'arcs dans le réseau
+augmente de $1 + \ln |\mathcal{N}|$ et ce, seulement en utilisant des
+interactions de voisin à voisin. Globalement, cela correspond à une augmentation
+de l'ordre de $|\mathcal{N}| \ln |\mathcal{N}|$ arcs, similaire au seuil de
+connexité exigé par les graphes aléatoires~\cite{erdos1959random}.
 
 \begin{algorithm}[h]
 \input{input/network/joiningalgo.tex}
