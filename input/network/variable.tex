@@ -43,12 +43,12 @@ dont la taille n'est pas définie au préalable a pour seul représentant :
   petit réseau \SCAMP composé des nœuds $n_2$, $n_3$, $n_4$ et $n_5$. Dans cet
   exemple, le nœud $n_1$ contacte $n_2$ et l'ajoute directement à sa vue
   partielle. $n_2$, possédant 2 voisins, copie l'adresse logique de $n_1$ 2 fois
-  et les dissémines à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il
-  possède une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion
-  est créée entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même
-  façon. Toutefois, il n'accepte pas l'annonce et retransmet le message à son
-  voisin $n_4$. Ce dernier accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au
-  total, 3 arcs ont été créés à l'arrivée du pair $n_1$.
+  et les dissémine à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il possède
+  une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion est
+  créée entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même façon. Toutefois,
+  il n'accepte pas l'annonce et retransmet le message à son voisin $n_4$. Ce
+  dernier l'accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au total, 3 arcs
+  ont été créés à l'arrivée du pair $n_1$.
 
 
   Lorsqu'un pair souhaite quitter le réseau, 
@@ -63,9 +63,14 @@ dont la taille n'est pas définie au préalable a pour seul représentant :
   généralement applicable à tous les protocoles d'échantillonnage mais il
   requière de maintenir deux vues partielles -- entrante et sortante -- et des
   connexions bidirectionnelles. Il requière aussi un travail supplémentaire de
-  la part du nœud sortant impossible à garantir lors de défaillances. Enfin,
-  même si ce méchanisme améliore considérablement le maintient de la connexité
-  du réseau, il n'est pas \TODO{sûr}.
+  la part du nœud sortant impossible à garantir lors de défaillances : le nœud
+  devrat servir d'intermédiaire à la connexion de tous les voisins de sa vue
+  partielle entrante (sauf un) vers autant de voisins appartenant à sa vue
+  partielle sortante. Ainsi, le nombre d'arcs supprimé correspond en moyenne à
+  celui injecté à l'entrée d'un nœud dans le réseau. Ce méchanisme améliore
+  considérablement le maintient de la connexité du réseau mais ne représente pas
+  une solution fiable pour autant. En effet, certains nœuds peuvent se trouver
+  sans voisins dans l'une de leur vue.
   
 
   \begin{figure}
@@ -78,14 +83,21 @@ dont la taille n'est pas définie au préalable a pour seul représentant :
     [\label{net:fig:scampexampleC} Le nœud $n_1$ notifie aux nœuds $n_2$ et
     $n_3$ qu'ils doivent ajouter $n_5$ et $n_6$ dans leur vue partielle sortante
     respective.]  {\input{input/network/scampexampleC.tex}}
-    \caption{\label{net:fig:scampexample} Exemple de sortie de réseau dans
+    \caption{\label{net:fig:scampexample2} Exemple de sortie de réseau dans
       \SCAMP. Seules les vues partielles entrante et sortante de $n_1$ sont
       explicitées.}
   \end{figure}
 
-  
-
-  \TODO{Moar.}
+  La figure~\ref{net:fig:scampexample2} présente le mécanisme activé lors du
+  départ du nœud $n_1$ utilisant \SCAMP. $n_1$ fournit à chaque nœud de sa vue
+  partielle entrante l'adresse logique d'un nœud de sa vue partielle
+  sortante. Ainsi, le pair $n_2$ ajoute $n_5$ à sa vue partielle sortante, $n_3$
+  ajoute $n_6$ à sa vue partielle sortante, $n_4$ n'ajoute rien. La
+  figure~\ref{net:fig:scampexampleC} montre les arcs après le départ de
+  $n_1$. Entre autre, nous observons que si $n_4$ ne possède pas d'autres
+  voisins dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas
+  d'autres voisins dans leur vue partielle entrante, alors le réseau n'est plus
+  connexe.
 \end{itemize}
 
 

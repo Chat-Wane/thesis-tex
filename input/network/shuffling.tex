@@ -1,5 +1,6 @@
 
-\section{Échanger son voisinage}
+\section{Mélanger son voisinage}
+\label{net:sec:shuffling}
 
 Au contraire de \CYCLON, \SPRAY mélange des vues partielles dont les tailles
 peuvent être différentes. Ce processus à pour but d'équilibrer les tailles de
@@ -27,7 +28,7 @@ par chaque pair. Il est divisé en deux parties, à savoir le processus actif qu
 est appelé régulièrement afin d'initier un mélange de vues, et le processus
 passif qui réagit au message du processus actif. Les fonctions qui ne sont pas
 explicitement définies sont les suivantes:
-\begin{compactitem}
+\begin{itemize}
 \item $incrementAge(view)$ : incrémente l'âge des éléments présent dans la vue
   $view$ et retourne la vue modifiée.
 \item $getOldest(view)$ : retourne le plus vieu des pairs présent dans la vue.
@@ -36,7 +37,7 @@ explicitement définies sont les suivantes:
 \item $replace(view,\,old,\,new)$ : remplace les occurrences de $old$ par $new$ dans
   la vue $view$.
 \item $rand()$ : retourne un nombre flottant aléatoire entre $0$ et $1$.
-\end{compactitem}
+\end{itemize}
 
 Dans le processus actif, la fonction $loop$ est appelée tous les intervals
 $\Delta$ de temps. Tout d'abord, la fonction incrémente l'age de chacun des

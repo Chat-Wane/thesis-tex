@@ -1,62 +1,74 @@
 \section{Rejoindre le réseau}
+\label{net:sec:joining}
 
-L'algorithme pour rejoindre le réseau est, dans \SPRAY, la seule manière
-d'introduire de nouveaux arcs dans le réseau. Afin de répondre à la première
-partie de l'énoncé du problème (\REF), ce nombre d'arcs doit augmenter
-logarithmiquement comparé à la taille du réseau. Tout comme dans \SCAMP, nous
-supposons que chacuns des pairs respecte cette contrainte. Dès lors, ces
-derniers utilisent ce savoir afin de propager l'identité du nouvel
-arrivant. L'algorithme~\ref{algo:joining} décrit la façon dont le contact envoie
-la nouvelle identité à son voisinage où elle est intégrée directement à leur vue
-partielle. En définitive, le nombre d'arcs dans le réseau augmente de
-$1+\ln(|\mathcal{N}|)$ et ce, seulement en utilisant des interactions de voisin
-à voisin.
+Le processus d'entrée d'un nœud dans le réseau est, dans \SPRAY, la seule
+manière d'introduire de nouveaux arcs. Afin de répondre à la première partie de
+l'énoncé du problème~\ref{net:problem:properties}, ce nombre d'arcs doit
+augmenter logarithmiquement comparé à la taille du réseau. Tout comme dans
+\SCAMP, nous supposons que chacuns des nœuds respecte cette contrainte. Dès
+lors, ces derniers utilisent cette supposition afin de propager l'adresse
+logique du nouvel arrivant. L'algorithme~\ref{net:algo:joining} décrit la façon
+dont le contact propage l'annonce à son voisinage où elle est directement
+intégrée à leur vue partielle. En définitive, le nombre d'arcs dans le réseau
+augmente de $1 + \ln |\mathcal{N}|$ et ce, seulement en utilisant des
+interactions de voisin à voisin. Globalement, cela correspond à une augmentation
+de l'ordre de $|\mathcal{N}| \ln |\mathcal{N}|$ arcs, similaire au seuil de
+connexité exigé par les graphes aléatoires~\cite{erdos1959random}.
 
 \begin{figure*}
   \centering
-  \subfloat[Figure A][$p_1$ contacts $p_2$ to join the network. $p_1$ adds
-  $p_2$ to its neighborhood. $p_1$ sends its request to $p_2$.]{
-    \input{./input/network/joiningexampleA.tex}}
+  \subfloat[Un nœud \SPRAY rejoint un réseau.]
+  [Le nœud $n_1$ contacte $n_2$ afin de rejoindre le réseau. $n_1$ ajoute
+  $n_2$ à sa vue partielle.]
+  {\input{./input/network/joiningexampleA.tex}}
+  \hspace{40pt}
+  \subfloat[Le contact annonce le nouvel arrivant.]
+  [L'événement \textsc{onSubs}($n_1$) est déclanché en $n_2$ qui
+  dissémine l'annonce.]
+  {\input{./input/network/joiningexampleB.tex}}
   \hspace{10pt}
-  \subfloat[Figure B][The $onSubs(p_1)$ event is raised at $p_1$
-  which forwards the subscription to $p_1$'s neighborhood.]{
-    \input{./input/network/joiningexampleB.tex}}
-  \hspace{10pt}
-  \subfloat[Figure C][The $onFwdSubs(p_1)$ event is raised at $p_{3-6}$. The
-  peers add $p_1$ to their neighborhood.]{
-    \input{./input/network/joiningexampleC.tex}}
-  \caption{\label{net:fig:joiningexample}Example of the \SPRAY's joining
-    protocol.}
+  \subfloat[Les voisins du contact ajoute le nouvel arrivant.]
+  [L'événement \textsc{onFwdSubs}($n_1$) est déclanché en $n_{3-6}$.
+  Chacun de ces nœuds ajoute $n_1$ dans sa vue partielle.]
+  {\input{./input/network/joiningexampleC.tex}}
+  \caption{\label{net:fig:joiningexample} Exemple de processus d'entrée dans
+    le réseau de \SPRAY.}
 \end{figure*}
 
-\begin{algorithm}
+\begin{algorithm}[h]
 \input{input/network/joiningalgo.tex}
 \caption{\label{net:algo:joining}The joining protocol of \SPRAY.}
 \end{algorithm}
 
-La vue partielle est un multiensemble de couples $\langle n,\, age\rangle$ qui
-associe à chaque voisin $n$ l'âge $age$. Ce multiensemble permet de gérer les
-doublons. L'âge joue le même rôle que dans \CYCLON, çàd qu'il accélère la
-suppression des pairs qui sont sortis ou ont crash. L'évenement $onSubs$ est
-appelé chaque fois qu'un pair rejoins le réseau via ce contact. $onSubs$
-redirige l'identité du pairs à tous ses voisins, indépendament de
-l'âge. L'évenement $onFwdSubs$ est déclanché lorsqu'un pair reçoit une telle
-identité redirigée. $onFwdSubs$ ajoute la référence en initialisant son âge à
-$0$.
+L'algorithme~\ref{net:algo:joining} présente les instructions de \SPRAY
+concernant l'entrée d'un nouveau nœud dans le réseau. La vue partielle est un
+multiensemble de couples $\langle n,\, age\rangle$ qui associe à chaque voisin
+$n$ son âge dans la vue partielle $age$. Ce multiensemble permet de gérer les
+doublons. Ces doublons sont généralement perçus négativement du fait de la
+redondance d'information. Toutefois, ils nous sont nécessaire afin de ne pas en
+perdre. L'âge joue le même rôle que dans \CYCLON, c'est à dire qu'il accélère la
+suppression des nœuds avec lesquels il n'est plus possible de communiquer car
+partis ou défaillant. L'événement \textsc{onSubs} est déclanché chaque fois qu'un
+nœud rejoint le réseau via ce contact. Ce dernier distribue l'adresse logique du
+nouvel arrivant à son voisinage, plusieurs fois aux doublons, et indépendament
+de l'âge. L'événement \textsc{onFwdSubs} se déclanche lorsqu'un nœud reçoit la
+redirection de l'adresse logique. Le nœud établit alors la connexion dont il
+initialise l'âge à $0$.
 
-La figure~\ref{net:fig:joiningexample} décrit un scenario où le pair $p_1$ contacte
-le pair $p_2$ afin de rejoindre le réseau composé de $\{p_2$, $p_2$, $p_4$,
-$p_5$, $p_6\}$. Pour simplifier, la figure ne montre que les arcs nouvellement
-introduit ainsi que le voisinage de $p_1$ et $p_2$. Le pair $p_1$ ajoute
-directement $p_2$ dans sa vue partielle. Ce dernier redirige l'identité de $p_1$
-à chacun de ses voisins.  Chacun de ces voisins ajoute alors $p_1$ à leur vue
-partielle. Au total, \SPRAY établie 5 connexions. Le réseau en résultant est
-connecté.
+La figure~\ref{net:fig:joiningexample} décrit un scénario où le pair $n_1$
+contacte le pair $n_2$ afin de rejoindre le réseau composé de $\{n_2$, $n_3$,
+$n_4$, $n_5$, $n_6\}$. Pour simplifier, la figure ne montre que les arcs
+nouvellement introduits ainsi que les voisinages de $n_1$ et $n_2$. Le pair
+$n_1$ ajoute directement $n_2$ dans sa vue partielle. Ce dernier redirige
+l'adresse logique de $n_1$ à chacun de ses voisins.  Chacun de ces voisins
+ajoute alors $n_1$ à leur vue partielle. Au total, \SPRAY établit 5
+connexions. Le réseau en résultant est connexe.
 
-Malheureusement, les vues partiels des derniers arrivant sont clairement
-déséquilibrés comparé au reste du réseau. De ce fait, ils violent la première
-condition de l'énoncé du problème (\REF). Le processus de mélange décrit dans la
-prochaine section a pour but de ré-équilibrer les vues partielles.
+Malheureusement, les vues partielles des derniers arrivant sont clairement
+déséquilibrées comparé au reste du réseau. De ce fait, ils violent la première
+condition de l'énoncé du problème~\ref{net:problem:properties}. Le processus de
+mélange décrit dans la section suivante a pour objectif d'équilibrer les vues
+partielles.
 
 
 %%% Local Variables:
