@@ -28,20 +28,26 @@
     \Function{loop}{ } \hfill \comment{Every $\Delta\,t$}
     \State $P \leftarrow \textsc{incrementAge}(P)$;
     \State \textbf{let} $ \langle q,\, age \rangle \leftarrow \textsc{getOldest}(P)$;
-    \State \textbf{let} $sample \leftarrow $ \label{net:line:samplesize}
-    $\textsc{getSample}(P \setminus\left\{\langle q, age\rangle\right\}, \left \lceil{|P|\over{2}} \right \rceil-1) \uplus \left\{\langle p, 0 \rangle\right\}$;
-    \State $sample \leftarrow \textsc{replace}(sample,\,q,\,p)$;
+
+    \State \textbf{let}
+    $sample \leftarrow \textsc{getSample}(P \setminus\left\{\langle q,
+      age\rangle\right\}, \DARKBLUE{\left \lceil{|P|\over{2}} \right \rceil-1}) \uplus
+    \DARKBLUE{\left\{\langle p, 0 \rangle\right\}}$; \label{net:line:samplesize}
+
+    \State $sample \leftarrow \DARKBLUE{\textsc{replace}}(sample,\,q,\,p)$;
     \label{net:line:replace1}
     \State $\textsc{sendTo}(q,\, 'exchange',\, sample)$;
     \State \textbf{let} $sample'\leftarrow \textsc{receiveFrom}(q)$;
     \State $sample \leftarrow \textsc{replace}(sample,\,p,\,q)$;
-    \State $P \leftarrow (P \setminus sample) \uplus sample'$;
+    \State $P \leftarrow (P\,\DARKBLUE{\setminus\, sample})\,\DARKBLUE{\uplus\, sample'}$;
     \EndFunction
   \endAct
   
   \pas
     \Function{onExchange}{$o,\, sample$} \hfill \comment{$o: origin$}
-    \State \textbf{let} $sample' \leftarrow \textsc{getSample}(P ,\, \left\lceil |P|\over{2} \right\rceil )$;
+    \State \textbf{let}
+    $sample' \leftarrow \textsc{getSample}(P ,\, \DARKBLUE{\left\lceil |P|\over{2}
+    \right\rceil} )$;
     \State $sample' \leftarrow \textsc{replace}(sample',\,o,\,p);$
     \label{net:line:replace2}
     \State $\textsc{sendTo}(o ,\, sample')$;
