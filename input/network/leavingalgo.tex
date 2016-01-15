@@ -18,32 +18,31 @@
   \Function{onPeerDown}{$q$} \hfill \comment{$q$: crashed/departed peer}  
   \State \textbf{let} $occ \leftarrow 0$;
 
-  \For{\textbf{each} $\langle n,\,age\rangle \in \mathcal{P}$}
+  \For{\textbf{each} $\langle n,\,age\rangle \in P$}
   \hfill \comment{remove and count}
   \If {($n=q$)}
-  \State $\mathcal{P} \leftarrow \mathcal{P}\setminus \{\langle n,\,age\rangle \}$;
+  \State $P \leftarrow P\setminus \{\langle n,\,age\rangle \}$;
   \State $occ \leftarrow occ + 1$;
   \EndIf
   \EndFor
 
   \For{$i\leftarrow 0$ \textbf{to} $occ$} 
   \hfill \comment{probabilistically duplicates}
-  \If{($rand()>{1\over{|\mathcal{P}|+occ}}$)}
-  \State \textbf{let} $\langle n,\,\_ \,\rangle \leftarrow
-  \mathcal{P}[\left\lfloor rand()*|\mathcal{P}|\right\rfloor]$;
-  \State $\mathcal{P} \leftarrow \mathcal{P} \uplus
-  \left\{\langle n,\, 0\rangle\right\}$;
+  \If{($rand()>\DARKBLUE{{1\over{|P|+occ}}}$)}
+    \State \textbf{let} $\langle n,\,\_ \,\rangle \leftarrow
+    P[\left\lfloor rand()*|P|\right\rfloor]$;
+    \State $P \leftarrow P \uplus
+    \left\{\langle n,\, 0\rangle\right\}$;
   \EndIf
   \EndFor
   
   \EndFunction
   \Statex
-  \Function{onArcDown}{$q,\,age$}
-  \hfill \comment{$q$: arrival of the arc down}  
-  \State $\mathcal{P} \leftarrow \mathcal{P}\setminus \{\langle q,\,age\rangle \}$;
+  \Function{onArcDown}{$q,\,age$}\hfill\comment{$q$: arrival of the arc down}  
+  \State $P \leftarrow P \setminus \{\langle q,\,age\rangle \}$;
   \State \textbf{let} $\langle n,\,\_ \,\rangle \leftarrow
-  \mathcal{P}[\left\lfloor rand()*|\mathcal{P}|\right\rfloor]$;
-  \State $\mathcal{P} \leftarrow \mathcal{P} \uplus
+  P[\left\lfloor rand()*|P|\right\rfloor]$;
+  \State $P \leftarrow P \uplus
   \left\{\langle n,\, 0\rangle\right\}$;
   \hfill \comment{systematically duplicates}
   \EndFunction
