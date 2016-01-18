@@ -198,68 +198,72 @@ intermédiaires à $n_j$.
     exécutions concernant \CYCLON et \SPRAY.}
 \end{figure}
 
-%La distribution des arcs entrants est différente de celle de celle de la vue
-%partielle. 
+La distribution des arcs entrants correspond au nombre de fois qu'un nœud est
+référencé dans une vue partielle. À cet égard, la distribution est différentes :
+Lorsque la taille des vues partielles est controllée, les vues entrantes sont
+aléatoirement remplies par d'autres nœuds au cours de l'exécution du
+protocole. Certains nœuds sont donc moins représentés que d'autres.
+
+Au même titre que la distribution des vues partielles, la distribution des arcs
+sortants permet de déduire des faits sur la robustesse du réseau, l'équilibre de
+la charge etc. \TODO{Moar.}
 
 \begin{itemize}
-\item [\textbf{Objectif :}] Montrer comment l'adaptabilité influence la
-  distribution des connexions entrantes, i.e., la charge parmi les pairs.
-\item [\textbf{Description :}] Les connexions entrantes d'un pair montre à quel
-  point ce pair est représenté dans les vues partielles des autres pairs. La
-  distribution des connexions entrantes permet de mettre en lumière l'existence
-  de pairs avec une faible connexité, et les groupes fortement liés. Cela
-  influence directement la robustesse du réseau. Dans cette expérimentation,
-  \CYCLON est configuré avec une vue partielle contenant 7 voisins (optimal pour
-  1.1k pairs). Les mesures sont faites après convergence avec les tailles de
-  réseau suivantes: 0.1k, 1k, 100k, 500k pairs.
+\item [\textbf{Objectif :}] Montrer que la distribution des arcs entrants dans
+  \SPRAY suit gracieusement l'évolution du réseau.
+\item [\textbf{Description :}] Dans cette expérimentation, \CYCLON est configuré
+  avec une vue partielle contenant 7 voisins (optimal pour 1.1k nœuds). Les
+  mesures sont effectuées après convergence sur des réseaux comprenant : 0.1k,
+  1k, 100k, 500k nœuds.
 \item [\textbf{Résultat :}] Le haut et le bas de la figure~\ref{net:fig:inview}
   montrent la distribution des connexions entrantes pour \CYCLON et \SPRAY,
-  respectivement. Nous observons que \CYCLON possède une distribution identique,
-  quelle que soit la taille du réseau. Ainsi, la distribution d'un réseau de
-  0.1k pairs est identique à celle de 500k pairs, avec une moyenne aux environs
-  de 7 et un fort pic à cette valeur. À l'opposé, la distribution des connexions
-  entrantes de \SPRAY suit la taille du réseau. La figure~\ref{net:fig:inview}
-  montre aussi que les pairs sont très concentrés autour des valeurs
-  moyennes. Par exemple, lors de l'exécution du protocole \SPRAY avec 500k
-  pairs, la moyenne est de 13.37 avec 88\% des pairs compris entre 12 et 14
-  inclus. Cela signifie que la charge est très équilibrée parmi les
-  pairs. Puisque chaque pair est aussi important que son voisin en terme de
-  connectivité,le réseau est résistant aux défaillances.
+  respectivement. Nous observons que \CYCLON possède une distribution identique
+  quelle que soit la taille du réseau. La distribution d'un réseau de 0.1k nœuds
+  est identique à celle de 500k nœuds, avec un fort pic sur la valeur moyenne de
+  7 voisins. À l'opposé, la distribution des connexions entrantes de \SPRAY suit
+  la taille du réseau. La figure~\ref{net:fig:inview} montre que les nœuds sont
+  très concentrés autour des valeurs moyennes. Par exemple, lors de l'exécution
+  du protocole \SPRAY avec 500k nœuds, la moyenne est de 13.37 avec 88\% des
+  nœuds compris entre 12 et 14 voisins inclus. Entre autre, cela signifie que la
+  charge est très équilibrée parmi les nœuds. Puisque chaque nœud est aussi
+  important que son voisin en terme de connexité, le réseau est robuste
+  vis-à-vis des défaillances.
 \item [\textbf{Explication :}] Une fois configuré, \CYCLON doit gérer tous les
   réseaux, quelle que soit leur taille, avec une vue partielle dont la taille
-  est constante. Proportionnelement, le nombre de fois qu'un pair est référencé
+  est constante. Proportionnelement, le nombre de fois qu'un nœuds est référencé
   dans les vues partielles ne change pas comparé à la taille réseau. En effet,
-  le nombre d'arcs qu'un pair apporte lorsqu'il se connecte au réseau constitue
+  le nombre d'arcs qu'un nœud apporte lorsqu'il se connecte au réseau constitue
   autant d'arcs le ciblant après quelques protocoles d'échanges. Puisque la
   taille de la vue partielle est constante, le degré des connexions entrantes
-  reste stable. En revanche, dans \SPRAY, chaque pair rejoignant le réseau
+  reste stable. En revanche, dans \SPRAY, chaque nœuds rejoignant le réseau
   augmente le nombre d'arcs dans le réseau. Ainsi, le degré de connexions
-  entrantes de chaque pair grossit pour refléter la taille du réseau. Par
+  entrantes de chaque nœud grossit reflétant les variations du réseau. Par
   conséquent, la distribution de \SPRAY se décale lentement vers de plus hautes
   valeurs lorsque la taille du réseau augmente. \SPRAY ne possède pas de pics
   sur les valeurs moyennes car celles-ci sont des valeurs qui tombent entre deux
   entiers. Par exemple, si la taille moyenne des vues partielles est 6.5, cela
   signifie que la moitié de celle-ci ont une taille de 6, et l'autre moitié une
-  taille de 7. De tels réseaux sont robustes aux défaillances car aucun pair
-  n'est plus important que son voisin en terme de connectivité. Ainsi, si un
-  pair en particulier s'éteint, les pairs le référençant possèdent d'autres
-  voisins avec qui communiquer pour continuer de disséminer les informations.
+  taille de 7. De tels réseaux sont robustes aux défaillances car aucun nœud
+  n'est plus important que son voisin en terme de connexité. Si un nœud
+  particulier quitte ou défaillit, les nœuds le référençant possèdent d'autres
+  voisins avec qui communiquer afin de continuer à disséminer les informations.
 \end{itemize}
 
 \subsection{Évolution du nombre d'arcs}
+\label{net:subsec:churn}
 
 \begin{figure*}
   \centering
-  \subfloat[Figure A][\label{fig:spray:churnA}The x-axis denotes the
+  \subfloat[Figure A][\label{net:fig:churnA}The x-axis denotes the
   elapsed time in cycles. The upper graph y-axis shows the number of total
   connections in the overlay while the lower graph y-axis shows the variance
   $\sigma^2$ of the partial view sizes in the network.]{
     \includegraphics[width=0.47\textwidth]{img/spray/churn.eps}}
   \hspace{10pt}
-  \subfloat[Figure B][\label{fig:spray:churnB}The x-axis denotes the
+  \subfloat[Figure B][\label{net:fig:churnB}The x-axis denotes the
   elapsed time in cycles. The y-axis denotes the average partial view size.]{
     \includegraphics[width=0.47\textwidth]{img/spray/avgpv.eps}}
-  \caption{\label{fig:spray:churn}\CYCLON (partial view size configured to 9)
+  \caption{\label{net:fig:churn}\CYCLON (partial view size configured to 9)
     and \SPRAY in a dynamic network. 2.5k peers join the network at cycles $0$,
     $10$, $20$, and $30$. Then 5k peers leave at cycle $40$. Finally 2.5k peers
     join at cycles $60$ and $70$. The final network contains 10k members.}
@@ -285,9 +289,9 @@ intermédiaires à $n_j$.
   \item la variance de la taille des vues partielles au cours des cycles,
   \item la taille moyenne des vues partielles au cours du temps.
   \end{inparaenum}
-\item [Résultat:] La figure~\ref{fig:spray:churn} montre les résultats de cette
+\item [Résultat:] La figure~\ref{net:fig:churn} montre les résultats de cette
   expérimentation. L'axe des abscisses représente les cycles (i.e. une mesure
-  arbitraire de temps). La partie haute de la figure~\ref{fig:spray:churnA}
+  arbitraire de temps). La partie haute de la figure~\ref{net:fig:churnA}
   montre le nombre de connections établies dans le réseau (échelle
   $\times 10^3$) tandis que la partie basse de la figure montre la variance de
   taille des vues partielles parmis les pairs. En ce qui concerne \SPRAY, nous
@@ -304,7 +308,7 @@ intermédiaires à $n_j$.
   pairs sont réintroduits dans le réseau et mène au même conclusions que
   précédemment. \CYCLON montre le même genre de comportement. Néanmoins, le
   nombre d'arcs est invariablement supérieurs à celui de \SPRAY (entre 1000 et
-  2500 connexions supplémentaires). La figure~\ref{fig:spray:churnB} montre la
+  2500 connexions supplémentaires). La figure~\ref{net:fig:churnB} montre la
   taille moyenne des vues partielles de \SPRAY et de \CYCLON. Comme prévu,
   \CYCLON converge immédiatement vers la taille de vue partielle planifiée lors
   de sa configuration (9 voisins). À l'opposé, la taille de vue partielle
