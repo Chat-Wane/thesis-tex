@@ -1,0 +1,30 @@
+
+\section{Fusion de réseaux}
+\label{net:sec:merging}
+
+La fusion de plusieurs réseaux n'est jamais abordée dans la littérature
+concernant l'échantillonnage aléatoire de pairs, et pour cause : le processus
+des approches à taille fixe s'en trouverai inchangé. (\TODO{Think about two
+  networks with differents partial view size merging}) Dans le cadre des
+approches à taille variable, le sujet devient intéressant car la fusion des
+réseaux doit résulter en un réseau unique, lui-même possédant les mêmes
+propriétés que ceux dont il est issue. Entre autre, le nombre d'arcs doit suivre
+le seuil $\Theta (|\mathcal{N}|.\ln |\mathcal{N}|)$ arcs.
+
+Lors de ce processus, nous supposons qu'au moins un des nœuds appartenant à l'un
+réseau contacte l'autre réseau afin d'initier la fusion. Grâce à la connexion
+qui en résulte, les réseaux sont à même de fusionner.
+
+La première solution qui vient à l'esprit est la suivante : chacun des nœuds du
+premier réseau utilise le contact afin de rejoindre le second
+réseau. Malheureusement, cette solution est extrêmement lente -- puisque la
+majorité des nœuds ignorent encore qui est le contact -- et susceptible
+d'échouer -- le contact est un point unique de défaillance.
+
+Un seconde solution consiste simplement à laisser le méchanisme de mélange faire
+son office. Petit à petit, d'autres ponts entre les réseaux vont se former
+jusqu'à ce que les deux réseaux soient indifférenciés. Malheureusement, les arcs
+ne suivent pas l'augmentation relative au réseau. Le problème est le suivant :
+\TODO{Moar.}
+
+

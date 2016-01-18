@@ -206,7 +206,7 @@ protocole. Certains nœuds sont donc moins représentés que d'autres.
 
 Au même titre que la distribution des vues partielles, la distribution des arcs
 sortants permet de déduire des faits sur la robustesse du réseau, l'équilibre de
-la charge etc. \TODO{Moar.}
+la charge etc. \TODO{Moar.} 
 
 \begin{itemize}
 \item [\textbf{Objectif :}] Montrer que la distribution des arcs entrants dans
@@ -230,23 +230,24 @@ la charge etc. \TODO{Moar.}
   vis-à-vis des défaillances.
 \item [\textbf{Explication :}] Une fois configuré, \CYCLON doit gérer tous les
   réseaux, quelle que soit leur taille, avec une vue partielle dont la taille
-  est constante. Proportionnelement, le nombre de fois qu'un nœuds est référencé
-  dans les vues partielles ne change pas comparé à la taille réseau. En effet,
-  le nombre d'arcs qu'un nœud apporte lorsqu'il se connecte au réseau constitue
-  autant d'arcs le ciblant après quelques protocoles d'échanges. Puisque la
-  taille de la vue partielle est constante, le degré des connexions entrantes
-  reste stable. En revanche, dans \SPRAY, chaque nœuds rejoignant le réseau
-  augmente le nombre d'arcs dans le réseau. Ainsi, le degré de connexions
-  entrantes de chaque nœud grossit reflétant les variations du réseau. Par
-  conséquent, la distribution de \SPRAY se décale lentement vers de plus hautes
-  valeurs lorsque la taille du réseau augmente. \SPRAY ne possède pas de pics
-  sur les valeurs moyennes car celles-ci sont des valeurs qui tombent entre deux
-  entiers. Par exemple, si la taille moyenne des vues partielles est 6.5, cela
-  signifie que la moitié de celle-ci ont une taille de 6, et l'autre moitié une
-  taille de 7. De tels réseaux sont robustes aux défaillances car aucun nœud
-  n'est plus important que son voisin en terme de connexité. Si un nœud
-  particulier quitte ou défaillit, les nœuds le référençant possèdent d'autres
-  voisins avec qui communiquer afin de continuer à disséminer les informations.
+  est constante. Proportionnellement, le nombre de fois qu'un nœuds est
+  référencé dans les vues partielles ne change pas comparé à la taille
+  réseau. En effet, le nombre d'arcs qu'un nœud apporte lorsqu'il se connecte au
+  réseau constitue autant d'arcs le ciblant après quelques protocoles
+  d'échanges. Puisque la taille de la vue partielle est constante, le degré des
+  connexions entrantes reste stable. En revanche, dans \SPRAY, chaque nœuds
+  rejoignant le réseau augmente le nombre d'arcs dans le réseau. Ainsi, le degré
+  de connexions entrantes de chaque nœud grossit reflétant les variations du
+  réseau. Par conséquent, la distribution de \SPRAY se décale lentement vers de
+  plus hautes valeurs lorsque la taille du réseau augmente. \SPRAY ne possède
+  pas de pics sur les valeurs moyennes car celles-ci sont des valeurs qui
+  tombent entre deux entiers. Par exemple, si la taille moyenne des vues
+  partielles est 6.5, cela signifie que la moitié de celle-ci ont une taille de
+  6, et l'autre moitié une taille de 7. De tels réseaux sont robustes aux
+  défaillances car aucun nœud n'est plus important que son voisin en terme de
+  connexité. Si un nœud particulier quitte ou défaillit, les nœuds le
+  référençant possèdent d'autres voisins avec qui communiquer afin de continuer
+  à disséminer les informations.
 \end{itemize}
 
 \subsection{Évolution du nombre d'arcs}
