@@ -1,36 +1,41 @@
 
 \section{Propriétés}
+\label{net:sec:properties}
 
 \SPRAY est un protocole d'échantillonnage aléatoire de pair adaptatif. Cette
 section a pour objectif d'examiner ses propriétés empiriquement au travers une
 série de simulations. Les métriques auxquelles nous nous intéressons sont
-communément employées dans l'étude des performances de ce type de protocoles ou
-en étude des graphes. Ceux-ci incluent le coefficient de d'agglomération
+communément employées dans l'étude de performances de ce type de protocoles ou
+en étude des graphes. Ceux-ci incluent le coefficient d'agglomération
 (\emph{clustering coefficient}), la taille moyenne du plus court chemin, la
-distribution des connexions entrantes, l'évolution du nombre d'arcs, et les
-composantes connexes.
+distribution des connexions entrantes, l'évolution du nombre d'arcs, les
+composantes connexes, et la robustesse. À cela nous ajoutons une analyse sur les
+doublons d'arcs, spécificité de \SPRAY.
 
-\TODO{Review this §.}
-\CYCLON constitue l'approche à taille fixe avec laquelle nous comparerons les
-résultats en lien avec l'adaptabilité. Les résultats attendus sont :
-\begin{inparaenum}
-\item des propriétés identiques pour les deux approches lorsque \CYCLON est
-  configuré de manière optimale,
-\item une meilleure efficacité de \SPRAY lorsque les vues partielles de \CYCLON
-  sont trop grande par rapport à la taille du réseau,
-\item une plus grande robustesse lorsque les vues partielles de \CYCLON sont
-  trop petites par rapport à la taille du réseau.
-\item Enfin, contrairement à \CYCLON, \SPRAY possède des doublons dans ses vues
-  partielles. Toutefois, ce nombre de doublons est supposé négligeable.
-\end{inparaenum}
-\SCAMP constitue l'approche avec laquelle nous comparerons \SPRAY lorsque nous
-examinerons les échecs dans l'établissement des connexions. Nous nous attendons
-à ce que \SCAMP échoue à maintenir un réseau connecté, contrairement à \SPRAY.
+% \TODO{Review this §.}
+% \CYCLON constitue l'approche à taille fixe avec laquelle nous comparerons les
+% résultats en lien avec l'adaptabilité. Les résultats attendus sont :
+% \begin{inparaenum}
+% \item des propriétés identiques pour les deux approches lorsque \CYCLON est
+%   configuré de manière optimale,
+% \item une meilleure efficacité de \SPRAY lorsque les vues partielles de \CYCLON
+%   sont trop grande par rapport à la taille du réseau,
+% \item une plus grande robustesse lorsque les vues partielles de \CYCLON sont
+%   trop petites par rapport à la taille du réseau.
+% \item Enfin, contrairement à \CYCLON, \SPRAY possède des doublons dans ses vues
+%   partielles. Toutefois, ce nombre de doublons est supposé négligeable.
+% \end{inparaenum}
+% \SCAMP constitue l'approche avec laquelle nous comparerons \SPRAY lorsque nous
+% examinerons les échecs dans l'établissement des connexions. Nous nous attendons
+% à ce que \SCAMP échoue à maintenir un réseau connecté, contrairement à \SPRAY.
 
-Les expérimentations ont été exécuté sur le simulateur
+Les expérimentations ont été effectuées sur le simulateur
 \PEERSIM~\cite{montresor2009peersim}. Le code relatif aux protocoles
 d'échantillonnages \CYCLON, \SCAMP, et \SPRAY sont disponibles sur la
-plate-forme Github\footnote{\url{http://github.com/justayak/peersim-spray}}.
+plate-forme Github à l'adresse : \url{http://github.com/justayak/peersim-spray}.
+
+\subsection{Coefficient d'agglomération}
+\label{net:subsec:clustering}
 
 \begin{figure*}
   \centering
@@ -46,64 +51,76 @@ plate-forme Github\footnote{\url{http://github.com/justayak/peersim-spray}}.
     sur une échelle logarithmique de base 10.}
 \end{figure*}
 
-\subsection{Coefficient d'agglomération}
+Le coefficient d'agglomération désigne une mesure de groupement des nœuds. En
+d'autres termes, si un petit groupe possède un grand nombre d'arcs les reliants,
+alors la mesure grimpe. Ainsi, les graphes complets affichent un coefficient
+maximal. À l'inverse, les graphes aléatoires affichent un coefficient très bas
+car la répartition des arcs ainsi que leur nombre ne favorise pas l'apparition
+de groupes.
 
-\begin{asparadesc}
-\item [Objectif:] Montrer comment l'adaptabilité influence le clustering et le
-  temps de convergence.
-\item [Description:] Le coefficient de clustering moyen $\overline{C}$ mesure la
-  connexité du voisinage de chaque pair dans le réseau :
-  \begin{equation}
-    \overline{C} = {1\over |\mathcal{N}|}\sum\limits_{x\in\mathcal{N}}C_x
-  \end{equation}
-  où $C_x$ est le coefficient de clustering local du pair $p_x$. L'expérience
-  implique 0.1k, 1k, 10k, et 100k pairs. Le représentant des approches à taille
-  fixe est \CYCLON. Ce dernier est configuré de manière optimale pour 1k pairs
-  ($\ln(1000)\approx 7$ voisins). Durant les échanges, les pairs utilisant
-  \CYCLON mélangent 3 de leurs 7 voisins. Ainsi, les vues partielles de \CYCLON
-  sont trop grandes pour 0.1k pairs, et trop petites pour 10k et 100k pairs.
-\item [Résultat:] La figure~\ref{fig:spray:clustering} montre que \CYCLON
-  démarre avec un coefficient de clustering plus bas que \SPRAY. Malgré cela,
-  \SPRAY parvient à converger plus rapidement que \CYCLON. De plus, quand le
-  nombre de pairs augmente dans le réseau, le temps de convergence de \CYCLON en
-  souffre fortement. À l'opposé, \SPRAY converge très rapidement quel que soit
-  la taille du réseau. La figure~\ref{fig:spray:clustering} montre aussi que les
-  deux approches convergent vers un coefficient de clustering bas
-  caractéristique des graphes aléatoires. Néanmoins, \CYCLON et \SPRAY
-  n'atteignent pas les mêmes valeurs après convergence. À l'exception du cas où
-  \CYCLON est configuré de manière optimale, les valeurs obtenus par \SPRAY sont
-  soit au dessous (lorsque les vues de \CYCLON sont trop grandes) ou au dessus
-  (lorsque les vues de \CYCLON sont trop petites). Globalement, cela montre que
-  \SPRAY
+Si le comportement de cette métrique fait consensus, il existe malgré tout
+plusieurs formules pour la calculer. Dans cette simulation, nous employons le
+coefficient local moyen $\overline{C}$~\cite{watts1998collective} effectuant la
+moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
+\begin{center}
+  $\overline{C} = {1\over |\mathcal{N}|}\sum\limits_{x\in\mathcal{N}}C_x$ \hfill
+  avec
+  $C_x = {|\{ (n_y,\,n_z) \in P_x, n_y \in P_z \vee n_z \in P_y \}|\over
+    |P_x|.(|P_x|-1)}$
+\end{center}
+
+\begin{itemize}
+\item [\textbf{Objectif :}] Montrer que \SPRAY converge rapidement vers une
+  topologie ne comportant pas de groupes fortement connexes.
+\item [\textbf{Description :}] Les simulations ciblent des réseaux composés
+  respectivement de 0.1k, 1k, 10k, et 100k nœuds. Le représentant des approches
+  à taille fixe est \CYCLON. Ce dernier est configuré de manière optimale pour
+  1k pairs ($\ln(1000)\approx 7$ voisins). De plus, les nœuds utilisant \CYCLON
+  échangent 3 de leurs 7 voisins à chaque mélange.
+\item [\textbf{Résultat :}] La figure~\ref{net:fig:clustering} montre que
+  \CYCLON démarre avec un coefficient d'agglomération plus bas que
+  \SPRAY. Malgré cela, \SPRAY parvient à converger plus rapidement que
+  \CYCLON. De plus, quand le nombre de nœuds augmente dans le réseau, le temps
+  de convergence de \CYCLON en souffre fortement. À l'opposé, \SPRAY converge
+  très rapidement quel que soit la taille du réseau. La
+  figure~\ref{net:fig:clustering} montre aussi que les deux approches convergent
+  vers un petit coefficient caractéristique des graphes aléatoires. Néanmoins,
+  \CYCLON et \SPRAY n'atteignent pas les mêmes valeurs après convergence. À
+  l'exception du cas où \CYCLON est configuré de manière optimale, les valeurs
+  obtenues par \SPRAY sont soit au dessous -- lorsque les vues de \CYCLON sont
+  trop grandes -- ou au dessus -- lorsque les vues de \CYCLON sont trop
+  petites. Globalement, \SPRAY
   \begin{inparaenum}[(i)]
-  \item converge vers un coefficient de clustering stable,
-  \item qui reflète les besoins dû à la taille du réseau.
+  \item converge vers un coefficient d'agglomération stable
+  \item reflètant les besoins dûs à la taille du réseau.
   \end{inparaenum}
-  Cela a une influence sur l'équilibrage des charges et la robustesse par
-  rapport aux allées et venues de pairs.    
-\item [Explications:] \CYCLON commence avec un coefficient de clustering plus
-  petit car lorsqu'un pair rejoint le réseau, un cheminement aléatoire est
-  effectué afin d'en faire l'annonce. Ainsi, le réseau de départ est déjà
-  légèrement équilibré au moment où la simulation commence les échanges de vue
-  partielle. À l'opposé, un nouvel arrivant avec \SPRAY n'annonce son entrée
-  qu'au voisinage de son contact. De ce fait, le réseau est fortement
-  déséquilibré au départ de l'expérience, quelle que soit taille du
-  réseau. Malgré cela, \CYCLON ne converge pas aussi vite que \SPRAY vers un
-  coefficient stable. Cela est due à la taille fixe de sa vue partielle qui
-  contraint la qualité des échanges. Le coefficient de clustering mesure la
-  connexité du voisinage de chaque pair dans le réseau. Cela dépend donc de la
-  taille de vue partielle qui, pour \CYCLON, est fixé lors de la configuration.
-  Ainsi lorsque le nombre de pairs est multiplié par 10, le coefficient de
-  clustering est divisé par 10. En revanche, les pairs utilisant \SPRAY ont une
-  taille de vue partielle pouvant varier afin de refléter la taille du réseau.
-  Ainsi, quand le réseau contient 1k pairs, les vues partielles s'adaptent à
+%%  Cela a une influence sur l'équilibrage des charges et la robustesse par
+%%  rapport aux allées et venues de pairs.    
+\item [\textbf{Explications :}] \CYCLON commence avec un coefficient
+  d'agglomération plus faible car lorsqu'un nœud rejoint le réseau, il est
+  annoncé au reste du réseau via une dissémination aléatoire. Ainsi, le réseau
+  de départ est déjà légèrement équilibré au moment où la simulation commence. À
+  l'opposé, un nouvel arrivant \SPRAY n'annonce son entrée qu'au voisinage de
+  son contact. De ce fait, le réseau est fortement déséquilibré au départ de
+  l'expérience quelle que soit taille du réseau. Malgré cela, \CYCLON ne
+  converge pas aussi vite que \SPRAY vers un coefficient stable. En effet, la
+  taille fixe de sa vue partielle ainsi que le nombre d'entrées de chaque
+  mélange contraint la qualité des échanges.  Le coefficient d'agglomération
+  mesure la connexité du voisinage de chaque nœud. Plus particulièrement, cela
+  mesure à quel point le réseau est proche d'un graphe complet. Cela dépend donc
+  des tailles de vue partielle qui, pour \CYCLON, sont fixées à la
+  configuration.  Ainsi lorsque le nombre de nœuds est multiplié par 10, le
+  coefficient s'en trouve divisé par 10. En revanche, les nœuds utilisant \SPRAY
+  ont une taille de vue partielle reflétant automatiquement la taille du réseau.
+  Ainsi, quand le réseau contient 1k nœuds, les vues partielles s'adaptent à
   cette taille. Par conséquent, \SPRAY est très légèrement en dessous de \CYCLON
   dans ce scénario car la taille moyenne de vue partielle est de 7.4 pour ce
   premier contre 7 pour ce second. En étendant ce raisonnement aux autres
   tailles de réseau, cela explique pourquoi \SPRAY converge vers une valeur plus
-  basse lorsque les vues partielles de \CYCLON sont trop grandes, et vers une
-  valeur plus haute lorsque les vues partielles de \CYCLON sont trop petites.
-\end{asparadesc}
+  basse lorsque les vues partielles de \CYCLON sont trop grandes (0.1k nœuds),
+  et vers une valeur plus haute lorsque les vues partielles de \CYCLON sont trop
+  petites (10k et 100k nœuds).
+\end{itemize}
 
 \subsection{Plus court chemin moyen}
 
