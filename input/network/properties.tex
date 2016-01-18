@@ -96,7 +96,7 @@ moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
   \end{inparaenum}
 %%  Cela a une influence sur l'équilibrage des charges et la robustesse par
 %%  rapport aux allées et venues de pairs.    
-\item [\textbf{Explications :}] \CYCLON commence avec un coefficient
+\item [\textbf{Explication :}] \CYCLON commence avec un coefficient
   d'agglomération plus faible car lorsqu'un nœud rejoint le réseau, il est
   annoncé au reste du réseau via une dissémination aléatoire. Ainsi, le réseau
   de départ est déjà légèrement équilibré au moment où la simulation commence. À
@@ -123,99 +123,113 @@ moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
 \end{itemize}
 
 \subsection{Plus court chemin moyen}
+\label{net:subsec:shortestpath}
 
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/avgpath.eps}
-  \caption{\label{fig:spray:avgpath}The average shortest path length of \SPRAY
-    and \CYCLON. The x-axis denotes the number of peers in the network on a
-    $\log_{10}$ scale (from 100 to 100k peers) while the y-axis denotes the
-    average shortest path length of the network.}
+  \caption{\label{net:fig:shortestpath} La moyenne des plus courts chemins dans
+    \SPRAY et \CYCLON. L'axe des abscisses montre le nombre de nœuds appartenant
+    aux réseaux sur une échelle logarithmique de base 10. L'axe des ordonnées
+    montre la moyenne des plus courts chemins.}
 \end{figure}
 
-\begin{asparadesc}
-\item [Objectif:] Observer comment l'adaptabilité influence la taille du plus
-  court chemin moyen, i.e., l'efficacité de la dissémination d'informations.
-\item [Description:] La taille du plus petit chemin moyen est calculée en
-  comptant le nombre de sauts (de voisin en voisin) d'un pair pour parvenir à
-  tous les autres pairs. En d'autres termes, cette métrique indique le temps
-  qu'une information, sous la forme d'un message, peut voyager et atteindre tous
-  les pairs au moins une fois. Afin d'effectuer la moyenne, nous choisissons
-  aléatoirement un sous-ensemble de pairs appartenant au réseau. Ce procédé est
-  répété sur 100 exécutions afin d'éviter tous les effets de bord dus à
-  l'indéterminisme des protocoles d'échantillonnages. Les expérimentations
-  concernent \CYCLON configurés de façon optimale pour différentes tailles de
-  réseau. Le \CYCLON avec une taille de vue partielle de 7 cible environ 1.1k
-  pairs. Le \CYCLON avec une taille de vue partielle de 9 cible environ 8.1k
-  pairs. Le \CYCLON avec une taille de vue partielle de 11 cible environ 60k
-  pairs. Lors de toutes ces simulations, les mesures sont effectuées après
-  convergence. Celles-ci sont faites lorsque la taille du réseau atteint 0.1k,
-  0.5k, 1k, 5k, 10k, 50k, et 100k pairs. 
-\item [Résultats:] La figure~\ref{fig:spray:avgpath} montre que \CYCLON et
-  \SPRAY ont tous deux un chemin moyen relativement petit. Ainsi, les
+La moyenne des plus courts chemins permet de mesurer à quel point les nœuds sont
+proches les un des autres. Plus précisément, il s'agit de compter le nombre
+minimum de nœuds intermédiaires entre deux nœuds distincts. Ainsi, même s'il
+existe plusieurs chemins pour aller d'un nœud $n_i$ à un nœud $n_j$, seul nous
+importe le plus court.  Les graphes aléatoires possèdent un plus court chemin
+moyen très petit grandissant en $\ln|\mathcal{N}|\over\ln\ln|\mathcal{N}|$
+lorsque le nombre d'arcs suit $|\mathcal{N}|\ln|\mathcal{N}|$.
+
+Cette métrique permet de cerner l'efficacité de la diffusion d'informations dans
+le réseau. Par exemple, si le plus court chemin d'un nœud $n_i$ à un nœud $n_j$
+est de 3, cela signifie qu'un message émanant de $n_i$ parviendra en seulement 3
+intermédiaires à $n_j$.
+
+\begin{itemize}
+\item [\textbf{Objectif :}] Montrer que le caractère adaptatif de \SPRAY permet
+  un meilleur passage à l'échelle du plus court chemin moyen.
+\item [\textbf{Description :}] Les mesures sont effectuées sur un sous-ensemble
+  de nœuds choisis aléatoirement parmis les membres du réseau. Le procédé est
+  répété 100 fois afin d'éviter tout effets de bord dû à l'indéterminisme des
+  protocoles d'échantillonnage. Les expérimentations concernent \CYCLON
+  configuré de façon optimale pour différentes tailles de réseau. Le \CYCLON
+  avec une taille de vue partielle de 7 cible environ 1.1k nœuds. Le \CYCLON
+  avec une taille de vue partielle de 9 cible environ 8.1k nœuds. Le \CYCLON
+  avec une taille de vue partielle de 11 cible environ 60k nœuds. Lors de toutes
+  ces simulations, les mesures sont effectuées après convergence. Celles-ci sont
+  faites lorsque la taille du réseau atteint 0.1k, 0.5k, 1k, 5k, 10k, 50k, et
+  100k nœuds.
+\item [\textbf{Résultat :}] La figure~\ref{net:fig:shortestpath} montre que
+  \CYCLON et \SPRAY ont tous deux un chemin moyen relativement petit. Ainsi, les
   informations peuvent être disséminées à tous les membres du réseau très
-  rapidement. La figure~\ref{fig:spray:avgpath} montre aussi que chaque
+  rapidement. La figure~\ref{net:fig:shortestpath} montre aussi que chaque
   exécution de \CYCLON prise séparément peut être divisée en trois phases.  Tout
   d'abord, la phase où les vues partielles de \CYCLON sont trop grandes
   dissémine l'information plus rapidement que \SPRAY. Lors les vues partielles
   sont optimales, \CYCLON et \SPRAY montrent des résultats similaires. Enfin,
   \SPRAY montre une meilleure efficacité lorsque les vues partielles de \CYCLON
-  sont trop petites. Malgré tout, \SPRAY s'adapte mieux que \CYCLON à la taille
-  du réseau car l'inclinaison de cette première est inférieure à n'importe
-  quelle configuration de cette dernière.
-\item [Explication:] Les mesures sont toutes effectuées après convergence,
-  lorsque le réseau possède une topologie qui est proche d'un graphe aléatoire.
-  Dans de tel graphe, le diamètre et la taille du plus court chemin moyen
-  restent petits. La seconde observation concerne chacune des configurations de
-  \CYCLON comparée à \SPRAY. Une taille de vue partielle surestimée pour \CYCLON
-  est meilleure en terme de connexité entre pairs et résulte dans de plus courts
+  sont trop petites. Malgré tout, \SPRAY passe mieux à l'échelle que \CYCLON
+  l'inclinaison de cette première est inférieure à n'importe quelle
+  configuration de cette dernière.
+\item [\textbf{Explication :}] Les mesures sont toutes effectuées après
+  convergence, lorsque les réseaux possèdent une topologie proche des graphes
+  aléatoires.  Dans de tels graphes, la taille du plus court chemin moyen reste
+  petit.  La seconde observation concerne chacune des configurations de \CYCLON
+  comparée à \SPRAY. Une taille de vue partielle surestimée pour \CYCLON est
+  meilleure en terme de connexité entre nœuds et résulte dans de plus courts
   chemins en moyenne. En revanche, dès que cette taille devient insuffisante
   pour le réseau, \SPRAY devient plus efficace car il possède de plus grandes
   vues partielles. Puisque \SPRAY suit toujours la taille optimale de vue
   partielle, il passe mieux à l'échelle en terme de taille réseau.
-\end{asparadesc}
+\end{itemize}
 
 \subsection{Distribution des arcs entrants}
+\label{net:subsec:inview}
 
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/histo.eps}
-  \caption{\label{fig:spray:histo}The in-degree distribution of \CYCLON and
-    \SPRAY. The x-axis denotes the in-degree in number of nodes while the
-    y-axis indicates the percentage of peers with such in-degree. The top
-    figure is dedicated to the runs concerning \CYCLON while the bottom figure
-    concerns \SPRAY.}
+  \caption{\label{net:fig:inview} Distribution du nombre d'arcs entrants à
+    chaque nœud dans \CYCLON et \SPRAY. L'axe des ordonnées montre la proportion
+    de nœuds ayant une vue entrante de la taille correspondante sur l'axe des
+    abscisses. Les figure du haut et du bas sont respectivement dédiées aux
+    exécutions concernant \CYCLON et \SPRAY.}
 \end{figure}
 
-\begin{asparadesc}
-\item [Objectif:] Montrer comment l'adaptabilité influence la distribution des
-  connexions entrantes, i.e., la charge parmi les pairs.
-\item [Description:] Les connexions entrantes d'un pair montre à quel point ce
-  pair est représenté dans les vues partielles des autres pairs. La distribution
-  des connexions entrantes permet de mettre en lumière l'existence de pairs avec
-  une faible connexité, et les groupes fortement liés. Cela influence
-  directement la robustesse du réseau. Dans cette expérimentation, \CYCLON est
-  configuré avec une vue partielle contenant 7 voisins (optimal pour 1.1k
-  pairs). Les mesures sont faites après convergence avec les tailles de réseau
-  suivantes: 0.1k, 1k, 100k, 500k pairs.
-\item [Résultat:] Le haut et le bas de la figure~\ref{fig:spray:histo} montrent
-  la distribution des connexions entrantes pour \CYCLON et \SPRAY,
+%La distribution des arcs entrants est différente de celle de celle de la vue
+%partielle. 
+
+\begin{itemize}
+\item [\textbf{Objectif :}] Montrer comment l'adaptabilité influence la
+  distribution des connexions entrantes, i.e., la charge parmi les pairs.
+\item [\textbf{Description :}] Les connexions entrantes d'un pair montre à quel
+  point ce pair est représenté dans les vues partielles des autres pairs. La
+  distribution des connexions entrantes permet de mettre en lumière l'existence
+  de pairs avec une faible connexité, et les groupes fortement liés. Cela
+  influence directement la robustesse du réseau. Dans cette expérimentation,
+  \CYCLON est configuré avec une vue partielle contenant 7 voisins (optimal pour
+  1.1k pairs). Les mesures sont faites après convergence avec les tailles de
+  réseau suivantes: 0.1k, 1k, 100k, 500k pairs.
+\item [\textbf{Résultat :}] Le haut et le bas de la figure~\ref{net:fig:inview}
+  montrent la distribution des connexions entrantes pour \CYCLON et \SPRAY,
   respectivement. Nous observons que \CYCLON possède une distribution identique,
   quelle que soit la taille du réseau. Ainsi, la distribution d'un réseau de
   0.1k pairs est identique à celle de 500k pairs, avec une moyenne aux environs
   de 7 et un fort pic à cette valeur. À l'opposé, la distribution des connexions
-  entrantes de \SPRAY suit la taille du réseau. La figure~\ref{fig:spray:histo}
+  entrantes de \SPRAY suit la taille du réseau. La figure~\ref{net:fig:inview}
   montre aussi que les pairs sont très concentrés autour des valeurs
   moyennes. Par exemple, lors de l'exécution du protocole \SPRAY avec 500k
   pairs, la moyenne est de 13.37 avec 88\% des pairs compris entre 12 et 14
   inclus. Cela signifie que la charge est très équilibrée parmi les
   pairs. Puisque chaque pair est aussi important que son voisin en terme de
   connectivité,le réseau est résistant aux défaillances.
-\item [Explication:] Une fois configuré, \CYCLON doit gérer tous les réseaux,
-  quelle que soit leur taille, avec une vue partielle dont la taille est
-  constante. Proportionnelement, le nombre de fois qu'un pair est référencé dans
-  les vues partielles ne change pas comparé à la taille réseau. En effet, le
-  nombre d'arcs qu'un pair apporte lorsqu'il se connecte au réseau constitue
+\item [\textbf{Explication :}] Une fois configuré, \CYCLON doit gérer tous les
+  réseaux, quelle que soit leur taille, avec une vue partielle dont la taille
+  est constante. Proportionnelement, le nombre de fois qu'un pair est référencé
+  dans les vues partielles ne change pas comparé à la taille réseau. En effet,
+  le nombre d'arcs qu'un pair apporte lorsqu'il se connecte au réseau constitue
   autant d'arcs le ciblant après quelques protocoles d'échanges. Puisque la
   taille de la vue partielle est constante, le degré des connexions entrantes
   reste stable. En revanche, dans \SPRAY, chaque pair rejoignant le réseau
@@ -230,7 +244,7 @@ moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
   n'est plus important que son voisin en terme de connectivité. Ainsi, si un
   pair en particulier s'éteint, les pairs le référençant possèdent d'autres
   voisins avec qui communiquer pour continuer de disséminer les informations.
-\end{asparadesc}
+\end{itemize}
 
 \subsection{Évolution du nombre d'arcs}
 
