@@ -1,6 +1,7 @@
 
-\section{Transformés opérationnels}
-\label{repl:sec:ot}
+\section{OT ou CRDTs?}
+
+\subsection{Transformés opérationnels}
 
 Les approches à transformés opérationnels~\cite{sun1998operational,
   sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
@@ -54,3 +55,34 @@ detecte elle aussi que cette dernière est concurrente. Toutefois, la
 transformation est sans effet sur ses arguments. La copie 2, selon l'ordre de
 réception, se comporte comme la copie 1 ou la copie 3. À terme, les trois copies
 convergent vers une séquence identique 'QWE'.
+
+
+\subsection{Structure de données sans résolutions de conflits}
+
+Les structures de données sans résolution de
+conflits~\cite{shapiro2011comprehensive} (CRDTs) appartiennent au schéma de
+réplication optimiste. \TODO{Ils tirent leur nom de}.  Il en existe deux
+familles équivalentes mais proposant un compromis différent :
+\begin{itemize}
+\item [\textbf{basée sur l'état :}] lors d'une opération, l'état local change et
+  est envoyé en totalité aux autres répliques qui fusionnent alors l'état réçu
+  et leur état propre. L'envoit d'un état est honéreux et doit être effectué
+  avec parcimonie. En revanche, puisqu'il est autonome
+  (\TODO{\emph{self-contained}}), il ne requière aucune garantie sur les moyens
+  de diffusion.
+\item [\textbf{basée sur les opérations :}] lors d'une opération, son résultat
+  seul est envoyé aux autres répliques où il est intégré. Les résultats sont
+  envoyées les uns après les autres aux cours des opérations ce qui est beaucoup
+  moins coûteux que l'état complet. En revanche, cela requière une diffusion
+  fiable, i.e., toutes les opérations doivent être inéluctablement reçues par
+  toutes les répliques.
+\end{itemize}
+
+Dans le reste de ce manuscrit de thèse, nous nous intéresserons plus en détail à
+cette seconde famille de structure répliquée. La
+section~\ref{crdts:sec:properties} présente les propriétés de ces structures de
+données répliquées. La section~\ref{crdts:sec:compteur} décrit les structures
+possibles pour le compteur. La section~\ref{crdts:sec:set} décrit les structures
+possibles pour les ensembles. Les problèmes de composition de ces structures
+sont exposés en section~\ref{crdts:sec:composition}. La
+section~\ref{crdts:sec:conclusion} conclue ce chapitre.
