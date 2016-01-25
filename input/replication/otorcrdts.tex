@@ -1,7 +1,21 @@
 
 \section{OT ou CRDTs?}
+\label{repl:sec:otorcrdts}
+
+La réplication optimiste permet de répliquer les données et d'effectuer des
+modifications sur celle-ci directement, sans accord préalable d'un cœur
+décisionnel. Les données sont deviennent à la fois plus disponibles et plus
+réactives. Toutefois, les approches qui appartiennent à ce schéma de réplication
+ont devoir de fournir des opérations de modification respectant la cohérence
+forte à terme -- convergeant si possible vers un état
+non-arbitraire. Malheureusement, cela a un coût. Cette section décrit deux
+familles d'approches, respectivement les approches à transformés opérationnels
+(OT -- cf. §\ref{repl:subsec:ot}) et les approches à structure de données sans
+résolution de conflits (CRDTs -- cf. §\ref{repl:subsec:crdts}), ainsi que leurs
+limitations.
 
 \subsection{Transformés opérationnels}
+\label{repl:subsec:ot}
 
 Les approches à transformés opérationnels~\cite{sun1998operational,
   sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large

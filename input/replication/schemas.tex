@@ -64,7 +64,7 @@ demande à $n_2$, qui l'accepte et la transmet à son tour à $n_3$, qui l'accep
 et termine la boucle en transmettant à $n_1$.  Dans l'intervalle, $n_4$ propose
 une autre modification. La proposition de $n_5$ est acceptée et propagée tandis
 que celle de $n_4$ est refusée. Une fois que $n_4$ a réçu les modifications de
-$n_5$, il peut retenter de transmettre sa modification s'l la juge toujours
+$n_5$, il peut retenter de transmettre sa modification s'il la juge toujours
 d'actualité. Cet exemple illustre le caractère chronophage du processus : le
 vote prend du temps et peut échouer. De plus, si l'un des serveurs du cœur
 défaillit, le vote peut échouer alors même que la modification est valide.
@@ -123,31 +123,20 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
 
 Ces critères de cohérence posent de nombreux problèmes par leur manque
 d'expressivité. En particulier, l'état équivalent vers lequel les répliques
-convergent n'est pas spécifié. Celui-ci peut n'avoir aucun lien avec l'éxecution
-souhaitée par l'utilisateur. Par exemple, un ensemble dont l'ajout d'éléments
-n'a aucun effet converge vers l'ensemble vide. Bien que d'une complète
-inutilité, il maintient la cohérence forte à terme.
+convergent n'est pas spécifié. Celui-ci peut n'avoir aucun lien avec l'exécution
+souhaitée par l'utilisateur. Ainsi, la figure~\ref{repl:fig:optimisticexample}
+montre un exemple où les répliques concernent une couleur. Le serveur $n_1$
+souhaite une couleur bleu tandis que $n_3$ souhaite une couleur blanche. Après
+échange, une infinité d'états convergeants sont possibles. Par exemple, l'état
+(i) et (ii) privilégient une seule des modifications. L'état (iii) tente de
+réconcilier les deux modifications en mélangeant les couleurs pour obtenir un
+bleu plus clair. L'état (iv) est un état arbitraire sans signification réelle
+mais respectant la cohérence forte à terme.
 
-Récemment, de nombreux efforts ont été fournis afin de proposer des bases de
-données avec cohérence à terme (\REF), ainsi que des langages sur lesquels
-raisonner (\REF).
-
-% \begin{figure}
-%   \centering
-%   \input{./input/replication/eventualconsistencyexample.tex}
-%   \caption{\label{repl:fig:eventualconsistencyexample} Exemple d'éxecution d'un protocole
-%     de réplication optimiste dont les répliques convergent vers la séquence
-%     'QWERTY'.}
-% \end{figure}
-
-% La figure~\ref{repl:fig:eventualconsistencyexample} présente un cas de séquence
-% répliquée.  Il existe trois copies d'une séquence initialement vide. La première
-% copie insère 'QWE' et en dissémine l'information. La troisième copie reçoit
-% l'opération et l'applique localement. Cette copie insère 'RTY' à la suite de
-% 'QWE' afin d'obtenir 'QWERTY' et envoie l'information aux deux autres
-% copies. Quel que soit l'ordre de réception, le protocole garanti que les copies
-% convergent vers un état identique, ici, la séquence 'QWERTY'.
-
+Ce type de cohérence charge le développeur d'un poid énorme quant au bien fondé
+de l'état convergeant.  Récemment, de nombreux efforts ont été fournis afin de
+proposer des bases de données avec cohérence à terme (\REF), ainsi que des
+langages sur lesquels raisonner (\REF).
 
 %%% Local Variables:
 %%% mode: latex
