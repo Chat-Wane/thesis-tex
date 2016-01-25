@@ -2,23 +2,29 @@
 \begin{tikzpicture}[scale=1.2]
 
   \newcommand\X{35pt};
-  \newcommand\Y{35pt};
+  \newcommand\Y{40pt};
 
-  \draw[fill=white, very thick](0*\X, 0*\Y)
+  %% spacing
+  \draw (1*\X, -2*\Y);
+
+  \draw[fill=darkblue, very thick](0*\X, 0*\Y)
   node{$n_1$} +(-5pt,-5pt) rectangle +(5pt,5pt);
   \draw[fill=white, very thick](1*\X,-1*\Y)
   node{$n_2$} +(-5pt,-5pt) rectangle +(5pt,5pt);
   \draw[fill=white, very thick](2*\X, 0*\Y)
   node{$n_3$} +(-5pt,-5pt) rectangle +(5pt,5pt);
 
-  \draw[<-] (5+0*\X, -3+0*\Y) -- (-5+2*\X, -3+*\Y);
-  \draw[->] (5+0*\X,  3+0*\Y)  -- (-5+2*\X, 3+*\Y);
+  \scriptsize
+  \draw[<-] (5+0*\X, -3+0*\Y) --
+  node[anchor=north]{change to white}(-5+2*\X, -3+0*\Y);
+  \draw[->] (5+0*\X,  3+0*\Y) --
+  node[anchor=south]{change to \DARKBLUE{blue}}(-5+2*\X, 3+0*\Y);
 
-  \draw[<-] (-3+0*\X, -5+0*\Y) -- (-5+1*\X,-3-1*\Y);
-  \draw[->] ( 3+0*\X, -5+0*\Y) -- (-5+1*\X, 3-1*\Y);
+  \draw[->] (0*\X, -5+0*\Y) --
+  node[anchor=north east]{change to \DARKBLUE{blue}} (-5+1*\X, -1*\Y);
 
-  \draw[<-] (-3+2*\X, -5+0*\Y) -- (5+1*\X ,-3-1*\Y);
-  \draw[->] ( 3+2*\X, -5+0*\Y) -- (5+1*\X ,3-1*\Y);
+  \draw[->] (2*\X, -5+0*\Y) --
+  node[anchor=north west]{change to white} ( 5+1*\X, -1*\Y);
 
   % \scriptsize
   % \draw[->,dashed,very thick, color=darkblue](5+0*\X, 0*\Y) -- 

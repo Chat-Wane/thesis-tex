@@ -110,21 +110,14 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
 \begin{figure*}
   \centering
   \subfloat[Modifications concurrentes.]
-  [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
+  [Les serveurs $n_1$ et $n_3$ modifient leur couleur en même temps.]
   {\input{./input/replication/optimisticexampleA.tex}}
-  \hspace{40pt}
-  \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
-  la première demande.]
-  [Le serveur $n_4$ demande également si sa modification est acceptée pendant
-  que le cœur est occupé avec la modification de $n_5$.]
-  {\input{./input/replication/pessimisticexampleB.tex}}
   \hspace{10pt}
-  \subfloat[Une modification est acceptée pendant que l'autre est refusée]
-  [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
-  est refusée.]
-  {\input{./input/replication/pessimisticexampleC.tex}}
-  \caption{\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
-    pessimiste. La modification de $n_5$ est propagée.}
+  \subfloat[Plusieurs états possibles.]
+  [Les répliques convergent. Plusieurs états de convergence sont possibles.]
+  {\input{./input/replication/optimisticexampleB.tex}}
+  \caption{\label{repl:fig:optimisticexample} Exemple de réplication optimiste
+    avec modifications concurrentes.}
 \end{figure*}
 
 
@@ -139,21 +132,21 @@ Récemment, de nombreux efforts ont été fournis afin de proposer des bases de
 données avec cohérence à terme (\REF), ainsi que des langages sur lesquels
 raisonner (\REF).
 
-\begin{figure}
-  \centering
-  \input{./input/replication/eventualconsistencyexample.tex}
-  \caption{\label{repl:fig:eventualconsistencyexample} Exemple d'éxecution d'un protocole
-    de réplication optimiste dont les répliques convergent vers la séquence
-    'QWERTY'.}
-\end{figure}
+% \begin{figure}
+%   \centering
+%   \input{./input/replication/eventualconsistencyexample.tex}
+%   \caption{\label{repl:fig:eventualconsistencyexample} Exemple d'éxecution d'un protocole
+%     de réplication optimiste dont les répliques convergent vers la séquence
+%     'QWERTY'.}
+% \end{figure}
 
-La figure~\ref{repl:fig:eventualconsistencyexample} présente un cas de séquence
-répliquée.  Il existe trois copies d'une séquence initialement vide. La première
-copie insère 'QWE' et en dissémine l'information. La troisième copie reçoit
-l'opération et l'applique localement. Cette copie insère 'RTY' à la suite de
-'QWE' afin d'obtenir 'QWERTY' et envoie l'information aux deux autres
-copies. Quel que soit l'ordre de réception, le protocole garanti que les copies
-convergent vers un état identique, ici, la séquence 'QWERTY'.
+% La figure~\ref{repl:fig:eventualconsistencyexample} présente un cas de séquence
+% répliquée.  Il existe trois copies d'une séquence initialement vide. La première
+% copie insère 'QWE' et en dissémine l'information. La troisième copie reçoit
+% l'opération et l'applique localement. Cette copie insère 'RTY' à la suite de
+% 'QWE' afin d'obtenir 'QWERTY' et envoie l'information aux deux autres
+% copies. Quel que soit l'ordre de réception, le protocole garanti que les copies
+% convergent vers un état identique, ici, la séquence 'QWERTY'.
 
 
 %%% Local Variables:
