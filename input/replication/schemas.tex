@@ -2,58 +2,95 @@
 \section{Pessimisme ou optimisme?}
 \label{repl:sec:schemas}
 
-L'objectif de la réplication pessimiste est simple. Il consiste à donner
-l'illusion que la donnée manipulée par les utilisateurs est unique,
-indépendemment du nombre de répliques réel. Grâce à la réplication pessimiste,
-il est facile de raisonner sur les données car leurs spécifications sont proches
-de celles proposées dans un \TODO{contexte sans réplications}.
+De multiples serveurs, possiblement distants les uns des autres, hébergent une
+réplique d'une donnée. Lorsqu'une réplique est modifiée, sa modification est
+répercutée sur les autres répliques. Les deux schémas de réplication définissent
+la manière dont une modification est acceptée. Cela influe sur les propriétés du
+système. En particulier, les dimensions que peuvent atteindre les systèmes, en
+nombre de répliques, s'en trouve impacté.
 
-Toutefois, chacune des modifications effectuée doit être validée. L'autorité
-décisionnelle diffère en fonction des approches :
+\subsection{Réplication pessimiste}
+
+L'objectif de la réplication pessimiste est simple. Il consiste à donner
+l'illusion que la donnée manipulée est unique, indépendemment du nombre de
+répliques réel. Ainsi, il devient facile de raisonner sur les données puisque
+leurs spécifications sont proches de celles proposées dans un contexte
+non-réparti -- sans réplications.
+
+Toutefois, avant qu'une modification ne soit réellement effectuée, il est
+nécessaire qu'elles soient validées. L'autorité décisionnelle diffère en fonction
+des approches :
 \begin{itemize}
-\item [\textbf{autorité centrale~\cite{alsberg1976principle} :}] l'un des
-  serveurs est désigné responsable d'une donnée. Ceux qui souhaitent modifier la
-  donnée sont alors dans l'obligation de demander l'accès exclusif pendant la
-  mise en place de cette modification. Dans l'intervalle, les autres répliques
-  ne peuvent soumettre de modifications. Enfin, lorsque la modification est
-  achevée, la main est rendue au serveur qui peut autoriser d'autres
-  modifications. C'est le méchanisme de vérouillage (\emph{lock}).
-\item [\textbf{quorum~\cite{gifford1979weighted} :}] les modifications sont
-  soumises à un vote où un certains nombre de serveurs \TODO{doivent approuver
-    ou non}. \TODO{Serialisation}.
+\item [\textbf{Autorité centrale~\cite{alsberg1976principle} :}] l'un des
+  serveurs est désigné responsable. Ceux qui souhaitent modifier la donnée sont
+  alors dans l'obligation de demander l'accès exclusif pendant la mise en place
+  de cette modification. Dans l'intervalle, les autres répliques ne peuvent
+  soumettre de modifications. Enfin, lorsque la modification est achevée, la
+  main est rendue au serveur qui peut autoriser d'autres modifications. On parle
+  de verrou (\emph{lock}).
+\item [\textbf{Quorum~\cite{gifford1979weighted} :}] un ensemble de serveurs est
+  désigné responsable. Chacune des modifications est soumise à un vote quant à
+  son acceptation. Au dessus d'un certain seuil de vote positif ou négatif, la
+  modification est autorisée ou non.
 \end{itemize}
+
+
+\begin{figure*}
+  \centering
+  \subfloat[Une demande de modification est effectuée.]
+  [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
+  {\input{./input/replication/pessimisticexampleA.tex}}
+  \hspace{40pt}
+  \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
+  la première demande.]
+  [Le serveur $n_4$ demande également si sa modification est acceptée pendant
+  que le cœur est occupé avec la modification de $n_5$.]
+  {\input{./input/replication/pessimisticexampleB.tex}}
+  \hspace{10pt}
+  \subfloat[Une modification est acceptée pendant que l'autre est refusée]
+  [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
+  est refusée.]
+  {\input{./input/replication/pessimisticexampleC.tex}}
+  \caption{\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
+    pessimiste. La modification de $n_5$ est propagée.}
+\end{figure*}
+
 
 La réplication pessimiste est possible lorsque le nombre de répliques est connu,
 plutôt petit, et souvent accessible. Ces contraintes sont notamment
-satisfaisable dans le \TODO{Nuage}. Les services proposés possèdent d'avantage
-d'assurances quant aux résultats de la manipulation des données. Toutefois, de
-telles guaranties ne sont pas toujours nécéssaire et leur coût élévée n'est
-alors plus justifié. \TODO{La section suivante est.}
+satisfaisable dans le Nuage~\cite{mell2011national}. Les répliques proposent
+d'avantage de garanties quant aux résultats de la manipulation des
+données. Toutefois, de telles guaranties ne sont pas toujours nécéssaire et leur
+coût élévée n'est alors plus justifié.
 
-%% optimistic
+
+\subsection{Réplication optimiste}
 
 En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
 centaines de machines pouvant communiquer entre elles au travers de materiels
-aux capacités hétérogènes~\cite{demers1987epidemic}. \TODO{moar.}
+aux capacités hétérogènes~\cite{demers1987epidemic}. Du fait de ces dimensions,
+la réplication pessimiste semble impossible.
 
 La réplication optimiste~\cite{johnson1975maintenance, saito2005optimistic} est
 un paradigme de réplication consistant à appliquer les modifications directement
 sur la réplique locale.  Ainsi, les données sont toujours disponibles et
 réactives aux changements effectués. Ensuite, les modifications sont disséminées
-aux autres possesseurs de cette donnée partagée où elles sont appliquées. Au
+aux autres serveurs hébergeant une réplique où elles sont appliquées. Au
 contraire des approches pessimistes, les approches optimistes ne vérouillent pas
-l'accès aux données lors de modifications. En revanche, le critère de cohérence
-assuré est plus faible. En particulier, les répliques ont l'autorisation d'avoir
-des états temporairement divergeant entre eux :
+les données lors des changements. En revanche, le critère de cohérence assuré
+est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
+états temporairement divergeant entre eux :
 
 \begin{itemize}
-\item [\textbf{Cohérence à terme :}] lorsque toutes les modifications ont été
-  reçues et appliquées par toutes les répliques, celle-ci possèdent un état
-  équivalent. Puisque \emph{toutes} les modifications constituent un ensemble
-  peu réaliste dans le cadre d'une éxecution réelle, un définition plus précise
-  porte sur un sous-ensembles de ces modifications :
+\item [\textbf{Cohérence à terme~\cite{bailis2013eventual} :}] lorsque toutes
+  les modifications ont été reçues et appliquées par toutes les répliques,
+  celle-ci possèdent un état équivalent.
+
+  Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu réaliste
+  pour raisonner sur une exécution réelle, un définition plus précise porte sur
+  un sous-ensemble de ces modifications :
 \item [\textbf{Cohérence forte à terme~\cite{shapiro2011conflict} :}] les
-  répliques ayant réçu et appliqué les même modifications possèdent un état
+  répliques ayant réçu et appliqué les mêmes modifications possèdent un état
   équivalent.
 \end{itemize}
 

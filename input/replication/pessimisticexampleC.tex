@@ -1,0 +1,49 @@
+
+\begin{tikzpicture}[scale=1.2]
+
+  \newcommand\X{35pt};
+  \newcommand\Y{35pt};
+
+  \draw[fill=white, very thick](0*\X, 0*\Y)
+  node{$n_1$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  \draw[fill=white, very thick](1*\X,-1*\Y)
+  node{$n_2$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  \draw[fill=white, very thick](2*\X, 0*\Y)
+  node{$n_3$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+
+  \draw[fill=white](-1.5*\X,0*\Y) node{$n_4$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  \draw[fill=white, thick, draw=darkblue](-1.5*\X,1*\Y)
+  node{\DARKBLUE{$n_5$}} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  
+  \draw[<->] (5+0*\X, 0*\Y) -- (-5+2*\X,0*\Y);
+  \draw[<->] (0*\X, -5+0*\Y) -- (-5+1*\X,-1*\Y);
+  \draw[<->] (2*\X, -5+0*\Y) -- (5+1*\X ,-1*\Y);
+
+  \scriptsize
+  \draw[<-, thick, draw=darkblue] (5-1.5*\X,0*\Y) --
+  node[anchor=north]{\DARKBLUE{denied}}(-5+0*\X,0*\Y);
+  \draw[<-, thick, draw=darkblue] (5-1.5*\X, 1*\Y) --
+  node[anchor=south west]{\DARKBLUE{accepted}}(-5+0*\X,5+0*\Y);
+  
+  \draw(1*\X, -0.5*\Y) node[anchor=south, align=center]{decisionnal\\chamber};
+
+  % \scriptsize
+  % \draw[->,dashed,very thick, color=darkblue](5+0*\X, 0*\Y) -- 
+  % node[anchor=south]{(a)}(-5+ 2*\X, 0*\Y);
+  % \draw[->] (-5+2*\X, 5pt) -- (5+\X, \Y);
+  % \draw[->] (-5+2*\X, 5pt) --  (5+\X, 2*\Y);
+  % \draw[->] (-5+2*\X, -5pt) -- (5+\X, -\Y);
+  % \draw[->] (-5+2*\X, -5pt) -- (5+\X, -2*\Y);
+
+  % \normalsize
+  % \draw[fill=white, very thick, draw=darkblue]
+  % (0*\X, 0*\Y) node{\DARKBLUE{$n_1$}} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  % \draw[fill=white, very thick]
+  % (2*\X, 0*\Y) node{$n_2$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+
+  % \draw[fill=white](1*\X,2*\Y) node{$n_6$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  % \draw[fill=white](1*\X,1*\Y) node{$n_5$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  % \draw[fill=white](1*\X,-1*\Y) node{$n_4$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  % \draw[fill=white](1*\X,-2*\Y) node{$n_3$} +(-5pt,-5pt) rectangle +(5pt,5pt);
+  
+\end{tikzpicture}
