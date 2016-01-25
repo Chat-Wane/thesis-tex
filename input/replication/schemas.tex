@@ -7,7 +7,7 @@ réplique d'une donnée. Lorsqu'une réplique est modifiée, sa modification est
 répercutée sur les autres répliques. Les deux schémas de réplication définissent
 la manière dont une modification est acceptée. Cela influe sur les propriétés du
 système. En particulier, les dimensions que peuvent atteindre les systèmes, en
-nombre de répliques, s'en trouve impacté.
+nombre de répliques, s'en trouve impactées.
 
 \subsection{Réplication pessimiste}
 
@@ -55,14 +55,27 @@ des approches :
     pessimiste. La modification de $n_5$ est propagée.}
 \end{figure*}
 
+La figure~\ref{repl:fig:pessimisticexample} montre un exemple de réplication
+pessimiste où le cœur décisionnel est composé de 3 serveurs
+$\{n_1,\, n_2,\, n_3\}$ devant unanimement approuver une modification avant
+qu'elle soit propagée. Ainsi, le serveur $n_5$ propose une modification des
+répliques au cœur décisionnel via $n_1$. Ce dernier l'accepte et transmet la
+demande à $n_2$, qui l'accepte et la transmet à son tour à $n_3$, qui l'accepte
+et termine la boucle en transmettant à $n_1$.  Dans l'intervalle, $n_4$ propose
+une autre modification. La proposition de $n_5$ est acceptée et propagée tandis
+que celle de $n_4$ est refusée. Une fois que $n_4$ a réçu les modifications de
+$n_5$, il peut retenter de transmettre sa modification s'l la juge toujours
+d'actualité. Cet exemple illustre le caractère chronophage du processus : le
+vote prend du temps et peut échouer. De plus, si l'un des serveurs du cœur
+défaillit, le vote peut échouer alors même que la modification est valide.
 
 La réplication pessimiste est possible lorsque le nombre de répliques est connu,
 plutôt petit, et souvent accessible. Ces contraintes sont notamment
 satisfaisable dans le Nuage~\cite{mell2011national}. Les répliques proposent
 d'avantage de garanties quant aux résultats de la manipulation des
-données. Toutefois, de telles guaranties ne sont pas toujours nécéssaire et leur
-coût élévée n'est alors plus justifié.
-
+données. Toutefois, de telles guaranties ne sont pas toujours nécéssaires et
+leur coût élévé n'est plus justifié. La réplication optimiste constitue alors
+une alternative possible.
 
 \subsection{Réplication optimiste}
 
@@ -94,6 +107,27 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
   équivalent.
 \end{itemize}
 
+\begin{figure*}
+  \centering
+  \subfloat[Modifications concurrentes.]
+  [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
+  {\input{./input/replication/optimisticexampleA.tex}}
+  \hspace{40pt}
+  \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
+  la première demande.]
+  [Le serveur $n_4$ demande également si sa modification est acceptée pendant
+  que le cœur est occupé avec la modification de $n_5$.]
+  {\input{./input/replication/pessimisticexampleB.tex}}
+  \hspace{10pt}
+  \subfloat[Une modification est acceptée pendant que l'autre est refusée]
+  [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
+  est refusée.]
+  {\input{./input/replication/pessimisticexampleC.tex}}
+  \caption{\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
+    pessimiste. La modification de $n_5$ est propagée.}
+\end{figure*}
+
+
 Ces critères de cohérence posent de nombreux problèmes par leur manque
 d'expressivité. En particulier, l'état équivalent vers lequel les répliques
 convergent n'est pas spécifié. Celui-ci peut n'avoir aucun lien avec l'éxecution
@@ -107,13 +141,13 @@ raisonner (\REF).
 
 \begin{figure}
   \centering
-  \input{./input/replication/optimisticexample.tex}
-  \caption{\label{repl:fig:optimisticexample} Exemple d'éxecution d'un protocole
+  \input{./input/replication/eventualconsistencyexample.tex}
+  \caption{\label{repl:fig:eventualconsistencyexample} Exemple d'éxecution d'un protocole
     de réplication optimiste dont les répliques convergent vers la séquence
     'QWERTY'.}
 \end{figure}
 
-La figure~\ref{repl:fig:optimisticexample} présente un cas de séquence
+La figure~\ref{repl:fig:eventualconsistencyexample} présente un cas de séquence
 répliquée.  Il existe trois copies d'une séquence initialement vide. La première
 copie insère 'QWE' et en dissémine l'information. La troisième copie reçoit
 l'opération et l'applique localement. Cette copie insère 'RTY' à la suite de
