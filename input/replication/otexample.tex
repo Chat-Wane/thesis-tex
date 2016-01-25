@@ -16,8 +16,8 @@
   \draw(\X,2 -1*\Y)--node[anchor=south]{[RTY]}(\X,-2 -1*\Y);
   \draw(\X,2 -2*\Y)--node[anchor=south]{[RTY]}(\X,-2 -2*\Y);
   \small
-  \draw(3* \X,2pt)--node[anchor=north]{$\textsc{insert}(QWE,\,0)$}(3 * \X,   -2pt);
-  \draw(3* \X,2 -2*\Y)--node[anchor=north]{$\textsc{delete}($\DARKBLUE{\textbf{0}}$,\,3)$}(3 * \X,-2 -2*\Y);
+  \draw(3* \X,2pt)--node[anchor=north]{\textsc{insert}(QWE, 0)}(3 * \X,   -2pt);
+  \draw(3* \X,2 -2*\Y)--node[anchor=north]{\textsc{delete}(\DARKBLUE{\textbf{0}}, 3)}(3 * \X,-2 -2*\Y);
   \normalsize
 
   \draw(3* \X,2pt)--node[anchor=south]{[QWERTY]}(3 * \X,   -2pt);
@@ -29,7 +29,7 @@
 
   \small
   \draw[->, dashed] (5*\X, -2*\Y) -- (7*\X,  0*\Y)
-  node[anchor=south]{$\textsc{delete}($\DARKBLUE{\textbf{3}}$,\,3)$};
+  node[anchor=south]{\textsc{delete}(\DARKBLUE{\textbf{3}}, 3)};
   \normalsize
   \draw[->, dashed] (5*\X, -2*\Y) -- (7*\X, -1*\Y);
 
