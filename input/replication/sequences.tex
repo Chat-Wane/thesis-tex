@@ -243,7 +243,7 @@ une fonction d'allocation efficace.
   instantané à ses éléments au prix d'une consommation en espace élevée. En
   effet, la traduction d'une opération locale
   $\textsc{insert}(element,\, index)$ à
-  $\textsc{insert}(id_{précedent},\, element,\, id_{suivant})$ s'effectue en
+  $\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$ s'effectue en
   temps constant. D'un autre coté, les identifiants possèdent des chemins dont
   chaque élément est un entier encodé sur 64 bits (correspondant à une arité de
   $2^{64}$ dans le modèle d'arbre). L'ordre total utilisé pour recouvrer la
@@ -265,7 +265,10 @@ une fonction d'allocation efficace.
   considère un élément 'W' dont le chemin est [0], alors un élément 'Q' dont le
   chemin est [0.0] précède 'W', et un élément 'E' dont le chemin est [0.1]
   succède 'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à
-    gauche de}, et suffixer le chemin d'un 1 signifie \emph{à droite
-    de}. \TODO{Moar.}
+    gauche de}, et suffixer le chemin d'un 1 signifie \emph{à droite de}. Tout
+  comme l'approche Logoot, les observations effectuées sur un corpus Wikipédia
+  montre l'importance d'une fonction d'allocation gérant l'édition de gauche à
+  droite. Elles conduisent à proposer une heuristique selon laquelle des nœuds
+  de l'arbre sont virtuellement créés en prévoyance des éditions à venir. 
 \end{itemize}
 
