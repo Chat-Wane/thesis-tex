@@ -1,0 +1,54 @@
+
+\footnotesize
+\algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
+
+\newcommand{\comment}[1]{$\rhd$ #1}
+
+
+\algblockdefx[initially]{initially}{endInitially}
+[0] {\textbf{INITIALLY:}} 
+
+\algblockdefx[local]{local}{endLocal}
+[0] {\textbf{LOCAL UPDATE:}}
+
+\algsetblockdefx[received]{received}{endReceived}
+{65535}{}
+[0] {\textbf{RECEIVED UPDATE:}}
+
+\newcommand{\LINEFOR}[2]{%
+  \algorithmicfor\ {#1}\ \algorithmicdo\ {#2} %
+}
+
+\newcommand{\LINEIFTHEN}[2]{%
+  \algorithmicif\ {#1}\ \algorithmicthen\ {#2} %
+}
+
+\newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
+
+\begin{algorithmic}[1]
+  \Statex
+  \initially
+    \State $V \leftarrow [\ ]$; \hfill \comment{counter CRDT}
+    \State $n$; \hfill \comment{server identity}
+    \State $V[n] \leftarrow 0$; \hfill \comment{local growing counter}
+  \endInitially
+  
+  \local
+    \Function{inc}{\ } \hfill \comment{update}
+    \State $V[n] \leftarrow V[n]+1$;
+    \State \textsc{broadcast}('inc', $\langle n,\, V[n] \rangle$);
+    \EndFunction
+    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{read}
+    \State \textbf{let} $sum\leftarrow 0$;
+    \For{\textbf{each} $site \in V$}
+      \State $sum \leftarrow sum + V[site]$;
+    \EndFor
+    \State \Return $sum$
+    \EndFunction
+  \endLocal
+  
+  \received
+    \Function{onInc}{$\langle s,\, c \rangle$}
+    \State $I[s] \leftarrow \DARKBLUE{\textsc{max}(I[s],\, c)}$;
+    \EndFunction
+\end{algorithmic}

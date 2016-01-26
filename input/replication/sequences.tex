@@ -1,5 +1,22 @@
 
 \section{Séquences répliquées}
+\label{repl:sec:sequences}
+
+Une séquence, ou liste, ou tableau, est une série d'éléments ordonnés les uns à
+la suite des autres. Une séquence répliquée doit donc ordonner de la même
+manière ses éléments indépendamment du serveur l'hébergeant. Les approches à
+base de transformés opérationnels adaptent les arguments des opérations afin de
+recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsec:ot}). Les CRDTs
+pour séquences, eux, choisissent de surcharger les éléments de métadonnées de
+telle sorte que les métadonnées permettent de recouvrer un ordre identique
+partout. Une différence fondamentale entre les deux types d'approches concerne
+la signature des opérations. Lorsque OT conserve une signature d'opération
+classique (``insérer l'élément $e$ à l'indice $i$''), les CRDTs positionnent
+leurs éléments relativement aux éléments adjacents à l'indice ciblé (``insérer
+l'élément $e$ entre l'élément $a$ et l'élément $b$''). Avec ce procédé, des
+métadonnées -- nommées identifiants -- seront générées garantissant, grâce à un
+ordre total sur ces identifiants, que le nouvel élément serat bel et bien placé
+entre ces deux bornes.
 
 \subsection{Pierres tombales}
 

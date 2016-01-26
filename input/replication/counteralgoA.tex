@@ -1,0 +1,51 @@
+
+\footnotesize
+\algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
+
+\newcommand{\comment}[1]{$\rhd$ #1}
+
+
+\algblockdefx[initially]{initially}{endInitially}
+[0] {\textbf{INITIALLY:}} 
+
+\algblockdefx[local]{local}{endLocal}
+[0] {\textbf{LOCAL UPDATE:}}
+
+\algsetblockdefx[received]{received}{endReceived}
+{65535}{}
+[0] {\textbf{RECEIVED UPDATE:}}
+
+\newcommand{\LINEFOR}[2]{%
+  \algorithmicfor\ {#1}\ \algorithmicdo\ {#2} %
+}
+
+\newcommand{\LINEIFTHEN}[2]{%
+  \algorithmicif\ {#1}\ \algorithmicthen\ {#2} %
+}
+
+\newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
+
+\begin{algorithmic}[1]
+  \Statex
+  \initially
+    \State $I \leftarrow \varnothing$; \hfill \comment{counter CRDT}
+    \State $n$; \hfill \comment{server identity}
+    \State $c \leftarrow 0$; \hfill \comment{local growing counter}
+  \endInitially
+  
+  \local
+    \Function{inc}{\ } \hfill \comment{update}
+    \State $c \leftarrow c+1$;
+    \State $I \leftarrow I \cup \langle n,\, c \rangle$;
+    \State \textsc{broadcast}('inc', \DARKBLUE{$\langle n,\, c \rangle$});
+    \EndFunction
+    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{read}
+    \State \Return $|I|$
+    \EndFunction
+  \endLocal
+  
+  \received
+    \Function{onInc}{$id$}
+    \State $I \leftarrow I  \DARKBLUE{\,\cup\, id}$;
+    \EndFunction
+\end{algorithmic}
