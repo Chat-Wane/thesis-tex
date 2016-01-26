@@ -246,9 +246,11 @@ une fonction d'allocation efficace.
   $\textsc{insert}(id_{précedent},\, element,\, id_{suivant})$ s'effectue en
   temps constant. D'un autre coté, les identifiants possèdent des chemins dont
   chaque élément est un entier encodé sur 64 bits (correspondant à une arité de
-  $2^{64}$ dans le modèle d'arbre). Ayant fait l'assomption que les documents
-  étaient édités de gauche à droite, la stratégie s'avère inefficace dans le cas
-  contraire. Le pire cas est déjà illustré dans la
+  $2^{64}$ dans le modèle d'arbre). L'ordre total utilisé pour recouvrer la
+  séquence d'éléments est un ordre lexicographique. Ayant fait l'assomption que
+  les documents étaient édités de gauche à droite, la stratégie s'avère
+  inefficace lorsque le comportement d'édition va à l'opposé de cette
+  hypothèse. Le pire cas est déjà illustré dans la
   figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
   identifiant est linéaire, en résulte une complexité quadratique par rapport à
   la taille du document.
