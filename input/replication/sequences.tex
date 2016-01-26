@@ -14,34 +14,42 @@ la signature des opérations. Lorsque OT conserve une signature d'opération
 classique (``insérer l'élément $e$ à l'indice $i$''), les CRDTs positionnent
 leurs éléments relativement aux éléments adjacents à l'indice ciblé (``insérer
 l'élément $e$ entre l'élément $a$ et l'élément $b$''). Avec ce procédé, des
-métadonnées -- nommées identifiants -- seront générées garantissant, grâce à un
-ordre total sur ces identifiants, que le nouvel élément serat bel et bien placé
-entre ces deux bornes.
+métadonnées uniques et non-mutables -- nommées identifiants -- seront générées
+garantissant, grâce à un ordre total sur ceux-ci, que le nouvel élément serat
+bel et bien placé entre ces deux bornes. La suppression est également différente
+puisque sa signature devient l'élément ciblé et non un indice (``supprimer
+l'élément $e$'').
+
+Nous identifions deux familles d'approches générant des identifiants. La
+première génère des identifiants de petite taille mais utilise des pierres
+tombales pour indiquer la suppression d'un élément
+(cf. §\ref{repl:subsec:tombstone}). La seconde se passe de pierres tombales mais
+ses identifiants sont de taille variable lors de la génération
+(cf. §\ref{repl:subsec:variable}).
 
 \subsection{Pierres tombales}
+\label{repl:subsec:tombstone}
 
-Les structures de données sans résolution de conflits
-(cf. chapitre~\ref{repl:chap:crdts}) pour séquences évitent le coûteux processus
-de detection de concurrence. Les approches de cette famille utilisant des
-pierres tombales~\cite{ahmed2011evaluating, conway2014language,
-  grishchenko2010deep, oster2006data, preguica2009commutative,
-  roh2011replicated, weiss2007wooki, wu2010partial, yu2012stringwise} se
-caractérisent par la manière dont les suppressions sont traitées. En effet, lors
-de l'opération de suppression, ces approches marquent simplement les éléments
-supprimés afin de les cacher à l'utilisateur. Bien que supprimées, ces pierres
-tombales existent toujours dans la structure représentant la séquence et
-continuent d'impacter sur les performances.
+Une pierre tombale est une marque laissée après la suppression d'un élément
+indiquant qu'un jour, celui-ci a existé, et qu'il était positionné là. Bien
+entendu, ces marques sont cachées à l'utilisateur et n'apparaissent que dans la
+structure sous-jacente. L'impact sur les performances en reste néanmoins
+présent.
 
 \begin{itemize}
-\item [\textbf{WOOT~\cite{oster2006data} :}] le premier représentant historique
-  des CRDTs pour séquences suivit par deux extensions
+\item [\textbf{WOOT~\cite{oster2006data} :}] est le premier représentant
+  historique des CRDTs pour séquences suivit par deux extensions
   \textbf{WOOTO~\cite{weiss2007wooki}} et
   \textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
-  identifiant référence les identifiants voisins à l'insertion. Rassemblés, les
-  identifiants peuvent être ordonnés grâce à un diagramme de Hasse
-  (\REF). Toutefois, cet ordonnancement requière des deux bornes adjacentes
-  qu'elles soient déjà intégrées et toujours présentes, d'où les suppressions
-  réelles impossibles.
+  identifiant référence les identifiants voisins à l'insertion.  Lorsqu'ils sont
+  rassemblés, les identifiants peuvent être ordonnés grâce à un diagramme de
+  Hasse (\REF). Toutefois, cet ordonnancement requière des deux bornes
+  adjacentes qu'elles soient
+  \begin{inparaenum}[(i)]
+  \item déjà intégrées et
+  \item toujours présentes.
+  \end{inparaenum}
+  D'où les suppressions réelles impossibles.
 
   \begin{figure}
     \centering
@@ -73,41 +81,40 @@ continuent d'impacter sur les performances.
 \item [\textbf{Partial persistent sequence~\cite{wu2010partial} :}] definit les
   identifiants dans l'ensemble des nombres rationnels auxquel est ajoutée une
   limite quant à leur précision. Hélas, cette limite contraint la taille du
-  document maximale. \TODO{Moar?}. \TODO{Maybe falls in the other category.}
+  document maximale. Sans cette troncature, l'approche serait susceptible
+  d'appartenir à l'autre famille de CRDTs pour séquence.
 \item [\textbf{Replicated growable array~\cite{roh2011replicated} :}] représente
   la séquence sous forme de liste supportant les opérations concurrentes. Une
   table de hachage apporte un accès rapide aux éléments grâce à leurs
   identifiants. Les éléments incluent une référence au voisin qu'ils précèdent
   lors de leur insertion. Toutefois, pour ne jamais briser la chaine ainsi
   construite, les éléments supprimés restes présents indéfinitivement mais
-  cachés de l'utilisateur. \TODO{Double check.}
+  cachés de l'utilisateur.
 \item [\textbf{String-wise~\cite{yu2012stringwise} :}] cible principalement les
-  chaines de caractères pouvant être subdivisées lors d'opérations. Les
-  identifiants référencent alors les chaines adjacentes à l'insertion ainsi que
-  les autres éléments de la chaines si subdivision il y a. De la même manière
-  que pour les approches précédentes, les références rendent les suppressions
-  réelles impossibles.
+  chaines de caractères pouvant être subdivisées lors d'opérations jusqu'à
+  devenir une série de caractères. Les identifiants référencent alors les
+  chaines adjacentes à l'insertion ainsi que les autres éléments de la chaines
+  si subdivision il y a. De la même manière que pour les approches précédentes,
+  les références rendent les suppressions réelles impossibles.
 \item [\textbf{DiCE~\cite{conway2014language} :}] concentre principalement ses
-  efforts sur les garanties de \TODO{\emph{confluence}} de la séquence. Chaque
-  identifiant référence le voisin qu'il précède à l'insertion. L'ordre des
-  éléments est alors fonction de ces relations de positionnement relatif, et de
-  causalité.
+  efforts sur les garanties de confluence de la séquence. Chaque identifiant
+  référence le voisin qu'il précède à l'insertion. L'ordre des éléments est
+  alors fonction de ces relations de positionnement relatif, et de causalité.
 \end{itemize}
 
 Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
 éléments de séquences répliquées, toutes ces approches s'avèrent pratiques
 lorsque l'historique des opérations doit être conservé. Par exemple, dans le
-cadre de l'encyclopédie \emph{Wikipédia}, conserver toutes les modifications
-éffectuées permet de recouvrer une version vierge de vandalisme; dans le cadre
-du gestionnaire de versions \emph{Git}, il permet de recouvrer une version du
-code potentiellement sans erreurs etc. Malheureusement, ces structures
-grandissent au moins linéairement comparativement au nombre d'opérations
-effectuées sur la séquence. Cela devient paradoxalement problématique, par
-exemple, lors de vandalisme où même le contenu indésirable est conservé
+cadre de l'encyclopédie \emph{Wikipédia} (\REF), conserver toutes les
+modifications éffectuées permet de recouvrer une version vierge de vandalisme;
+dans le cadre du gestionnaire de versions \emph{Git} (\REF), il permet de
+recouvrer une version du code potentiellement sans erreurs etc. Malheureusement,
+ces structures grandissent au moins linéairement comparativement au nombre
+d'opérations effectuées sur la séquence. Paradoxalement, cela devient
+problématique lors de vandalisme où même le contenu indésirable est conservé
 indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
 fichier dont le poid ne reflète pas le contenu visible. De plus, les éléments
-cachés s'accumulent et dégradent \TODO{continuellement} les performances du
-système.
+cachés s'accumulent et dégradent éternellement les performances du système.
 
 Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés constitue une solution potentielle aux
@@ -116,85 +123,60 @@ dégradations de performances :
 \begin{itemize}
 \item [\textbf{ramasse-miètes~\cite{abdullahi1998garbage} :}] permet de nettoyer
   une structure de données en vidant de la mémoire les objets qui ne sont plus
-  accessibles par le programme. Le contexte \textbf{réparti} étend le cadre du
-  programme en considérant le local et le distant. Ainsi, supprimer réellement
-  un élément de la séquence revient à s'interroger : \emph{Est-ce que
+  accessibles par le programme. Le contexte réparti étend le cadre du programme
+  en considérant le local et le distant. Ainsi, supprimer réellement un élément
+  de la séquence revient à s'interroger : \emph{Est-ce que
     \begin{inparaenum}[(i)]
     \item toutes les répliques ont supprimé l'élément et
     \item est-ce que tous les éléments référençant l'élément supprimé ont été
       intégré localement?
     \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une
   réponse à ces deux questions. D'autant plus lorsque les possesseurs de
-  réplique ne sont pas perpétuellement joignables.
-\item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
-  topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
-  coeur décisionnel prend en charge les choix de suppression réelle des objets.
-  Ce coeur décisionnel étant restraint à un sous-ensemble des membres du réseaux
-  étant toujours accessibles, les décisions peuvent alors être prises de manière
-  fiable. Le reste des participants se conforme alors aux décisions prises par
-  le coeur \TODO{au risque de perdre certaines de leurs modifications}.
+  réplique ne sont pas perpétuellement joignables. Des problématiques
+  appartenant jusqu'alors à la réplication pessimiste apparaissent
+  (cf. §\ref{repl:subsec:pessimistic}).
+% \item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
+%   topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
+%   coeur décisionnel prend en charge les choix de suppression réelle des objets.
+%   Ce coeur décisionnel étant restraint à un sous-ensemble des membres du réseaux
+%   étant toujours accessibles, les décisions peuvent alors être prises de manière
+%   fiable. Le reste des participants se conforme alors aux décisions prises par
+%   le coeur \TODO{au risque de perdre certaines de leurs modifications}.
 \end{itemize}
 
-La section suivante présente une famille de structures pour séquences dont le
-bon fonctionnemement ne requière pas de pierres tombales (\TODO{Treedoc\ldots}).
+Comme alternative, il existe une famille de CRDTs pour séqunces dont le bon
+fonctionnement ne nécessite pas de référencer directement d'autres
+identifiants. En cela, ils évitent l'usage des pierres tombales mais font face à
+des problèmes concernant la complexité spatiale de leurs identifiants.
 
 \subsection{Identifiants de taille variable}
+\label{repl:subsec:variable}
 
 Certaines structures de données sans résolution de conflits pour séquences
 utilisent des identifiants dont la taille est variable à la
 génération~\cite{andre2013supporting, preguica2009commutative,
   weiss2009logoot}. Ainsi, les identifiants sont toujours uniques et immuables
 une fois générés, mais leur structure contient une liste d'éléments encodant
-leur position dans la séquence.  Contrairement aux approches basées sur les
-pierres tombales, ces identifiants ne dépendent pas d'autres identifiants afin
-d'être intégrés. À ce titre, les suppressions peuvent ne se contentent pas de
+leur position relative dans la séquence.  Contrairement aux approches basées sur
+les pierres tombales, ces identifiants ne dépendent pas d'autres identifiants
+afin d'être intégrés. À ce titre, les suppressions ne se contentent pas de
 masquer les éléments, mais les retirent entièrement de la structure. En
-revanche, la liste d'éléments constituants les identifiants est susceptible de
-grandir \TODO{impactant les performances}. 
+revanche, la liste d'éléments constituant les identifiants est susceptible de
+grandir, et par là même, de diminuer les performances du systèmes.
 
-Nous définissons le modèle suivant : le CRDT pour séquences est un arbre
-$\mathcal{T}$ initialisé vide (\TODO{Bornes}) équippé des opérations d'insertion
-$insert$ et de suppression $delete$. Un identifiant dans $\mathcal{I}$ contient
-un chemin dans $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un
-élément dans $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
-$\mathcal{T}$ où chaque noeud possède au plus un élément.  En utilisant un ordre
+Nous définissons le modèle suivant : le CRDT pour séquences est un arbre $T$
+initialisé vide équippé des opérations d'insertion $\textsc{insert}$ et de
+suppression $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un
+chemin dans $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément
+dans l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée
+l'arbre $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre
 total $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence
-d'éléments. \TODO{double-check.}
+d'éléments.
 
-\begin{wrapfigure}{r}{0.5\textwidth}
-  \vspace{-35pt} %% (ugly)
-  \begin{minipage}[t]{0.5\textwidth}
-    \begin{algorithm}[H]
-      \input{input/replication/crdtabstractalgo.tex}
-      \caption{\label{repl:algo:crdtabstract} Squelette.}
-    \end{algorithm}
-  \end{minipage}
-  \vspace{-35pt}
-\end{wrapfigure}
-
-L'algorithme~\ref{repl:algo:crdtabstract} présente le squelette de cette famille
-de structure pour séquence.  Il est divisé en deux parties qui correspondent à
-l'exécution locale et l'exécution distante de la réplication
-optimiste. Celles-ci sont elles-mêmes divisées en deux types d'évènements
-correspondant aux opérations d'insertions et de suppression d'un
-élément. L'algorithme met en lumière trois points :
-
-\begin{itemize}
-\item [\textbf{signature :}] les opérations sur la séquence répliquée prennent
-  pour arguments les identifiants adjacents à l'insertion, au lieu d'un indice
-  dans la séquence pour les séquences \TODO{classiques}.
-\end{itemize}
-
-\begin{itemize}
-\item [\textbf{complexité locale :}] la complexité de l'algorithme est répartie
-  entre la génération d'un identifiant locale et son intégration à la structure
-  en partie distante. Cela constitue une différence fondamentale comparée aux
-  approches à transformés opérationnels (cf. §~\ref{repl:sec:ot}).
-\item [\textbf{allocation de chemin} :] la taille des identifiants dépend
-  essentiellement de l'allocation d'un chemin dans l'arbre
-  (cf. ligne~\ref{line:allocpath}) auquel est ajouté un désambiguateur
-  (cf. ligne~\ref{line:allocdes}) afin de garantir l'unicité de l'identifiant.
-\end{itemize}
+La taille des identifiants dépend essentiellement de l'allocation d'un chemin
+dans l'arbre (cf. ligne~\ref{line:allocpath}) auquel est ajouté un
+désambiguateur (cf. ligne~\ref{line:allocdes}) afin de garantir l'unicité de
+l'identifiant.
 
 % \begin{figure*}
 %   \centering
