@@ -164,36 +164,19 @@ masquer les éléments, mais les retirent entièrement de la structure. En
 revanche, la liste d'éléments constituant les identifiants est susceptible de
 grandir, et par là même, de diminuer les performances du systèmes.
 
-Nous définissons le modèle suivant : le CRDT pour séquences est un arbre $T$
-initialisé vide équippé des opérations d'insertion $\textsc{insert}$ et de
-suppression $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un
-chemin dans $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément
-dans l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée
-l'arbre $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre
-total $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence
-d'éléments.
+Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
+équippé des opérations d'insertion $\textsc{insert}$ et de suppression
+$\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
+$\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
+l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
+$T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
+$(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
 
-La taille des identifiants dépend essentiellement de l'allocation d'un chemin
-dans l'arbre (cf. ligne~\ref{line:allocpath}) auquel est ajouté un
-désambiguateur (cf. ligne~\ref{line:allocdes}) afin de garantir l'unicité de
-l'identifiant.
-
-% \begin{figure*}
-%   \centering
-%   \subfloat[Allocation quasi-optimale]
-%   [\label{fig:lseq:allocpathexampleA}Cas d'une allocation quasi-optimale]
-%   {\input{./input/replication/allocpathexampleA.tex}}
-%   \hspace{40pt}
-%   \subfloat[Pire cas d'allocation]
-%   [Pire cas d'allocation]
-%   {\input{./input/replication/allocpathexampleB.tex}}
-%   \caption{\label{fig:lseq:allocpathexample} Deux arbres remplis d'identifiants
-%     résultant de deux séquences d'édition différentes et dont la séquence finale
-%     est identique : $QWERTY$. L'allocation des identifiants se fait selon le
-%     même algorithme qui alloue la branche la plus à gauche de l'arbre. L'arbre
-%     quasiment optimal ne possède que des branches de profondeur 1 tandis que
-%     l'arbre pire cas atteint une profondeur de 6.}
-% \end{figure*}
+Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
+une liste constituée de paires avec l'identifiant unique du serveur hébergeant
+la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
+compteurs §\ref{repl:subsec:crdts}). La complexité de l'identifiant dépend donc
+essentiellement de l'allocation du chemin dans l'arbre.
 
 Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
 illustrent les difficultés rencontrées lors de l'allocation des chemins
@@ -201,27 +184,11 @@ composant les identifiants. Dans les deux cas, la fonction d'allocation utilise
 la stratégie suivante : la branche la plus à gauche avec la plus petite
 profondeur possible. Dans les deux cas, la séquence finale est
 'QWERTY'. Toutefois, les lettres ne sont pas insérées dans un ordre
-identique. Dans le premier cas, 'Q' est inséré à l'index 0, suivit de 'W' à
-l'index 1, suivit de 'E' à l'index 2 etc. Cette séquence d'opérations est nommée
-\TODO{\emph{séquence d'édition}} :
-\begin{alltt}
-\centering(Q,0).(W,1).(E,2).(R,3).(T,4).(Y,5)
-\end{alltt}
-%%Celle-ci est traduite à la volée par :
-%%\begin{alltt}
-%%\centering insert(\(\vdash\), Q, \(\dashv\)).insert(\(i_Q\), W, \(\dashv\)).insert(\(i_W\), E, \(\dashv\))...insert(\(i_T\), Y, \(\dashv\))
-%%\end{alltt}
-Dans le second cas, la lettre 'Y' est insérée à l'index 0, suivit du 'T' à
-l'index 0 qui, par effet de bord, décale le 'Y' à l'indice 1. La séquence en
-résultant est donc 'TY'. L'insertion du 'R' en position 0 décale toutes lettres
-de droite etc. La séquence d'édition qui correspond à ce cas est :
-\begin{alltt}
-\centering(Y,0).(T,0).(R,0).(E,0).(W,0).(Q,0)
-\end{alltt}
-%%Traduit par :
-%%\begin{alltt}
-%%\centering insert(\(\vdash\), Y, \(\dashv\)).insert(Q, W, \(\dashv\)).insert(W, E, \(\dashv\))...insert(T, Y, \(\dashv\))
-%%\end{alltt}
+identique. Dans le premier cas, 'Q' est inséré à l'indice 0, suivit de 'W' à
+l'indice 1, suivit de 'E' à l'indice 2 etc.  Dans le second cas, la lettre 'Y'
+est insérée à l'indice 0, suivit du 'T' à l'indice 0 qui, par effet de bord,
+décale le 'Y' à l'indice 1. La séquence en résultant est donc 'TY'. L'insertion
+du 'R' en position 0 décale toutes lettres de droite etc.
 
 \begin{wrapfigure}{r}{0.5\textwidth}
   \vspace{-15pt}
@@ -232,13 +199,13 @@ de droite etc. La séquence d'édition qui correspond à ce cas est :
 \end{wrapfigure}
 
 \textbf{Premier cas :} L'opération d'insertion (Q, 0) est transformée en
-insert($\vdash$, Q, $\dashv$). Par conséquent, le chemin doit être alloué entre
-les bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
-reserver la branche la plus à gauche et de plus petite taille, le chemin
-résultant est [1]. Ensuite, l'opération (W, 1) est transformée en insert($i_Q$,
-W, $\dashv$) résultant sur le chemin [2] etc.  Dans ce cas, la profondeur de
-l'arbre n'augmente jamais. À cet égard, la stratégie employée par la fonction
-$allocPath$ est très efficace. Cependant, elle n'est pas totalement optimale
+\textsc{insert}($\vdash$, Q, $\dashv$). Par conséquent, le chemin doit être
+alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation
+consiste à reserver la branche la plus à gauche et de plus petite taille, le
+chemin résultant est [1]. Ensuite, l'opération (W, 1) est transformée en
+\textsc{insert}($i_Q$, W, $\dashv$) résultant sur le chemin [2] etc.  Dans ce
+cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la stratégie
+employée est très efficace. Cependant, elle n'est pas totalement optimale
 puisque l'arbre est prévu pour accueillir 8 identifiants lorsque seulement 6
 sont alloués.
 
@@ -251,120 +218,52 @@ sont alloués.
 \end{wrapfigure}
 
 \textbf{Second cas :} De la même manière, l'opération d'insertion (Y, 0) est
-transformée en insert($\vdash$, Y, $\dashv$) dont le résultat est le chemin
-[1]. Lors de l'insertion (T, 0), un chemin est requis entre la borne virtuelle
-du début de séquence [0] et la borne du caractère 'Y' [1]. Ainsi, la profondeur
-du chemin doit grandir de telle sorte que le nouvel identifiant muni de l'ordre
-total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les deux. Considérons un
-ordre lexicographique, le chemin résultant est [0.X] où X est choisit entre 0 et
-10. Suivant la stratégie, le chemin est [0.1] pour la lettre 'T'. Puis [0.0.1]
-pour la lettre 'R' etc. La taille des chemins alloués augmente très rapidement.
-La stratégie de la fonction $allocPath$ s'avère inéfficace dans ce cas.
+transformée en \textsc{insert}($\vdash$, Y, $\dashv$) dont le résultat est le
+chemin [1]. Lors de l'insertion (T, 0), un chemin est requis entre la borne
+virtuelle du début de séquence [0] et la borne du caractère 'Y' [1]. Ainsi, la
+profondeur du chemin doit augmenter de telle sorte que le nouvel identifiant
+muni de l'ordre total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les
+deux. Considérons un ordre lexicographique, le chemin résultant est [0.X] où X
+est choisi entre 0 et 10. Suivant la stratégie, le chemin est [0.1] pour la
+lettre 'T'. Puis [0.0.1] pour la lettre 'R' etc. La taille des chemins alloués
+augmente très rapidement.  La stratégie d'allocation s'avère inéfficace dans ce
+cas.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
 taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
-(\TODO{séquence classique}) à des identifiants non-mutable de taille variable a
-donc un coût qu'il est nécéssaire d'analyser afin de proposer une fonction
-d'allocation efficace.
-
-%% C'est pourquoi les travaux précédents font souvent l'hypothèse d'un
-%% comportement d'édition de gauche-à-droite basés sur observations. Toutefois,
-%% il existe des documents écrit par l'homme dont le comportement ne correspond
-%% pas à celui-ci.
+d'une séquence classique à des identifiants non-mutable de taille variable d'une
+séquence répliquée a un coût qu'il est nécéssaire d'analyser afin de proposer
+une fonction d'allocation efficace.
 
 \begin{itemize}
 \item [\textbf{Logoot~\cite{weiss2009logoot, weiss2010logootundo} :}] représente
-  un identifiant sous forme de liste où chaque élément du chemin possède un
-  désambiguateur associé. Ce dernier est composé d'un identifiant unique de
-  réplique ainsi qu'un compteur incrémenté à chaque opération. Un identifiant
-  est donc :
-  \begin{equation*}
-    \langle
-    \alpha ,\,
-    \DARKBLUE{[p_1.p_2\ldots p_k]},\,
-    [\langle s_1,\,c_1 \rangle. \langle s_2,\,c_2\rangle \ldots \langle s_k, c_k\rangle ]
-    \rangle
-  \end{equation*}
-  où $\alpha$ est la lettre insérée, $k$ la profondeur de l'identifiant,
-  $p_{1\ldots k}$ le chemin dans l'arbre,
-  $\langle s_{1\ldots k},\, c_{1\ldots k}\rangle$ les désambiguateurs
-  associés. Soit une position $\ell_i$ constituée du triplet
-  $\langle p_i,\,s_i,\,c_i\rangle$, et un ordre total parmis ceux-ci:
-  \begin{align*}
-    \ell_i < \ell_j \iff & (p_i < p_j) \vee \\
-                         & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
-                         & ((p_i = p_j) \wedge (s_i = s_j) \wedge (c_i < c_j)) \\
-    \ell_i = \ell_j \iff & \neg (\ell_i < \ell_j) \wedge \neg (\ell_j < \ell_i)
-  \end{align*}
-  L'ordre total utilisé pour recouvrer la séquence est l'ordre lexicographique
-  tel que $i_1 < i_2$ si et seulement si :
-  \begin{align*}
-    i_i < i_j \iff & \exists (m > 0)(\forall n < m) (\ell^i_n = \ell^j_n) \wedge (\ell^i_m \
-                     < \ell^j_m) \\
-    i_i = i_j \iff & (\forall n) \ell^i_n = \ell^j_n
-  \end{align*}
-  En d'autres termes, l'identifiant $i_1$ précède $i_2$ si et seulement si le
-  premier élément de $i_1$ qui les distingues est inférieur. Par ailleurs, par
-  défaut $\ell_d = \langle 0,\,\_,\,0 \rangle$
-  lorsque $d > k$. Les identifiants étant uniques, il existe toujours un tel
-  $m$.
-
-  \TODO{Le modèle présenté plus tôt se base sur un arbre. Toutefois,
-    l'implémentation proposée originellement par Logoot est celle d'une
-    liste}. Ainsi les séquences des figures~\ref{repl:fig:allocpathexampleA}
-  et~\ref{repl:fig:allocpathexampleB} sont représentés de la façon suivante :
-
-  \begin{minipage}{0.3\textwidth}
-    \begin{alltt}
-\(\langle\)\textbf{Q}, [1], [\(\langle a, 1 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{W}, [2], [\(\langle a, 2 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{E}, [3], [\(\langle a, 3 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{R}, [4], [\(\langle a, 4 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{T}, [5], [\(\langle a, 5 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{Y}, [6], [\(\langle a, 6 \rangle\)]\(\rangle\)
-    \end{alltt}
-  \end{minipage}
-  \hfill
-  \begin{minipage}{0.55\textwidth}
-    \begin{alltt}
-\(\langle\)\textbf{Q}, [0.0.0.0.0.1], [\(\langle \_, 0 \rangle^5\).\(\langle a, 6 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{W}, [0.0.0.0.1], [\(\langle \_, 0 \rangle^4\).\(\langle a, 5 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{E}, [0.0.0.1], [\(\langle \_, 0 \rangle^3\).\(\langle a, 4 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{R}, [0.0.1], [\(\langle \_, 0 \rangle^2\).\(\langle a, 3 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{T}, [0.1], [\(\langle \_, 0 \rangle\).\(\langle a, 2 \rangle\)]\(\rangle\)
-\(\langle\)\textbf{Y}, [1], [\(\langle a, 1 \rangle\)]\(\rangle\)
-    \end{alltt}
-  \end{minipage}\\
-  Où $a$ est l'identifiant de réplique où les insertions ont été effectuées et
-  $\langle \_,\, 0 \rangle^k$ est une façon compressée de représenter $k$ fois
-  le désambiguateur de la borne virtuelle inferieure. Cette implémentation de la
-  séquence présente comme avantage la rapidité d'accès au prix d'une forte
-  occupation mémoire. Plus précisément, lors de la transformation de séquence
-  d'édition, il est nécéssaire de retrouver les identifiants adjacents à la
-  position d'insertion :
-  \begin{alltt}
-\centering(W, \BLUE{1}) \(\rightarrow\) insert(\DARKBLUE{\(\langle\)\textbf{Q}, [1], [\(\langle a, 1 \rangle\)]\(\rangle\)}, W, \DARKBLUE{\(\dashv\)})
-  \end{alltt}
-  \TODO{Base de $2^{64}$}.
-  Dans Logoot, cette transformation est effectuée en temps \textbf{constant}
-  $\mathcal{O}(1)$. En revanche, chaque identifiant possède une compléxité
-  spatiale \textbf{linéaire} $\mathcal{O}(I)$ avec $I$ le nombre d'insertions
-  effectuées sur la séquence. N'étant factorisé en aucune manière, la séquence
-  possède une complexité spatiale \textbf{quadratique} $\mathcal{O}(I^2)$.
-
+  originellement ses identifiants sous forme de liste sans les factoriser sous
+  forme d'arbre. Cette représentation possède l'avantage de fournir un accès
+  instantané à ses éléments au prix d'une consommation en espace élevée. En
+  effet, la traduction d'une opération locale
+  $\textsc{insert}(element,\, index)$ à
+  $\textsc{insert}(id_{précedent},\, element,\, id_{suivant})$ s'effectue en
+  temps constant. D'un autre coté, les identifiants possèdent des chemins dont
+  chaque élément est un entier encodé sur 64 bits (correspondant à une arité de
+  $2^{64}$ dans le modèle d'arbre). Ayant fait l'assomption que les documents
+  étaient édités de gauche à droite, la stratégie s'avère inefficace dans le cas
+  contraire. Le pire cas est déjà illustré dans la
+  figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
+  identifiant est linéaire, en résulte une complexité quadratique par rapport à
+  la taille du document.
 \item [\textbf{Logoot split~\cite{mehdi2014merging} :}] étend Logoot lui offrant
   la possibilité d'adapter la granularité de l'élément ciblé. Bien que tous les
   exemples précédent fassent mention de caractères comme éléments de la
   séquence, Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à
   la section etc. Cette extension prend pour granularité la chaine de caractère
-  avec la liberté de la séparer si besoin est. \TODO{Comme string-wise.}
-
+  avec la liberté de la séparer si besoin est.
 \item [\textbf{Treedoc~\cite{shapiro2011comprehensive} :}] représente le
   document sous forme d'arbre binaire avec parcours infixe.  Ainsi, si l'on
   considère un élément 'W' dont le chemin est [0], alors un élément 'Q' dont le
   chemin est [0.0] précède 'W', et un élément 'E' dont le chemin est [0.1]
   succède 'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à
-    gauche de}, et suffixer le chemin d'un 1 signifie \emph{à droite de}.
+    gauche de}, et suffixer le chemin d'un 1 signifie \emph{à droite
+    de}. \TODO{Moar.}
 \end{itemize}
 
