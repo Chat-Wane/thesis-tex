@@ -5,12 +5,12 @@
 \begin{figure*}
   \centering
   \subfloat[Document Wikipédia principalement édité en fin.]
-  [\label{repl:img:motivationsB}Document Wikipédia de très grande
+  [\label{repl:img:motivationsA}Document Wikipédia de très grande
   taille principalement édité en fin.]
   {\includegraphics[width=0.8\textwidth]{img/lseq/motivationposte.eps}}
   \hspace{10pt}
   \subfloat[Document Wikipédia principalement édité au début.]
-  [\label{repl:img:motivationsA}Document Wikipédia de petite taille
+  [\label{repl:img:motivationsB}Document Wikipédia de petite taille
   principalement édité au début.]
   {\includegraphics[width=0.8\textwidth]{img/lseq/motivationtemplatetalk.eps}}
   \caption{\label{repl:img:motivations} Taille du chemin alloué pour chaque
@@ -75,6 +75,10 @@ réalité.
 \end{itemize}
 
 %% Conclusion
+Le problème est donc de créer une stratégie d'allocation d'identifiants qui soit
+sous-linéaire par rapport au nombre d'insertions dans le document, quel que soit
+le comportement d'édition, sachant que ni le nombre ni la position des
+insertions ne sont connus par avance. \TODO{Moar.}
 
 %%% Local Variables:
 %%% mode: latex
