@@ -238,12 +238,12 @@ séquence répliquée a un coût qu'il est nécéssaire d'analyser afin de propo
 une fonction d'allocation efficace.
 
 \begin{itemize}
-\item [\textbf{Logoot~\cite{weiss2009logoot, weiss2010logootundo,
-      weiss2010collaborative} :}] représente originellement ses identifiants
-  sous forme de liste sans les factoriser sous forme d'arbre. Cette
-  représentation possède l'avantage de fournir un accès instantané à ses
-  éléments au prix d'une consommation en espace élevée. En effet, la traduction
-  d'une opération locale $\textsc{insert}(element,\, index)$ à
+\item [\textbf{Logoot~\cite{weiss2009logoot, weiss2010collaborative,
+      weiss2010logootundo} :}] représente originellement ses identifiants sous
+  forme de liste sans les factoriser sous forme d'arbre. Cette représentation
+  possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
+  consommation en espace élevée. En effet, la traduction d'une opération locale
+  $\textsc{insert}(element,\, index)$ à
   $\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$
   s'effectue en temps constant. D'un autre coté, les identifiants possèdent des
   chemins dont chaque élément est un entier encodé sur 64 bits correspondant à
