@@ -1,0 +1,39 @@
+\begin{tikzpicture}[scale=1.2]
+
+\newcommand\X{25pt}
+\newcommand\Y{20pt}
+
+\newcommand\LIGHTGRAY{gray!20}
+\newcommand\MEDIUMGRAY{gray!40}
+
+\small
+%% communication
+\draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=white](0pt, 0pt)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
+\draw(4*\X, \Y)node[anchor=north east]{\textbf{communication}};
+
+\draw ( -3*\X, -0*\Y ) node[anchor=west]{\emph{send and receive changes}};
+
+\small
+%% causality
+\draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=\LIGHTGRAY](0pt, -2*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
+\draw(4*\X, -\Y)node[anchor=north east]{\textbf{causality}};
+
+\draw( -3*\X, -2*\Y) node[anchor=west]{\emph{track causal relations between changes}};
+
+\small
+%% sequence structure
+\draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=white](0pt, -4*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
+\draw(4*\X, -3*\Y)node[anchor=north east, align=right]
+{\textbf{sequence}\\\textbf{structure}};
+
+\draw( -3*\X, -4*\Y) node[anchor=west]{\emph{maintain consistent documents}};
+
+\small
+%% gui
+\draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=\LIGHTGRAY](0pt, -6*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
+\draw(4*\X, -5*\Y)node[anchor=north east, align=right]
+{\textbf{graphical}\\\textbf{user}\\\textbf{interface}};
+
+\draw( -3*\X, -6*\Y) node[anchor=west]{\emph{provide visual cue for interactions}};
+
+\end{tikzpicture}

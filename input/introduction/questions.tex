@@ -1,21 +1,29 @@
 
 \section{Questions de recherche}
 
-% \begin{itemize}
-% \item [\textbf{QR.}] \textbf{Comment construire un éditeur collaboratif temps-réel
-%     permettant l'écriture de documents qu'importe la taille de ceux-ci, leur
-%     nombre d'auteurs, \TODO{passant à l'échelle?} \TODO{moar}}.
+\begin{figure}
+  \centering
+  \input{input/introduction/architecture.tex}
+  \caption{\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
+    collaboratifs.}
+\end{figure}
 
-%   Écrire le cheminement qui pousse aux sous questions suivantes
-%   \begin{itemize}
-%   \item [\textbf{QR A.}] \textbf{Est-il possible d'obtenir une structure de
-%       données répliquées sans résolution de conflits dont le compromis propose
-%       des identifiants de taille sous-linéaire?}
-%   \item [\textbf{QR B.}] \textbf{Est-il possible d'obtenir un protocole de
-%       dissémination de modifications s'adaptant à la taille de la session
-%       d'édition?}
-%   \end{itemize}
-% \end{itemize}
+L'architecture d'un éditeur collaboratif est constituée de quatres parties
+(cf. la figure~\ref{intro:fig:architecture}) :
+\begin{inparaenum}[(i)]
+\item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
+  document, 
+\item la structure de données représentant le document partagé,
+\item la structure de causalité qui permet d'ordonner les changements sur le
+  document,
+\item la couche réseau qui permet d'envoyer et recevoir les changements sur le
+  document.
+\end{inparaenum}
+
+Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
+Cela concerne aussi bien le nombre d'utilisateurs, que la taille des documents,
+que la fréquence des changements ainsi que la durée avant laquelle ils sont
+intégrés.
 
 \begin{itemize}
 \item [\textbf{QR.}] \textbf{Comment proposer un éditeur collaboratif temps réel
