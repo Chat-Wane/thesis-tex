@@ -1,6 +1,6 @@
 
-\section{OT ou CRDTs?}
-\label{repl:sec:otorcrdts}
+\subsection{OT ou CRDTs?}
+\label{repl:subsec:otorcrdts}
 
 La réplication optimiste permet de répliquer les données et d'effectuer des
 modifications sur celle-ci directement, sans accord préalable d'un cœur
@@ -14,8 +14,8 @@ approches à transformés opérationnels (OT -- cf. §\ref{repl:subsec:ot}) et l
 approches à structure de données sans résolution de conflits (CRDTs --
 cf. §\ref{repl:subsec:crdts}), ainsi que leurs limitations.
 
-\subsection{Transformés opérationnels}
-\label{repl:subsec:ot}
+\subsubsection{Transformés opérationnels}
+\label{repl:subsubsec:ot}
 
 Les approches basées sur les transformés opérationnels~\cite{sun1998operational,
   sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
@@ -90,8 +90,8 @@ Les approches OT peuvent être divisées en deux classes :
   Google Docs (\REF) ou Etherpad (\REF).
 \end{itemize}
 
-\subsection{Structure de données sans résolutions de conflits}
-\label{repl:subsec:crdts}
+\subsubsection{Structure de données sans résolutions de conflits}
+\label{repl:subsubsec:crdts}
 
 Un conflit est un cas où une valeur particulière est modifiée en même temps à
 des endroits différents. Par exemple, la figure~\ref{repl:fig:optimisticexample}
