@@ -1,49 +1,45 @@
 
 \section{Plan du manuscrit}
 
-Le reste du manuscrit est découpé en 3 parties :
+Le reste du manuscrit est découpé en 4 chapitres :
 
 \begin{itemize}
-\item [\textbf{La première partie :}] décrit le protocole réseau permettant de
-  créer une session d'édition. Elle est composée des
-  chapitres~\ref{net:chap:rps},~\ref{net:chap:spray}. Le
-  chapitre~\ref{net:chap:rps} présente l'état de l'art de ces protocoles
-  d'échantillonnage aléatoire de pairs. Ceux-ci fournissent une vue partielle du
-  réseau à chaque membre laquelle peut être utilisée afin de communiquer à
-  l'ensemble du réseau. Nous en distinguons deux familles : La première fournit
-  des vues dont la taille est constante quelle que soit la taille du réseau, en
-  opposition à la seconde famille qui adapte la taille des vues en fonction du
-  réseau sans toutefois avoir de connaissances globales sur ce dernier. Le
-  chapitre~\ref{net:chap:spray} décrit \SPRAY, un protocole d'échantillonnage
-  aléatoire de pairs appartenant à cette seconde famille. Les vues s'ajustent
-  automatiquement au logarithme de la taille du réseau.
-\item [\textbf{La seconde partie :}] décrit la structure de données répliquée
-  représentant le document partagé. Cette partie est composée des
-  chapitres~\ref{repl:chap:replication},
-  ~\ref{repl:chap:crdts},~\ref{repl:chap:sequences},~\ref{repl:chap:lseq}. Le
-  chapitre~\ref{repl:chap:replication} présente les deux méthodes de réplication
-  de données. Le chapitre~\ref{repl:chap:crdts} présente un type de données
-  appartenant à la réplication dîte optimiste. Ce type de données a pour
-  objectif d'éviter la difficile tâche de résolution de conflits apparaissant
-  lors d'opérations concurrentes. Il en existe pour les compteurs, les
-  ensembles, les arbres etc. Le chapitre~\ref{repl:chap:sequences} s'intéresse
-  particulièrement à ce type de données pour les séquences. Il en distingue deux
-  familles : les approches utilisant des 'pierres tombales' et les approches
-  dont les métadonnées sont de taille variable à la génération. Le
-  chapitre~\ref{repl:chap:lseq} s'attache à décrire \LSEQ, une stratégie
-  d'allocation de métadonnées dont la taille reste sous-linéaire par rapport à
-  la taille du document.
-\item [\textbf{La troisième partie :}] conclue ce manuscrit de thèse. Elle est
-  composé des
-  chapitres~\ref{conclu:chap:crate},~\ref{conclu:chap:conclusion}. Le
-  chapitre~\ref{conclu:chap:crate} présente \CRATE, un éditeur collaboratif
-  décentralisé tournant dans les navigateurs web grâce à l'apparition de la
-  recente technologie WebRTC~\cite{webrtc}. Profitant des propriétés de \SPRAY
-  et \LSEQ, \CRATE parvient à adapter le traffic généré par l'édition à la
-  taille de la session et à la taille du document. Le
-  chapitre~\ref{conclu:chap:conclusion} clot se manuscrit en décrivant les
-  perspectives ouvertes par ce type d'application ainsi que les défis qu'il
-  reste à relever.
+\item [\textbf{Le chapitre~\ref{net:chap:spray}}] commence par décrire les
+  protocoles réseau qui nous permettront de construire les sessions d'édition :
+  les protocoles d'échantillonnage aléatoire de pairs. Ceux-ci fournissent une
+  vue partielle du réseau à chaque membre. Cette vue peut être utilisée afin de
+  communiquer à l'ensemble du réseau. L'état de l'art se décompose en deux
+  familles :
+  \begin{inparaenum}[(i)]
+  \item Les vues partielles sont de taille constante configurée \emph{a priori};
+  \item Les vues partielles s'adaptent aux dimensions du réseau à la volée.
+  \end{inparaenum}
+  Ensuite, le chapitre décrit le fonctionnement de \SPRAY appartenant à cette
+  seconde famille. Le cycle de vie d'un pair est décomposé entre le moment où il
+  rejoint, le temps où il reste membre du réseau, et le moment où il le
+  quitte. Tout au long de ce processus, le système dans sa globalité doit rester
+  consistant sur la taille des vues partielles ainsi que sur leur contenu.  Le
+  chapitre décrit les propriétés assurées par \SPRAY et les compares à un
+  représentant de l'état de l'art nommé \CYCLON.
+\item [\textbf{Le chapitre~\ref{net:chap:lseq}}] décrit la structure de données
+  répliquée représentant le document partagé. Il commence par la présentation
+  des deux grands schémas de réplication avant de passer en revue les approches
+  appartenant à la réplication dîte optimiste. En particulier, les approches à
+  transformés opérationnels et les approches à structure de données sans
+  résolution de conflits. Ensuite, le chapitre détaille \LSEQ, une fonction
+  d'allocation d'identifiants conçue pour ces dernières et dont la taille est
+  bornée supérieurement selon un polylogarithmique par rapport à la taille du
+  document. Le reste du chapitre s'attache à valider cette propriété.
+\item [\textbf{Le chapitre~\ref{net:chap:crate}}] décrit un éditeur collaboratif
+  réparti et décentralisé fonctionnant dans les navigateurs web.  Tout d'abord,
+  le chapitre décrit la récente technologie WebRTC ayant ouvert la voie aux
+  applications décentralisée sur navigateurs. Ensuite, le chapitre décrit les
+  fonctionnalités basiques offertes par \CRATE.  Profitant des propriétés de
+  \SPRAY et \LSEQ, \CRATE parvient à adapter le traffic généré par l'édition à
+  la taille de la session et à la taille du document. 
+\item [\textbf{Le chapitre~\ref{net:chap:conclusion}}] clôt ce manuscrit et
+  décrit les perspectives ouvertes par ce type d'application ainsi que les défis
+  qu'il reste à relever.
 \end{itemize}
 
 %%% Local Variables:
