@@ -1,4 +1,16 @@
 
+\section{État de l'art}
+\label{net:sec:stateoftheart}
+Deux familles d'approches existent quant à la taille des vues partielles :
+\begin{inparaenum}[(i)]
+\item La famille d'approches dont la taille est fixée lors de la
+  configuration. Ainsi la taille des vues partielles ne change pas au cours du
+  temps, même si la taille du réseau est susceptible de fluctuer
+  (cf. §\ref{net:sec:fixed}).
+\item La famille dont les machines, lorsqu'elles rejoignent le réseau,
+  contribuent à hauteur du logarithme de la taille du réseau
+  (cf. §\ref{net:sec:variable}).
+\end{inparaenum}
 
 \subsection{Taille fixe}
 \label{net:subsec:fixed}
@@ -128,6 +140,114 @@ de voisinages.
   passives. Similairement à \CYCLON, les arcs privilégiés sont ceux nouvellement
   réçus. 
 \end{itemize}
+
+
+
+\subsection{Taille variable}
+\label{net:subsec:variable}
+
+La famille de protocoles d'échantillonnage aléatoire de pairs peuplant des vues
+dont la taille n'est pas définie au préalable a pour seul représentant :
+
+\begin{itemize}
+\item [\textbf{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :}] est l'acronyme
+  de \emph{SCAlable Membership Protocol}. Il s'agit d'un protocole
+  d'échantillonnage associant une réaction à certains évenements. En
+  particulier, l'entrée dans le réseau doit permettre d'augmenter la taille
+  moyenne des vues partielles. Cette augmentation est logarithmique et
+  correspond au seuil précis $\Theta (|\mathcal{N}|\log |\mathcal{N}|)$ des
+  graphes aléatoires. Le départ d'un nœud doit entrainer une équivalente
+  diminution.
+
+  Les pairs utilisant \SCAMP maintiennent deux vues partielles correspondants
+  aux arcs entrant et aux arcs sortant.
+
+  Lorsque un nœud rejoins le réseau, il contacte un membre qu'il ajoute
+  directement à sa vue partielle. Ce contact annonce ensuite le nouveau venu au
+  réseau. Pour ce faire, il crée autant de messages d'annonce qu'il possède de
+  voisins et les émets. Chaque nœud recevant ce type de messages est libre
+  d'accepter l'annonce en ajoutant alors l'identité du nouveau venu à sa vue
+  partielle, ou la refuser, auquel cas il réexpedie le message à l'un de ces
+  voisins. Afin de répartir équitablement les annonces, chaque nœud $n_i$ a une
+  probabilité inversement proportionnelle à la taille de sa vue partielle
+  d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
+  de créer une topologie proche de celle des graphes aléatoires. Cependant, la
+  vue partielle du nouveau pair est faiblement peuplée au contraire des pairs
+  plus vieux. Cela met en danger la robustesse du réseau face aux défaillances.
+
+  \begin{figure}
+    \centering
+    \input{input/network/scampexample.tex}
+    \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
+      dans \SCAMP.}
+  \end{figure}
+
+  La figure~\ref{net:fig:scampexample} montre l'entrée d'un nœud $n_1$ dans un
+  petit réseau \SCAMP composé des nœuds $n_2$, $n_3$, $n_4$ et $n_5$. Dans cet
+  exemple, le nœud $n_1$ contacte $n_2$ et l'ajoute directement à sa vue
+  partielle. $n_2$, possédant 2 voisins, copie l'adresse logique de $n_1$ 2 fois
+  et les dissémine à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il possède
+  une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion est
+  créée entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même façon. Toutefois,
+  il n'accepte pas l'annonce et retransmet le message à son voisin $n_4$. Ce
+  dernier l'accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au total, 3 arcs
+  ont été créés à l'arrivée du pair $n_1$.
+
+
+  Lorsqu'un pair souhaite quitter le réseau, 
+  \begin{inparaenum}[(i)]
+  \item il œuvre à préserver la connectivité de ce dernier et
+  \item il emporte avec lui une quantité d'arcs correspondant à l'entrée du
+    dernier pair dans le réseau.
+  \end{inparaenum}
+  Pour ce faire, le nœud va agir comme pont entre les nœuds de sa vue partielle
+  entrante et ceux de sa vue partielle sortante. Ainsi, il permettra de resouder
+  la maille du réseau qu'il aurait défait en partant. Ce méchanisme est
+  généralement applicable à tous les protocoles d'échantillonnage mais il
+  requière de maintenir deux vues partielles -- entrante et sortante -- et des
+  connexions bidirectionnelles. Il requière aussi un travail supplémentaire de
+  la part du nœud sortant impossible à garantir lors de défaillances : le nœud
+  devrat servir d'intermédiaire à la connexion de tous les voisins de sa vue
+  partielle entrante (sauf un) vers autant de voisins appartenant à sa vue
+  partielle sortante. Ainsi, le nombre d'arcs supprimé correspond en moyenne à
+  celui injecté à l'entrée d'un nœud dans le réseau. Ce méchanisme améliore
+  considérablement le maintient de la connexité du réseau mais ne représente pas
+  une solution fiable pour autant. En effet, certains nœuds peuvent se trouver
+  sans voisins dans l'une de leur vue.
+  
+
+  \begin{figure}
+    \centering \subfloat[Départ d'un pair dans \SCAMP.]
+    [\label{net:fig:scampexampleB} Le nœud $n_1$ souhaite quitter le réseau. Il
+    en informe ses vues partielles afin d'effectuer un pont entre eux.]
+    {\input{input/network/scampexampleB.tex}}
+    \hspace{45pt}
+    \subfloat[Établissement de connexions entre vues partielles dans \SCAMP.]
+    [\label{net:fig:scampexampleC} Le nœud $n_1$ notifie aux nœuds $n_2$ et
+    $n_3$ qu'ils doivent ajouter $n_5$ et $n_6$ dans leur vue partielle sortante
+    respective.]  {\input{input/network/scampexampleC.tex}}
+    \caption{\label{net:fig:scampexample2} Exemple de sortie de réseau dans
+      \SCAMP. Seules les vues partielles entrante et sortante de $n_1$ sont
+      explicitées.}
+  \end{figure}
+
+  La figure~\ref{net:fig:scampexample2} présente le mécanisme activé lors du
+  départ du nœud $n_1$ utilisant \SCAMP. $n_1$ fournit à chaque nœud de sa vue
+  partielle entrante l'adresse logique d'un nœud de sa vue partielle
+  sortante. Ainsi, le pair $n_2$ ajoute $n_5$ à sa vue partielle sortante, $n_3$
+  ajoute $n_6$ à sa vue partielle sortante, $n_4$ n'ajoute rien. La
+  figure~\ref{net:fig:scampexampleC} montre les arcs après le départ de
+  $n_1$. Entre autre, nous observons que si $n_4$ ne possède pas d'autres
+  voisins dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas
+  d'autres voisins dans leur vue partielle entrante, alors le réseau n'est plus
+  connexe.
+\end{itemize}
+
+
+
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
