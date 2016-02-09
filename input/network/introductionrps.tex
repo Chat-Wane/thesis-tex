@@ -38,18 +38,16 @@ possèdent d'interessantes propriétés tels que la tolérence aux pannes --
 lorsqu'un nœud disparait soudainement le graphe reste connecté avec une forte
 probabilité -- un faible diamêtre, etc.
 
-Deux familles d'approches existent quant à la taille des vues partielles :
-\begin{inparaenum}[(i)]
-\item La famille d'approches dont la taille est fixée lors de la
-  configuration. Ainsi la taille des vues partielles ne change pas au cours du
-  temps, même si la taille du réseau est susceptible de fluctuer
-  (cf. §\ref{net:sec:fixed}).
-\item La famille dont les machines, lorsqu'elles rejoignent le réseau,
-  contribuent à hauteur du logarithme de la taille du réseau
-  (cf. §\ref{net:sec:variable}).
-\end{inparaenum}
-
 \TODO{Talk about dissemination in first. And recall research question.}
+
+Ce chapitre commence par introduire vocabulaire et notations. La
+section~\ref{net:sec:stateoftheart} présente l'état de l'art des protocoles
+d'échantillonnage de pairs en les divisant en deux catégories : Ceux dont les
+vues partielles sont fixes, et ceux dont la vue partielle s'adaptent au
+réseau. La section~\ref{net:sec:spray} présente \SPRAY, un protocole appartenant
+à la seconde catégorie. La section~\ref{net:sec:properties} présente et compare
+les propriétés des protocoles d'échantillonages. Le chapitre se conclue à la
+section~\ref{net:sec:conclusion}.
 
 %%% Local Variables:
 %%% mode: latex

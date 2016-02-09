@@ -48,13 +48,14 @@ $\Delta$ de temps. Tout d'abord, la fonction incrémente l'âge de chacun des ar
 présent dans la vue partielle $P$. Ensuite, le nœud le plus âgé $q$ est choisi
 afin d'initier un mélange. Si le nœud $q$ ne peut être joint -- car parti ou
 défaillant -- alors le nœud $p$ éxécute une fonction appropriée (cf.
-§\ref{net:sec:leaving}) jusqu'à trouver un nœud avec lequel communiquer. Ainsi,
-le vieillissement comme héritage de \CYCLON permet d'accélérer la suppression
-des références obsolètes. Une fois que le nœud initiateur $p$ a trouvé un nœud
-avec qui effectuer l'échange, il selectionne un échantillon de sa vue partielle
-tout en excluant la référence à $q$ et en s'incluant lui-même. La taille de
-l'échantillon correspond à la moitié de la taille de la vue partielle avec au
-minimum $1$ nœud : sa propre référence (cf. ligne~\ref{net:line:samplesize}). 
+§\ref{net:subsec:leaving}) jusqu'à trouver un nœud avec lequel
+communiquer. Ainsi, le vieillissement comme héritage de \CYCLON permet
+d'accélérer la suppression des références obsolètes. Une fois que le nœud
+initiateur $p$ a trouvé un nœud avec qui effectuer l'échange, il selectionne un
+échantillon de sa vue partielle tout en excluant la référence à $q$ et en
+s'incluant lui-même. La taille de l'échantillon correspond à la moitié de la
+taille de la vue partielle avec au minimum $1$ nœud : sa propre référence
+(cf. ligne~\ref{net:line:samplesize}).
 
 Lorsque le nœud $q$ réçoit la demande d'échange, l'événement \textsc{onExchange}
 est déclanché. La réponse de $q$ contient également la moitié de sa vue

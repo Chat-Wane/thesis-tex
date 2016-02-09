@@ -24,24 +24,20 @@ prises à la légère. Ainsi, dans un premier temps, \SPRAY ajoute des arcs lors
 l'entrée d'un nœud dans le réseau. Dans un second temps, le processus periodique
 de mélange des arcs de \SPRAY préserve tous les arcs du réseau.  Dans un
 troisième temps, le processus de sortie supprime précautionneusement quelques
-arcs. Dans l'idéal, il s'agit du nombre d'arcs ajouté par le dernier nœud entré
+arcs. Dans l'idéal, il s'agit du nombre d'arcs ajoutés par le dernier nœud entré
 dans le réseau.
 
 Parfois, conserver un nombre d'arcs global constant force les processus de
-mélange et de sortie à créer des doublons dans les vues partielles. Ainsi, une
+mélange et de départ à créer des doublons dans les vues partielles. Ainsi, une
 vue partielle peut contenir plusieurs fois le même voisin. Toutefois, ces
 doublons restent peu nombreux. De ce fait, ils n'ont pas d'impact notable sur la
 connexité du réseau.
 
-Ce chapitre est composé de 5 sections. Les
-sections~\ref{net:sec:joining},~\ref{net:sec:shuffling},
-et~\ref{net:sec:leaving} présentent respectivement le processus d'entrée, de
-mélange, et de départ d'un nœud du réseau. La section~\ref{net:sec:properties}
-présente les propriétés de \SPRAY mises en évidence grâce à des simulations. La
-section~\ref{net:sec:merge} présente une problématique originale à \SPRAY : la
-fusion de réseaux.
+Cette section se décompose en trois parties représentant le cycle de vie d'un
+nœud : le processus d'entrée (cf. §\ref{net:subsec:joining}) , les mélanges à
+répétition (cf. §\ref{net:subsec:shuffling}, la gestion des départs
+(cf. §\ref{net:subsec:leaving}).
 
-% \subsection{WebRTC}
 
 % \begin{figure*}
 % \centering
