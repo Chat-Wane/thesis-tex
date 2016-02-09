@@ -1,35 +1,33 @@
 
-\chapter{LSeq : une fonction d'allocation polylogarithmique}
-\label{repl:chap:lseq}
-\minitoc
+\section{\LSEQ : une fonction d'allocation polylogarithmique}
+\label{repl:sec:lseq}
 
-\lettrine{L}Seq est une fonction d'allocation d'identifiants de taille variable
-pour les structures de données sans résolution de conflits dédiées aux
-séquences. \LSEQ est composée de trois éléments dont les comportements, pris
-individuellement, n'arrivent pas à pourvoir des identifiants de taille
-satisfaisante. En revanche, utilisés simultanément, les défaillances des uns
-sont comblées par les forces des autres. En résulte une allocation
-d'identifiants dont la borne supérieur sur la taille est polylogarithmique
-comparé à la taille du document. L'idée générale de \LSEQ consiste à accepter la
-perte de niveaux des chemins composants ses identifiants pour peu que les
-allocations suivantes réparent les dommages.
+\LSEQ est une fonction d'allocation d'identifiants de taille variable pour les
+structures de données sans résolution de conflits dédiées aux séquences. \LSEQ
+est composée de trois éléments dont les comportements, pris individuellement,
+n'arrivent pas à pourvoir des identifiants de taille satisfaisante. En revanche,
+utilisés simultanément, les défaillances des uns sont comblées par les forces
+des autres. En résulte une allocation d'identifiants dont la borne supérieur sur
+la taille est polylogarithmique comparé à la taille du document. L'idée générale
+de \LSEQ consiste à accepter la perte de niveaux des chemins composants ses
+identifiants pour peu que les allocations suivantes réparent les dommages.
 
 Le premier composant est un structure d'arbre dont l'arité augmente avec sa
-profondeur (cf. §\ref{repl:sec:exponentialtree}). L'intuition étant que si la
+profondeur (cf. §\ref{repl:subsec:exponentialtree}). L'intuition étant que si la
 profondeur de l'arbre augmente, c'est que le document à grandit suffisamment
 pour nécessiter un plus large champs d'identifiants. Mais au lieu d'ouvrir un
 espace aussi large qu'auparavant, on l'agrandit afin que le document puisse se
 contenter de ce champs d'identifiants plus longuement.
 
 Le second composant comprend deux sous-fonctions d'allocation conçues pour gérer
-des comportements d'édition opposés (cf. §\ref{repl:sec:suballocation}). Ainsi,
+des comportements d'édition opposés (cf. §\ref{repl:subsec:suballocation}). Ainsi,
 l'une est appropriée lorsque l'édition est principalement faite de gauche à
 droite tandis que l'autre cible l'édition de droite à gauche. Elles seront
 utilisées ensemble afin de pouvoir gérer la plupart des cas d'édition.
 
 Le troisième composant est une fonction assignant à chaque profondeur de l'arbre
 une sous-fonction d'allocation parmi celles disponibles
-(cf. §\ref{repl:sec:allocationchoice}). Cette fonction de choix doit fournir des
+(cf. §\ref{repl:subsec:allocationchoice}). Cette fonction de choix doit fournir des
 réponses similaires quelle que soit la réplique.
 
 %%% Local Variables:

@@ -1,7 +1,9 @@
 
-\clearpage
+\section{Algorithmes et complexité}
 
-\section{Lien arbre -- séquence}
+\TODO{Introduction}
+
+\subsection{Lien arbre -- séquence}
 
 La structure de données répliquée est un arbre mais l'objet manipulé par
 l'utilisateur est une séquence. Il est donc nécessaire de fournir les
@@ -14,7 +16,7 @@ séquence.
   identifiant (cf. §\ref{repl:subsec:indexof}).
 \end{inparaenum}
 
-\subsection{get}
+\subsubsection{get}
 \label{repl:subsec:get}
 
 \begin{wrapfigure}{r}{0.6\textwidth}
@@ -84,9 +86,8 @@ nouvellement inséré. Si le comportement d'édition change, l'arbre commence à
 rééquilibrer et les performances se rapprochent de celles de l'édition
 aléatoire.
 
-\clearpage 
 
-\subsection{indexOf}
+\subsubsection{indexOf}
 \label{repl:subsec:indexof}
 
 \begin{wrapfigure}{r}{0.6\textwidth}
@@ -130,3 +131,28 @@ possède une vue partielle du document. Si les mises à jour ne tombent pas dans
 cette fenêtre, la fonction peut arrêter son éxecution.
 
 
+\subsection{Modification de la structure}
+
+La structure d'arbre représentant le document réparti se modifie au rythme des
+insertions et suppressions effectuées par les utilisateurs, qu'ils soient
+distants ou non. 
+
+\subsubsection{insert}
+
+
+\begin{wrapfigure}{r}{0.6\textwidth}
+  \vspace{-35pt} %% (ugly)
+  \begin{minipage}[t]{0.6\textwidth}
+    \begin{algorithm}[H]
+      \input{input/replication/insertalgo.tex}
+      \caption{\label{repl:algo:insert} Insert.}
+    \end{algorithm}
+  \end{minipage}
+  \vspace{-15pt}
+\end{wrapfigure}
+
+L'algorithme~\ref{repl:algo:insert} présente les instructions de la fonction
+d'insertion.
+
+
+\subsubsection{delete}
