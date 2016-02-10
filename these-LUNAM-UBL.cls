@@ -12,14 +12,12 @@
 % v. 1.2 : 4 octobre 2012
 %   - protection des pages de couverture vis-`a-vis des changements d'interlignes
 %   - indications suppl'ementaires dans le fichier mod`ele
-%   - ajout du logo d'une universit'e 'etrang`ere pour les co-tutelles et/ou
-%     d'un 'etablissement associ'e
+%   - ajout du logo d'une universit'e 'etrang`ere pour les co-tutelles et/ou d'un 'etablissement associ'e
 % v. 1.3 : 19 octobre 2012
 %   - passage en petites majuscules du nom du candidat 'egalement,
 %     obligation l'egale pour 'eviter les erreurs d'interpr'etation
 %   - ajout des titres et sous-titres en anglais
-%   - bascule automatique en mode anglais pour le r'esum'e et les mots cl'es...
-%     anglais
+%   - bascule automatique en mode anglais pour le r'esum'e et les mots cl'es... anglais
 %   - indications suppl'ementaires dans le fichier mod`ele
 % v. 1.4 : 12 d'ecembre 2012
 %   - changement pour le nom officiel de l'Ecole des mines de Nantes
@@ -30,36 +28,30 @@
 %     (c'est-`a-dire le titre et pas seulement l'indication)
 % v. 1.5 : 21 janvier 2013
 %   - titre anglais rendu obligatoire
-%   - protection de la police de caract`eres utilis'ee pour les 1re et 4e de
-%     couvertures, `a savoir 'times'.
+%   - protection de la police de caract`eres utilis'ee pour les 1re et 4e de couvertures, `a savoir 'times'.
 % v. 1.6 : 26 mars 2013
 %   - nom de l'ED mis en toutes lettres dans le fichier mod`ele
 %   - alignement `a gauche du titre (et sous-titre) anglais sur la 4e de couverture
 %   - protection des 1re et 4e de couverture quant au choix de la taille de la
 %     police de caract`eres : 12pt impos'e
-%   - correction d'un l'eger d'efaut d'alignement des logos entre la 1re et la 4e
-%     de couverture
-%   - centrage du jury pour 'eviter un trop grand d'ecalage quand l'option
-%     nosqueezeCommittee est utilisable
+%   - correction d'un l'eger d'efaut d'alignement des logos entre la 1re et la 4e de couverture
+%   - centrage du jury pour 'eviter un trop grand d'ecalage quand l'option nosqueezeCommittee est utilisable
 %   - prise en compte du fait que le directeur de th`ese (directeur de co-tutelle,
 %     co-directeur) et m^eme les rapporteurs peuvent NE PAS ^etre membres du jury
 %   - meilleure prise en compte des co-tutelles avec changement des noms des
 %     commandes et alignement des deux titres de docteur
-%   - r'eduction du nombre d'invit'es à deux au maximum (cf. module JURY de
-%     LUNAM DOCTEUR)
+%   - r'eduction du nombre d'invit'es à deux au maximum (cf. module JURY de LUNAM DOCTEUR)
 %   - Prise en compte de la validation par le CA du PRES en date du 22 f'evrier 2013.
 %      - num'ero de th`ese rendu optionnel
 %      - Changement d'ordre dans les rubriques 'Ecole doctorale', 'Discipline',
 %        'Sp'ecialit'e', 'Laboratoire', 'Date de soutenance' et 'N. de th`ese'.
 %      - L'intitul'e 'Laboratoire' devient 'Unit'e de recherche'
-%      - Elimination des italiques sur 'Discipline', 'Sp'ecialit'e' et
-%        'Unit'e de recherche'.
+%      - Elimination des italiques sur 'Discipline', 'Sp'ecialit'e' et 'Unit'e de recherche'.
 %      - Ajout de la section CNU, obligatoire
 %      - Ajout d'Oniris et d'Agrocampus Ouest en tant qu''etablissements d'elivrant
 %        un doctorat du PRES LUNAM (et de leur logo vectoriel).
 %      - Correction des intitul'es officiels
-%      - Contr^ole de l'alignement de leurs titre officiel, tr`es long, sous le mot
-%        'Docteur'.
+%      - Contr^ole de l'alignement de leurs titre officiel, tr`es long, sous le mot 'Docteur'.
 % v. 1.7 : 10 avril 2013
 %   - "Refactoring" de code suite `a une erreur d'etect'ee sur la th`ese de Mme C'eline Sarazin,
 %     ainsi que quelques conseils ajout'es dans le mod`ele.
@@ -67,13 +59,11 @@
 %   - Accord en genre ajout'e pour les invit'es (mais pas encore pour les examinateurs).
 %   - Ajout d'un co-directeur de co-tutelle par anticipation (cf. fiche d'inscription
 %     de la rentr'ee 2013-2014).
-%   - Meilleur contr^ole sur les polices des couvertures, les commandes standard
-%     LaTeX se r'ef'erant `a la taille d'eclar'ee dans "\begindocument" et non `a la
-%     derni`ere fix'ee par "\fontsize".
-%   - Suppression de l'option "squeezeCommittee", la largeur du jury s'adaptant
-%     automatiquement. (Suggestion faite par Julien TANGUY `a JDOC 2013.)
-%   - Mise en couleur des chapitres "'etoil'es" quand l'option
-%     'fancyChapter' est activ'ee (par Flavien QUESNEL)
+%   - Meilleur contr^ole sur les polices des couvertures, les commandes standard LaTeX se r'ef'erant
+%     `a la taille d'eclar'ee dans "\begindocument" et non `a la derni`ere fix'ee par "\fontsize".
+%   - Suppression de l'option "squeezeCommittee", la largeur du jury s'adaptant automatiquement.
+%     (Suggestion faite par Julien TANGUY `a JDOC 2013.)
+%   - Mise en couleur des chapitres "'etoil'es" quand l'option 'fancyChapter' est activ'ee (par Flavien QUESNEL)
 % v. 1.8 : 21 juin 2013
 %   - Changement du logo et de l'appellation usuelle de l''Ecole des mines de Nantes en "Mines Nantes".
 %     L'ancienne version est n'eanmoins conserv'ee pour les r'eimpressions.
@@ -89,11 +79,23 @@
 %     rendu sur des imprimantes en niveaux de gris.
 % v 1.11 : 23 janvier 2014
 %   - Remplacement du logo de l'ex PRES par CUE
+% v 1.12 : 27 mars 2015
+%   - Suite à une demande, ajout d'un paramètre 'greyHeadings' en plus de 'greyCover' qui ne passe
+%     en niveau de gris que les en-têtes et conserve la couleur pour la 1re et 4e de couverture.
+%     Bien entendu, 'greyCover' implique 'greyHeadings'.
+%     Cela permet de limiter les frais d'impression sur les imprimantes qui détectent automatiquement
+%     les pages contenant de la couleur et les facturent plus cher.
+%     Par ailleurs, ajout de logos en niveau de gris.
+% v 1.13 : 29 janvier 2016
+%   - Suite à la création de l'UBL (et à la dissolution concomitante de L'UNAM et de l'UEB),
+%     le logo et le label sont modifiés.
+%   - Le nom de la classe change également. En attendant la nouvelle version unifiée pour 2017,
+%     nous sommes dans une version intermédiaire LUNAM-UBL !
 
 %%%%%%%%%%   DECLARATION DE LA CLASSE   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\THESE@LUNAM@version{1.10}
+\def\THESE@LUNAMUBL@version{1.13}
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{these-LUNAM}[2013/07/09 these-LUNAM version \THESE@LUNAM@version]
+\ProvidesClass{these-LUNAM-UBL}[2013/07/09 these-LUNAM-UBL version \THESE@LUNAMUBL@version]
 \typeout{(c) 2012-2013 Jos'e Martinez, provided ``as is''}
 \typeout{ }
 
@@ -128,15 +130,20 @@
 \DeclareOption{fancyPart}{\@fancyParttrue}
 \DeclareOption{nofancyPart}{\@fancyPartfalse}
 
+\newif\if@greyHeadings
+\DeclareOption{greyHeadings}{\@greyHeadingstrue}
+\DeclareOption{nogreyHeadings}{\@greyHeadingsfalse}
+
 \newif\if@greyCover
-\DeclareOption{greyCover}{\@greyCovertrue}
+\DeclareOption{greyCover}{\@greyCovertrue\@greyHeadingstrue}
 \DeclareOption{nogreyCover}{\@greyCoverfalse}
+
+\DeclareOption{twoside}{\gdef\@side{twoside}}
+\DeclareOption{oneside}{\gdef\@side{oneside}}
 
 \DeclareOption{10pt}{\gdef\@pt@size{10pt}}
 \DeclareOption{11pt}{\gdef\@pt@size{11pt}}
 \DeclareOption{12pt}{\gdef\@pt@size{12pt}}
-\DeclareOption{twoside}{\gdef\@side{twoside}}
-\DeclareOption{oneside}{\gdef\@side{oneside}}
 
 \ExecuteOptions{version, francais, final, 12pt, fancyChapter, fancyPart, nosqueezeCommittee}
 \ProcessOptions\relax
@@ -159,14 +166,41 @@
       \definecolor{@horizontalgray}{gray}{0.97265}
       \definecolor{@textgray}{gray}{0.5}
       \definecolor{@bandeaucolor}{RGB}{190, 190, 190}
-      \definecolor{@titlecolor}{RGB}{116, 116, 116}
+      \definecolor{@titlecolor}{gray}{0.05}
    \else
-      \definecolor{@doctoratcolor}{HTML}{000000}%%{RGB}{255, 50, 10}
-      \definecolor{@verticalgreen}{HTML}{E7EFE7}%%{RGB}{236, 240, 223}
+      \definecolor{@doctoratcolor}{gray}{0.05}
+      \definecolor{@verticalgreen}{RGB}{238, 238, 238}
       \definecolor{@horizontalgray}{gray}{0.97265}
-      \definecolor{@textgray}{HTML}{000000}%%{gray}{0.5}
-      \definecolor{@bandeaucolor}{HTML}{C9E1C9}%%{RGB}{200, 200, 60}
-      \definecolor{@titlecolor}{HTML}{000000}%%{RGB}{49, 132, 155}
+      \definecolor{@textgray}{gray}{0.1}
+      \definecolor{@bandeaucolor}{RGB}{190, 190, 190}
+      \definecolor{@titlecolor}{gray}{0.01}
+      % \definecolor{@doctoratcolor}{RGB}{255, 50, 10}
+      % \definecolor{@verticalgreen}{RGB}{236, 240, 223}
+      % \definecolor{@horizontalgray}{gray}{0.97265}
+      % \definecolor{@textgray}{gray}{0.5}
+      % \definecolor{@bandeaucolor}{RGB}{200, 200, 60}
+      % \definecolor{@titlecolor}{RGB}{49, 132, 155}
+   \fi
+   \if@greyHeadings
+      \definecolor{@doctoratcolorheadings}{RGB}{91, 91, 91}
+      \definecolor{@verticalgreenheadings}{RGB}{238, 238, 238}
+      \definecolor{@horizontalgrayheadings}{gray}{0.97265}
+      \definecolor{@textgrayheadings}{gray}{0.5}
+      \definecolor{@bandeaucolorheadings}{RGB}{190, 190, 190}
+      \definecolor{@titlecolorheadings}{RGB}{116, 116, 116}
+   \else
+      \definecolor{@doctoratcolorheadings}{gray}{0.01}
+      \definecolor{@verticalgreenheadings}{RGB}{238, 238, 238}
+      \definecolor{@horizontalgrayheadings}{gray}{0.97265}
+      \definecolor{@textgrayheadings}{gray}{0.5}
+      \definecolor{@bandeaucolorheadings}{RGB}{238,238,238}
+      \definecolor{@titlecolorheadings}{RGB}{116, 116, 116}
+      % \definecolor{@doctoratcolorheadings}{RGB}{255, 50, 10}
+      % \definecolor{@verticalgreenheadings}{RGB}{236, 240, 223}
+      % \definecolor{@horizontalgrayheadings}{gray}{0.97265}
+      % \definecolor{@textgrayheadings}{gray}{0.5}
+      % \definecolor{@bandeaucolorheadings}{RGB}{200, 200, 60}
+      % \definecolor{@titlecolorheadings}{RGB}{49, 132, 155}
    \fi
 \RequirePackage{graphicx}
 \RequirePackage[a4paper]{geometry}
@@ -177,7 +211,7 @@
 \if@inEnglish
    \AtBeginDocument{\selectlanguage{english}}
 \else
-   \AtBeginDocument{\selectlanguage{french}}
+   \AtBeginDocument{\selectlanguage{francais}}
 \fi
 
 %%%%%%%%%%   TRADUCTIONS FRANCAISES ET ANGLAISES   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -273,7 +307,7 @@
       \gdef\@titre{#1}
    \else
       \gdef\@titre{\textcolor{red}{Titre d\'efini plusieur fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Titre de la th`ese d'ej`a d'efini / Thesis title in french already defined}
                  {}
    \fi}
@@ -288,7 +322,7 @@
       \gdef\@soustitre{#1}
    \else
       \gdef\@soustitre{\textcolor{red}{Sous-titre d'efini plusieur fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Sous-titre de la th`ese d'ej`a d'efini / Thesis subtitle in french already defined}
                  {}
    \fi}
@@ -303,7 +337,7 @@
       \gdef\@title{#1}
    \else
       \gdef\@title{\textcolor{red}{Title defined several times}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Titre anglais de la th`ese d'ej`a d'efini / Thesis title already defined}
                  {}
    \fi}
@@ -318,7 +352,7 @@
       \gdef\@subtitle{#1}
    \else
       \gdef\@subtitle{\textcolor{red}{Sub-title defined several times}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Sous-titre anglais de la th`ese d'ej`a d'efini / Thesis subtitle already defined}
                  {}
    \fi}
@@ -333,7 +367,7 @@
       \gdef\@author{#2 \textsc{#3}}
    \else
       \gdef\@author{\textcolor{red}{Auteur d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Auteur d'ej`a d'efini / Author  already defined}
                  {}
    \fi}
@@ -360,7 +394,7 @@
        \@lastcivilitefemaletrue}
       {\@lastcivilitemalefalse
        \@lastcivilitefemalefalse
-       \ClassError{these-LUNAM}
+       \ClassError{these-LUNAM-UBL}
                   {Une civilit'e doit ^etre Mme / Madame, pour une femme, ou M. / Monsieur, pour un homme / A title must be Mme/Madame -- i.e., Ms --, for a woman, or M./Monsieur -- i.e., Mr. --, for a man}%
                   {}}}}}}
 
@@ -413,7 +447,7 @@
       \fi
    \else
       \gdef\@supervisormember{\textcolor{red}{Directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Directeur de th`ese d'ej`a d'efini / Supervisor already defined}
                   {}
    \fi}
@@ -431,7 +465,7 @@
       \fi
    \else
       \gdef\@supervisornotmember{\textcolor{red}{Directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Directeur de th`ese d'ej`a d'efini / Supervisor already defined}
                   {}
    \fi}
@@ -462,7 +496,7 @@
       \fi
    \else
       \gdef\@foreignsupervisormember{\textcolor{red}{Directeur de th\`ese de co-tutelle d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Directeur de th`ese 'etranger de co-tutelle d'ej`a d'efini / Foreign Supervisor in co-supervision already defined}
                   {}
    \fi}
@@ -479,7 +513,7 @@
       \fi
    \else
       \gdef\@foreignsupervisornotmember{\textcolor{red}{Directeur de th\`ese de co-tutelle d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Directeur de th`ese 'etranger en co-tutelle d'ej`a d'efini / Foreign Supervisor in co-supervision already defined}
                   {}
    \fi}
@@ -510,7 +544,7 @@
       \fi
    \else
       \gdef\@cosupervisormember{\textcolor{red}{Co-directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Co-directeur de th`ese d'ej`a d'efini / Co-supervisor already defined}
                   {}
    \fi}
@@ -527,7 +561,7 @@
       \fi
    \else
       \gdef\@cosupervisornotmember{\textcolor{red}{Co-directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Co-directeur d'ej`a d'efini / Co-upervisor already defined}
                   {}
    \fi}
@@ -558,7 +592,7 @@
       \fi
    \else
       \gdef\@foreigncosupervisormember{\textcolor{red}{Co-directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Co-directeur de th`ese d'ej`a d'efini / Co-supervisor already defined}
                   {}
    \fi}
@@ -575,7 +609,7 @@
       \fi
    \else
       \gdef\@foreigncosupervisornotmember{\textcolor{red}{Co-directeur de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                   {Co-directeur d'ej`a d'efini / Co-upervisor already defined}
                   {}
    \fi}
@@ -600,7 +634,7 @@
       \fi
    \else
       \gdef\@president{\textcolor{red}{Pr\'esident de jury d\'ej\`a d\'efini}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Pr'esident de jury d'ej`a d'ej`a d'efini / President already defined}
                  {}
    \fi}
@@ -625,7 +659,7 @@
 \newcommand\@doreviewermember[5]{%
    \advance\@reviewernumber 1\relax
    \ifnum \@reviewernumber > 3
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                {Trop de rapporteurs, au plus trois / Too many reviewers, at most three}
                {}%
    \else
@@ -643,7 +677,7 @@
 \newcommand\@doreviewernotmember[5]{%
    \advance\@reviewernumber 1\relax
    \ifnum \@reviewernumber > 3
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                {Trop de rapporteurs, au plus trois / Too many reviewers, at most three}
                {}%
    \else
@@ -690,7 +724,7 @@
    \else\ifx\@eighthexaminer\@empty
       \gdef\@eighthexaminer{\textbf{\@formatcivilite{#1} #2 \textsc{#3}}, #4, #5}
    \else
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Trop d'examinateurs, pas plus de huit / Too many examiners, at most height}
                  {}%
    \fi\fi\fi\fi\fi\fi\fi\fi}
@@ -724,7 +758,7 @@
          \@secondguestfemale 0
       \fi
    \else
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Trop d'invit'es, pas plus de deux / Too many guests, at most two}
                  {}%
    \fi\fi}
@@ -740,7 +774,7 @@
       \gdef\@discipline{#1}
    \else
       \gdef\@discipline{\textcolor{red}{Discipline d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Discipline d'ej`a d'efinie / Discipline already defined}
                  {}%
    \fi}
@@ -756,7 +790,7 @@
       \gdef\@sectionCNU{#1}
    \else
       \gdef\@sectionCNU{\textcolor{red}{Section CNU d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {SectionCNU d'ej`a d'efinie / SectionCNU already defined}
                  {}%
    \fi}
@@ -772,7 +806,7 @@
       \gdef\@specialty{#1}
    \else
       \gdef\@specialty{\textcolor{red}{Sp\'ecialit\'e d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Sp'ecialit'e d'ej`a d'efinie / Specialty already defined}
                  {}%
    \fi}
@@ -788,7 +822,7 @@
       \gdef\@laboratory{#1}
    \else
       \gdef\@specialty{\textcolor{red}{Laboratoire d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Laboratoire d'ej`a d'efini / Laboratory already defined}
                  {}%
    \fi}
@@ -805,23 +839,43 @@
    \ifx\@institution\@empty
       \ifthenelse{\equal{#1}{UN}}
                  {\gdef\@institution{Universit\'e de Nantes}
-                  \gdef\@institutionlogo{UniversiteNantes}
+                  \if@greyCover
+                     \gdef\@institutionlogo{UniversiteNantes-gris}
+                  \else
+                     \gdef\@institutionlogo{UniversiteNantes}
+                  \fi
                   \gdef\@institutionlogowidth{3.2cm}}
       {\ifthenelse{\equal{#1}{UA}}
                  {\gdef\@institution{Universit\'e d'Angers}
-                  \gdef\@institutionlogo{UniversiteAngers}
+                  \if@greyCover
+                     \gdef\@institutionlogo{UniversiteAngers-gris}
+                  \else
+                     \gdef\@institutionlogo{UniversiteAngers}
+                  \fi
                   \gdef\@institutionlogowidth{2.2cm}}
       {\ifthenelse{\equal{#1}{UM}}
                  {\gdef\@institution{Universit\'e du Maine}
-                  \gdef\@institutionlogo{UniversiteMaine}
+                  \if@greyCover
+                     \gdef\@institutionlogo{UniversiteMaine-gris}
+                  \else
+                     \gdef\@institutionlogo{UniversiteMaine}
+                  \fi
                   \gdef\@institutionlogowidth{3.2cm}}
       {\ifthenelse{\equal{#1}{ECN}}
                  {\gdef\@institution{\'Ecole centrale de Nantes}
-                  \gdef\@institutionlogo{EcoleCentraleNantes}
+                  \if@greyCover
+                     \gdef\@institutionlogo{EcoleCentraleNantes-gris}
+                  \else
+                     \gdef\@institutionlogo{EcoleCentraleNantes}
+                  \fi
                   \gdef\@institutionlogowidth{2cm}}
       {\ifthenelse{\equal{#1}{EMN}}
                  {\gdef\@institution{\'Ecole nationale sup\'erieure des mines de Nantes}
-                  \gdef\@institutionlogo{EcoleMinesNantes}
+                  \if@greyCover
+                     \gdef\@institutionlogo{EcoleMinesNantes-gris}
+                  \else
+                     \gdef\@institutionlogo{EcoleMinesNantes}
+                  \fi
                   \gdef\@institutionlogowidth{4cm}}
       {\ifthenelse{\equal{#1}{MN}}
                  {\gdef\@institution{\'Ecole nationale sup\'erieure des mines de Nantes}
@@ -829,18 +883,30 @@
                   \gdef\@institutionlogowidth{2.5cm}}
       {\ifthenelse{\equal{#1}{Oniris}}
                  {\gdef\@institution{\'Ecole nationale v\'et\'erinaire, agroalimentaire et\\de l'alimentation, Nantes-Atlantique}
-                  \gdef\@institutionlogo{Oniris}
+                  \if@greyCover
+                     \gdef\@institutionlogo{Oniris-gris}
+                  \else
+                     \gdef\@institutionlogo{Oniris}
+                  \fi
                   \gdef\@institutionlogowidth{2.8cm}}
       {\ifthenelse{\equal{#1}{Agro}}
                  {\gdef\@institution{Institut sup\'erieur des sciences agronomiques, agroalimentaires,\\horticoles et du paysage}
-                  \gdef\@institutionlogo{AgrocampusOuest}
+                  \if@greyCover
+                     \gdef\@institutionlogo{AgrocampusOuest-gris}
+                  \else
+                     \gdef\@institutionlogo{AgrocampusOuest}
+                  \fi
                   \gdef\@institutionlogowidth{3.0cm}}
                  {\gdef\@institution{#1}
-                  \gdef\@institutionlogo{#1}
+                  \if@greyCover
+                     \gdef\@institutionlogo{#1-gris}
+                  \else
+                     \gdef\@institutionlogo{#1}
+                  \fi
                   \gdef\@institutionlogowidth{2cm}}}}}}}}}
    \else
       \gdef\@institution{\textcolor{red}{Institution d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Institution d'ej`a d'efinie / Institution already defined}
                  {}%
    \fi}
@@ -857,12 +923,16 @@
 \newcommand\coinstitution[4][0pt]{%
    \ifx\@coinstitution\@empty
       \gdef\@coinstitution{#2}
-      \gdef\@coinstitutionlogo{#3}
+      \if@greyCover
+         \gdef\@coinstitutionlogo{#3-gris}
+      \else
+         \gdef\@coinstitutionlogo{#3}
+      \fi
       \gdef\@coinstitutionlogowidth{#4}
       \gdef\@coinstitutionlogovoffset{#1}
    \else
       \gdef\@coinstitution{\textcolor{red}{Co-institution d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {co-institution d'ej`a d'efinie / co-institution already defined}
                  {}%
    \fi}
@@ -879,12 +949,16 @@
 \newcommand\cosupervisingforeigninstitution[4][0pt]{%
    \ifx\@cosupervisingforeigninstitution\@empty
       \gdef\@cosupervisingforeigninstitution{#2}
-      \gdef\@cosupervisingforeigninstitutionlogo{#3}
+      \if@greyCover
+         \gdef\@cosupervisingforeigninstitutionlogo{#3-gris}
+      \else
+         \gdef\@cosupervisingforeigninstitutionlogo{#3}
+      \fi
       \gdef\@cosupervisingforeigninstitutionlogowidth{#4}
       \gdef\@cosupervisingforeigninstitutionlogovoffset{#1}
    \else
       \gdef\@cosupervisingforeigninstitution{\textcolor{red}{Institution de co-tutelle d\'efinie plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Institution de co-tutelle d'ej`a d'efinie / Co-supervising foreign institution already defined}
                  {}%
    \fi}
@@ -900,7 +974,7 @@
       \gdef\@thesisnumber{#1}
    \else
       \gdef\@thesisnumber{\textcolor{red}{Num\'ero de th\`ese d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Num'ero de th`ese d'ej`a d'efini / Thesis number already defined}
                  {}%
    \fi}
@@ -916,7 +990,7 @@
       \gdef\@doctoralschool{#1}
    \else
       \gdef\@doctoralschool{\textcolor{red}{\'Ecole doctorale d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Ecole doctorale d'ej`a d'efinie / Doctoral school already defined}
                  {}%
    \fi}
@@ -932,7 +1006,7 @@
       \gdef\@europeanlabel{dummy}
    \else
       \gdef\@europeanlabel{\textcolor{red}{\'Ecole doctorale d\'efini plusieurs fois}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Label europ'een d'ej`a d'eclar'e / European label already declared}
                  {}%
    \fi}
@@ -1131,19 +1205,19 @@
 \newcommand{\@committee}{%
    \ifnum \@defensecommitteesize < 3
       \textcolor{red}{Jury trop restreint}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Il faut au moins trois membres dans le jury / The defense committee consists at least of three members}
                  {}
    \else\ifnum \@defensecommitteesize > 8
       \textcolor{red}{Jury trop \'etendu}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Il faut au plus huit membres dans le jury (hors invit'es) / The defense committee consists at most of height members (not inclusive of guests)}
                  {}
    \fi\fi
 %
    \ifnum \@reviewernumber < 2
       \textcolor{red}{Il manque un rapporteur}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Il faut au moins deux rapporteurs, utilisez (de nouveau) la macro \string\reviewer\ / At least two reviewers are needed, use (again) \string\reviewer}
                  {}
    \fi
@@ -1177,14 +1251,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Fond de page des 1re et 4e de couverture
 %
- 
+
 \newcommand{\@drawbackground} { % Horizontal grey-green box
   \noindent\raisebox{0pt}[0pt][0pt]
   {\colorbox{@verticalgreen}
     {\makebox[0.5\textwidth]
       {\raisebox{-\textheight}
         {~}}}}
-
+  
   \vspace{4\baselineskip}{
     \noindent\hspace{0.45\textwidth}
     \raisebox{0pt}[0pt][0pt]
@@ -1203,7 +1277,7 @@
   \noindent\makebox[0.55\textwidth][r]
   {\Hugecover\textbf{\textcolor{@doctoratcolor}
       {Th\`ese de Doctorat}}}
-
+  
   {
     \noindent\color{@bandeaucolor}
     \rule{0.55\textwidth}
@@ -1223,7 +1297,7 @@
   }
   
   \vspace{-15\baselineskip}
-  \includegraphics[width=4.5cm]{logos/LUNAM-CUE}
+  \includegraphics[width=2.8cm]{logos/UBL}
   \hfill
   \hfill
   \hfill
@@ -1239,38 +1313,37 @@
   \fi
   \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
   \vspace{11\baselineskip}
-
 }
 
-%%%%%%%%%%%%%%%%%%%%%%
-% 1ère de couverture %
-%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%
+% 1re de couverture
+%
 
 \renewcommand{\maketitle}{% Contr^ole de la pr'esence des informations obligatoires
    \ifx\@titre\@empty
       \gdef\@titre{\textcolor{red}{Titre ind\'efini}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Titre de la th`ese en franc,ais ind'efini, utilisez la macro \string\titre\ / Thesis title in French undefined, use \string\titre}
                  {}
    \fi
 
    \ifx\@title\@empty
       \gdef\@title{\textcolor{red}{Title undefined}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Titre de la th`ese en anglais ind'efini, utilisez la macro \string\title\ / Thesis title in English undefined, use \string\title}
                  {}
    \fi
 
    \ifx\@institution\@empty
       \gdef\@institution{\textcolor{red}{Institution ind\'efinie}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Institution ind'efinie, utilisez la macro \string\institution\ / Institution undefined, use \string\institution}
                  {}
    \fi
 
    \if\ifx\@supervisormember\@empty T\else F\fi\ifx\@supervisor\@empty T\else G\fi % AND
       \gdef\@supervisormember{\textcolor{red}{Directeur de th\`ese ind'efini}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                {Directeur de th`ese ind'efini, utilisez la macro \string\supervisor\ / Ph.D. Director undefined, use \string\supervisor}
                {}
    \fi
@@ -1278,35 +1351,35 @@
    \if \ifx\@cosupervisingforeigninstitution\@empty T \else F\fi % <=>
        \if \ifx\@foreignsupervisormember\@empty F \else T\fi % OR
            \ifx\@foreignsupervisor\@empty G \else T\fi \fi
-         \ClassError{these-LUNAM}
+         \ClassError{these-LUNAM-UBL}
                   {En cas de co-tutelle, il faut un Directeur de th`ese externe et une institution externe, utilisez les macros \string\foreignsupervisor\ et \string\cosupervisingforeigninstitution\ / In case of foreign co-supervision, you must provide both a foreign Ph.D. Director and its corresponding institution, use \string\foreignsupervisor\ et \string\cosupervisingforeigninstitution}
                   {}
    \fi
 
    \ifx\@discipline\@empty
       \gdef\@discipline{\textcolor{red}{Discipline ind\'efinie}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Discipline ind'efinie, utilisez la macro \string\discipline\ / Discipline undefined, use \string\discipline}
                  {}
    \fi
 
    \ifx\@laboratory\@empty
       \gdef\@laboratory{\textcolor{red}{Laboratoire ind\'efini}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Laboratoire ind'efini, utilisez la macro \string\laboratory\ / Laboratory undefined, use \string\laboratory}
                  {}
    \fi
 
    \ifx\@author\@empty
       \gdef\@author{\textcolor{red}{Pr\'enom \textsc{Nom}}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Auteur ind'efini, utilisez la macro \string\author\ / Author undefined, use \string\author}
                  {}
    \fi
 
    \ifx\@doctoralschool\@empty
       \gdef\@doctoralschool{\textcolor{red}{\'Ecole doctorale ind\'efinie}}
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Ecole doctorale ind'efinie, utilisez la macro \string\doctoralschool\ / Doctoral school undefined, use \string\doctoralschool}
                  {}
    \fi
@@ -1344,7 +1417,7 @@
       \else
          \noindent\textsl{\textbf{\phantom{grade de }Label européen}}\par
       \fi
-      \noindent\textsl{sous le label de l'Universit\'e de Nantes Angers Le Mans}\par
+      \noindent\textsl{sous le sceau de l'Universit\'e Bretagne Loire}\par
 
       \vspace{\baselineskip}
 
@@ -1419,213 +1492,214 @@
    \end{titlepage}%
    \restoregeometry
    \ifnum\thepage>2\relax
-      \ClassError{these-LUNAM}
+      \ClassError{these-LUNAM-UBL}
                  {Premi`ere de couverture d'ebord'ee, r'eduire la quantit'e d'information / First cover page overflowed, reduce the size and number of informations}
                  {}
    \fi
 } % \maketitle
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Quatrième de couverture %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Quatri`eme de couverture
+%
 
 \global\newcount\@startingPage
 
-\newcommand{\makecover}{
+\newcommand{\makecover}{%
   \newgeometry{margin=1.5cm}
-  \cleardoublepage % go to odd page
-  \singlespacing
-  \phantom{placeholder} % doesn't appear on page
-  \newpage % on even page
-  \thispagestyle{empty} % no numbering
-  \@startingPage\thepage\relax{
-    \@drawbackground
-    \vspace{-5.0\baselineskip}
-    \renewcommand{\sfdefault}{phv}
-    \renewcommand{\rmdefault}{ptm}
-    \renewcommand{\ttdefault}{pcr}
-    \sffamily
-    \fontsize{12pt}{14pt}
-    \selectfont
-    \begin{quote}
-      \begin{flushleft}
-        \textbf{\Largecover\textcolor{@textgray}{\@author}}
-      \end{flushleft}
-      \ifx\@\@titre\@empty
-      \ClassError{these-LUNAM}
-      {Le titre en franc,ais est obligatoire, utilisez la macro \string\titre\ / A French title is mandatory, use \string\titre}
-      {}
-      \fi
-      \begin{flushleft}
-        \textbf{\textcolor{@textgray}{\@titre}}
-        \ifx\@soustite\@empty
-        \relax
-        \else
-        \par
-        \textcolor{@textgray}{\@soustitre}
-        \fi
-      \end{flushleft}
-      \ifx\@\@title\@empty
-      \ClassError{these-LUNAM}
-      {Le titre en anglais est obligatoire, utilisez la macro \string\title\ / An English title is mandatory, use \string\title}
-      {}
-      \fi
-      \begin{flushleft}
-        \textbf{\textcolor{@textgray}{\@title}}
-        \ifx\@subtitle\@empty
-        \relax
-        \else
-        \par
-        \textcolor{@textgray}{\@subtitle}
-        \fi
-      \end{flushleft}
-    \end{quote}
-    
-    \vfill
-    
-    \noindent
-    \hfill\parbox[t][][b]
-    {0.47\textwidth}
-    {\makebox[0.47\textwidth]{\usebox{\@resumeBoxGlobal}}}
-    \hfill
-    \hfill\parbox[t][][b]
-    {0.47\textwidth}
-    {\makebox[0.47\textwidth]{\usebox{\@abstractBoxGlobal}}}
-    \hfill
-    
-    \vfill
-    
-    \noindent
-    \hfill\parbox[t][][b]
-    {0.47\textwidth}
-    {\makebox[0.47\textwidth]{\usebox{\@motsclesBoxGlobal}}}
-    \hfill
-    \hfill\parbox[t][][b]
-    {0.47\textwidth}
-    {\makebox[0.47\textwidth]{\usebox{\@keywordsBoxGlobal}}}
-    \hfill
-    
-    \vfill
-    
-    \hspace{0.45\textwidth}\raisebox{-2.2\baselineskip}
-    [0pt][0pt]
-    {\colorbox{@bandeaucolor}
-      {\parbox[s]
-        [2\baselineskip]
-        [c]
-        {0.55\textwidth}
-        {~\hfill
-          \textcolor{white}
-          {L'UNIVERSIT\'E NANTES ANGERS LE MANS}
-          \hfill~}}}%
-  }%
-  \ifnum \thepage > \@startingPage\relax%
-  \ClassError{these-LUNAM}%
-  {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}%
-  {}%
-  \fi%
-%  \restoregeometry%
-}
+   \cleardoublepage % go to odd page
+   \singlespacing
+   \phantom{placeholder} % doesn't appear on page
+   \newpage % on even page
+   \thispagestyle{empty} % no numbering
+   \@startingPage\thepage\relax{%
+     \newgeometry{margin=1.5cm}
+      \@drawbackground%
+      \vspace{-5.5\baselineskip}
+      \renewcommand{\sfdefault}{phv}
+      \renewcommand{\rmdefault}{ptm}
+      \renewcommand{\ttdefault}{pcr}
+      \sffamily
+      \fontsize{12pt}{14pt}
+      \selectfont
+      \begin{quote}
+         \begin{flushleft}
+            \textbf{\Largecover\textcolor{@textgray}{\@author}}
+         \end{flushleft}
+         \ifx\@\@titre\@empty
+            \ClassError{these-LUNAM-UBL}
+                       {Le titre en franc,ais est obligatoire, utilisez la macro \string\titre\ / A French title is mandatory, use \string\titre}
+                       {}
+         \fi
+         \begin{flushleft}
+            \textbf{\textcolor{@textgray}{\@titre}}
+            \ifx\@soustite\@empty
+               \relax
+            \else
+               \par
+               \textcolor{@textgray}{\@soustitre}
+            \fi
+         \end{flushleft}
+         \ifx\@\@title\@empty
+            \ClassError{these-LUNAM-UBL}
+                       {Le titre en anglais est obligatoire, utilisez la macro \string\title\ / An English title is mandatory, use \string\title}
+                       {}
+         \fi
+         \begin{flushleft}
+            \textbf{\textcolor{@textgray}{\@title}}
+            \ifx\@subtitle\@empty
+               \relax
+            \else
+               \par
+               \textcolor{@textgray}{\@subtitle}
+            \fi
+         \end{flushleft}
+      \end{quote}
+
+      \vfill
+
+      \noindent
+      \hfill\parbox[t][][b]
+            {0.47\textwidth}
+            {\makebox[0.47\textwidth]{\usebox{\@resumeBoxGlobal}}}
+      \hfill
+      \hfill\parbox[t][][b]
+            {0.47\textwidth}
+            {\makebox[0.47\textwidth]{\usebox{\@abstractBoxGlobal}}}
+      \hfill
+
+      \vfill
+
+      \noindent
+      \hfill\parbox[t][][b]
+            {0.47\textwidth}
+            {\makebox[0.47\textwidth]{\usebox{\@motsclesBoxGlobal}}}
+      \hfill
+      \hfill\parbox[t][][b]
+            {0.47\textwidth}
+            {\makebox[0.47\textwidth]{\usebox{\@keywordsBoxGlobal}}}
+      \hfill
+
+      \vfill
+
+      \hspace{0.45\textwidth}\raisebox{-2.2\baselineskip}
+                                      [0pt][0pt]
+                                      {\colorbox{@bandeaucolor}
+                                                {\parbox[s]
+                                                        [2\baselineskip]
+                                                        [c]
+                                                        {0.55\textwidth}
+                                                        {~\hfill
+                                                         \textcolor{white}
+                                                                   {L'UNIVERSIT\'E NANTES ANGERS LE MANS}
+                                                         \hfill~}}}%
+      }%
+   \ifnum \thepage > \@startingPage\relax
+      \ClassError{these-LUNAM-UBL}
+                 {Quatri`eme de couverture d'ebord'ee, r'eduire les r'esum'es et leurs mots cl'es / Last cover page overflowed, reduce the size of both abstracts and their key words}
+                 {}%
+   \fi%
+%   \restoregeometry% remove additionall page at the end...
+} % \makecover
 
 \AtEndDocument{\makecover}
 
-%%%%%%%%%%
-% Résumé %
-%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% R'esum'e en franc,ais
+%
 
 \newsavebox{\@resumeBox}
 \newbox{\@resumeBoxGlobal}
 
-\newenvironment{resume} {
-  \newgeometry{margin=1.5cm}
-  \begin{lrbox}{\@resumeBox}%
-    \renewcommand{\sfdefault}{phv}
-    \renewcommand{\rmdefault}{ptm}
-    \renewcommand{\ttdefault}{pcr}
-    \smallcover\sffamily
-    \begin{minipage}{0.47\textwidth}
-      \justify\footnotesize
-      \selectlanguage{french}
-      \textbf{R\'esum\'e}\par\setlength{\parindent}{0cm}}{
-    \end{minipage}
-  \end{lrbox}
-  \restoregeometry
-  \global\setbox\@resumeBoxGlobal=\vbox{\copy\@resumeBox}
-}
-  
-%%%%%%%%%%%%
-% Abstract %
-%%%%%%%%%%%%
+\newenvironment{resume}
+   {
+   \newgeometry{margin=1.5cm}
+   \begin{lrbox}{\@resumeBox}%
+      \renewcommand{\sfdefault}{phv}
+      \renewcommand{\rmdefault}{ptm}
+      \renewcommand{\ttdefault}{pcr}
+      \smallcover\sffamily
+      \begin{minipage}{0.47\textwidth}
+         \justify\footnotesize
+            \selectlanguage{french}
+            \textbf{R\'esum\'e}\par\setlength{\parindent}{0cm}}{
+      \end{minipage}
+   \end{lrbox}
+   \restoregeometry
+   \global\setbox\@resumeBoxGlobal=\vbox{\copy\@resumeBox}
+   }
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% R'esum'e en anglais
+%
 
 \newsavebox{\@abstractBox}
 \newbox{\@abstractBoxGlobal}
 
 \newenvironment{abstract} {
-  \newgeometry{margin=1.5cm}
-  \begin{lrbox}{\@abstractBox}%
-    \renewcommand{\sfdefault}{phv}
-    \renewcommand{\rmdefault}{ptm}
-    \renewcommand{\ttdefault}{pcr}
-    \smallcover\sffamily
-    \begin{minipage}{0.47\textwidth}
-      \justify\footnotesize 
-      \selectlanguage{english}
-      \textbf{Abstract}\par\setlength{\parindent}{0cm}}{
-    \end{minipage}
-  \end{lrbox}
-  \restoregeometry
-  \global\setbox\@abstractBoxGlobal=\vbox{\copy\@abstractBox}
-}
+   \newgeometry{margin=1.5cm}
+   \begin{lrbox}{\@abstractBox}%
+      \renewcommand{\sfdefault}{phv}
+      \renewcommand{\rmdefault}{ptm}
+      \renewcommand{\ttdefault}{pcr}
+      \smallcover\sffamily
+      \begin{minipage}{0.47\textwidth}
+         \justify\footnotesize
+            \selectlanguage{english}
+            \textbf{Abstract}\par\setlength{\parindent}{0cm}}{
+      \end{minipage}
+   \end{lrbox}
+   \restoregeometry
+   \global\setbox\@abstractBoxGlobal=\vbox{\copy\@abstractBox}
+   }
 
-%%%%%%%%%%%%
-% Keywords %
-%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mots cl'es en franc,ais
+%
 
 \newsavebox{\@keywordsBox}
 \newbox{\@keywordsBoxGlobal}
 
-\newenvironment{keywords}{
-  \newgeometry{margin=1.5cm}
-  \begin{lrbox}{\@keywordsBox}%
-    \renewcommand{\sfdefault}{phv}
-    \renewcommand{\rmdefault}{ptm}
-    \renewcommand{\ttdefault}{pcr}
-    \smallcover\sffamily
-    \begin{minipage}{0.47\textwidth}
-      \begin{flushleft} \footnotesize \vspace{0.5cm}
-        \selectlanguage{english}
-        \textbf{Key Words}\par}{
-      \end{flushleft}
-    \end{minipage}
-  \end{lrbox}
-  \restoregeometry
-  \global\setbox\@keywordsBoxGlobal=\vbox{\copy\@keywordsBox}
-}
+\newenvironment{keywords} {
+   \newgeometry{margin=1.5cm}
+   \begin{lrbox}{\@keywordsBox}%
+      \renewcommand{\sfdefault}{phv}
+      \renewcommand{\rmdefault}{ptm}
+      \renewcommand{\ttdefault}{pcr}
+      \smallcover\sffamily
+      \begin{minipage}{0.47\textwidth}
+         \justify\footnotesize
+            \selectlanguage{english}
+            \textbf{Key Words}\par\setlength{\parindent}{0cm}}{
+      \end{minipage}
+   \end{lrbox}
+   \restoregeometry
+   \global\setbox\@keywordsBoxGlobal=\vbox{\copy\@keywordsBox}
+   }
 
-%%%%%%%%%%%%%
-% Mots clés %
-%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mots cl'es en anglais
+%
 
 \newsavebox{\@motsclesBox}
 \newbox{\@motsclesBoxGlobal}
 
-\newenvironment{motscles}{
-  \newgeometry{margin=1.5cm}
-  \begin{lrbox}{\@motsclesBox}%
-    \renewcommand{\sfdefault}{phv}
-    \renewcommand{\rmdefault}{ptm}
-    \renewcommand{\ttdefault}{pcr}
-    \smallcover\sffamily
-    \begin{minipage}{0.47\textwidth}
-      \begin{flushleft} \footnotesize \vspace{0.5cm}
-        \selectlanguage{french}
-        \textbf{Mots cl\'es}\par}{
-      \end{flushleft}
-    \end{minipage}
-  \end{lrbox}
-  \restoregeometry
-  \global\setbox\@motsclesBoxGlobal=\vbox{\copy\@motsclesBox}
-}
+\newenvironment{motscles}
+   {
+   \newgeometry{margin=1.5cm}
+   \begin{lrbox}{\@motsclesBox}%
+      \renewcommand{\sfdefault}{phv}
+      \renewcommand{\rmdefault}{ptm}
+      \renewcommand{\ttdefault}{pcr}
+      \smallcover\sffamily
+      \begin{minipage}{0.47\textwidth}
+         \justify\footnotesize
+            \selectlanguage{french}
+            \textbf{Mots cl\'es}\par\setlength{\parindent}{0cm}}{
+      \end{minipage}
+   \end{lrbox}
+   \restoregeometry
+   \global\setbox\@motsclesBoxGlobal=\vbox{\copy\@motsclesBox}
+   }
 
 %%%%%%%%%%   AUTRES MISES EN FORME   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1635,7 +1709,7 @@
   \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% En-têtes de chapitres accordés à la couverture
+% En-t^etes de chapitres accord'es à la couverture
 %
 
 \if@fancyChapter
@@ -1645,17 +1719,17 @@
        \ifnum \c@secnumdepth > \m@ne
            \vskip 20\p@
 
-           \hfill\color{@verticalgreen}\rule{10\baselineskip}{\baselineskip}\par
+           \hfill\color{@verticalgreenheadings}\rule{10\baselineskip}{\baselineskip}\par
            \vspace{\baselineskip}
-           \hfill\color{@verticalgreen}\rule{10\baselineskip}{\baselineskip}\par
+           \hfill\color{@verticalgreenheadings}\rule{10\baselineskip}{\baselineskip}\par
            \vspace{\baselineskip}
-           \color{@bandeaucolor}\rule{\textwidth}{0.1\baselineskip}\hspace{-10\baselineskip}\color{@verticalgreen}\rule{10\baselineskip}{\baselineskip}\par
-           \hfill\raisebox{2\baselineskip}[0pt][0pt]{\Hugecover\textbf{\scalebox{4}{\textcolor{@doctoratcolor}{\thechapter}}}}\par\nobreak
+           \color{@bandeaucolorheadings}\rule{\textwidth}{0.1\baselineskip}\hspace{-10\baselineskip}\color{@verticalgreenheadings}\rule{10\baselineskip}{\baselineskip}\par
+           \hfill\raisebox{2\baselineskip}[0pt][0pt]{\Hugecover\textbf{\scalebox{4}{\textcolor{@doctoratcolorheadings}{\thechapter}}}}\par\nobreak
            \vskip 10\p@
        \fi
        \interlinepenalty\@M
        \raggedright
-       \Hugecover\bfseries \textcolor{@titlecolor}{#1}\par\nobreak
+       \Hugecover\bfseries \textcolor{@titlecolorheadings}{#1}\par\nobreak
        \vskip 40\p@
      }}
 
@@ -1664,7 +1738,7 @@
       {\parindent \z@ \raggedleft \normalfont
          \interlinepenalty\@M
          \raggedright
-         \Huge \bfseries \textcolor{@titlecolor}{#1}\par\nobreak
+         \Huge \bfseries \textcolor{@titlecolorheadings}{#1}\par\nobreak
          \vskip 40\p@% ajout
       }}
 \fi
@@ -1686,21 +1760,21 @@
         \interlinepenalty \@M
         \normalfont
         \ifnum \c@secnumdepth > -2\relax
-           \hfill\color{@verticalgreen}\rule{15\baselineskip}{1.5\baselineskip}\par
+           \hfill\color{@verticalgreenheadings}\rule{15\baselineskip}{1.5\baselineskip}\par
            \vspace{1.5\baselineskip}
-           \hfill\color{@verticalgreen}\rule{15\baselineskip}{1.5\baselineskip}\par
+           \hfill\color{@verticalgreenheadings}\rule{15\baselineskip}{1.5\baselineskip}\par
            \vspace{1.5\baselineskip}
-           \hfill\color{@verticalgreen}\rule{15\baselineskip}{1.5\baselineskip}\par
-           \hfill\raisebox{2.5\baselineskip}[0pt][0pt]{\Hugecover\textbf{\scalebox{6}{\textcolor{@doctoratcolor}{\thepart}}}}\par\nobreak
+           \hfill\color{@verticalgreenheadings}\rule{15\baselineskip}{1.5\baselineskip}\par
+           \hfill\raisebox{2.5\baselineskip}[0pt][0pt]{\Hugecover\textbf{\scalebox{6}{\textcolor{@doctoratcolorheadings}{\thepart}}}}\par\nobreak
            \vfill
         \fi
-        \Hugecover\bfseries \color{@titlecolor}#2\par}%
+        \Hugecover\bfseries \color{@titlecolorheadings}#2\par}%
        \@endpart}
    \def\@spart#1{%
        {\centering
         \interlinepenalty \@M
         \normalfont
-        \Hugecover\bfseries \color{@titlecolor}#1\par}%
+        \Hugecover\bfseries \color{@titlecolorheadings}#1\par}%
        \@endpart}
    \def\@endpart{\vfill\vfill\vfill\newpage
                  \if@twoside
@@ -1716,4 +1790,3 @@
 \fi
 
 \endinput
-
