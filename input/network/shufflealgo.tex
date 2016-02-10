@@ -36,7 +36,7 @@
 
     \State $sample \leftarrow \DARKBLUE{\textsc{replace}}(sample,\,q,\,p)$;
     \label{net:line:replace1}
-    \State $\textsc{sendTo}(q,\, 'exchange',\, sample)$;
+    \State $\textsc{sendTo}(q$, 'exchange', $sample)$;
     \State \textbf{let} $sample'\leftarrow \textsc{receiveFrom}(q)$;
     \State $sample \leftarrow \textsc{replace}(sample,\,p,\,q)$;
     \State $P \leftarrow (P\,\DARKBLUE{\setminus\, sample})\,\DARKBLUE{\uplus\, sample'}$;
@@ -50,7 +50,7 @@
     \right\rceil} )$;
     \State $sample' \leftarrow \textsc{replace}(sample',\,o,\,p);$
     \label{net:line:replace2}
-    \State $\textsc{sendTo}(o ,\, sample')$;
+    \State $\textsc{sendTo}(o$, $sample')$;
     \State $sample' \leftarrow \textsc{replace}(sample',\,p,\,o)$;
     \State $P \leftarrow (P \setminus sample') \uplus sample$; 
     \EndFunction
