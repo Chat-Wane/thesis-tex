@@ -9,4 +9,13 @@
 
 Comme le montre l'algorithme~\ref{net:algo:broadcast}, la propagation d'un
 message à tout le réseau se base essentiellement sur les vues partielles
-maintenues par chaque nœud.
+maintenues par chaque nœud. La fonction \textsc{alreadyReceived} s'assure de la
+terminaison de la dissémination, i.e., un message ne voyage pas indéfiniement
+dans le réseau. Avec au minimum une transmission par nœud, le coût en
+communication à chaque nœud se voit attribuer un facteur multiplicatif de
+l'ordre de la taille de sa vue partielle. Grâce à \SPRAY, cette dernière évolue
+automatiquement vers le logarithme de la taille globale du réseau. Le traffic
+généré hérite de cet ajustement automatique.
+
+\TODO{Moar.}
+%% Ainsi, en total transparence pour le développeur d'application, 

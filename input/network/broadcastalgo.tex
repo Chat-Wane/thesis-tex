@@ -16,7 +16,7 @@
 
 \begin{algorithmic}[1]
   \Function{broadcast}{$m$} \comment{$m$: \emph{message to send}}
-  \For{($n \in P$)}
+  \For{(\DARKBLUE{$\langle n,\, \_\rangle \in P$})}
   \State \textsc{sendTo}($n$, 'broadcast', $m$);
   \EndFor
   \EndFunction
@@ -24,7 +24,7 @@
   \Statex
 
   \Function{onBroadcast}{$m$} \comment{$m$: \emph{received message}}
-  \If {($\neg\textsc{alreadyReceived}(m)$)}
+  \If {($\DARKBLUE{\neg\textsc{alreadyReceived}(m)}$)}
   \State \textsc{broadcast}($m$);
   \EndIf
   \EndFunction
