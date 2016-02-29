@@ -60,7 +60,30 @@ nombre d'arcs requis (à droite)?
 % \item ajuster sa vue partielle en conséquence (cf. §\ref{net:subsec:merging}).
 % \end{inparaenum}
 
+\subsection{Table de hachage distribuée}
 
+Une table de hachage distribuée (DHT) est un système permettant de retrouver une
+information rapidement dans un réseau de machines. Pour ce faire, l'information
+recherchée possède une clé dans laquelle figure des données suffisantes à
+l'exploration efficace du réseau. Le réseau est généralement organisé selon un
+critère de proximité de clé et constitue un réseau superposé. 
+
+Parmi les représentants des DHT on nomme Chords, CAN, Pastry, Tapestry, Kademlia
+(\REF).  Toutes ces approches fournissent un vue partielle dont la taille est
+logarithmique. Toutefois, tout comme pour les protocoles d'échantillonnage
+aléatoire de pairs dont la vue partielle est fixe, tel que \CYCLON, la taille de
+leur vue est configurée \emph{a priori} afin que le système puisse accueillir un
+ensemble suffisamment large de clés.
+
+L'idée est alors de placer les systèmes classiques de DHT afin qu'ils
+s'accordent avec la vue partielle fournie par \SPRAY. Par exemple, si un nœud
+\SPRAY possède 3 voisins, le réseau superposé en charge de la DHT possède lui
+aussi 3 voisins. Toutefois, ces derniers sont choisis selon la distance à
+laquelle ils se trouvent. Un premier voisin serait celui qui est le plus proche,
+le second voisin celui qui se trouve à la moitié de la distance maximum, et le
+troisième se trouve à un tier de la distance maximum.
+
+\TODO{Moar. Maybe a figure.}
 
 \subsection{Compromis causalité et concurrence}
 
