@@ -32,7 +32,7 @@ intégrés.
     Nuage?}
   
   Malheureusement, la couche réseau et la couche structure font actuellement
-  obstacle au passage à l'échelle. En effet, les solutions centralisées, où
+  obstacle au passage à l'échelle. En effet, les solutions centralisées, où un
   serveur fait office d'intermédiaire entre les clients, posent des problèmes
   \begin{inparaenum}[(i)]
   \item de confidentialité
@@ -43,11 +43,11 @@ intégrés.
   Seule la décentralisation permet résoudre ces problèmes. Un client est aussi
   serveur et contribue à la disséminations des changements effectués sur le
   document. Pour ce faire, chaque éditeur possède un ensemble d'éditeurs avec
-  lequel communiquer. Lorsqu'un éditeur réçoit un changement, il le propage à
+  lequel communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à
   son propre ensemble d'éditeurs connus. Les changements atteignent tous les
   éditeurs par transitivité. La taille de cet ensemble est déterminante. En
   effet, lorsqu'elle augmente, le traffic généré augmente au risque de dépasser
-  les capacités de l'appareil émmeteur; lorsqu'elle diminue, le réseau risque
+  les capacités de l'appareil émetteur; lorsqu'elle diminue, le réseau risque
   des déconnexions partielles auquel cas les changements ne parviennent plus à
   tous les éditeurs.
 
@@ -92,11 +92,11 @@ intégrés.
   recevant le message.
 
   Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
-  actuels copient les documents chez chaque client (\REF), et, lorsqu'ils
-  effectuent un changement, il est directement appliqué sur leur copie avant
-  d'être envoyé au reste des éditeurs où ils sont intégrés. Un système est
-  correct si lorsque les même changements ont été intégrés, les utilisateurs
-  lisent le même document (\REF).
+  actuels copient les documents chez chaque client~\cite{saito2005optimistic},
+  et, lorsqu'une modification est effectuée, elle est directement appliqué sur
+  leur copie avant d'être envoyée au reste des éditeurs où elle est intégrée. Un
+  système est correct si, et seulement si, lorsque les même changements ont été
+  intégrés, les utilisateurs lisent le même document~\cite{shapiro2011conflict}.
 
   L'utilisation des structures de données ``classiques'' telles que les listes
   n'est pas directement possible du fait de la latence entre les
