@@ -46,18 +46,18 @@ intégrés.
   lequel communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à
   son propre ensemble d'éditeurs connus. Les changements atteignent tous les
   éditeurs par transitivité. La taille de cet ensemble est déterminante. En
-  effet, lorsqu'elle augmente, le traffic généré augmente au risque de dépasser
+  effet, lorsqu'elle augmente, le trafic généré augmente au risque de dépasser
   les capacités de l'appareil émetteur; lorsqu'elle diminue, le réseau risque
   des déconnexions partielles auquel cas les changements ne parviennent plus à
   tous les éditeurs.
 
   Afin de configurer la taille de cet ensemble idéalement, le développeur doit
-  connaitre la taille du réseau. Malheureusement, celles-ci varient, que ce soit
-  pendant la durée de vie du réseau, e.g., une cours de formation en ligne
-  (\emph{MOOC}) voit sa population varier selon l'interêt qu'il suscite; ou
-  entre les réseaux créés par une même application, e.g., un document créé pour
-  un événement de grande ampleur n'a pas la même audience que celle d'un rapport
-  de projet écrit par des étudiants.
+  connaitre la taille des réseaux qu'il souhaite supporter. Malheureusement,
+  celle-ci varie, que ce soit pendant la durée de vie du réseau, e.g., une cours
+  de formation en ligne (\emph{MOOC}) voit sa population fluctuer selon
+  l'interêt qu'il suscite; ou entre les réseaux créés par une même application,
+  e.g., un document créé pour un événement de grande ampleur n'a pas la même
+  audience que celle d'un rapport de projet écrit par des étudiants.
 
   % La première partie de cette question met en lumière la force du Nuage à
   % fournir des services dont l'utilisation et la configuration sont
@@ -83,17 +83,17 @@ intégrés.
   %     fonctionnement soit résistant aux connexions et déconnexions fréquentes
   %     (\emph{churn}) possibles dans ce contexte?}    
   \item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
-      que le traffic s'adapte automatiquement aux variations des réseaux?}
+      que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
   \end{itemize}
 
   Supposons qu'un tel protocole de communication existe. Les messages
-  transportées par celui-ci se doivent d'être léger, et pourtant suffisamment
-  descriptifs pour réconstruire le même document indépendemment de l'auteur
+  transportés par celui-ci se doivent d'être léger, et pourtant suffisamment
+  descriptifs pour réconstruire un document identique indépendemment de l'auteur
   recevant le message.
 
   Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
   actuels copient les documents chez chaque client~\cite{saito2005optimistic},
-  et, lorsqu'une modification est effectuée, elle est directement appliqué sur
+  et, lorsqu'une modification est effectuée, elle est directement appliquée sur
   leur copie avant d'être envoyée au reste des éditeurs où elle est intégrée. Un
   système est correct si, et seulement si, lorsque les même changements ont été
   intégrés, les utilisateurs lisent le même document~\cite{shapiro2011conflict}.
@@ -106,29 +106,40 @@ intégrés.
   d'insérer. Afin d'éviter de telles situations, de nouvelles structures et de
   nouveaux algorithmes doivent être employés.
 
-  Une première famille d'approches consiste à transformer les arguments de l'opérations
-  afin qu'elle considère les opérations intégrées concurremment (\REF). Dans
-  l'exemple précédent, lors de l'intégration de la suppression par le premier
-  auteur, l'opération, se rendant compte qu'un caractère a été ajouté en tête,
-  aurait modifié ses arguments afin que le second caractère soit supprimé, et
-  non plus le premier. Malheureusement, la détection de ces cas nécessite de
-  transporter des données avec chaque opération dont le coût est prohibitivement
-  élevé. \TODO{Moar?}
+  Une première famille d'approches consiste à transformer les arguments de
+  l'opérations afin qu'elle considère les opérations intégrées
+  concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
+  l'intégration de la suppression par le premier auteur, l'opération, se rendant
+  compte qu'un caractère a été ajouté en tête, aurait modifié ses arguments afin
+  que le second caractère soit supprimé, et non plus le
+  premier. Malheureusement, la détection de ces cas nécessite de transporter des
+  données avec chaque opération dont le coût est prohibitivement
+  élevé.
 
-  Une seconde famille d'approches (\REF) consiste à utiliser des structures de
-  données dont les opérations sont commutatives. Pour que les opérations
-  commutent, ces approches associent à chaque caractère un identifiant unique et
-  immuable. Toutefois, ces identifiants sont
+  Une seconde famille d'approches~\cite{shapiro2011conflict} consiste à utiliser
+  des structures de données dont les opérations sont commutatives. Pour que les
+  opérations commutent, ces approches associent à chaque caractère un
+  identifiant unique et immuable. Toutefois, ces identifiants sont
   \begin{inparaenum}[(i)]
-  \item soit indestructibles \TODO{Moar.};
-  \item soit des listes dont la taille est définie à la génération et peut
-    grandir très vite. \TODO{Moar.}
+  \item soit indestructibles -- l'opération de suppression se contente de cacher
+    le caractère à l'utilisateur. Afin de supprimer ces caractères cachés et
+    conserver de bonnes performances, un protocole de ramasse-miète réparti doit
+    être exécuté régulièrement. Malheureusement, ce genre de protocoles s'avère
+    extrêmement coûteux.
+  \item soit des listes dont la taille, définie à la génération, peut grandir
+    très vite. Cette croissance impacte négativement les performances du
+    système. Pour y remédier, un protocole de relocalisation des identifiants
+    doit être exécuté régulièrement. Malheureusement, ces protocoles
+    s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le
+    coût s'avère très élevé.
   \end{inparaenum}
 
   \begin{itemize}
-  \item [\textbf{QR B.}] \textbf{Comment allouer des identifiants dont la taille
-      soit sous-linéaire?}
+  \item [\textbf{QR B.}] \textbf{Afin d'éviter tout protocole additionnel de
+      relocalisation des identifiants, comment allouer ces identifiants pour que
+      leur taille soit directement sous-linéaire?}
   \end{itemize}
+
   % En effet, les auteurs étant distants les uns des autres, les modifications ne
   % sont pas reçues et traitées instantanéments par tous. De ce fait, l'ordre
   % d'application des modifications peut différer parmis les participants. En
