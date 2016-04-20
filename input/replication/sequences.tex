@@ -195,7 +195,7 @@ du 'R' en position 0 décale toutes lettres de droite etc.
   \vspace{-15pt}
   \centering
   \input{input/replication/allocpathexampleA.tex}
-  \caption{\label{repl:fig:allocpathexampleA}Allocation quasi-optimale}
+  \caption{\label{repl:fig:allocpathexampleA}Allocation quasi-optimale.}
   \vspace{-15pt}
 \end{wrapfigure}
 
@@ -214,7 +214,7 @@ sont alloués.
   \vspace{-10pt}
   \centering
   \input{input/replication/allocpathexampleB.tex}
-  \caption{\label{repl:fig:allocpathexampleB}Allocation pire-cas}
+  \caption{\label{repl:fig:allocpathexampleB}Allocation pire-cas.}
   \vspace{-10pt}
 \end{wrapfigure}
 
@@ -266,11 +266,30 @@ une fonction d'allocation efficace.
   allouer s'en trouve diminué, et par conséquent, le traffic généré aussi.
 \item [\textbf{Treedoc~\cite{letia2009crdts, preguica2009commutative} :}]
   représente le document sous forme d'arbre binaire avec parcours infixe.
-  Ainsi, si l'on considère un élément 'W' dont le chemin est [0], alors un
-  élément 'Q' dont le chemin est [0.0] précède 'W', et un élément 'E' dont le
-  chemin est [0.1] succède 'W'. En d'autres termes, suffixer le chemin d'un 0
-  signifie \emph{à gauche de}, et suffixer le chemin d'un 1 signifie \emph{à
-    droite de}. Tout comme l'approche Logoot, les observations effectuées sur un
+  
+  \begin{figure*}
+    \begin{center}
+      % \subfloat[Augmentation rapide de la taille des chemins alloués par Treedoc]
+      % [Augmentation rapide de la taille des chemins alloués par Treedoc]
+      % {\input{input/replication/treedocexampleA.tex}}
+      % \hspace{10pt}
+      % \subfloat[Optimisation dans Treedoc]
+      % [Optimisation pour l'édition de gauche à droite dans Treedoc]
+      % {\input{input/replication/treedocexampleB.tex}}      
+      \input{input/replication/treedocexampleA.tex}
+      \caption{\label{repl:fig:treedocexample}Example de sequence dont les
+        chemins sont alloués grâce à Treedoc.}
+    \end{center}
+  \end{figure*}
+
+  La figure~\ref{repl:fig:treedocexample} montre un exemple de séquence. Si l'on
+  considère un élément 'W' dont le chemin est [], alors un élément 'Q' dont le
+  chemin est [0] précède 'W', et un élément 'E' dont le chemin est [1] succède
+  'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à gauche
+    de}, et suffixer le chemin d'un 1 signifie \emph{à droite de}. Dans cet
+  example, le caractère 'Y' obtient le chemin [1.1.1.1].
+  
+  Tout comme l'approche Logoot, les observations effectuées sur un
   corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
   l'édition de gauche à droite. Elles conduisent à proposer une heuristique
   selon laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
