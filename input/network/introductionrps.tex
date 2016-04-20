@@ -5,19 +5,19 @@ deviendra plus tard la base de l'Internet. Initialement créé dans le but de
 connecter une machine à une autre, l'échelle évolue afin d'impliquer plusieurs
 machines communicant entre elles. Il s'agit alors d'un réseau de communication.
 
-Les machines d'un réseau sont adressables, i.e., grâce à une métadonnée, il est
-possible de retrouver la machine ciblé afin d'établir un canal de
-communication. Par exemple, une adresse IP (\emph{Internet Protocol}) permet de
-retrouver une machine de manière transparente : Les infrastructures
-sous-jacentes sur l'itinéraire entre les machines, tels que les routeurs, ne
-sont pas connues. Un réseau construit sur de telles adresses logiques est appelé
-réseau superposé (\emph{network overlay}). Un réseau superposé peut être
-construit sur un autre réseau superposé.
+Les machines d'un réseau sont adressables, i.e., grâce à une métadonnée, un
+message émis par une machine trouve un chemin jusqu'à la machine ciblée. Par
+exemple, une adresse IP (\emph{Internet Protocol}) permet de retrouver une
+machine de manière transparente : Les infrastructures sous-jacentes sur
+l'itinéraire entre les machines, tels que les routeurs, sont inconnues. Un
+réseau construit sur de telles adresses logiques est appelé réseau superposé
+(\emph{network overlay}). Un réseau superposé peut être construit sur un autre
+réseau superposé.
 
 \begin{figure}
   \centering 
   \input{input/network/completegraph.tex}
-  \caption{\label{net:fig:completegraph}Graphes complets}
+  \caption{\label{net:fig:completegraph}Graphes complets.}
 \end{figure}
 
 Toutes sortes de réseaux superposés existent. Par exemple, si chaque machine
@@ -27,23 +27,27 @@ topologie correspond à celle d'un graphe complet
 d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
 grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
 qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
-direct d'un nœud. Le défi consiste alors à peupler ces vues avec les liens
+direct d'un nœud. Le défi consiste alors à peupler ces vues avec des liens
 logiques selon les critères souhaités.
 
 Dans ce manuscrit, nous nous intéressons aux protocoles d'échantillonnage
 aléatoire de pairs dont l'objectif est de fournir à chaque machine une vue
 partielle peuplée d'adresses logiques réparties selon une loi uniforme. La
 topologie en résultant est proche de celle des graphes aléatoires. Ces graphes
-possèdent d'interessantes propriétés tels que la tolérence aux pannes --
+possèdent d'interessantes propriétés telles que la tolérence aux pannes --
 lorsqu'un nœud disparait soudainement le graphe reste connecté avec une forte
 probabilité -- un faible diamêtre, etc.
+
+% Puisque les protocoles de dissémination de messages font un usage soutenu de ces
+% vues partielles, améliorer le protocole d'échantillonnage revient à améliorer la
+% dissémination. Le problème scientifique consiste à 
 
 \TODO{Talk about dissemination in first. And recall research question.}
 
 Ce chapitre commence par introduire vocabulaire et notations. La
 section~\ref{net:sec:stateoftheart} présente l'état de l'art des protocoles
 d'échantillonnage de pairs en les divisant en deux catégories : Ceux dont les
-vues partielles sont fixes, et ceux dont la vue partielle s'adaptent au
+vues partielles sont fixes, et ceux dont les vues partielles s'adaptent au
 réseau. La section~\ref{net:sec:spray} présente \SPRAY, un protocole appartenant
 à la seconde catégorie. La section~\ref{net:sec:properties} présente et compare
 les propriétés des protocoles d'échantillonages. Le chapitre se conclue à la
