@@ -97,18 +97,18 @@ des approches :
   \centering
   \subfloat[Une demande de modification est effectuée.]
   [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
-  {\input{./input/replication/pessimisticexampleA.tex}}
+  {\input{./input/replication/figpessimisticexampleA.tex}}
   \hspace{40pt}
   \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
   la première demande.]
   [Le serveur $n_4$ demande également si sa modification est acceptée pendant
   que le cœur est occupé avec la modification de $n_5$.]
-  {\input{./input/replication/pessimisticexampleB.tex}}
+  {\input{./input/replication/figpessimisticexampleB.tex}}
   \hspace{10pt}
   \subfloat[Une modification est acceptée pendant que l'autre est refusée]
   [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
   est refusée.]
-  {\input{./input/replication/pessimisticexampleC.tex}}
+  {\input{./input/replication/figpessimisticexampleC.tex}}
   \caption{\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
     pessimiste. La modification de $n_5$ est propagée.}
 \end{figure*}
@@ -170,11 +170,11 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
   \centering
   \subfloat[Modifications concurrentes.]
   [Les serveurs $n_1$ et $n_3$ modifient leur couleur en même temps.]
-  {\input{./input/replication/optimisticexampleA.tex}}
+  {\input{./input/replication/figoptimisticexampleA.tex}}
   \hspace{10pt}
   \subfloat[Plusieurs états possibles.]
   [Les répliques convergent. Plusieurs états de convergence sont possibles.]
-  {\input{./input/replication/optimisticexampleB.tex}}
+  {\input{./input/replication/figoptimisticexampleB.tex}}
   \caption{\label{repl:fig:optimisticexample} Exemple de réplication optimiste
     avec modifications concurrentes.}
 \end{figure*}
@@ -226,7 +226,7 @@ de la réplique, indépendemment des opérations effectuées entre temps.
 
 \begin{figure}
   \centering
-  \input{./input/replication/otexample.tex}
+  \input{./input/replication/figotexample.tex}
   \caption{\label{repl:fig:otexample} Exemple de transformé
     opérationnel. L'opération de suppression des 3 premiers caractères sur la
     réplique 3 ('RTY') est transformée afin de supprimer les 3 derniers caractères
@@ -331,14 +331,14 @@ les ensembles, les graphes etc.\\
 {\noindent%
 \begin{minipage}[t]{0.48\textwidth}
   \begin{algorithm}[H]
-    \input{input/replication/counteralgoA.tex}
+    \input{input/replication/algocounterA.tex}
     \caption{\label{repl:algo:counterA} Counter using set.}
   \end{algorithm}
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.48\textwidth}
   \begin{algorithm}[H]
-    \input{input/replication/counteralgoB.tex}
+    \input{input/replication/algocounterB.tex}
     \caption{\label{repl:algo:counterB} Counter using vector.}
   \end{algorithm}
 \end{minipage}
@@ -439,7 +439,7 @@ présent.
 
   \begin{figure}
     \centering
-    \input{input/replication/wootexample.tex}
+    \input{input/replication/figwootexample.tex}
     \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
       représentant la séquence 'QWERTY'. Bien que supprimé, le caractère Z est
       indispensable au bon ordonnancement de la séquence.}
@@ -580,7 +580,7 @@ du 'R' en position 0 décale toutes lettres de droite etc.
 \begin{wrapfigure}{r}{0.45\textwidth}
   \vspace{-15pt}
   \centering
-  \input{input/replication/allocpathexampleA.tex}
+  \input{input/replication/figallocpathexampleA.tex}
   \caption{\label{repl:fig:allocpathexampleA}Allocation quasi-optimale.}
   \vspace{-15pt}
 \end{wrapfigure}
@@ -599,7 +599,7 @@ sont alloués.
 \begin{wrapfigure}{r}{0.45\textwidth}
   \vspace{-10pt}
   \centering
-  \input{input/replication/allocpathexampleB.tex}
+  \input{input/replication/figallocpathexampleB.tex}
   \caption{\label{repl:fig:allocpathexampleB}Allocation pire-cas.}
   \vspace{-10pt}
 \end{wrapfigure}
@@ -662,7 +662,7 @@ une fonction d'allocation efficace.
       % \subfloat[Optimisation dans Treedoc]
       % [Optimisation pour l'édition de gauche à droite dans Treedoc]
       % {\input{input/replication/treedocexampleB.tex}}      
-      \input{input/replication/treedocexampleA.tex}
+      \input{input/replication/figtreedocexample.tex}
       \caption{\label{repl:fig:treedocexample}Example de sequence dont les
         chemins sont alloués grâce à Treedoc.}
     \end{center}
