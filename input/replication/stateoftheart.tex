@@ -3,9 +3,8 @@
 \section{État de l'art}
 \label{repl:sec:stateoftheart}
 
-La maintenance de répliques sur des machines distantes les unes des
-autres est un problème ancien. Dès 1975, les bases de données répliquées font
-leur apparition~\cite{johnson1975maintenance} afin de résoudre
+Dès 1975, les bases de données répliquées font leur
+apparition~\cite{johnson1975maintenance} afin de résoudre
 \begin{inparaenum}[(i)]
 \item les problèmes de défaillances~\cite{alsberg1976principle}, i.e., le
   serveur possédant les données étant inaccessible, le client peut contacter
@@ -30,8 +29,8 @@ répliques. Cela implique des problèmes de
 \end{inparaenum}
 
 
-Hélas, d'après le théorème CAP~\cite{gilbert2002brewer} il est impossible de
-répliquer sur un grand nombre de serveurs tout en garantissant à la fois :
+D'après le théorème CAP~\cite{gilbert2002brewer} il est impossible de répliquer
+sur un grand nombre de serveurs tout en garantissant à la fois :
 \begin{itemize}
 \item [\textbf{Cohérence :}] un contrat entre le développeur et la structure qui
   spécifie comment cette dernière se comporte suivant les opérations effectuées
@@ -46,14 +45,14 @@ répliquer sur un grand nombre de serveurs tout en garantissant à la fois :
 Face à ce constat, deux grandes familles de réplication : la réplication
 pessimiste cherche à donner l'illusion d'une donnée unique lorsque la
 réplication optimiste autorise à ses répliques de légères divergences
-temporaires (cf. §\ref{repl:sec:schemas}). Cette dernière passant plus volontier
-à l'échelle, nous nous intéresserons à deux familles d'approches y appartenant,
-à savoir les transformés opérationnels dont les opérations sont modifiées à
-l'intégration afin d'adapter l'opération au contexte d'exécution, et les
-structures de données sans résolution de conflits dont les opérations commutent
-(cf. §\ref{repl:sec:otorcrdts}). Finalement, la section~\ref{repl:sec:sequences}
-s'intéresse plus particulièrement au type séquence, le plus proche d'un
-document.
+temporaires (cf. §\ref{repl:subsec:schemas}). Cette dernière passant plus
+volontier à l'échelle, nous nous intéresserons à deux familles d'approches y
+appartenant, à savoir les transformés opérationnels dont les opérations sont
+modifiées à l'intégration afin d'adapter l'opération au contexte d'exécution, et
+les structures de données sans résolution de conflits dont les opérations
+commutent (cf. §\ref{repl:subsec:otorcrdts}). Finalement, la
+section~\ref{repl:subsec:sequences} s'intéresse plus particulièrement au type
+séquence, le plus proche d'un document.
 
 
 \subsection{Pessimisme ou optimisme?}
@@ -73,11 +72,9 @@ L'objectif de la réplication pessimiste est simple. Il consiste à donner
 l'illusion que la donnée manipulée est unique, indépendemment du nombre de
 répliques réel. Ainsi, il devient facile de raisonner sur les données puisque
 leurs spécifications sont proches de celles proposées dans un contexte
-non-réparti -- sans réplications.
-
-Toutefois, avant qu'une modification ne soit réellement effectuée, il est
-nécessaire qu'elles soient validées. L'autorité décisionnelle diffère en fonction
-des approches :
+non-réparti -- sans réplications.  Toutefois, avant qu'une modification ne soit
+réellement effectuée, il est nécessaire qu'elle soit validée. L'autorité
+décisionnelle diffère en fonction des approches :
 \begin{itemize}
 \item [\textbf{Autorité centrale~\cite{alsberg1976principle} :}] l'un des
   serveurs est désigné responsable. Ceux qui souhaitent modifier la donnée sont
@@ -156,7 +153,7 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
 \begin{itemize}
 \item [\textbf{Cohérence à terme~\cite{bailis2013eventual} :}] lorsque toutes
   les modifications ont été reçues et appliquées par toutes les répliques,
-  celle-ci possèdent un état équivalent.
+  celles-ci possèdent un état équivalent.
 
   Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu réaliste
   pour raisonner sur une exécution réelle, une définition plus précise porte sur
@@ -195,7 +192,7 @@ mais respectant la cohérence forte à terme.
 Ce type de cohérence charge le développeur d'un poid énorme quant au bien fondé
 de l'état convergeant.  Récemment, de nombreux efforts ont été fournis afin de
 proposer des bases de données avec cohérence à terme (\REF), ainsi que des
-langages sur lesquels raisonner (\REF). La section~\ref{repl:sec:otorcrdts}
+langages sur lesquels raisonner (\REF). La section~\ref{repl:subsec:otorcrdts}
 décrit les approches permettant de construire ces bases et langages.
 
 
@@ -203,26 +200,26 @@ décrit les approches permettant de construire ces bases et langages.
 \label{repl:subsec:otorcrdts}
 
 La réplication optimiste permet de répliquer les données et d'effectuer des
-modifications sur celle-ci directement, sans accord préalable d'un cœur
-décisionnel. Les données sont deviennent à la fois plus disponibles et plus
+modifications sur celles-ci directement, sans accord préalable d'un cœur
+décisionnel. Les données deviennent à la fois plus disponibles et plus
 réactives. Toutefois, les approches qui appartiennent à ce schéma de réplication
 ont devoir de fournir des opérations de modification respectant la cohérence
 forte à terme -- convergeant si possible vers un état
 non-arbitraire. Malheureusement, cela peut s'avérer plus honéreux qu'il n'y
 parait. Cette section décrit deux familles d'approches, respectivement les
-approches à transformés opérationnels (OT -- cf. §\ref{repl:subsec:ot}) et les
-approches à structure de données sans résolution de conflits (CRDTs --
-cf. §\ref{repl:subsec:crdts}), ainsi que leurs limitations.
+approches à transformés opérationnels (OT -- cf. §\ref{repl:subsubsec:ot}) et
+les approches à structure de données sans résolution de conflits (CRDTs --
+cf. §\ref{repl:subsubsec:crdts}), ainsi que leurs limitations.
 
 \subsubsection{Transformés opérationnels}
 \label{repl:subsubsec:ot}
 
 Les approches basées sur les transformés opérationnels~\cite{sun1998operational,
   sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
-champs d'applications telles que l'édition de texte, l'édition d'images
-etc. L'intuition est simple : Lors de la réception d'opérations modifiant notre
-réplique, les arguments en sont ajustés afin qu'ils s'appliquent à l'état actuel
-de la réplique, indépendemment des opérations effectuées entre temps.
+champs d'applications telles que l'édition de texte, ou l'édition
+d'images. L'intuition est simple : Lors de la réception d'opérations modifiant
+notre réplique, les arguments en sont ajustés afin qu'ils s'appliquent à l'état
+actuel de la réplique, indépendemment des opérations effectuées entre temps.
 
 \begin{figure}
   \centering
@@ -250,7 +247,7 @@ changement n'est nécessaire. À terme, les répliques convergent vers la séque
 
 Dans le cadre de l'édition de texte, en plus des usuelles opérations d'insertion
 et de suppression, OT founit des opérations ciblant les chaînes de caractères
-telles que le déplacement, le couper -- coller, etc. Toutefois, l'analyse de
+telles que le déplacement, ou le couper -- coller. Toutefois, l'analyse de
 correction nécessite d'examiner chaque couple d'opérations ainsi que leurs
 paramètres. En conséquence, lors de l'écriture du
 papier~\cite{imine2003proving}, peu d'approches étaient réellement correctes.
@@ -379,7 +376,7 @@ sont équivalentes. Enfin, lorsque le premier algorithme possède une complexit�
 spatiale bornée linéairement au nombre d'incrémentations, le second algorithme
 possède une complexité spatiale bornée linéairement au nombre de sites. Par
 conséquent, l'algorithme~\ref{repl:algo:counterB} domine
-l'algorithme~\ref{repl:algo:counterA}. La section~\ref{repl:sec:sequences}
+l'algorithme~\ref{repl:algo:counterA}. La section~\ref{repl:subsec:sequences}
 décrit les approches CRDTs destinées aux séquences. Hélas, l'analyse en
 complexité s'avère plus difficile et souvent moins tranchée que dans l'exemple
 des compteurs.
@@ -392,7 +389,7 @@ Une séquence, ou liste, ou tableau, est une série d'éléments ordonnés les u
 la suite des autres. Une séquence répliquée doit donc ordonner de la même
 manière ses éléments indépendamment du serveur l'hébergeant. Les approches à
 base de transformés opérationnels adaptent les arguments des opérations afin de
-recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsec:ot}). Les CRDTs
+recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsubsec:ot}). Les CRDTs
 pour séquences, eux, choisissent de surcharger les éléments de métadonnées de
 telle sorte que les métadonnées permettent de recouvrer un ordre identique
 partout. Une différence fondamentale entre les deux types d'approches concerne
@@ -409,9 +406,9 @@ l'élément $e$'').
 Nous identifions deux familles d'approches générant des identifiants. La
 première génère des identifiants de petite taille mais utilise des pierres
 tombales pour indiquer la suppression d'un élément
-(cf. §\ref{repl:subsec:tombstone}). La seconde se passe de pierres tombales mais
+(cf. §\ref{repl:subsubsec:tombstone}). La seconde se passe de pierres tombales mais
 ses identifiants sont de taille variable lors de la génération
-(cf. §\ref{repl:subsec:variable}).
+(cf. §\ref{repl:subsubsec:variable}).
 
 \subsubsection{Pierres tombales}
 \label{repl:subsubsec:tombstone}
@@ -491,11 +488,11 @@ présent.
 Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
 éléments de séquences répliquées, toutes ces approches s'avèrent pratiques
 lorsque l'historique des opérations doit être conservé. Par exemple, dans le
-cadre de l'encyclopédie \emph{Wikipédia} (\REF), conserver toutes les
+cadre de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia}, conserver toutes les
 modifications effectuées permet de recouvrer une version vierge de vandalisme;
-dans le cadre du gestionnaire de versions \emph{Git} (\REF), il permet de
-recouvrer une version du code potentiellement sans erreurs etc. Malheureusement,
-ces structures grandissent au moins linéairement comparativement au nombre
+dans le cadre du gestionnaire de versions \emph{Git}~\cite{git}, il permet de
+recouvrer une version du code potentiellement sans erreurs. Malheureusement, ces
+structures grandissent au moins linéairement comparativement au nombre
 d'opérations faites sur la séquence. Paradoxalement, cela devient problématique
 lors de vandalisme où même le contenu indésirable est conservé
 indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
@@ -520,7 +517,7 @@ dégradations de performances :
   réponse à ces deux questions. D'autant plus lorsque les possesseurs de
   réplique ne sont pas perpétuellement joignables. Des problématiques
   appartenant jusqu'alors à la réplication pessimiste apparaissent
-  (cf. §\ref{repl:subsec:pessimistic}).
+  (cf. §\ref{repl:subsubsec:pessimistic}).
 % \item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
 %   topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
 %   coeur décisionnel prend en charge les choix de suppression réelle des objets.
@@ -551,6 +548,73 @@ masquer les éléments, mais les retirent entièrement de la structure. En
 revanche, la liste d'éléments constituant les identifiants est susceptible de
 grandir, et par là même, de diminuer les performances du systèmes.
 
+
+\paragraph{Chemins.}
+
+Les identifiants de taille variable peuvent être représentés comme la
+concaténation d'éléments basiques (e.g. des entiers). La séquence en résultant
+peut être représentée grâce à une structure d'arbre où les éléments de la
+séquence sont stockés sur les nœuds et où les arrêtes sont étiquetées de telle
+sorte qu'un chemin de la racine jusqu'au nœud forme l'identifiant de
+l'élément. Par exemple, un caractère dont l'identifiant serait [3.1] serait
+accessible en suivant l'arrête étiquetée 3, puis l'arrête étiquetée 1. Plus
+formellement, la séquence est un arbre où chaque nœud peut contenir une valeur,
+i.e., un élément (dans l'alphabet $\mathcal{A}$) de la séquence. L'arbre est un
+ensemble de paires $\langle \mathcal{P}\subset \{N\}^*,\, \mathcal{A} \rangle$,
+i.e., chaque élément est associé à un chemin. De plus, un ordre total
+$(\mathcal{P},\, <_\mathcal{P})$ permet d'ordonner les chemins et de retrouver
+l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arrêtes
+étiquetées $\ell_1,\,\ell_2,\ldots,\ell_e$ est noté
+$[\ell_1.\ell_2\ldots\ell_e]$.
+
+\begin{figure}
+  \centering
+  \subfloat[Un arbre est l'union de ses identifiants.]
+  [\label{repl:fig:treeexample}L'arbre représentant la séquence est
+  construit grâce à l'union des identifiants et utilise principalement les
+  chemins pour ordonner ses caractères.]
+  {\input{input/replication/figtreeexample.tex}}
+  \hspace{20pt}
+  \subfloat[Les désambiguateurs interviennent lorsqu'un chemin identique a été
+  alloué.]
+  [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
+  maintenir un état équivalent, même en présence d'insertions concurrentes ayant
+  résulté en des chemins identiques. Par soucis de simplicité, seuls les
+  désambiguateurs des caractères 'E', 'R', et 'T' sont affichés.]
+  {\input{input/replication/figdisexample.tex}}
+  \caption{Arbres contenant la séquence 'QWERTY'.}
+\end{figure}
+
+La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
+représentant la séquence. Un auteur insert les caractères 'QWTY' les uns à la
+suite des autres résultant dans les chemins [1], [2], [4], et [8]
+respectivement. L'insertion du caractère E entre les paires
+$\langle [2],\,W \rangle$ et $\langle [4],\, T \rangle$ résulte dans la paire
+suivante : $\langle [3],\, E \rangle$. Pour insérer le caractère 'R', l'arbre
+doit être agrandi afin d'accueillir le nouveau chemin entre 'E' et 'T'. Le
+chemin en résultant est [3.1]. Insérer un nouveau caractère entre 'E' et 'R'
+résulterait en une autre augmentation de la profondeur de l'arbre. Le chemin
+serait [3.0.$X$] où $0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$
+permet de retrouver la séquence 'QWERTY'.
+
+
+\paragraph{Désambiguation des cas concurrents.}
+
+L'ordre des chemins $(\mathcal{P},\, <_\mathcal{P})$ est un ordre total
+lorsqu'un seul auteur écrit. Toutefois, cela devient un ordre partiel lorsque
+plusieurs auteurs sont impliqués dans l'édition. Par exemple, si deux auteurs
+insèrent un caractère au même endroit dans le document, au même moment, le même
+chemin pour les deux caractères risque d'être alloué. Dans ce cas, l'ordre des
+caractères n'est pas strictement défini et peut rompre la propriété de
+convergence des répliques. Les désambiguateurs utilisent des marqueurs unique de
+manière globale pour fournir un ordre total même en présence d'éditions
+concurrentes. Ces marqueurs comprennent couramment un identifiant de site unique
+associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
+$\langle element,\, path\rangle$ est associée à un désambiguateur.
+
+Soit l'ensemble des identifiants $\mathcal{I}$.
+
+
 Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
 équippé des opérations d'insertion $\textsc{insert}$ et de suppression
 $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
@@ -562,8 +626,22 @@ $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléme
 Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
 une liste constituée de paires avec l'identifiant unique du serveur hébergeant
 la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
-compteurs §\ref{repl:subsec:crdts}). La complexité de l'identifiant dépend donc
+compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
 essentiellement de l'allocation du chemin dans l'arbre.
+
+\begin{figure}
+  \begin{center}
+  \subfloat[Allocation quasi-optimale]
+  [\label{repl:fig:allocpathexampleA}Allocation quasi-optimale]
+  {\input{input/replication/figallocpathexampleA.tex}}
+  \hspace{30pt}
+  \subfloat[Allocation pire-cas]
+  [\label{repl:fig:allocpathexampleB}Allocation pire-cas]
+  {\input{input/replication/figallocpathexampleB.tex}}
+  \end{center}
+  \caption{Une même stratégie d'allocation face à des comportements d'édition
+    différents.}
+\end{figure}
 
 Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
 illustrent les difficultés rencontrées lors de l'allocation des chemins
@@ -577,13 +655,6 @@ est insérée à l'indice 0, suivit du 'T' à l'indice 0 qui, par effet de bord,
 décale le 'Y' à l'indice 1. La séquence en résultant est donc 'TY'. L'insertion
 du 'R' en position 0 décale toutes lettres de droite etc.
 
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace{-15pt}
-  \centering
-  \input{input/replication/figallocpathexampleA.tex}
-  \caption{\label{repl:fig:allocpathexampleA}Allocation quasi-optimale.}
-  \vspace{-15pt}
-\end{wrapfigure}
 
 \textbf{Premier cas :} L'opération d'insertion (Q, 0) est transformée en
 \textsc{insert}($\vdash$, Q, $\dashv$). Par conséquent, le chemin doit être
@@ -596,13 +667,6 @@ employée est très efficace. Cependant, elle n'est pas totalement optimale
 puisque l'arbre est prévu pour accueillir 8 identifiants lorsque seulement 6
 sont alloués.
 
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace{-10pt}
-  \centering
-  \input{input/replication/figallocpathexampleB.tex}
-  \caption{\label{repl:fig:allocpathexampleB}Allocation pire-cas.}
-  \vspace{-10pt}
-\end{wrapfigure}
 
 \textbf{Second cas :} De la même manière, l'opération d'insertion (Y, 0) est
 transformée en \textsc{insert}($\vdash$, Y, $\dashv$) dont le résultat est le
