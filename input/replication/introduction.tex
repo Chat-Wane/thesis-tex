@@ -1,0 +1,85 @@
+
+\lettrine{G}oogle Docs a rendu l'accès à l'édition collaborative temps réel
+aisé. Des millions d'utilisateurs partagent et rédigent leurs documents
+directement dans leur navigateur web. Toutefois, Google sert d'intermédiaire
+dans ces sessions d'édition grâce à un serveur central, ce qui soulève des
+problèmes en termes de confidentialité, de censure, et d'intelligence
+économique. À cela s'ajoutent des problèmes de passage à l'échelle, notamment en
+ce qui concerne le nombre d'utilisateurs. Bien que les petits groupes d'auteurs
+soient la cible principale de ce genre d'application, certains événements de
+plus ample dimension tels que les cours en ligne ouverts et massifs
+(\emph{MOOC}) nécessite le support des groupes plus larges. Google Docs
+supportent les groupes de grande taille. En revanche, seuls les 50 premiers
+utilisateurs ont le droit d'écrire ensemble, les suivants voient leurs accès
+limités à la simple lecture du document. Même si seulement un petit ensemble
+parmi les millions d'utilisateurs sont réellement en train d'écrire, n'importe
+quel participant de la session d'édition devrait pouvoir lire et écrire
+lorsqu'il le souhaite.
+
+Les éditeurs temps réel décentralisés n'ont pas besoin de serveurs
+intérmédiaires et par là même résolvent les problèmes liés à la
+confidentialité. Toutefois les problèmes de passage à l'échelle
+demeurent. Résoudre ces problèmes revient à trouver un bon compromis entre les
+complexités en communication, en space et en temps. Par dessus tout, obtenir une
+complexité en communication sous-linéaire comparée au nombre de participants est
+crucial afin de gérer les groupes de grande taille.
+
+Afin d'augmenter la réactivité aux changements et la disponibilité des
+documents, les éditeurs temps réel utilisent la réplication optimiste de
+séquences -- les documents étant simplement des séquences de caractères. En tant
+que tel, chaque utilisateur héberge une copie locale d'un document et effectue
+ses modifications directement dessus. Les changements sont propagés aux autres
+répliques où ils sont intégrés. Le système est correct si, et seulement si, les
+répliques intégrant un même ensemble d'opérations convergent vers un état
+équivalent, i.e., les utilisateurs lisent un même document.
+
+Les algorithmes décentralisés appartenant aux transformés opérationnels (OT)
+transportent un vecteur d'état ou de contexte dans le but de détecter les
+opérations concurrentes. Malheureusement, ces vecteurs croissent linéairement en
+comparaison du nombre de membres ayant jamais participé à l'édition du
+document. Ainsi, ces approches sont efficaces pour les petits groupes
+d'utilisateurs mais ne sont pas adaptées aux groupes de plus large dimension,
+plus dynamiques, et sujet aux aléas du réseau -- notamment sur la latence.
+
+Les structures de données répliqués sans résolution de conflits (\emph{CRDTs}),
+contrairement aux approches OT, ne payent pas le prix de la detection de
+concurrence entre les opérations. Toutefois, ils transportent des identifiants
+uniques et immuables pour chaque opération propagée sur le réseau. La taille de
+ces identifiants impacte directement le trafic généré, et donc le passage à
+l'échelle de l'approche. Deux classes de CRDTs conçues pour les séquences
+existent :
+
+\begin{itemize}
+\item Les CRDTs tels que WOOT transportent un identifiant de taille constante --
+ce qui est optimal. Toutefois, les éléments supprimés sont simplement cachés à
+l'utilisateur et impactent négativement les performances du système. Pour s'en
+débarasser, l'exécution d'un protocole de ramasse-miète réparti est
+nécessaire. Malheureusement, ceux-ci ne passent pas à l'échelle.
+
+\item Les CRDTs tels que Logoot ne nécessitent pas de pierres tombales mais
+transportent des identifiants dont la taille varie à la génération. En fonction
+de la stratégie d'allocation, ces identifiants peuvent croitre linérairement
+comparé au nombre d'insertions effectuées sur le document. Équilibrer la
+structure revient à éxecuter un protocol de consensus qui ne passe pas à
+l'échelle.
+\end{itemize}
+
+\TODO{Meow state problem ?}
+
+La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
+le schema de réplication pessimiste avant de détailler le schema qui lui est
+préféré : la réplication optimiste. La section présente ensuite les différentes
+approches pour la réplication de séquences. En particulier, le fonctionnement
+des approches proposant des opérations commutatives est étudié. La
+section~\ref{repl:sec:motivation} expose les défaillances de l'état de l'art. La
+section~\ref{repl:sec:proposal} présente \LSEQ, une approche basée sur les
+opérations commutative dont la complexité est bornée supérieurement par un
+polylogarithme sur le nombre d'insertions effectuées dans le document. La
+section~\ref{repl:sec:validation} valide \LSEQ au travers de simulations. La
+section~\ref{repl:sec:conclusion} conclut ce chapitre.
+
+
+%%% Local Variables:
+%%% mode: plain-tex
+%%% TeX-master: "../../paper"
+%%% End:
