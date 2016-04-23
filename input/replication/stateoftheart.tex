@@ -31,16 +31,17 @@ répliques. Cela implique des problèmes de
 
 D'après le théorème CAP~\cite{gilbert2002brewer} il est impossible de répliquer
 sur un grand nombre de serveurs tout en garantissant à la fois :
-\begin{itemize}
-\item [\textbf{Cohérence :}] un contrat entre le développeur et la structure qui
-  spécifie comment cette dernière se comporte suivant les opérations effectuées
-  et leur ordonancement.
-\item [\textbf{Disponibilité :}] le ratio entre le temps effectif durant lequel
-  l'utilisateur accède à un service et le temps durant lequel il souhaite y
-  accèder.
-\item [\textbf{Tolérance aux pannes :}] les défaillances de serveurs
-  n'entrainent pas une panne générale du système.
-\end{itemize}
+
+\paragraph{Cohérence :} Un contrat entre le développeur et la structure qui
+spécifie comment cette dernière se comporte suivant les opérations effectuées et
+leur ordonancement.
+
+\paragraph{Disponibilité :} Le ratio entre le temps effectif durant lequel
+l'utilisateur accède à un service et le temps durant lequel il souhaite y
+accèder.
+
+\paragraph{Tolérance aux pannes :} Les défaillances de serveurs n'entrainent pas
+une panne générale du système.
 
 Face à ce constat, deux grandes familles de réplication : la réplication
 pessimiste cherche à donner l'illusion d'une donnée unique lorsque la
@@ -75,19 +76,20 @@ leurs spécifications sont proches de celles proposées dans un contexte
 non-réparti -- sans réplications.  Toutefois, avant qu'une modification ne soit
 réellement effectuée, il est nécessaire qu'elle soit validée. L'autorité
 décisionnelle diffère en fonction des approches :
-\begin{itemize}
-\item [\textbf{Autorité centrale~\cite{alsberg1976principle} :}] l'un des
-  serveurs est désigné responsable. Ceux qui souhaitent modifier la donnée sont
-  alors dans l'obligation de demander l'accès exclusif pendant la mise en place
-  de cette modification. Dans l'intervalle, les autres répliques ne peuvent
-  soumettre de modifications. Enfin, lorsque la modification est achevée, la
-  main est rendue au serveur qui peut autoriser d'autres modifications. On parle
-  de verrou (\emph{lock}).
-\item [\textbf{Quorum~\cite{gifford1979weighted} :}] un ensemble de serveurs est
-  désigné responsable. Chacune des modifications est soumise à un vote quant à
-  son acceptation. Au dessus d'un certain seuil de vote positif ou négatif, la
-  modification est autorisée ou non.
-\end{itemize}
+
+\paragraph{Autorité centrale~\cite{alsberg1976principle} :} Un serveur est
+désigné responsable. Ceux qui souhaitent modifier la donnée sont alors dans
+l'obligation de demander l'accès exclusif pendant la mise en place de cette
+modification. Dans l'intervalle, les autres répliques ne peuvent soumettre de
+modifications. Enfin, lorsque la modification est achevée, la main est rendue au
+serveur qui peut autoriser d'autres modifications. On parle de verrou
+(\emph{lock}).
+
+\paragraph{Quorum~\cite{gifford1979weighted} :} Un ensemble de serveurs est
+désigné responsable. Chacune des modifications est soumise à un vote quant à son
+acceptation. Au dessus d'un certain seuil de vote positif ou négatif, la
+modification est autorisée ou non.
+
 
 
 \begin{figure*}
@@ -150,18 +152,18 @@ les données lors des changements. En revanche, le critère de cohérence assur�
 est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
 états temporairement divergeant entre eux :
 
-\begin{itemize}
-\item [\textbf{Cohérence à terme~\cite{bailis2013eventual} :}] lorsque toutes
-  les modifications ont été reçues et appliquées par toutes les répliques,
-  celles-ci possèdent un état équivalent.
 
-  Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu réaliste
-  pour raisonner sur une exécution réelle, une définition plus précise porte sur
-  un sous-ensemble de ces modifications :
-\item [\textbf{Cohérence forte à terme~\cite{shapiro2011conflict} :}] les
-  répliques ayant réçu et appliqué les mêmes modifications possèdent un état
-  équivalent.
-\end{itemize}
+\paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
+modifications ont été reçues et appliquées par toutes les répliques, celles-ci
+possèdent un état équivalent.
+
+\noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu réaliste
+pour raisonner sur une exécution réelle, une définition plus précise porte sur
+un sous-ensemble de ces modifications :
+
+\paragraph{Cohérence forte à terme~\cite{shapiro2011conflict} :} Les répliques
+ayant réçu et appliqué les mêmes modifications possèdent un état équivalent.
+
 
 \begin{figure*}
   \centering
@@ -252,40 +254,39 @@ correction nécessite d'examiner chaque couple d'opérations ainsi que leurs
 paramètres. En conséquence, lors de l'écriture du
 papier~\cite{imine2003proving}, peu d'approches étaient réellement correctes.
 Les approches OT peuvent être divisées en deux classes :
-\begin{itemize}
-\item [\textbf{Les approches décentralisées~\cite{sun2009contextbased} :}]
-  Chaque client est aussi un serveur hébergeant une réplique
-  (cf. figure~\ref{repl:fig:otexample}). Chacune de ces entités doit être en
-  mesure d'effectuer les transformations d'elle-même. Parmi les prérequis à
-  cette tâche figure le méchanisme de détection de concurrence. En effet,
-  retrouver le contexte d'exécution revient à transformer l'opération reçu
-  contre toutes celles qui ont été intégrées sans avoir connaissance de
-  celle-ci. Malheureusement, cela requière le transport d'un vecteur
-  d'horloges~\cite{lamport1978time} -- ou consort -- avec chaque opération, qui
-  sont ensuite sauvegardés dans un historique d'opérations. Que ce soit en terme
-  de nombre d'utilisateurs ou en terme de nombre d'opérations, ces approches
-  passent difficilement à l'échelle. Le temps d'exécution d'une opération locale
-  est insignifiant, mais tout le reste des participants souffrent de quelques
-  opérations concurrentes.
 
-  Du reste, dans un environnement bien maitrisé, où les opérations arrivent très
-  rapidement à un groupe raisonnable de participants, alors ces approches
-  décentralisées deviennent inconcurrençables~\cite{mehdi2014merging}.
-\item [\textbf{Les approches centralisées~\cite{nichols1995high} :}] Elles
-  utilisent un serveur central afin de réarranger et diffuser les opérations de
-  tous les participants à tous les participants. La transformation s'en trouve
-  beaucoup moins coûteuse dès lors qu'un serveur s'interpose dans le
-  processus. Toutefois, la topologie elle-même implique plusieurs défauts, à
-  savoir, des problèmes concernant la confidentialité -- celui à qui appartient
-  le serveur possède les données -- des problèmes concernant le passage à
-  l'échelle -- le serveur supporte la charge de tous les participants -- des
-  problèmes de tolérance aux pannes -- le serveur constitue un point individuel
-  de défaillance.
+\paragraph{Les approches décentralisées~\cite{sun2009contextbased} :}
+Chaque client est aussi un serveur hébergeant une réplique
+(cf. figure~\ref{repl:fig:otexample}). Chacune de ces entités doit être en
+mesure d'effectuer les transformations d'elle-même. Parmi les prérequis à cette
+tâche figure le méchanisme de détection de concurrence. En effet, retrouver le
+contexte d'exécution revient à transformer l'opération reçu contre toutes celles
+qui ont été intégrées sans avoir connaissance de celle-ci. Malheureusement, cela
+requière le transport d'un vecteur d'horloges~\cite{lamport1978time} -- ou
+consort -- avec chaque opération, qui sont ensuite sauvegardés dans un
+historique d'opérations. Que ce soit en terme de nombre d'utilisateurs ou en
+terme de nombre d'opérations, ces approches passent difficilement à
+l'échelle. Le temps d'exécution d'une opération locale est insignifiant, mais
+tout le reste des participants souffrent de quelques opérations concurrentes.
 
-  Malgré tous ces défauts, les approches centralisées sont les plus courantes
-  aujourd'hui avec, notamment, les éditeurs collaboratifs bien connus tels que
-  Google Docs (\REF) ou Etherpad (\REF).
-\end{itemize}
+\noindent Du reste, dans un environnement bien maitrisé, où les opérations
+arrivent très rapidement à un groupe raisonnable de participants, alors ces
+approches décentralisées deviennent inconcurrençables~\cite{mehdi2014merging}.
+
+\paragraph{Les approches centralisées~\cite{nichols1995high} :} Elles utilisent
+un serveur central afin de réarranger et diffuser les opérations de tous les
+participants à tous les participants. La transformation s'en trouve beaucoup
+moins coûteuse dès lors qu'un serveur s'interpose dans le processus. Toutefois,
+la topologie elle-même implique plusieurs défauts, à savoir, des problèmes
+concernant la confidentialité -- celui à qui appartient le serveur possède les
+données -- des problèmes concernant le passage à l'échelle -- le serveur
+supporte la charge de tous les participants -- des problèmes de tolérance aux
+pannes -- le serveur constitue un point individuel de défaillance.
+
+\noindent Malgré tous ces défauts, les approches centralisées sont les plus
+courantes aujourd'hui avec, notamment, les éditeurs collaboratifs bien connus
+tels que Google Docs (\REF) ou Etherpad (\REF).
+
 
 \subsubsection{Structure de données sans résolutions de conflits}
 \label{repl:subsubsec:crdts}
@@ -304,24 +305,25 @@ basées sur des structures de données abstraites fournissant des opérations do
 les résultats commutent, et donc, ne générent pas de conflits, même en cas de
 concurrence.  Il en existe deux familles équivalentes mais proposant un
 compromis différent :
-\begin{itemize}
-\item [\textbf{Basée sur l'état :}] Lors d'une opération, l'état local change et
-  est envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu
-  et leur état propre. L'envoi d'un état est honéreux et doit être effectué avec
-  parcimonie. En revanche, puisqu'il est autonome (\emph{self-contained}), il ne
-  nécessite aucune garantie particulière quant aux moyens de diffusion.
-\item [\textbf{Basée sur les opérations :}] Lors d'une opération, son résultat
-  seul est envoyé aux autres répliques où il est intégré. Les résultats sont
-  envoyés les uns après les autres ce qui s'avère beaucoup moins coûteux que
-  l'état complet. En revanche, cela requière une diffusion fiable, i.e., toutes
-  les opérations doivent être inéluctablement reçues par tous les serveurs
-  hébergeant une réplique.
 
-  Les opérations doivent être commutatives
-  ($o_1 \times o_2 \Leftrightarrow o_2 \times o_1$), associatives
-  ($(o_1 \times o_2) \times o_3 \Leftrightarrow o_1 \times (o_2 \times o_3)$) et
-  idempotentes ($o_1 \times o_1 \Leftrightarrow o_1$).
-\end{itemize}
+\paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
+envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
+état propre. L'envoi d'un état est honéreux et doit être effectué avec
+parcimonie. En revanche, puisqu'il est autonome (\emph{self-contained}), il ne
+nécessite aucune garantie particulière quant aux moyens de diffusion.
+
+\paragraph{Basée sur les opérations :} Lors d'une opération, son résultat seul
+est envoyé aux autres répliques où il est intégré. Les résultats sont envoyés
+les uns après les autres ce qui s'avère beaucoup moins coûteux que l'état
+complet. En revanche, cela requière une diffusion fiable, i.e., toutes les
+opérations doivent être inéluctablement reçues par tous les serveurs hébergeant
+une réplique.
+
+\noindent Les opérations doivent être commutatives
+($o_1 \times o_2 \Leftrightarrow o_2 \times o_1$), associatives
+($(o_1 \times o_2) \times o_3 \Leftrightarrow o_1 \times (o_2 \times o_3)$) et
+idempotentes ($o_1 \times o_1 \Leftrightarrow o_1$).
+
 
 Des CRDTs existent pour différent types de structures tels que les compteurs,
 les ensembles, les graphes etc.\\
@@ -419,71 +421,74 @@ entendu, ces marques sont cachées à l'utilisateur et n'apparaissent que dans l
 structure sous-jacente. L'impact sur les performances en reste néanmoins
 présent.
 
-\begin{itemize}
-\item [\textbf{WOOT~\cite{oster2006data} :}] est le premier représentant
-  historique des CRDTs pour séquences suivit par deux extensions
-  \textbf{WOOTO~\cite{weiss2007wooki}} et
-  \textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
-  identifiant référence les identifiants voisins à l'insertion.  Lorsqu'ils sont
-  rassemblés, les identifiants peuvent être ordonnés grâce à un diagramme de
-  Hasse (\REF). Toutefois, cet ordonnancement requière des deux bornes
-  adjacentes qu'elles soient
-  \begin{inparaenum}[(i)]
-  \item déjà intégrées et
-  \item toujours présentes.
-  \end{inparaenum}
-  D'où les suppressions réelles impossibles.
 
-  \begin{figure}
-    \centering
-    \input{input/replication/figwootexample.tex}
-    \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
-      représentant la séquence 'QWERTY'. Bien que supprimé, le caractère Z est
-      indispensable au bon ordonnancement de la séquence.}
-  \end{figure}
+\paragraph{WOOT~\cite{oster2006data} :} est le premier représentant historique
+des CRDTs pour séquences suivit par deux extensions
+\textbf{WOOTO~\cite{weiss2007wooki}} et
+\textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
+identifiant référence les identifiants voisins à l'insertion.  Lorsqu'ils sont
+rassemblés, les identifiants peuvent être ordonnés grâce à un diagramme de Hasse
+(\REF). Toutefois, cet ordonnancement requière des deux bornes adjacentes
+qu'elles soient
+\begin{inparaenum}[(i)]
+\item déjà intégrées et
+\item toujours présentes.
+\end{inparaenum}
+D'où les suppressions réelles impossibles.
 
-  La figure~\ref{repl:fig:wootexample} illustre la nécessité de conserver les
-  pierres tombales. Elle montre le diagramme de Hasse généré lors du scenario
-  suivant : Tout d'abord, un utilisateur écrit 'AZERTY'. Ensuite, les deux
-  premiers caractères sont supprimés afin d'être remplacés par les caractères
-  'QW'. La séquence finale est 'QWERTY'. Toutefois, les identifiants ne sont pas
-  modifiables, et l'identifiant du caractère 'E' référence l'identifiant de 'Z',
-  lui-même référençant l'identifiant de 'A'. Par conséquent, supprimer
-  complètement les identifiants de 'A' et/ou de 'Z' revient à rendre
-  l'identifiant de 'E' non positionnable, et tout ceux qui en dépendent par
-  transitivité.
+\begin{figure}
+  \centering
+  \input{input/replication/figwootexample.tex}
+  \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
+    représentant la séquence 'QWERTY'. Bien que supprimé, le caractère Z est
+    indispensable au bon ordonnancement de la séquence.}
+\end{figure}
 
-\item [\textbf{Causal tree~\cite{grishchenko2010deep} :}] caractérise
-  explicitement les relations causales grâce à une réprésentation sous forme
-  d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la
-  dernière opération observée. En parcourant l'arbre et en appliquant les
-  opérations, la séquence peut être retrouvée. Toutefois, les identifiants sont
-  des horloges vectorielles (\emph{vector clock}) dont la taille est prohibitive
-  (\REF). De plus, il est nécessaire de conserver tous les noeuds de cet arbre
-  causal au cas où une opération y ferait référence.
-\item [\textbf{Partial persistent sequence~\cite{wu2010partial} :}] definit les
-  identifiants dans l'ensemble des nombres rationnels auxquel est ajoutée une
-  limite quant à leur précision. Hélas, cette limite contraint la taille du
-  document maximale. Sans cette troncature, l'approche serait susceptible
-  d'appartenir à l'autre famille de CRDTs pour séquence.
-\item [\textbf{Replicated growable array~\cite{roh2011replicated} :}] représente
-  la séquence sous forme de liste supportant les opérations concurrentes. Une
-  table de hachage apporte un accès rapide aux éléments grâce à leurs
-  identifiants. Les éléments incluent une référence au voisin qu'ils précèdent
-  lors de leur insertion. Toutefois, pour ne jamais briser la chaine ainsi
-  construite, les éléments supprimés restes présents indéfinitivement mais
-  cachés de l'utilisateur.
-\item [\textbf{String-wise~\cite{yu2012stringwise} :}] cible principalement les
-  chaines de caractères pouvant être subdivisées lors d'opérations jusqu'à
-  devenir une série de caractères. Les identifiants référencent alors les
-  chaines adjacentes à l'insertion ainsi que les autres éléments de la chaines
-  si subdivision il y a. De la même manière que pour les approches précédentes,
-  les références rendent les suppressions réelles impossibles.
-\item [\textbf{DiCE~\cite{conway2014language} :}] concentre principalement ses
-  efforts sur les garanties de confluence de la séquence. Chaque identifiant
-  référence le voisin qu'il précède à l'insertion. L'ordre des éléments est
-  alors fonction de ces relations de positionnement relatif, et de causalité.
-\end{itemize}
+\noindent La figure~\ref{repl:fig:wootexample} illustre la nécessité de
+conserver les pierres tombales. Elle montre le diagramme de Hasse généré lors du
+scenario suivant : Tout d'abord, un utilisateur écrit 'AZERTY'. Ensuite, les
+deux premiers caractères sont supprimés afin d'être remplacés par les caractères
+'QW'. La séquence finale est 'QWERTY'. Toutefois, les identifiants ne sont pas
+modifiables, et l'identifiant du caractère 'E' référence l'identifiant de 'Z',
+lui-même référençant l'identifiant de 'A'. Par conséquent, supprimer
+complètement les identifiants de 'A' et/ou de 'Z' revient à rendre l'identifiant
+de 'E' non positionnable, et tout ceux qui en dépendent par transitivité.
+
+\paragraph{Causal tree~\cite{grishchenko2010deep} :} caractérise explicitement
+les relations causales grâce à une réprésentation sous forme d'arbre. Ainsi,
+chaque opération est accompagnée de l'identifiant de la dernière opération
+observée. En parcourant l'arbre et en appliquant les opérations, la séquence
+peut être retrouvée. Toutefois, les identifiants sont des horloges vectorielles
+(\emph{vector clock}) dont la taille est prohibitive (\REF). De plus, il est
+nécessaire de conserver tous les noeuds de cet arbre causal au cas où une
+opération y ferait référence.
+
+\paragraph{Partial persistent sequence~\cite{wu2010partial} :} definit les
+identifiants dans l'ensemble des nombres rationnels auxquel est ajoutée une
+limite quant à leur précision. Hélas, cette limite contraint la taille du
+document maximale. Sans cette troncature, l'approche serait susceptible
+d'appartenir à l'autre famille de CRDTs pour séquence.
+
+\paragraph{Replicated growable array~\cite{roh2011replicated} :} représente la
+séquence sous forme de liste supportant les opérations concurrentes. Une table
+de hachage apporte un accès rapide aux éléments grâce à leurs identifiants. Les
+éléments incluent une référence au voisin qu'ils précèdent lors de leur
+insertion. Toutefois, pour ne jamais briser la chaine ainsi construite, les
+éléments supprimés restes présents indéfinitivement mais cachés de
+l'utilisateur.
+
+\paragraph{String-wise~\cite{yu2012stringwise} :} cible principalement les
+chaines de caractères pouvant être subdivisées lors d'opérations jusqu'à devenir
+une série de caractères. Les identifiants référencent alors les chaines
+adjacentes à l'insertion ainsi que les autres éléments de la chaines si
+subdivision il y a. De la même manière que pour les approches précédentes, les
+références rendent les suppressions réelles impossibles.
+
+\paragraph{DiCE~\cite{conway2014language} :} concentre principalement ses
+efforts sur les garanties de confluence de la séquence. Chaque identifiant
+référence le voisin qu'il précède à l'insertion. L'ordre des éléments est alors
+fonction de ces relations de positionnement relatif, et de causalité.
+
 
 Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
 éléments de séquences répliquées, toutes ces approches s'avèrent pratiques
@@ -503,21 +508,19 @@ Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés est une solution potentielle aux
 dégradations de performances :
 
-\begin{itemize}
-\item [\textbf{ramasse-miètes~\cite{abdullahi1998garbage} :}] permet de nettoyer
-  une structure de données en vidant de la mémoire les objets qui ne sont plus
-  accessibles par le programme. Le contexte réparti étend le cadre du programme
-  en considérant le local et le distant. Ainsi, supprimer réellement un élément
-  de la séquence revient à s'interroger : \emph{Est-ce que
-    \begin{inparaenum}[(i)]
-    \item toutes les répliques ont supprimé l'élément et
-    \item est-ce que tous les éléments référençant l'élément supprimé ont été
-      intégré localement?
-    \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une
-  réponse à ces deux questions. D'autant plus lorsque les possesseurs de
-  réplique ne sont pas perpétuellement joignables. Des problématiques
-  appartenant jusqu'alors à la réplication pessimiste apparaissent
-  (cf. §\ref{repl:subsubsec:pessimistic}).
+\paragraph{ramasse-miètes~\cite{abdullahi1998garbage} :} permet de nettoyer une
+structure de données en vidant de la mémoire les objets qui ne sont plus
+accessibles par le programme. Le contexte réparti étend le cadre du programme en
+considérant le local et le distant. Ainsi, supprimer réellement un élément de la
+séquence revient à s'interroger : \emph{Est-ce que
+  \begin{inparaenum}[(i)]
+  \item toutes les répliques ont supprimé l'élément et
+  \item est-ce que tous les éléments référençant l'élément supprimé ont été
+    intégré localement?
+  \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une réponse
+à ces deux questions. D'autant plus lorsque les possesseurs de réplique ne sont
+pas perpétuellement joignables. Des problématiques appartenant jusqu'alors à la
+réplication pessimiste apparaissent (cf. §\ref{repl:subsubsec:pessimistic}).
 % \item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
 %   topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
 %   coeur décisionnel prend en charge les choix de suppression réelle des objets.
@@ -525,7 +528,6 @@ dégradations de performances :
 %   étant toujours accessibles, les décisions peuvent alors être prises de manière
 %   fiable. Le reste des participants se conforme alors aux décisions prises par
 %   le coeur \TODO{au risque de perdre certaines de leurs modifications}.
-\end{itemize}
 
 Comme alternative, il existe une famille de CRDTs conçue pour le type séquence
 et dont le bon fonctionnement ne nécessite pas de référencer directement
@@ -656,7 +658,7 @@ décale le 'Y' à l'indice 1. La séquence en résultant est donc 'TY'. L'insert
 du 'R' en position 0 décale toutes lettres de droite etc.
 
 
-\textbf{Premier cas :} L'opération d'insertion (Q, 0) est transformée en
+\paragraph{Premier cas :} L'opération d'insertion (Q, 0) est transformée en
 \textsc{insert}($\vdash$, Q, $\dashv$). Par conséquent, le chemin doit être
 alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation
 consiste à reserver la branche la plus à gauche et de plus petite taille, le
@@ -668,7 +670,7 @@ puisque l'arbre est prévu pour accueillir 8 identifiants lorsque seulement 6
 sont alloués.
 
 
-\textbf{Second cas :} De la même manière, l'opération d'insertion (Y, 0) est
+\paragraph{Second cas :} De la même manière, l'opération d'insertion (Y, 0) est
 transformée en \textsc{insert}($\vdash$, Y, $\dashv$) dont le résultat est le
 chemin [1]. Lors de l'insertion (T, 0), un chemin est requis entre la borne
 virtuelle du début de séquence [0] et la borne du caractère 'Y' [1]. Ainsi, la
@@ -687,66 +689,67 @@ d'une séquence classique à des identifiants non-mutable de taille variable d'u
 séquence répliquée a un coût qu'il est nécéssaire d'analyser afin de proposer
 une fonction d'allocation efficace.
 
-\begin{itemize}
-\item [\textbf{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
-      weiss2010logootundo} :}] représente originellement ses identifiants sous
-  forme de liste sans les factoriser sous forme d'arbre. Cette représentation
-  possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
-  consommation en espace élevée. En effet, la traduction d'une opération locale
-  $\textsc{insert}(element,\, index)$ à
-  $\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$
-  s'effectue en temps constant. D'un autre coté, les identifiants possèdent des
-  chemins dont chaque élément est un entier encodé sur 64 bits correspondant à
-  une arité de $2^{64}$ dans le modèle d'arbre. Un chemin dans $\mathcal{P}$ est
-  donc une succession d'entiers compris entre 0 et $(2^{64}-1)$ :
-  $\mathbb{N}_{<2^{64}}.\mathbb{N}_{<2^{64}}\ldots\mathbb{N}_{<2^{64}}$.
-  L'ordre total utilisé pour recouvrer la séquence d'éléments est un ordre
-  lexicographique. Ayant fait l'assomption que les documents étaient édités de
-  gauche à droite, la stratégie s'avère inefficace lorsque le comportement
-  d'édition va à l'opposé de cette hypothèse. Le pire cas est déjà illustré dans
-  la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
-  identifiant est linéaire, en résulte une complexité quadratique par rapport à
-  la taille du document.
-\item [\textbf{Logoot split~\cite{mehdi2014merging} :}] étend Logoot lui offrant
-  la possibilité d'adapter la granularité de l'élément ciblé. Bien que tous les
-  exemples précédent fassent mention de caractères comme éléments de la
-  séquence, Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à
-  la section etc. Cette extension prend pour granularité la chaine de caractère
-  avec la liberté de la séparer si besoin est. Le nombre d'identifiants à
-  allouer s'en trouve diminué, et par conséquent, le traffic généré aussi.
-\item [\textbf{Treedoc~\cite{letia2009crdts, preguica2009commutative} :}]
-  représente le document sous forme d'arbre binaire avec parcours infixe.
-  
-  \begin{figure*}
-    \begin{center}
-      % \subfloat[Augmentation rapide de la taille des chemins alloués par Treedoc]
-      % [Augmentation rapide de la taille des chemins alloués par Treedoc]
-      % {\input{input/replication/treedocexampleA.tex}}
-      % \hspace{10pt}
-      % \subfloat[Optimisation dans Treedoc]
-      % [Optimisation pour l'édition de gauche à droite dans Treedoc]
-      % {\input{input/replication/treedocexampleB.tex}}      
-      \input{input/replication/figtreedocexample.tex}
-      \caption{\label{repl:fig:treedocexample}Example de sequence dont les
-        chemins sont alloués grâce à Treedoc.}
-    \end{center}
-  \end{figure*}
 
-  La figure~\ref{repl:fig:treedocexample} montre un exemple de séquence. Si l'on
-  considère un élément 'W' dont le chemin est [], alors un élément 'Q' dont le
-  chemin est [0] précède 'W', et un élément 'E' dont le chemin est [1] succède
-  'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à gauche
-    de}, et suffixer le chemin d'un 1 signifie \emph{à droite de}. Dans cet
-  example, le caractère 'Y' obtient le chemin [1.1.1.1].
+\paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
+    weiss2010logootundo} :} représente originellement ses identifiants sous
+forme de liste sans les factoriser sous forme d'arbre. Cette représentation
+possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
+consommation en espace élevée. En effet, la traduction d'une opération locale
+$\textsc{insert}(element,\, index)$ à
+$\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$ s'effectue
+en temps constant. D'un autre coté, les identifiants possèdent des chemins dont
+chaque élément est un entier encodé sur 64 bits correspondant à une arité de
+$2^{64}$ dans le modèle d'arbre. Un chemin dans $\mathcal{P}$ est donc une
+succession d'entiers compris entre 0 et $(2^{64}-1)$ :
+$\mathbb{N}_{<2^{64}}.\mathbb{N}_{<2^{64}}\ldots\mathbb{N}_{<2^{64}}$.  L'ordre
+total utilisé pour recouvrer la séquence d'éléments est un ordre
+lexicographique. Ayant fait l'assomption que les documents étaient édités de
+gauche à droite, la stratégie s'avère inefficace lorsque le comportement
+d'édition va à l'opposé de cette hypothèse. Le pire cas est déjà illustré dans
+la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
+identifiant est linéaire, en résulte une complexité quadratique par rapport à la
+taille du document.
+
+\paragraph{Logoot split~\cite{mehdi2014merging} :} étend Logoot lui offrant la
+possibilité d'adapter la granularité de l'élément ciblé. Bien que tous les
+exemples précédent fassent mention de caractères comme éléments de la séquence,
+Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à la section
+etc. Cette extension prend pour granularité la chaine de caractère avec la
+liberté de la séparer si besoin est. Le nombre d'identifiants à allouer s'en
+trouve diminué, et par conséquent, le traffic généré aussi.
+\paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :}
+représente le document sous forme d'arbre binaire avec parcours infixe.
   
-  Tout comme l'approche Logoot, les observations effectuées sur un
-  corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
-  l'édition de gauche à droite. Elles conduisent à proposer une heuristique
-  selon laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
-  éditions à venir. Toutefois, le problème demeure lorsque le comportement
-  d'édition ne coopère pas. L'identifiant peut être de taille linéaire comparée
-  à la taille du document.
-\end{itemize}
+\begin{figure*}
+  \begin{center}
+    % \subfloat[Augmentation rapide de la taille des chemins alloués par Treedoc]
+    % [Augmentation rapide de la taille des chemins alloués par Treedoc]
+    % {\input{input/replication/treedocexampleA.tex}}
+    % \hspace{10pt}
+    % \subfloat[Optimisation dans Treedoc]
+    % [Optimisation pour l'édition de gauche à droite dans Treedoc]
+    % {\input{input/replication/treedocexampleB.tex}}      
+    \input{input/replication/figtreedocexample.tex}
+    \caption{\label{repl:fig:treedocexample}Example de sequence dont les
+      chemins sont alloués grâce à Treedoc.}
+  \end{center}
+\end{figure*}
+
+\noindent La figure~\ref{repl:fig:treedocexample} montre un exemple de séquence. Si l'on
+considère un élément 'W' dont le chemin est [], alors un élément 'Q' dont le
+chemin est [0] précède 'W', et un élément 'E' dont le chemin est [1] succède
+'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à gauche de},
+et suffixer le chemin d'un 1 signifie \emph{à droite de}. Dans cet example, le
+caractère 'Y' obtient le chemin [1.1.1.1].
+  
+\noindent Tout comme l'approche Logoot, les observations effectuées sur un
+corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
+l'édition de gauche à droite. Elles conduisent à proposer une heuristique selon
+laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
+éditions à venir. Toutefois, le problème demeure lorsque le comportement
+d'édition ne coopère pas. L'identifiant peut être de taille linéaire comparée à
+la taille du document.
+
 
 
 %%% Local Variables:
