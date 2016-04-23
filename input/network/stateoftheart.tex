@@ -19,128 +19,123 @@ Les protocoles d'échantillonnage aléatoire de pairs peuplant des vues dont la
 taille est constante possèdent un socle commun à savoir l'échanges périodiques
 de voisinages.
 
-\begin{itemize}
-\item [\textbf{\CYCLON~\cite{voulgaris2005cyclon} :}] est un protocole où chaque
-  nœud possède une vue partielle dont chaque adresse logique est associée à un
-  âge. Régulièrement, les nœuds initient un mélange (\emph{shuffling}) avec leur
-  voisin le plus âgé. Si la communication est possible, le processus est amorcé
-  et l'âge de tous les voisins est incrémenté, sinon l'adresse est
-  supprimée. Cela permet de supprimer les nœuds considérés comme partis.
+\paragraph{\CYCLON~\cite{voulgaris2005cyclon} :} est un protocole où chaque nœud
+possède une vue partielle dont chaque adresse logique est associée à un
+âge. Régulièrement, les nœuds initient un mélange (\emph{shuffling}) avec leur
+voisin le plus âgé. Si la communication est possible, le processus est amorcé et
+l'âge de tous les voisins est incrémenté, sinon l'adresse est supprimée. Cela
+permet de supprimer les nœuds considérés comme partis.
 
-  Lors de ce mélange, le nœud envoit un nombre prédéfinit de ses adresses
-  logiques au nœud choisit, en prenant soin de remplacer l'adresse de son
-  homologue par la sienne propre. Les adresses sont choisies aléatoirement. À la
-  reception, son vis-à-vis choisit un nombre d'adresses équivalent et les lui
-  envoie. Les deux nœuds intègrent alors l'ensemble qu'ils ont réçu. Lorsque
-  l'ensemble obtenu est trop grand pour la taille de vue partielle prédéfinie,
-  des adresses sont supprimées en conservant de préférence les adresses réçues
-  et en supprimant les duplicats.
+\noindent Lors de ce mélange, le nœud envoit un nombre prédéfinit de ses
+adresses logiques au nœud choisit, en prenant soin de remplacer l'adresse de son
+homologue par la sienne propre. Les adresses sont choisies aléatoirement. À la
+reception, son vis-à-vis choisit un nombre d'adresses équivalent et les lui
+envoie. Les deux nœuds intègrent alors l'ensemble qu'ils ont réçu. Lorsque
+l'ensemble obtenu est trop grand pour la taille de vue partielle prédéfinie, des
+adresses sont supprimées en conservant de préférence les adresses réçues et en
+supprimant les duplicats.
   
-  \begin{figure}
-    \centering
-    \subfloat[Choix aléatoire des pairs dans \CYCLON.]
-    [\label{net:fig:cyclonexampleA} L'initiateur du mélange choisit d'envoyer $n_5$ et lui-même à son plus vieux voisin $n_2$. En retour, il lui propose $n_6$ et $n_7$.]
-    {\input{input/network/cyclonexampleA.tex}}
-    \hspace{35pt}
-    \subfloat[Établissement des connexions après le mélange dans \CYCLON.]
-    [\label{net:fig:cyclonexampleB} Les arcs sont échangés de part et d'autre.]
-    {\input{input/network/cyclonexampleB.tex}}
-    \caption{\label{net:fig:cyclonexample} Exemple de mélange dans \CYCLON. Pour
-      améliorer la lisibilité, seuls les vues partielles du $n_1$ et $n_2$ sont
-      explicitées.}
-  \end{figure}
+\begin{figure}
+  \centering
+  \subfloat[Choix aléatoire des pairs dans \CYCLON.]
+  [\label{net:fig:cyclonexampleA} L'initiateur du mélange choisit d'envoyer $n_5$ et lui-même à son plus vieux voisin $n_2$. En retour, il lui propose $n_6$ et $n_7$.]
+  {\input{input/network/cyclonexampleA.tex}}
+  \hspace{35pt}
+  \subfloat[Établissement des connexions après le mélange dans \CYCLON.]
+  [\label{net:fig:cyclonexampleB} Les arcs sont échangés de part et d'autre.]
+  {\input{input/network/cyclonexampleB.tex}}
+  \caption{\label{net:fig:cyclonexample} Exemple de mélange dans \CYCLON. Pour
+    améliorer la lisibilité, seuls les vues partielles du $n_1$ et $n_2$ sont
+    explicitées.}
+\end{figure}
   
-  La figure~\ref{net:fig:cyclonexample} décrit un exemple de mélange initié par
-  le nœud $n_1$. Dans cet exemple, les vues partielles sont configurées pour
-  accueillir 4 arcs et en échanger 2 pendant les mélanges. La
-  figure~\ref{net:fig:cyclonexampleA} montre que $n_1$ choisit son plus vieux
-  voisin afin d'initier l'échange, à savoir $n_2$. Il incorpore dans l'échange
-  sa propre identité ainsi que celle d'un arc connu aléatoirement. Le nœud $n_2$
-  réçoit la demande de mélange et choisit 2 nœuds aléatoirement, ici $n_6$ et
-  $n_7$ qu'il envoit à son tour. La figure~\ref{net:fig:cyclonexampleB} montre
-  que les nœuds participants au mélange ont supprimé les arcs qu'ils ont envoyé
-  et ajouté ceux nouvellement reçu. En particulier, l'inversion de l'arc ayant
-  permi le mélange garantit que le graphe reste connexe.
+\noindent La figure~\ref{net:fig:cyclonexample} décrit un exemple de mélange
+initié par le nœud $n_1$. Dans cet exemple, les vues partielles sont configurées
+pour accueillir 4 arcs et en échanger 2 pendant les mélanges. La
+figure~\ref{net:fig:cyclonexampleA} montre que $n_1$ choisit son plus vieux
+voisin afin d'initier l'échange, à savoir $n_2$. Il incorpore dans l'échange sa
+propre identité ainsi que celle d'un arc connu aléatoirement. Le nœud $n_2$
+réçoit la demande de mélange et choisit 2 nœuds aléatoirement, ici $n_6$ et
+$n_7$ qu'il envoit à son tour. La figure~\ref{net:fig:cyclonexampleB} montre que
+les nœuds participants au mélange ont supprimé les arcs qu'ils ont envoyé et
+ajouté ceux nouvellement reçu. En particulier, l'inversion de l'arc ayant permi
+le mélange garantit que le graphe reste connexe.
 
-\item [\textbf{Newscast~\cite{tolgyeski2009adaptive} :}] est un protocole où les
-  vues partielles associent à chaque adresse logique une estampille
-  (\emph{timestamp}). Périodiquement, les nœuds de Newscast effectuent un
-  mélange périodique. Pour cela, ils choisissent l'un de leurs voisins
-  aléatoirement et envoient la totalité de leur vue partielle à laquelle est
-  ajoutée leur propre adresse associée à une estampille à jour. Lors de la
-  récéption, leur homologue en fait de même. Tout deux fusionnent leur table de
-  voisinnage de telle sorte que seules les entrées les plus récentes selon
-  l'estampille sont conservées.
+\paragraph{Newscast~\cite{tolgyeski2009adaptive} :} est un protocole où les vues
+partielles associent à chaque adresse logique une estampille
+(\emph{timestamp}). Périodiquement, les nœuds de Newscast effectuent un mélange
+périodique. Pour cela, ils choisissent l'un de leurs voisins aléatoirement et
+envoient la totalité de leur vue partielle à laquelle est ajoutée leur propre
+adresse associée à une estampille à jour. Lors de la récéption, leur homologue
+en fait de même. Tout deux fusionnent leur table de voisinnage de telle sorte
+que seules les entrées les plus récentes selon l'estampille sont conservées.
 
-  Un nœud qui quitte le réseau n'effectue plus ce mélange périodique et ainsi
-  n'annonce plus sa présence au reste du réseau. Petit à petit, les vues
-  partielles le contenant se débarassent de l'adresse logique menant à lui car
-  obsolète comparativement à celles nouvellement réçues.
+\noindent Un nœud qui quitte le réseau n'effectue plus ce mélange périodique et
+ainsi n'annonce plus sa présence au reste du réseau. Petit à petit, les vues
+partielles le contenant se débarassent de l'adresse logique menant à lui car
+obsolète comparativement à celles nouvellement réçues.
 
-  Les pertes de messages dûes à la non-fiabilité des communications mettent en
-  dangers la distribution des arcs. Par exemple, si un message sur deux est
-  perdu lorsqu'un certain nœuds tente de communiquer, il perd tout autant
-  d'occasions de s'annoncer au réseau. Par conséquent, il encourt le risque
-  d'être évincé de certaines vues partielles, voir de disparaître
-  complètement. En d'autres termes, le nœud est moins bien connecté que les
-  autres à cause de ces messages perdus. Newscast propose de compenser
-  cela. Ainsi, si un nœud perd un message sur deux, il emet deux fois plus. La
-  distribution des arcs s'en trouve ajustée.
+\noindent Les pertes de messages dûes à la non-fiabilité des communications
+mettent en dangers la distribution des arcs. Par exemple, si un message sur deux
+est perdu lorsqu'un certain nœuds tente de communiquer, il perd tout autant
+d'occasions de s'annoncer au réseau. Par conséquent, il encourt le risque d'être
+évincé de certaines vues partielles, voir de disparaître complètement. En
+d'autres termes, le nœud est moins bien connecté que les autres à cause de ces
+messages perdus. Newscast propose de compenser cela. Ainsi, si un nœud perd un
+message sur deux, il emet deux fois plus. La distribution des arcs s'en trouve
+ajustée.
 
-  \begin{figure}
-    \centering
-    \subfloat[Initiation du mélange dans Newscast.]
-    [\label{net:fig:newscastexampleA} L'initiateur du mélange $n_2$ aléatoirement et lui envoit sa vue à laquelle il s'ajoute avec une estampille à jour. À la reception, $n_2$ en fait de même.]
-    {\input{input/network/newscastexampleA.tex}}
-    \hspace{35pt}
-    \subfloat[Établissement des connexions après le mélange dans Newscast.]
-    [\label{net:fig:newscastexampleB} Les arcs sont échangés de part et d'autre en conservant les estampilles les plus récentes.]
-    {\input{input/network/newscastexampleB.tex}}
-    \caption{\label{net:fig:newscastexample} Exemple de mélange dans
-      Newscast. Ici, les estampilles sont simplement formatées hh:mm.}
-  \end{figure}
+\begin{figure}
+  \centering
+  \subfloat[Initiation du mélange dans Newscast.]
+  [\label{net:fig:newscastexampleA} L'initiateur du mélange $n_2$ aléatoirement et lui envoit sa vue à laquelle il s'ajoute avec une estampille à jour. À la reception, $n_2$ en fait de même.]
+  {\input{input/network/newscastexampleA.tex}}
+  \hspace{35pt}
+  \subfloat[Établissement des connexions après le mélange dans Newscast.]
+  [\label{net:fig:newscastexampleB} Les arcs sont échangés de part et d'autre en conservant les estampilles les plus récentes.]
+  {\input{input/network/newscastexampleB.tex}}
+  \caption{\label{net:fig:newscastexample} Exemple de mélange dans
+    Newscast. Ici, les estampilles sont simplement formatées hh:mm.}
+\end{figure}
 
-  La figure~\ref{net:fig:newscastexample} montre un exemple de mélange avec le
-  protocole Newscast. Là encore, la taille des vues partielles est fixée à 4
-  entrées. Le pair $n_1$ initie le mélange avec un voisin aléatoire $n_2$. Il
-  envoit l'intégralité de sa vue à laquelle il s'ajoute avec l'estampille
-  actuelle 13:18. Le nœud $n_2$ le reçoit et en fait de même. Les deux nœuds
-  $n_1$ et $n_2$ conservent les quatres arcs les plus récents qu'ils possèdent,
-  à savoir les arcs vers leur homologue, $n_4$, $n_5$ et $n_9$. La
-  figure~\ref{net:fig:newscastexampleB} nous permet de remarquer que le réseau
-  semble collapser. En particulier, certains pairs ne sont plus référencés ni
-  par $n_1$, ni par $n_2$. Toutefois, il ne s'agit là que de la représentation
-  locale au mélange. Globalement, la topologie résultante est proche de celle
-  des graphes aléatoires.
+\noindent La figure~\ref{net:fig:newscastexample} montre un exemple de mélange
+avec le protocole Newscast. Là encore, la taille des vues partielles est fixée à
+4 entrées. Le pair $n_1$ initie le mélange avec un voisin aléatoire $n_2$. Il
+envoit l'intégralité de sa vue à laquelle il s'ajoute avec l'estampille actuelle
+13:18. Le nœud $n_2$ le reçoit et en fait de même. Les deux nœuds $n_1$ et $n_2$
+conservent les quatres arcs les plus récents qu'ils possèdent, à savoir les arcs
+vers leur homologue, $n_4$, $n_5$ et $n_9$. La
+figure~\ref{net:fig:newscastexampleB} nous permet de remarquer que le réseau
+semble collapser. En particulier, certains pairs ne sont plus référencés ni par
+$n_1$, ni par $n_2$. Toutefois, il ne s'agit là que de la représentation locale
+au mélange. Globalement, la topologie résultante est proche de celle des graphes
+aléatoires.
 
-\item [\textbf{Lpbcast~\cite{eugster2003lightweight} :}] est le diminutif de
-  \emph{lightweight probabilistic broadcast}. C'est un protocole dont les vues
-  partielles ne comprennent que des adresses logiques. C'est lorsqu'un pair
-  diffuse un message au réseau que les vues sont mises à jour. Chaque message
-  comporte un ensemble borné d'identités de nœuds ayant quitté le réseau, et un
-  ensemble borné d'identités de nœuds échantillonnés au cours du cheminement du
-  message. Si aucun message n'a été réçu ni envoyé dans un certain intervalle de
-  temps, une diffusion est automatiquement générée afin d'activer le méchanisme
-  de mélange.
+\paragraph{Lpbcast~\cite{eugster2003lightweight} :} est le diminutif de
+\emph{lightweight probabilistic broadcast}. C'est un protocole dont les vues
+partielles ne comprennent que des adresses logiques. C'est lorsqu'un pair
+diffuse un message au réseau que les vues sont mises à jour. Chaque message
+comporte un ensemble borné d'identités de nœuds ayant quitté le réseau, et un
+ensemble borné d'identités de nœuds échantillonnés au cours du cheminement du
+message. Si aucun message n'a été réçu ni envoyé dans un certain intervalle de
+temps, une diffusion est automatiquement générée afin d'activer le méchanisme de
+mélange.
 
-  Lors de la réception de tels messages, un nœud peuple sa propre vue partielle
-  des nouveaux éléments présent dans le message avant de la réajuster à la
-  taille maximale autorisée en supprimant aléatoirement des arcs.
+\noindent Lors de la réception de tels messages, un nœud peuple sa propre vue
+partielle des nouveaux éléments présent dans le message avant de la réajuster à
+la taille maximale autorisée en supprimant aléatoirement des arcs.
 
-\item [\textbf{HyParView~\cite{leitao2007dependable} :}] est un protocole
-  possédant deux vues partielles. La première est active et est utilisée lors de
-  l'émission de messages au réseau. La seconde est passive et sert à remplacer
-  les arcs obsolètes de la vue active, e.g., lors d'une défaillance ou d'un
-  départ volontaire.  La vue active est considérablement plus petite que la vue
-  passive et les arcs compris dans cette première sont vérifiés à chaque message
-  émit.
+\paragraph{HyParView~\cite{leitao2007dependable} :} est un protocole possédant
+deux vues partielles. La première est active et est utilisée lors de l'émission
+de messages au réseau. La seconde est passive et sert à remplacer les arcs
+obsolètes de la vue active, e.g., lors d'une défaillance ou d'un départ
+volontaire.  La vue active est considérablement plus petite que la vue passive
+et les arcs compris dans cette première sont vérifiés à chaque message émit.
 
-  Lors d'un mélange, les arcs contenus dans les deux vues sont sujets à échange
-  dans le but de supprimer les nœuds défaillants de toutes les vues
-  passives. Similairement à \CYCLON, les arcs privilégiés sont ceux nouvellement
-  réçus. 
-\end{itemize}
-
+\noindent Lors d'un mélange, les arcs contenus dans les deux vues sont sujets à
+échange dans le but de supprimer les nœuds défaillants de toutes les vues
+passives. Similairement à \CYCLON, les arcs privilégiés sont ceux nouvellement
+reçus.
 
 
 \subsection{Taille variable}
@@ -149,99 +144,95 @@ de voisinages.
 La famille de protocoles d'échantillonnage aléatoire de pairs peuplant des vues
 dont la taille n'est pas définie au préalable a pour seul représentant :
 
-\begin{itemize}
-\item [\textbf{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :}] est l'acronyme
-  de \emph{SCAlable Membership Protocol}. Il s'agit d'un protocole
-  d'échantillonnage associant une réaction à certains évenements. En
-  particulier, l'entrée dans le réseau doit permettre d'augmenter la taille
-  moyenne des vues partielles. Cette augmentation est logarithmique et
-  correspond au seuil précis $\Theta (|\mathcal{N}|\log |\mathcal{N}|)$ des
-  graphes aléatoires. Le départ d'un nœud doit entrainer une équivalente
-  diminution.
+\paragraph{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :} est l'acronyme de
+\emph{SCAlable Membership Protocol}. Il s'agit d'un protocole d'échantillonnage
+associant une réaction à certains évenements. En particulier, l'entrée dans le
+réseau doit permettre d'augmenter la taille moyenne des vues partielles. Cette
+augmentation est logarithmique et correspond au seuil précis
+$\Theta (|\mathcal{N}|\log |\mathcal{N}|)$ des graphes aléatoires. Le départ
+d'un nœud doit entrainer une équivalente diminution.
 
-  Les pairs utilisant \SCAMP maintiennent deux vues partielles correspondants
-  aux arcs entrant et aux arcs sortant.
+\noindent Les pairs utilisant \SCAMP maintiennent deux vues partielles
+correspondants aux arcs entrant et aux arcs sortant.
 
-  Lorsque un nœud rejoins le réseau, il contacte un membre qu'il ajoute
-  directement à sa vue partielle. Ce contact annonce ensuite le nouveau venu au
-  réseau. Pour ce faire, il crée autant de messages d'annonce qu'il possède de
-  voisins et les émets. Chaque nœud recevant ce type de messages est libre
-  d'accepter l'annonce en ajoutant alors l'identité du nouveau venu à sa vue
-  partielle, ou la refuser, auquel cas il réexpedie le message à l'un de ces
-  voisins. Afin de répartir équitablement les annonces, chaque nœud $n_i$ a une
-  probabilité inversement proportionnelle à la taille de sa vue partielle
-  d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
-  de créer une topologie proche de celle des graphes aléatoires. Cependant, la
-  vue partielle du nouveau pair est faiblement peuplée au contraire des pairs
-  plus vieux. Cela met en danger la robustesse du réseau face aux défaillances.
+\noindent Lorsque un nœud rejoins le réseau, il contacte un membre qu'il ajoute
+directement à sa vue partielle. Ce contact annonce ensuite le nouveau venu au
+réseau. Pour ce faire, il crée autant de messages d'annonce qu'il possède de
+voisins et les émets. Chaque nœud recevant ce type de messages est libre
+d'accepter l'annonce en ajoutant alors l'identité du nouveau venu à sa vue
+partielle, ou la refuser, auquel cas il réexpedie le message à l'un de ces
+voisins. Afin de répartir équitablement les annonces, chaque nœud $n_i$ a une
+probabilité inversement proportionnelle à la taille de sa vue partielle
+d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
+de créer une topologie proche de celle des graphes aléatoires. Cependant, la vue
+partielle du nouveau pair est faiblement peuplée au contraire des pairs plus
+vieux. Cela met en danger la robustesse du réseau face aux défaillances.
 
-  \begin{figure}
-    \centering
-    \input{input/network/scampexample.tex}
-    \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
-      dans \SCAMP.}
-  \end{figure}
+\begin{figure}
+  \centering
+  \input{input/network/scampexample.tex}
+  \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
+    dans \SCAMP.}
+\end{figure}
 
-  La figure~\ref{net:fig:scampexample} montre l'entrée d'un nœud $n_1$ dans un
-  petit réseau \SCAMP composé des nœuds $n_2$, $n_3$, $n_4$ et $n_5$. Dans cet
-  exemple, le nœud $n_1$ contacte $n_2$ et l'ajoute directement à sa vue
-  partielle. $n_2$, possédant 2 voisins, copie l'adresse logique de $n_1$ 2 fois
-  et les dissémine à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il possède
-  une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion est
-  créée entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même façon. Toutefois,
-  il n'accepte pas l'annonce et retransmet le message à son voisin $n_4$. Ce
-  dernier l'accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au total, 3 arcs
-  ont été créés à l'arrivée du pair $n_1$.
+\noindent La figure~\ref{net:fig:scampexample} montre l'entrée d'un nœud $n_1$
+dans un petit réseau \SCAMP composé des nœuds $n_2$, $n_3$, $n_4$ et $n_5$. Dans
+cet exemple, le nœud $n_1$ contacte $n_2$ et l'ajoute directement à sa vue
+partielle. $n_2$, possédant 2 voisins, copie l'adresse logique de $n_1$ 2 fois
+et les dissémine à $n_3$ et $n_5$. Lorsque $n_3$ réçoit le message, il possède
+une chance sur deux d'accepter l'annonce ce qu'il fait : une connexion est créée
+entre $n_3$ et $n_1$. Le nœud $n_5$ procède de la même façon. Toutefois, il
+n'accepte pas l'annonce et retransmet le message à son voisin $n_4$. Ce dernier
+l'accepte et l'arc allant de $n_4$ à $n_1$ est créé. Au total, 3 arcs ont été
+créés à l'arrivée du pair $n_1$.
 
 
-  Lorsqu'un pair souhaite quitter le réseau, 
-  \begin{inparaenum}[(i)]
-  \item il œuvre à préserver la connectivité de ce dernier et
-  \item il emporte avec lui une quantité d'arcs correspondant à l'entrée du
-    dernier pair dans le réseau.
-  \end{inparaenum}
-  Pour ce faire, le nœud va agir comme pont entre les nœuds de sa vue partielle
-  entrante et ceux de sa vue partielle sortante. Ainsi, il permettra de resouder
-  la maille du réseau qu'il aurait défait en partant. Ce méchanisme est
-  généralement applicable à tous les protocoles d'échantillonnage mais il
-  requière de maintenir deux vues partielles -- entrante et sortante -- et des
-  connexions bidirectionnelles. Il requière aussi un travail supplémentaire de
-  la part du nœud sortant impossible à garantir lors de défaillances : le nœud
-  devrat servir d'intermédiaire à la connexion de tous les voisins de sa vue
-  partielle entrante (sauf un) vers autant de voisins appartenant à sa vue
-  partielle sortante. Ainsi, le nombre d'arcs supprimé correspond en moyenne à
-  celui injecté à l'entrée d'un nœud dans le réseau. Ce méchanisme améliore
-  considérablement le maintient de la connexité du réseau mais ne représente pas
-  une solution fiable pour autant. En effet, certains nœuds peuvent se trouver
-  sans voisins dans l'une de leur vue.
+\noindent Lorsqu'un pair souhaite quitter le réseau,
+\begin{inparaenum}[(i)]
+\item il œuvre à préserver la connectivité de ce dernier et
+\item il emporte avec lui une quantité d'arcs correspondant à l'entrée du
+  dernier pair dans le réseau.
+\end{inparaenum}
+Pour ce faire, le nœud va agir comme pont entre les nœuds de sa vue partielle
+entrante et ceux de sa vue partielle sortante. Ainsi, il permettra de resouder
+la maille du réseau qu'il aurait défait en partant. Ce méchanisme est
+généralement applicable à tous les protocoles d'échantillonnage mais il requière
+de maintenir deux vues partielles -- entrante et sortante -- et des connexions
+bidirectionnelles. Il requière aussi un travail supplémentaire de la part du
+nœud sortant impossible à garantir lors de défaillances : le nœud devrat servir
+d'intermédiaire à la connexion de tous les voisins de sa vue partielle entrante
+(sauf un) vers autant de voisins appartenant à sa vue partielle sortante. Ainsi,
+le nombre d'arcs supprimé correspond en moyenne à celui injecté à l'entrée d'un
+nœud dans le réseau. Ce méchanisme améliore considérablement le maintient de la
+connexité du réseau mais ne représente pas une solution fiable pour autant. En
+effet, certains nœuds peuvent se trouver sans voisins dans l'une de leur vue.
   
 
-  \begin{figure}
-    \centering \subfloat[Départ d'un pair dans \SCAMP.]
-    [\label{net:fig:scampexampleB} Le nœud $n_1$ souhaite quitter le réseau. Il
-    en informe ses vues partielles afin d'effectuer un pont entre eux.]
-    {\input{input/network/scampexampleB.tex}}
-    \hspace{45pt}
-    \subfloat[Établissement de connexions entre vues partielles dans \SCAMP.]
-    [\label{net:fig:scampexampleC} Le nœud $n_1$ notifie aux nœuds $n_2$ et
-    $n_3$ qu'ils doivent ajouter $n_5$ et $n_6$ dans leur vue partielle sortante
-    respective.]  {\input{input/network/scampexampleC.tex}}
-    \caption{\label{net:fig:scampexample2} Exemple de sortie de réseau dans
-      \SCAMP. Seules les vues partielles entrante et sortante de $n_1$ sont
-      explicitées.}
-  \end{figure}
+\begin{figure}
+  \centering \subfloat[Départ d'un pair dans \SCAMP.]
+  [\label{net:fig:scampexampleB} Le nœud $n_1$ souhaite quitter le réseau. Il
+  en informe ses vues partielles afin d'effectuer un pont entre eux.]
+  {\input{input/network/scampexampleB.tex}}
+  \hspace{45pt}
+  \subfloat[Établissement de connexions entre vues partielles dans \SCAMP.]
+  [\label{net:fig:scampexampleC} Le nœud $n_1$ notifie aux nœuds $n_2$ et
+  $n_3$ qu'ils doivent ajouter $n_5$ et $n_6$ dans leur vue partielle sortante
+  respective.]  {\input{input/network/scampexampleC.tex}}
+  \caption{\label{net:fig:scampexample2} Exemple de sortie de réseau dans
+    \SCAMP. Seules les vues partielles entrante et sortante de $n_1$ sont
+    explicitées.}
+\end{figure}
 
-  La figure~\ref{net:fig:scampexample2} présente le mécanisme activé lors du
-  départ du nœud $n_1$ utilisant \SCAMP. $n_1$ fournit à chaque nœud de sa vue
-  partielle entrante l'adresse logique d'un nœud de sa vue partielle
-  sortante. Ainsi, le pair $n_2$ ajoute $n_5$ à sa vue partielle sortante, $n_3$
-  ajoute $n_6$ à sa vue partielle sortante, $n_4$ n'ajoute rien. La
-  figure~\ref{net:fig:scampexampleC} montre les arcs après le départ de
-  $n_1$. Entre autre, nous observons que si $n_4$ ne possède pas d'autres
-  voisins dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas
-  d'autres voisins dans leur vue partielle entrante, alors le réseau n'est plus
-  connexe.
-\end{itemize}
+\noindent La figure~\ref{net:fig:scampexample2} présente le mécanisme activé lors du
+départ du nœud $n_1$ utilisant \SCAMP. $n_1$ fournit à chaque nœud de sa vue
+partielle entrante l'adresse logique d'un nœud de sa vue partielle
+sortante. Ainsi, le pair $n_2$ ajoute $n_5$ à sa vue partielle sortante, $n_3$
+ajoute $n_6$ à sa vue partielle sortante, $n_4$ n'ajoute rien. La
+figure~\ref{net:fig:scampexampleC} montre les arcs après le départ de
+$n_1$. Entre autre, nous observons que si $n_4$ ne possède pas d'autres voisins
+dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas d'autres
+voisins dans leur vue partielle entrante, alors le réseau n'est plus connexe.
+
 
 
 
