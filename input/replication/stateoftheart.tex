@@ -120,7 +120,7 @@ répliques au cœur décisionnel via $n_1$. Ce dernier l'accepte et transmet la
 demande à $n_2$, qui l'accepte et la transmet à son tour à $n_3$, qui l'accepte
 et termine la boucle en transmettant à $n_1$.  Dans l'intervalle, $n_4$ propose
 une autre modification. La proposition de $n_5$ est acceptée et propagée tandis
-que celle de $n_4$ est refusée. Une fois que $n_4$ a réçu les modifications de
+que celle de $n_4$ est refusée. Une fois que $n_4$ a reçu les modifications de
 $n_5$, il peut retenter de transmettre sa modification s'il la juge toujours
 d'actualité. Cet exemple illustre le caractère chronophage du processus : le
 vote prend du temps et peut échouer. De plus, si l'un des serveurs du cœur
@@ -154,15 +154,15 @@ est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
 
 
 \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
-modifications ont été reçues et appliquées par toutes les répliques, celles-ci
+modifications ont été reçues et intégrées par toutes les répliques, celles-ci
 possèdent un état équivalent.
 
-\noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu réaliste
-pour raisonner sur une exécution réelle, une définition plus précise porte sur
-un sous-ensemble de ces modifications :
+\noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu
+réaliste pour raisonner sur une exécution réelle, une définition plus précise
+porte sur un sous-ensemble de ces modifications :
 
 \paragraph{Cohérence forte à terme~\cite{shapiro2011conflict} :} Les répliques
-ayant réçu et appliqué les mêmes modifications possèdent un état équivalent.
+ayant reçu et intégré les mêmes modifications possèdent un état équivalent.
 
 
 \begin{figure*}
@@ -324,9 +324,18 @@ une réplique.
 ($(o_1 \times o_2) \times o_3 \Leftrightarrow o_1 \times (o_2 \times o_3)$) et
 idempotentes ($o_1 \times o_1 \Leftrightarrow o_1$).
 
+\paragraph{Basée sur les différences :} Lors d'une opération, l'état de la
+réplique locale change. Un vecteur d'horloges permet d'identifier chacune des
+opérations effectuées. Une autre replique envoie alors son vecteur à cette
+première. Les différences entre les vecteurs permettent d'identifier les
+opérations manquantes avant de les envoyer. Comparé aux approches basées sur
+l'état, l'ensemble de la réplique n'a pas besoin d'être systématiquement
+envoyé. Comparé aux approches basées sur les opérations, le réseau n'a pas de
+propriétés particulières à assurer.
+
 
 Des CRDTs existent pour différent types de structures tels que les compteurs,
-les ensembles, les graphes etc.\\
+les ensembles, ou les graphes.\\
 {\noindent%
 \begin{minipage}[t]{0.48\textwidth}
   \begin{algorithm}[H]
@@ -344,9 +353,8 @@ les ensembles, les graphes etc.\\
 }
 
 Les algorithmes~\ref{repl:algo:counterA} et~\ref{repl:algo:counterB} décrivent
-le squelette des algorithmes CRDTs décomposé selon le schéma de réplication
-optimiste, à savoir les mises à jours locales modifiant directement la réplique
-locale, et les mises à jours reçues.
+le squelette des algorithmes CRDTs divisé selon le schéma de réplication
+optimiste, et selon le principe des CRDTs basés sur les opérations.
 
 L'algorithme~\ref{repl:algo:counterA} présente une première façon d'implémenter
 un CRDT pour compteur basé sur les opérations. Celle-ci associe un identifiant
@@ -391,17 +399,17 @@ Une séquence, ou liste, ou tableau, est une série d'éléments ordonnés les u
 la suite des autres. Une séquence répliquée doit donc ordonner de la même
 manière ses éléments indépendamment du serveur l'hébergeant. Les approches à
 base de transformés opérationnels adaptent les arguments des opérations afin de
-recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsubsec:ot}). Les CRDTs
-pour séquences, eux, choisissent de surcharger les éléments de métadonnées de
-telle sorte que les métadonnées permettent de recouvrer un ordre identique
+recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsubsec:ot}). Les
+CRDTs pour séquences, eux, choisissent de surcharger les éléments de métadonnées
+de telle sorte que les métadonnées permettent de recouvrer un ordre identique
 partout. Une différence fondamentale entre les deux types d'approches concerne
 la signature des opérations. Lorsque OT conserve une signature d'opération
 classique (``insérer l'élément $e$ à l'indice $i$''), les CRDTs positionnent
 leurs éléments relativement aux éléments adjacents à l'indice ciblé (``insérer
 l'élément $e$ entre l'élément $a$ et l'élément $b$''). Avec ce procédé, des
 métadonnées uniques et non-mutables -- nommées identifiants -- seront générées
-garantissant, grâce à un ordre total sur ceux-ci, que le nouvel élément serat
-bel et bien placé entre ces deux bornes. La suppression est également différente
+garantissant, grâce à un ordre total sur ceux-ci, que le nouvel élément sera bel
+et bien placé entre ces deux bornes. La suppression est également différente
 puisque sa signature devient l'élément ciblé et non un indice (``supprimer
 l'élément $e$'').
 
@@ -421,14 +429,13 @@ entendu, ces marques sont cachées à l'utilisateur et n'apparaissent que dans l
 structure sous-jacente. L'impact sur les performances en reste néanmoins
 présent.
 
-
-\paragraph{WOOT~\cite{oster2006data} :} est le premier représentant historique
-des CRDTs pour séquences suivit par deux extensions
+\paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
+CRDTs pour séquences suivi par deux extensions
 \textbf{WOOTO~\cite{weiss2007wooki}} et
 \textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
-identifiant référence les identifiants voisins à l'insertion.  Lorsqu'ils sont
-rassemblés, les identifiants peuvent être ordonnés grâce à un diagramme de Hasse
-(\REF). Toutefois, cet ordonnancement requière des deux bornes adjacentes
+identifiant fait référence aux identifiants voisins à l'insertion.  Lorsqu'ils
+sont rassemblés, les identifiants peuvent être ordonnés grâce à un diagramme de
+Hasse. Toutefois, cet ordonnancement requiert des deux bornes adjacentes
 qu'elles soient
 \begin{inparaenum}[(i)]
 \item déjà intégrées et
@@ -440,54 +447,57 @@ D'où les suppressions réelles impossibles.
   \centering
   \input{input/replication/figwootexample.tex}
   \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
-    représentant la séquence 'QWERTY'. Bien que supprimé, le caractère Z est
-    indispensable au bon ordonnancement de la séquence.}
+    représentant la séquence \texttt{QWERTY}. Bien que supprimé, le caractère
+    \texttt{Z} est indispensable au bon ordonnancement de la séquence.}
 \end{figure}
 
 \noindent La figure~\ref{repl:fig:wootexample} illustre la nécessité de
 conserver les pierres tombales. Elle montre le diagramme de Hasse généré lors du
-scenario suivant : Tout d'abord, un utilisateur écrit 'AZERTY'. Ensuite, les
-deux premiers caractères sont supprimés afin d'être remplacés par les caractères
-'QW'. La séquence finale est 'QWERTY'. Toutefois, les identifiants ne sont pas
-modifiables, et l'identifiant du caractère 'E' référence l'identifiant de 'Z',
-lui-même référençant l'identifiant de 'A'. Par conséquent, supprimer
-complètement les identifiants de 'A' et/ou de 'Z' revient à rendre l'identifiant
-de 'E' non positionnable, et tout ceux qui en dépendent par transitivité.
+scenario suivant : Tout d'abord, un utilisateur écrit \texttt{AZERTY}. Ensuite,
+les deux premiers caractères sont supprimés afin d'être remplacés par les
+caractères \texttt{QW}. La séquence finale est \texttt{QWERTY}. Toutefois, les
+identifiants ne sont pas modifiables, et l'identifiant du caractère \texttt{E}
+référence l'identifiant de \texttt{Z}, lui-même référençant l'identifiant de
+\texttt{A}. Par conséquent, supprimer complètement les identifiants de
+\texttt{A} et/ou de \texttt{Z} revient à rendre l'identifiant de \texttt{E} non
+positionnable, et tout ceux qui en dépendent par transitivité.
 
-\paragraph{Causal tree~\cite{grishchenko2010deep} :} caractérise explicitement
-les relations causales grâce à une réprésentation sous forme d'arbre. Ainsi,
-chaque opération est accompagnée de l'identifiant de la dernière opération
-observée. En parcourant l'arbre et en appliquant les opérations, la séquence
-peut être retrouvée. Toutefois, les identifiants sont des horloges vectorielles
-(\emph{vector clock}) dont la taille est prohibitive (\REF). De plus, il est
-nécessaire de conserver tous les noeuds de cet arbre causal au cas où une
+\paragraph{Causal tree~\cite{grishchenko2010deep} :} Cette approche caractérise
+explicitement les relations causales grâce à une réprésentation sous forme
+d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la dernière
+opération observée. En parcourant l'arbre et en appliquant les opérations, la
+séquence peut être retrouvée. Toutefois, les identifiants sont des horloges
+vectorielles (\emph{vector clock}) dont la taille est prohibitive. De plus, il
+est nécessaire de conserver tous les noeuds de cet arbre causal au cas où une
 opération y ferait référence.
 
-\paragraph{Partial persistent sequence~\cite{wu2010partial} :} definit les
-identifiants dans l'ensemble des nombres rationnels auxquel est ajoutée une
-limite quant à leur précision. Hélas, cette limite contraint la taille du
-document maximale. Sans cette troncature, l'approche serait susceptible
-d'appartenir à l'autre famille de CRDTs pour séquence.
+\paragraph{Partial persistent sequence~\cite{wu2010partial} :} Cette approche
+definit les identifiants dans l'ensemble des nombres rationnels auxquels est
+ajoutée une limite quant à leur précision. Hélas, cette limite contraint la
+taille du document maximale. Sans cette troncature, l'approche serait
+susceptible d'appartenir à l'autre famille de CRDTs pour séquence.
 
-\paragraph{Replicated growable array~\cite{roh2011replicated} :} représente la
-séquence sous forme de liste supportant les opérations concurrentes. Une table
-de hachage apporte un accès rapide aux éléments grâce à leurs identifiants. Les
-éléments incluent une référence au voisin qu'ils précèdent lors de leur
-insertion. Toutefois, pour ne jamais briser la chaine ainsi construite, les
-éléments supprimés restes présents indéfinitivement mais cachés de
-l'utilisateur.
+\paragraph{Replicated growable array~\cite{roh2011replicated} :} Cette structure
+représente la séquence sous forme de liste supportant les opérations
+concurrentes. Une table de hachage apporte un accès rapide aux éléments grâce à
+leurs identifiants. Les éléments incluent une référence au voisin qu'ils
+précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaine
+ainsi construite, les éléments supprimés restent présents indéfinitivement mais
+cachés de l'utilisateur.
 
-\paragraph{String-wise~\cite{yu2012stringwise} :} cible principalement les
-chaines de caractères pouvant être subdivisées lors d'opérations jusqu'à devenir
-une série de caractères. Les identifiants référencent alors les chaines
-adjacentes à l'insertion ainsi que les autres éléments de la chaines si
-subdivision il y a. De la même manière que pour les approches précédentes, les
-références rendent les suppressions réelles impossibles.
+\paragraph{String-wise~\cite{yu2012stringwise} :} Cette approche cible
+principalement les chaines de caractères pouvant être subdivisées lors
+d'opérations jusqu'à devenir une série de caractères. Les identifiants
+référencent alors les chaines adjacentes à l'insertion ainsi que les autres
+éléments de la chaines si subdivision il y a. De la même manière que pour les
+approches précédentes, les références rendent les suppressions réelles
+impossibles.
 
-\paragraph{DiCE~\cite{conway2014language} :} concentre principalement ses
-efforts sur les garanties de confluence de la séquence. Chaque identifiant
-référence le voisin qu'il précède à l'insertion. L'ordre des éléments est alors
-fonction de ces relations de positionnement relatif, et de causalité.
+\paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
+principalement ses efforts sur les garanties de confluence de la
+séquence. Chaque identifiant référence le voisin qu'il précède à
+l'insertion. L'ordre des éléments est alors fonction de ces relations de
+positionnement relatif, et de causalité.
 
 
 Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
@@ -502,7 +512,7 @@ d'opérations faites sur la séquence. Paradoxalement, cela devient problématiq
 lors de vandalisme où même le contenu indésirable est conservé
 indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
 fichier dont le poid ne reflète pas le contenu visible. De plus, les éléments
-cachés s'accumulent et dégradent éternellement les performances du système.
+cachés s'accumulent et dégradent à jamais les performances du système.
 
 Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés est une solution potentielle aux
@@ -582,22 +592,24 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
   [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
   maintenir un état équivalent, même en présence d'insertions concurrentes ayant
   résulté en des chemins identiques. Par soucis de simplicité, seuls les
-  désambiguateurs des caractères 'E', 'R', et 'T' sont affichés.]
+  désambiguateurs des caractères \texttt{E}, \texttt{R}, et \texttt{T}
+  sont affichés.]
   {\input{input/replication/figdisexample.tex}}
-  \caption{Arbres contenant la séquence 'QWERTY'.}
+  \caption{Arbres contenant la séquence \texttt{QWERTY}.}
 \end{figure}
 
 La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
-représentant la séquence. Un auteur insert les caractères 'QWTY' les uns à la
-suite des autres résultant dans les chemins [1], [2], [4], et [8]
-respectivement. L'insertion du caractère E entre les paires
-$\langle [2],\,W \rangle$ et $\langle [4],\, T \rangle$ résulte dans la paire
-suivante : $\langle [3],\, E \rangle$. Pour insérer le caractère 'R', l'arbre
-doit être agrandi afin d'accueillir le nouveau chemin entre 'E' et 'T'. Le
-chemin en résultant est [3.1]. Insérer un nouveau caractère entre 'E' et 'R'
-résulterait en une autre augmentation de la profondeur de l'arbre. Le chemin
-serait [3.0.$X$] où $0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$
-permet de retrouver la séquence 'QWERTY'.
+représentant la séquence. Un auteur insert les caractères \texttt{QWTY} les uns
+à la suite des autres résultant dans les chemins [1], [2], [4], et [8]
+respectivement. L'insertion du caractère \texttt{E} entre les paires
+$\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
+résulte dans la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour
+insérer le caractère \texttt{R}, l'arbre doit être agrandi afin d'accueillir le
+nouveau chemin entre \texttt{E} et \texttt{T}. Le chemin en résultant est
+[3.1]. Insérer un nouveau caractère entre \texttt{E} et \texttt{R} résulterait
+en une autre augmentation de la profondeur de l'arbre. Le chemin serait
+[3.0.$X$] où $0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$ permet de
+retrouver la séquence \texttt{QWERTY}.
 
 
 \paragraph{Désambiguation des cas concurrents.}
@@ -614,22 +626,84 @@ concurrentes. Ces marqueurs comprennent couramment un identifiant de site unique
 associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
 $\langle element,\, path\rangle$ est associée à un désambiguateur.
 
-Soit l'ensemble des identifiants $\mathcal{I}$.
+Soit l'ensemble des identifiants $\mathcal{I}$ composés tels que
+$\mathcal{I} : \mathcal{P} \times \mathcal{A} \times \mathcal{D}$. La
+composition de l'ordre partiel $(\mathcal{P},\,<_\mathcal{P})$ et l'ordre total
+des désambiguateurs $(\mathcal{D},\, <_\mathcal{D})$ permet d'ordonner les
+éléments de la séquence de manière identique quelle que soit la réplique.
 
+La figure~\ref{repl:fig:disexample} montre l'arbre contenant 6 éléments mais
+seulement 5 chemins distincts. Tout d'abord, le premier collaborateur $c_1$
+insert \texttt{QW}. Ensuite, les collaborateurs $c_1$ et $c_2$ insèrent en
+concurrence les caractères \texttt{E} et \texttt{T}, respectivement. Dans les
+deux cas, le chemin en résultant est $[3]$. Pour résoudre cette ambiguïté, le
+désambiguateur $\langle c_1,\, 3 \rangle$ est associé au caractère \texttt{E};
+le désambiguateur $\langle c_2,\, 1 \rangle$ est associé au caractère
+\texttt{T}. Recouvrer l'ordre des éléments consiste simplement à comparer, à
+chaque niveau de l'arbre, le chemin du niveau, puis l'identifiant de la
+replique, puis l'horloge. Dans cet exemple, le caractère \texttt{E} précède le
+caractère \texttt{T} car $c_1< c_2$. Ensuite, le collaborateur $c_1$ insert
+\texttt{Y} à la fin de la séquence. Enfin, il insert \texttt{R} entre \texttt{E}
+et \texttt{T}. Puisque ces derniers ont un chemin identique, l'espace est
+insuffisant entre ces deux chemins pour insérer un nouveau caractère. La
+profondeur de l'arbre doit augmenter. La fonction d'allocation doit choisir un
+chemin $[3.X]$ tel que $0<X<10$. En copiant le désambiguateur de \texttt{E} au
+premier niveau, cela assure que le nouvel identifiant suivra celui du caractère
+\texttt{E} et précedera celui du caractère \texttt{T}. Il est important de noter
+que les collaborateurs ne choisissent pas les désambiguateurs. Ainsi, la
+séquence de cet exemple aurait pu être \texttt{QWTREY} auquel cas une correction
+aurait été nécessaire. De plus, la compléxité spatiale de ces désambiguateurs
+est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
+concentre sur ces identifiants.
 
-Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
-équippé des opérations d'insertion $\textsc{insert}$ et de suppression
-$\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
-$\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
-l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
-$T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
-$(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
+% Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
+% équippé des opérations d'insertion $\textsc{insert}$ et de suppression
+% $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
+% $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
+% l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
+% $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
+% $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
 
-Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
-une liste constituée de paires avec l'identifiant unique du serveur hébergeant
-la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
-compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
-essentiellement de l'allocation du chemin dans l'arbre.
+% Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
+% une liste constituée de paires avec l'identifiant unique du serveur hébergeant
+% la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
+% compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
+% essentiellement de l'allocation du chemin dans l'arbre.
+
+\paragraph{Choisir le bon chemin.} La composante la plus critique des approches
+pour les séquences où les identifiants sont de taille variable consiste à
+choisir les chemins. L'algorithme~\ref{repl:algo:general} montre les
+instructions générales de telles approches. Il divise les opérations --
+insertion et suppression -- entre la partie locale et distante du schéma de
+réplication optimiste. Le cœur de l'algorithme est situé dans la partie locale
+de l'opération d'insertion où le chemin et le désambiguateur doivent être
+créés. La fonction \textsc{convert2Path} se débarasse de la partie
+désambiguateur des identifiants en argument pour n'en garder que les chemins --
+transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
+concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
+contraire, cette fonction convertit les identifiants en chemins préservant
+l'ordre $(\mathcal{P}, <_\mathcal{P})$. Par exemple, dans la
+figure~\ref{repl:fig:disexample}, le résultat de l'appel à la fonction
+\textsc{convert2Path} avec les identifiants du caractère \texttt{E} et du
+caractère \texttt{T} est la paire $\langle [3.0],\, [3.9] \rangle$. La fonction
+\textsc{allocPath} alloue un nouveau chemin entre ces bornes. \textsc{allocDis}
+décore le chemin pour garantir que l'identifiant -- en tant que composition d'un
+chemin, d'un élément, et d'un désambiguateur -- est bien positionné entre les
+identifiants qui ont servi à le créer selon la relation d'ordre
+$(\mathcal{I},\, <_\mathcal{I})$.
+
+\begin{algorithm}[h]
+  \input{input/replication/algogeneral.tex}
+  \caption{\label{repl:algo:general}Séquences avec identifiants de taille
+    variable.}
+\end{algorithm}
+
+La fonction \textsc{allocPath} choisit le chemin dans l'arbre entre deux autres
+chemins $p$ et $q$ tels que $p$ précède $q$ ($p <_\mathcal{P} q$). Le nouveau
+chemin $n$ est positionné entre ces bornes
+($p <_\mathcal{P} n <_\mathcal{P} q$). La fonction \textsc{allocPath} doit
+choisir parmi les plus petits chemins disponibles afin de conserver de bonnes
+performances.
 
 \begin{figure}
   \begin{center}
@@ -650,37 +724,36 @@ illustrent les difficultés rencontrées lors de l'allocation des chemins
 composant les identifiants. Dans les deux cas, la fonction d'allocation utilise
 la stratégie suivante : la branche la plus à gauche avec la plus petite
 profondeur possible. Dans les deux cas, la séquence finale est
-'QWERTY'. Toutefois, les lettres ne sont pas insérées dans un ordre
-identique. Dans le premier cas, 'Q' est inséré à l'indice 0, suivit de 'W' à
-l'indice 1, suivit de 'E' à l'indice 2 etc.  Dans le second cas, la lettre 'Y'
-est insérée à l'indice 0, suivit du 'T' à l'indice 0 qui, par effet de bord,
-décale le 'Y' à l'indice 1. La séquence en résultant est donc 'TY'. L'insertion
-du 'R' en position 0 décale toutes lettres de droite etc.
+\texttt{QWERTY}. Toutefois, les lettres ne sont pas insérées dans un ordre
+identique. Dans le premier cas, \texttt{Q} est insérée à l'indice 0, suivie de
+\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2 etc.  Dans le second
+cas, la lettre \texttt{Y} est insérée à l'indice 0, suivie de \texttt{T} à
+l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
+séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
+position 0 décale toutes lettres de droite etc.
 
+Dans le premier cas, l'opération d'insertion (\texttt{Q}, 0) est transformée en
+\textsc{insert}($\vdash$, \texttt{Q}, $\dashv$). Par conséquent, le chemin doit
+être alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie
+d'allocation consiste à reserver la branche la plus à gauche et de plus petite
+taille, le chemin résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est
+transformée en \textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le
+chemin [2] etc.  Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet
+égard, la stratégie employée est très efficace. Cependant, elle n'est pas
+totalement optimale puisque l'arbre est prévu pour accueillir 8 identifiants
+lorsque seulement 6 sont alloués.
 
-\paragraph{Premier cas :} L'opération d'insertion (Q, 0) est transformée en
-\textsc{insert}($\vdash$, Q, $\dashv$). Par conséquent, le chemin doit être
-alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation
-consiste à reserver la branche la plus à gauche et de plus petite taille, le
-chemin résultant est [1]. Ensuite, l'opération (W, 1) est transformée en
-\textsc{insert}($i_Q$, W, $\dashv$) résultant sur le chemin [2] etc.  Dans ce
-cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la stratégie
-employée est très efficace. Cependant, elle n'est pas totalement optimale
-puisque l'arbre est prévu pour accueillir 8 identifiants lorsque seulement 6
-sont alloués.
-
-
-\paragraph{Second cas :} De la même manière, l'opération d'insertion (Y, 0) est
-transformée en \textsc{insert}($\vdash$, Y, $\dashv$) dont le résultat est le
-chemin [1]. Lors de l'insertion (T, 0), un chemin est requis entre la borne
-virtuelle du début de séquence [0] et la borne du caractère 'Y' [1]. Ainsi, la
-profondeur du chemin doit augmenter de telle sorte que le nouvel identifiant
-muni de l'ordre total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les
-deux. Considérons un ordre lexicographique, le chemin résultant est [0.X] où X
-est choisi entre 0 et 10. Suivant la stratégie, le chemin est [0.1] pour la
-lettre 'T'. Puis [0.0.1] pour la lettre 'R' etc. La taille des chemins alloués
-augmente très rapidement.  La stratégie d'allocation s'avère inéfficace dans ce
-cas.
+Dans le second cas, l'opération d'insertion (\texttt{Y}, 0) est transformée en
+\textsc{insert}($\vdash$, \texttt{Y}, $\dashv$) dont le résultat est le chemin
+[1]. Lors de l'insertion (\texttt{T}, 0), un chemin est requis entre la borne
+virtuelle du début de séquence [0] et la borne du caractère \texttt{Y} :
+[1]. Ainsi, la profondeur du chemin doit augmenter de telle sorte que le nouvel
+identifiant muni de l'ordre total $(\mathcal{I},\,<_\mathcal{I})$ soit placé
+entre les deux. Considérons un ordre lexicographique, le chemin résultant est
+[0.$X$] où $X$ est choisi entre 0 et 10. Suivant la stratégie, le chemin est
+[0.1] pour la lettre \texttt{T}. Puis [0.0.1] pour la lettre \texttt{R} etc. La
+taille des chemins alloués augmente très rapidement.  La stratégie d'allocation
+s'avère inéfficace dans ce cas.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
@@ -689,10 +762,9 @@ d'une séquence classique à des identifiants non-mutable de taille variable d'u
 séquence répliquée a un coût qu'il est nécéssaire d'analyser afin de proposer
 une fonction d'allocation efficace.
 
-
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
-    weiss2010logootundo} :} représente originellement ses identifiants sous
-forme de liste sans les factoriser sous forme d'arbre. Cette représentation
+    weiss2010logootundo} :} Ce CRDT représente originellement ses identifiants
+sous forme de liste sans les factoriser sous forme d'arbre. Cette représentation
 possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
 consommation en espace élevée. En effet, la traduction d'une opération locale
 $\textsc{insert}(element,\, index)$ à
@@ -710,15 +782,16 @@ la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
 identifiant est linéaire, en résulte une complexité quadratique par rapport à la
 taille du document.
 
-\paragraph{Logoot split~\cite{mehdi2014merging} :} étend Logoot lui offrant la
-possibilité d'adapter la granularité de l'élément ciblé. Bien que tous les
-exemples précédent fassent mention de caractères comme éléments de la séquence,
-Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à la section
-etc. Cette extension prend pour granularité la chaine de caractère avec la
-liberté de la séparer si besoin est. Le nombre d'identifiants à allouer s'en
+\paragraph{Logoot split~\cite{mehdi2014merging} :} Cette approche étend Logoot
+lui offrant la possibilité d'adapter la granularité de l'élément ciblé. Bien que
+tous les exemples précédent fassent mention de caractères comme éléments de la
+séquence, Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à la
+section etc. Cette extension prend pour granularité la chaine de caractère avec
+la liberté de la séparer si besoin est. Le nombre d'identifiants à allouer s'en
 trouve diminué, et par conséquent, le traffic généré aussi.
-\paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :}
-représente le document sous forme d'arbre binaire avec parcours infixe.
+
+\paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
+approche représente le document sous forme d'arbre binaire avec parcours infixe.
   
 \begin{figure*}
   \begin{center}
@@ -735,12 +808,13 @@ représente le document sous forme d'arbre binaire avec parcours infixe.
   \end{center}
 \end{figure*}
 
-\noindent La figure~\ref{repl:fig:treedocexample} montre un exemple de séquence. Si l'on
-considère un élément 'W' dont le chemin est [], alors un élément 'Q' dont le
-chemin est [0] précède 'W', et un élément 'E' dont le chemin est [1] succède
-'W'. En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à gauche de},
-et suffixer le chemin d'un 1 signifie \emph{à droite de}. Dans cet example, le
-caractère 'Y' obtient le chemin [1.1.1.1].
+\noindent La figure~\ref{repl:fig:treedocexample} montre un exemple de
+séquence. Si l'on considère un élément \texttt{W} dont le chemin est [], alors
+un élément \texttt{Q} dont le chemin est [0] précède \texttt{W}, et un élément
+\texttt{E} dont le chemin est [1] succède \texttt{W}. En d'autres termes,
+suffixer le chemin d'un 0 signifie \emph{à gauche de}, et suffixer le chemin
+d'un 1 signifie \emph{à droite de}. Pour la séquence \texttt{QWERTY} de cet
+example, le caractère \texttt{Y} obtient le chemin [1.1.1.1].
   
 \noindent Tout comme l'approche Logoot, les observations effectuées sur un
 corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
