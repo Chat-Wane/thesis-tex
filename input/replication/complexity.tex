@@ -1,7 +1,117 @@
 
-\section{Algorithmes et complexité}
+\section{Analyse en complexité}
+\label{repl:sec:complexity}
 
-\TODO{Introduction}
+Dans l'édition de texte, la plupart des comportements d'édition peuvent
+empiriquement être résumés à la composition de deux comportements basiques.
+\begin{inparaenum}
+\item Le comportement d'édition aléatoire où l'auteur insert de nouveaux
+  éléments à ce qui semble être des positions aléatoires dans la séquence. Par
+  exemple, ce comportement peut apparaitre lors de corrections orthographiques,
+  e.g. l'auteur écrit \texttt{QWETY} et réalise qu'il lui manque le
+  \texttt{R}. Il l'ajoute donc dans un second temps;
+\item Le comportement d'édition monotone où l'auteur insert de nouveaux éléments
+  les uns à la suite des autres (avant ou après l'élément le plus récemment
+  inséré). Par exemple, lorsqu'un auteur écrit \texttt{QWERTY}, il commence
+  généralement par le caractère \texttt{Q} jusqu'à arriver au caractère
+  \texttt{Y}. À l'opposé, les insertions dans un historique se font en tête pour
+  des raisons pratiques. Ces comportements sont respectivements notés l'édition
+  de droite à gauche, et l'édition de gauche à droite.
+\end{inparaenum}
+
+Cette section concentre l'analyse en complexité de \LSEQ sur les comportements
+d'édition susmentionnés auxquels est ajouté une analyse en pire cas. Il est
+important de noter que le comportement d'édition monotone constitue un cas
+défavorable puisqu'il tend à déséquilibrer l'arbre stockant la séquence
+répliquée. Aussitôt que les participants commencent à éditer à différents
+endroits -- ce qui est plus proche d'un cas d'utilisation réel -- l'arbre
+commence à se rééquilibrer et les opérations deviennent plus efficaces
+proportionnellement. L'analyse ne fait pas mention de cas moyen puisqu'il
+nécessite de connaître la distribution des positions d'insertions effectuées par
+des être humains ce qui représente une tâche complexe.
+
+\subsection{Complexité spatiale}
+
+La complexité spatiale d'un seul identifiant est différenciée de la complexité
+spatiale de l'arbre stockant la séquence. La première est importante puisqu'elle
+impacte directement la complexité en communication. En effet, chaque identifiant
+est propagé à tous les possesseurs de réplique; La seconde est importante
+puisqu'elle représente le mémoire allouée par chaque participant.
+
+La section~\ref{repl:sec:proposal} spécifie que chaque nouvelle concaténation
+dans le chemin de l'identifiant requière un bit additionnel pour l'encoder. Cela
+représente au total $\mathcal{O}(e^2)$ bits pour encoder le chemin, où $e$ est
+la profondeur du chemin dans l'arbre. Heureusement, cette profondeur est bornée
+selon le comportement d'édition remplissant l'arbre exponentiel. 
+
+
+\begin{figure}
+  \begin{center}
+    \subfloat[Arbre \LSEQ rempli par des édition aléatoires.]
+    [Arbre \LSEQ rempli par des édition aléatoires.]
+    {\input{input/replication/figrandomlseqtree.tex}}
+  \end{center}
+\end{figure}
+
+
+\paragraph{Comportement d'édition aléatoire. } Il remplit l'arbre à des positions
+aléatoires. En conséquence, l'arbre reste équilibré. Étant exponentiel, l'arbre
+peut stocker $\textstyle\sum\nolimits_{i=1}^{k}{2^{(i^2-i)/2}}$ éléments, où $k$
+est la profondeur de l'arbre. Ainsi, la borne supérieur sur la profondeur des
+chemins est $\mathcal{O}(\sqrt{\log I})$ concaténations, où $I$ est le nombre
+d'insertions. Puisque les chemins nécessitent $\mathcal{O}(e^2)$ bits pour être
+encodés, les chemins ont une complexité spatiale optimale de
+$\mathcal{O}(\log I)$. Ce résultat s'applique à toutes les approches utilisant
+des identifiants de taille variable~\cite{preguica2009commutative,
+  weiss2009logoot}. Toutefois, puisque \LSEQ utilise une structure d'arbre
+factorisant les parties communes des identifiants, la complexité spatiale totale
+n'est pas la somme des identifiants, mais seulement $\mathcal{O}(I\log I)$.
+
+\paragraph{Comportement d'édition monotone.} Il remplit seulement une branche de
+l'arbre. Pourtant, comme l'arité maximale d'un nœud augmente lorsque sa
+profondeur augmente, la croissance de l'arbre ralentit au cours des
+insertions. Dans ce cas, l'arbre stocke jusqu'à $2^{e+1}-1$ éléments, où $e$ est
+la profondeur de l'arbre. Ainsi, le nombre de concaténation composant le chemin
+est $\mathcal{O}(\log I)$, où $I$ est le nombre d'insertions. La représentation
+binaire des chemins grandissant de façon quadratique, la complexité spatiale des
+identifiants est $\mathcal{O}((\log I)^2)$. Globalement, la complexité spatiale
+de l'arbre reste la même, à savoir $\mathcal{O}(I \log I)$.
+
+\paragraph{Pire cas.} Chaque insertion augmente la profondeur de l'arbre. Ainsi,
+après $I$ insertions, l'arbre comprend $e$ éléments, où $e$ est la profondeur de
+l'arbre. Chaque nouveau chemin possède tous les autres chemins. Ainsi, la
+complexité spatiale des identifiants est $\mathcal{O}(I^2)$ et la complexité
+spatiale de l'arbre est elle aussi $\mathcal{O}(I^2)$.
+
+\begin{table}
+  \begin{center}
+    \caption{\label{repl:table:lseqspace}
+      Bornes supérieures de la complexité spatiale de \LSEQ, Logoot, et Treedoc. Où
+      $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \input{input/replication/tablelseqspace.tex}
+  \end{center}
+\end{table}
+
+\paragraph{Résumé.} Le tableau~\ref{repl:table:lseqspace} résume les complexités
+spatiales de \LSEQ. En particulier, la croissance des identifiants est attendue
+entre un logarithme et un polylogarithme. La croissance est donc bien
+sous-linéaire comparé au nombre d'insertions effectuées sur la séquence. Pour
+atteindre cette amélioration, \LSEQ sacrifie son pire cas en le rendant
+quadratique. Toutefois, ce pire cas est rendu difficile à obtenir. En effet, les
+deux sous-fonctions d'allocation aux buts antagonistes résolvent leurs
+limitations respectives. De plus, si un utilisateur malintentionné tente de
+produire ce pire cas, la différence entre la croissance attendue et la
+croissance observée serait telle que le coupable serait aisément
+identifiable. Des mesures pourraient alors être prises. Le
+tableau~\ref{repl:table:lseqspace} montre aussi que, comparé à l'état de l'art,
+\LSEQ améliore grandement la taille des identifiants mais voit sa taille globale
+légèrement dégradée, i.e., de $\mathcal{O}(I)$ à $\mathcal{O}(I\log I)$. Le
+compromis reste avantageux car les communications héritent de l'amélioration sur
+les identifiants.
+
+\subsection{Complexité temporelle}
+
+
 
 \subsection{Lien arbre -- séquence}
 
@@ -107,7 +217,7 @@ la séquence perçue par l'utilisateur.  Celle-ci est divisée en trois :
 \begin{inparaenum}[(i)]
 \item La fonction \textsc{getIndexesOf} retourne les indices successifs dans les
   listes triées constituants les fils des nœuds de l'arbre. Celle-ci utilise la
-  fonction \textsc{binaryIndexOf} possédant un compléxité temporelle
+  fonction \textsc{binaryIndexOf} possédant un complexité temporelle
   logarithmique comparée à la taille du tableau trié parcouru.
 \item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
   séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
@@ -156,3 +266,8 @@ d'insertion.
 
 
 \subsubsection{delete}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
