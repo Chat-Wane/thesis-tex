@@ -1,7 +1,7 @@
 %!PS-Adobe-2.0 EPSF-2.0
 %%Title: robin.eps
-%%Creator: gnuplot 5.0 patchlevel 1
-%%CreationDate: Thu Aug 13 15:16:12 2015
+%%Creator: gnuplot 5.0 patchlevel 3
+%%CreationDate: Tue Apr 26 12:54:25 2016
 %%DocumentFonts: (atend)
 %%BoundingBox: 50 50 410 302
 %%EndComments
@@ -12,7 +12,7 @@ gnudict begin
 % The following true/false flags may be edited by hand if desired.
 % The unit line width and grayscale image gamma correction may also be changed.
 %
-/Color true def
+/Color false def
 /Blacktext false def
 /Solid false def
 /Dashlength 1 def
@@ -48,7 +48,7 @@ gnudict begin
   } if
 } def
 %
-% Gnuplot Prolog Version 5.0 (Dec 2014)
+% Gnuplot Prolog Version 5.1 (Oct 2015)
 %
 %/SuppressPDFMark true def
 %
@@ -97,8 +97,9 @@ gnudict begin
 /LC7 {1 0.3 0} def
 /LC8 {0.5 0.5 0.5} def
 % Default dash patterns (version 5.0)
+/LTB {BL [] LCb DL} def
 /LTw {PL [] 1 setgray} def
-/LTb {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
 /LTa {AL [1 udl mul 2 udl mul] 0 setdash LCa setrgbcolor} def
 /LT0 {PL [] LC0 DL} def
 /LT1 {PL [2 dl1 3 dl2] LC1 DL} def
@@ -524,15 +525,14 @@ systemdict /pdfmark known not {
 SDict begin [
   /Title (robin.eps)
   /Subject (gnuplot plot)
-  /Creator (gnuplot 5.0 patchlevel 1)
+  /Creator (gnuplot 5.0 patchlevel 3)
   /Author (chat-wane)
 %  /Producer (gnuplot)
 %  /Keywords ()
-  /CreationDate (Thu Aug 13 15:16:12 2015)
+  /CreationDate (Tue Apr 26 12:54:25 2016)
   /DOCINFO pdfmark
 end
 } ifelse
-end
 %
 % Support for boxed text - Ethan A Merritt May 2005
 %
@@ -558,6 +558,10 @@ end
 /Boxing false def
 /textshow { ExtendTextBox Gshow } def
 %
+% redundant definitions for compatibility with prologue.ps older than 5.0.2
+/LTB {BL [] LCb DL} def
+/LTb {PL [] LCb DL} def
+end
 %%EndProlog
 %%Page: 1 1
 gnudict begin
@@ -799,7 +803,7 @@ LCb setrgbcolor
 0 3928 R
 0 -31 V
 stroke
-LTb
+LTB
 LCb setrgbcolor
 980 4799 N
 980 840 L
@@ -807,7 +811,7 @@ LCb setrgbcolor
 0 3959 V
 -5859 0 V
 Z stroke
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
 LCb setrgbcolor
@@ -826,17 +830,19 @@ LCb setrgbcolor
 ] -46.7 MCshow
 LTb
 % Begin plot #1
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.58 0.00 0.83 C LCb setrgbcolor
+LCb setrgbcolor
+LCb setrgbcolor
 6008 4646 M
 [ [(Helvetica) 180.0 0.0 true true 0 (aléatoire)]
 ] -60.0 MRshow
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.58 0.00 0.83 C 6116 4646 M
+LCb setrgbcolor
+6116 4646 M
 495 0 V
 1363 1034 M
 1273 106 V
@@ -853,17 +859,19 @@ LTb
 6363 4646 Pls
 % End plot #1
 % Begin plot #2
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.00 0.62 0.45 C LCb setrgbcolor
+LCb setrgbcolor
+LCb setrgbcolor
 6008 4466 M
 [ [(Helvetica) 180.0 0.0 true true 0 (en fin)]
 ] -60.0 MRshow
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.00 0.62 0.45 C 6116 4466 M
+LCb setrgbcolor
+6116 4466 M
 495 0 V
 1363 928 M
 1273 337 V
@@ -875,17 +883,19 @@ LTb
 6363 4466 Crs
 % End plot #2
 % Begin plot #3
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.34 0.71 0.91 C LCb setrgbcolor
+LCb setrgbcolor
+LCb setrgbcolor
 6008 4286 M
 [ [(Helvetica) 180.0 0.0 true true 0 (en tête)]
 ] -60.0 MRshow
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
-0.34 0.71 0.91 C 6116 4286 M
+LCb setrgbcolor
+6116 4286 M
 495 0 V
 1363 1013 M
 1273 349 V
@@ -900,7 +910,7 @@ LTb
 LTb
 LCb setrgbcolor
 1.000 UL
-LTb
+LTB
 LCb setrgbcolor
 980 4799 N
 980 840 L
@@ -908,7 +918,7 @@ LCb setrgbcolor
 0 3959 V
 -5859 0 V
 Z stroke
-1.000 UP
+1.500 UP
 1.000 UL
 LTb
 LCb setrgbcolor
