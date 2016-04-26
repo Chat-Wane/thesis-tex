@@ -34,9 +34,9 @@ des être humains ce qui représente une tâche complexe.
 
 La complexité spatiale d'un seul identifiant est différenciée de la complexité
 spatiale de l'arbre stockant la séquence. La première est importante puisqu'elle
-impacte directement la complexité en communication. En effet, chaque identifiant
-est propagé à tous les possesseurs de réplique; La seconde est importante
-puisqu'elle représente le mémoire allouée par chaque participant.
+influence directement la complexité en communication. En effet, chaque
+identifiant est propagé à tous les possesseurs de réplique; La seconde est
+importante puisqu'elle représente le mémoire allouée par chaque participant.
 
 La section~\ref{repl:sec:proposal} spécifie que chaque nouvelle concaténation
 dans le chemin de l'identifiant requière un bit additionnel pour l'encoder. Cela
@@ -48,24 +48,25 @@ selon le comportement d'édition remplissant l'arbre exponentiel.
 \begin{figure}
   \begin{center}
     \subfloat[Arbre \LSEQ rempli par des éditions aléatoires.]
-    [Arbre \LSEQ rempli par des éditions aléatoires.]
+    [\label{repl:fig:randomlseqtree}Arbre \LSEQ rempli par des éditions aléatoires.]
     {\input{input/replication/figrandomlseqtree.tex}}
     \hspace{10pt}
     \subfloat[Arbre \LSEQ rempli par des éditions monotones.]
-    [Arbre \LSEQ rempli par des éditions monotones.]
+    [\label{repl:fig:monotoniclseqtree}Arbre \LSEQ rempli par des éditions monotones.]
     {\input{input/replication/figmonotoniclseqtree.tex}}
     \hspace{10pt}
     \subfloat[Arbre \LSEQ rempli dans le pire cas.]
-    [Arbre \LSEQ rempli dans le pire cas.]
+    [\label{repl:fig:worstlseqtree}Arbre \LSEQ rempli dans le pire cas.]
     {\input{input/replication/figworstlseqtree.tex}}
   \end{center}
 \end{figure}
 
 
-\paragraph{Comportement d'édition aléatoire. } Il remplit l'arbre à des positions
-aléatoires. En conséquence, l'arbre reste équilibré. Étant exponentiel, l'arbre
-peut stocker $\textstyle\sum\nolimits_{i=1}^{k}{2^{(i^2-i)/2}}$ éléments, où $k$
-est la profondeur de l'arbre. Ainsi, la borne supérieur sur la profondeur des
+\paragraph{Comportement d'édition aléatoire. } Il remplit l'arbre à des
+positions aléatoires. En conséquence, l'arbre reste équilibré
+(cf. figure~\ref{repl:fig:randomlseqtree}). Étant exponentiel, l'arbre peut
+stocker $\textstyle\sum\nolimits_{i=1}^{k}{2^{(i^2-i)/2}}$ éléments, où $k$ est
+la profondeur de l'arbre. Ainsi, la borne supérieur sur la profondeur des
 chemins est $\mathcal{O}(\sqrt{\log I})$ concaténations, où $I$ est le nombre
 d'insertions. Puisque les chemins nécessitent $\mathcal{O}(e^2)$ bits pour être
 encodés, les chemins ont une complexité spatiale optimale de
@@ -76,20 +77,22 @@ factorisant les parties communes des identifiants, la complexité spatiale total
 n'est pas la somme des identifiants, mais seulement $\mathcal{O}(I\log I)$.
 
 \paragraph{Comportement d'édition monotone.} Il remplit seulement une branche de
-l'arbre. Pourtant, comme l'arité maximale d'un nœud augmente lorsque sa
-profondeur augmente, la croissance de l'arbre ralentit au cours des
-insertions. Dans ce cas, l'arbre stocke jusqu'à $2^{e+1}-1$ éléments, où $e$ est
-la profondeur de l'arbre. Ainsi, le nombre de concaténation composant le chemin
-est $\mathcal{O}(\log I)$, où $I$ est le nombre d'insertions. La représentation
-binaire des chemins grandissant de façon quadratique, la complexité spatiale des
-identifiants est $\mathcal{O}((\log I)^2)$. Globalement, la complexité spatiale
-de l'arbre reste la même, à savoir $\mathcal{O}(I \log I)$.
+l'arbre (cf. figure~\ref{repl:fig:monotoniclseqtree}). Pourtant, comme l'arité
+maximale d'un nœud augmente lorsque sa profondeur augmente, la croissance de
+l'arbre ralentit au cours des insertions. Dans ce cas, l'arbre stocke jusqu'à
+$2^{e+1}-1$ éléments, où $e$ est la profondeur de l'arbre. Ainsi, le nombre de
+concaténation composant le chemin est $\mathcal{O}(\log I)$, où $I$ est le
+nombre d'insertions. La représentation binaire des chemins grandissant de façon
+quadratique, la complexité spatiale des identifiants est
+$\mathcal{O}((\log I)^2)$. Globalement, la complexité spatiale de l'arbre reste
+la même, à savoir $\mathcal{O}(I \log I)$.
 
-\paragraph{Pire cas.} Chaque insertion augmente la profondeur de l'arbre. Ainsi,
-après $I$ insertions, l'arbre comprend $e$ éléments, où $e$ est la profondeur de
-l'arbre. Chaque nouveau chemin possède tous les autres chemins. Ainsi, la
-complexité spatiale des identifiants est $\mathcal{O}(I^2)$ et la complexité
-spatiale de l'arbre est elle aussi $\mathcal{O}(I^2)$.
+\paragraph{Pire cas.} Chaque insertion augmente la profondeur de l'arbre
+(cf. figure~\ref{repl:fig:worstlseqtree}). Ainsi, après $I$ insertions, l'arbre
+comprend $e$ éléments, où $e$ est la profondeur de l'arbre. Chaque nouveau
+chemin possède tous les autres chemins. Ainsi, la complexité spatiale des
+identifiants est $\mathcal{O}(I^2)$ et la complexité spatiale de l'arbre est
+elle aussi $\mathcal{O}(I^2)$.
 
 \begin{table}
   \begin{center}
@@ -119,76 +122,123 @@ les identifiants.
 
 \subsection{Complexité temporelle}
 
+L'analyse en complexité temporelle fournit des indices sur l'évolution des
+performances de chaque opération au cours des insertions. Ces opérations sont
+découpées entre leur exécution locale et leur exécution distante. Tout comme
+pour la complexité spatiale, l'analyse se porte sur les trois comportements
+d'édition suivant : aléatoire, monotone, et pire cas.
+
+\paragraph{Insertion locale.} Cette opération consiste simplement à construire
+un nouveau chemin en fonction des chemins adjacents. Par conséquent, la
+complexité dépend de la taille de ces chemins qui grandissent en fonction du
+comportement d'édition. Les comportements aléatoire, monotone, et pire cas
+conduisent respectivement à une croissance de l'arbre en
+$\mathcal{O}(\sqrt{\log I})$, $\mathcal{O}(\log I)$, et $\mathcal{O}(I)$. La
+complexité temporelle de la partie locale de l'insertion suit donc ces
+même complexités.
+
+\paragraph{Suppression locale.} L'opération consiste à propager l'identifiant à
+supprimer à tous les participants. L'opération se fait donc en temps constant
+$\mathcal{O}(1)$ quel que soit le comportement d'édition.
+
+\paragraph{Insertion et suppression distante.} Ces deux opérations comportent
+les mêmes instructions pour intégrer le résultat reçu de l'opération locale. Par
+conséquent, leur complexité temporelle est identique. Encore une fois, les
+comportements d'édition aléatoire, monotone, et pire cas conduisent
+respectivement à une croissance de l'arbre exponentiel de l'ordre de
+$\mathcal{O}(\sqrt{\log I})$, $\mathcal{O}(\log I)$, et $\mathcal{O}(I)$.  Les
+fils de chaque nœud de l'arbre sont ordonnés selon leur chemin. Ainsi, une
+recherche dichotomique récursive permet d'atteindre la feuille de l'arbre
+recherchée. La suppression distante supprime les nœuds qu'elle traverse si ce
+nœud ne possède qu'un seul élément parmi ses sous-arbres. La complexité
+temporelle de la recherche dichotomique dépend du niveau $l$ à laquelle elle est
+effectuée : $\mathcal{O}(\log 2^l)$. Les recherches à répétition conduisent à
+une borne supérieure en
+$\mathcal{O}(\textstyle\sum\nolimits_{i=1}^{e}(\log 2^i))$ où $e$e est la
+profondeur de l'arbre. En remplaçant la variable $e$, les bornes supérieures sur
+la complexité temporelle des opérations deviennent
+$\mathcal{O}(\log I + \sqrt{\log I})$ pour le comportement aléatoire,
+$\mathcal{O}((\log I)^2 + \log I)$ pour le comportement monotone, et
+$\mathcal{O}(I)$ dans le pire cas. Pour ce dernier, cela signifie qu'une
+comparaison par élément est nécessaire afin d'atteindre la feuille la plus
+profonde.
+
+\begin{table}
+  \begin{center}
+    \caption{\label{repl:table:lseqtime}
+      Bornes supérieures de la complexité temporelle de \LSEQ. Où
+      $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \input{input/replication/tablelseqtime.tex}
+  \end{center}
+\end{table}
 
 
-\subsection{Lien arbre -- séquence}
+\paragraph{Interface arbre -- séquence.} La structure de données répliquée est
+un arbre mais l'objet manipulé par l'utilisateur est une séquence. Il est donc
+nécessaire de fournir les fonctionnalités d'accès élémentaires afin de faire le
+lien entre l'arbre et la séquence.  La fonction \textsc{get} permet d'obtenir
+l'identifiant à une position donnée dans la séquence.
 
-La structure de données répliquée est un arbre mais l'objet manipulé par
-l'utilisateur est une séquence. Il est donc nécessaire de fournir les
-fonctionnalités d'accès élémentaires afin de faire le lien entre l'arbre et la
-séquence.
-\begin{inparaenum}[(i)]
-\item La fonction \textsc{get} permet d'obtenir l'identifiant à une position
-  donnée dans la séquence (cf. §\ref{repl:subsec:get}).
-\item La fonction \textsc{indexOf} permet d'obtenir la position d'un
-  identifiant (cf. §\ref{repl:subsec:indexof}).
-\end{inparaenum}
+% \subsubsection{get}
+% \label{repl:subsec:get}
 
-\subsubsection{get}
-\label{repl:subsec:get}
+% \begin{wrapfigure}{r}{0.6\textwidth}
+%   \vspace{-35pt} %% (ugly)
+%   \begin{minipage}[t]{0.6\textwidth}
+%     \begin{algorithm}[H]
+%       \input{input/replication/algoget.tex}
+%       \caption{\label{repl:algo:get} Get.}
+%     \end{algorithm}
+%   \end{minipage}
+%   \vspace{-15pt}
+% \end{wrapfigure}
 
-\begin{wrapfigure}{r}{0.6\textwidth}
-  \vspace{-35pt} %% (ugly)
-  \begin{minipage}[t]{0.6\textwidth}
-    \begin{algorithm}[H]
-      \input{input/replication/algoget.tex}
-      \caption{\label{repl:algo:get} Get.}
-    \end{algorithm}
-  \end{minipage}
-  \vspace{-15pt}
-\end{wrapfigure}
-
-L'algorithme~\ref{repl:algo:get} présente les instructions de la fonction
-\textsc{get} permettant d'obtenir l'identifiant présent à une position donnée
-dans la séquence. Celle-ci est nécéssaire lorsque un élément est localement
-inséré ou supprimé. En particulier, elle permet de retrouver les identifiants
-des éléments adjacents à la position d'insertion. Ces derniers seront ensuite
-utilisés afin d'allouer un nouvel identifiant unique.
+% L'algorithme~\ref{repl:algo:get} présente les instructions de la fonction
+% \textsc{get} permettant d'obtenir l'identifiant présent à une position donnée
+% dans la séquence. Celle-ci est nécéssaire lorsque un élément est localement
+% inséré ou supprimé. En particulier, elle permet de retrouver les identifiants
+% des éléments adjacents à la position d'insertion. Ces derniers seront ensuite
+% utilisés afin d'allouer un nouvel identifiant unique.
 
 Afin de retrouver l'identifiant à la position $index$ de la séquence, l'arbre
-est parcouru en largeur (cf. ligne~\ref{repl:line:lefttoright}) fixé
-arbitrairement de gauche à droite.  Puisque chacun des noeuds sauvegarde le
-nombre total de fils qu'il possède, il n'est pas nécessaire de parcourir
-l'ensemble des feuilles de l'arbre précedant la position recherchée. Toutefois,
-selon la fonction de parcours utilisée pour retrouver la position et la séquence
+est parcouru en largeur, de gauche à droite ou de droite à gauche selon la borne
+la plus proche à chaque niveau.  Puisque chacun des noeuds sauvegarde le nombre
+total de fils qu'il possède, il n'est pas nécessaire de parcourir l'ensemble des
+feuilles de l'arbre précédant/suivant la position recherchée. Toutefois, selon
+la fonction de parcours utilisée pour retrouver la position et la séquence
 d'édition ayant rempli la structure, les performances peuvent varier.
 
 \begin{figure}
   \centering
   \input{input/replication/figgetexample.tex}
   \caption{\label{repl:fig:getexample} Exemple de parcours effectué lors de la
-    recherche de l'identifiant en position 5 correspondant au caractère 'Y'.}
+    recherche de l'identifiant en position 5 correspondant au caractère
+    \texttt{Y}.}
 \end{figure}
 
+\TODO{Rework.}
 La figure~\ref{repl:fig:getexample} montre un exemple de recherche d'identifiant
-dans un arbre représentant la séquence 'QWERTY'. La recherche concerne la
-position $5$ correspondant au caractère 'Y'. L'arbre est parcouru en partant du
-fils gauche de la racine. Ce fils sait que ses sous-branches contiennent 3
-caractères. L'algorithme en déduit que le prochain fils de la racine est à la
-position 4. En examinant ce second fils, l'algorithme déduit que l'identifiant
-recherché est inclue dans l'un de ses fils. Ainsi, il continue l'exploration
-dans ce sous-arbre. Lorsqu'il examine le noeud contenant 'Y', il sait que
-celui-ci est en position $5$. Par conséquent, il retourne le chemin qu'il a
-empreinté pour y parvenir, à savoir [5.4]. Nous pouvons observer dans cet
-exemple que si la recherche était parti de la droite, elle n'aurait eu à
-parcourir qu'un seul élément intermédiaire (contenant le caractère 'T'), et
-aurait donc été plus efficace.
+dans un arbre représentant la séquence \texttt{QWERTY}. La recherche concerne la
+position $5$ correspondant au caractère \texttt{Y}. L'arbre est parcouru en
+partant du fils gauche de la racine. Ce fils sait que ses sous-branches
+contiennent 3 caractères. L'algorithme en déduit que le prochain fils de la
+racine est à la position 4. En examinant ce second fils, l'algorithme déduit que
+l'identifiant recherché est inclue dans l'un de ses fils. Ainsi, il continue
+l'exploration dans ce sous-arbre. Lorsqu'il examine le noeud contenant
+\texttt{Y}, il sait que celui-ci est en position $5$. Par conséquent, il
+retourne le chemin qu'il a empreinté pour y parvenir, à savoir [5.4]. Nous
+pouvons observer dans cet exemple que si la recherche était parti de la droite,
+elle n'aurait eu à parcourir qu'un seul élément intermédiaire (contenant le
+caractère \texttt{T}), et aurait donc été plus efficace.
 
-
-\begin{wraptable}{r}{0.5\textwidth}
-  \input{input/replication/gettable.tex}
-  \caption{\label{repl:table:get} Borne supérieure de la complexité temporelle de la fonction \textsc{get} où $I$ est la taille du document.}  
-\end{wraptable}
+\begin{table}
+  \begin{center}
+    \caption{\label{repl:table:lseqlookup} Bornes supérieures de la complexité
+      temporelle de l'opération \textsc{get} de \LSEQ. Où $I$ est le nombre
+      d'insertions effectuées sur la séquence.}
+    \input{input/replication/tablelseqlookup.tex}
+  \end{center}
+\end{table}
 
 La complexité temporelle de cet algorithme dépend de la séquence d'édition ayant
 permit de remplir l'arbre. Ainsi, lorsque l'arbre est rempli aléatoirement, sa
@@ -205,75 +255,75 @@ rééquilibrer et les performances se rapprochent de celles de l'édition
 aléatoire.
 
 
-\subsubsection{indexOf}
-\label{repl:subsec:indexof}
+% \subsubsection{indexOf}
+% \label{repl:subsec:indexof}
 
-\begin{wrapfigure}{r}{0.6\textwidth}
-  \vspace{-35pt} %% (ugly)
-  \begin{minipage}[t]{0.6\textwidth}
-    \begin{algorithm}[H]
-      \input{input/replication/algoindexof.tex}
-      \caption{\label{repl:algo:indexof} indexOf.}
-    \end{algorithm}
-  \end{minipage}
-  \vspace{-15pt}
-\end{wrapfigure}
+% \begin{wrapfigure}{r}{0.6\textwidth}
+%   \vspace{-35pt} %% (ugly)
+%   \begin{minipage}[t]{0.6\textwidth}
+%     \begin{algorithm}[H]
+%       \input{input/replication/algoindexof.tex}
+%       \caption{\label{repl:algo:indexof} indexOf.}
+%     \end{algorithm}
+%   \end{minipage}
+%   \vspace{-15pt}
+% \end{wrapfigure}
 
-L'algorithme~\ref{repl:algo:indexof} présente les instructions de la fonction
-\textsc{indexOf}. Celle-ci sert essentiellement à placer les éléments réçus dans
-la séquence perçue par l'utilisateur.  Celle-ci est divisée en trois :
-\begin{inparaenum}[(i)]
-\item La fonction \textsc{getIndexesOf} retourne les indices successifs dans les
-  listes triées constituants les fils des nœuds de l'arbre. Celle-ci utilise la
-  fonction \textsc{binaryIndexOf} possédant un complexité temporelle
-  logarithmique comparée à la taille du tableau trié parcouru.
-\item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
-  séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
-  branches, les noeuds sauvegardent le nombre de sous-branches qu'ils possèdent
-  (similairement à l'algorithme~\ref{repl:algo:get}).  La
-  ligne~\ref{repl:line:optimization} définit la façon dont l'arbre est
-  parcouru. Un optimisation consiste à parcourir l'arbre à partir de la borne la
-  plus proche de l'indice à la profondeur concernée.
-\item La fonction \textsc{indexOf} est composée des deux fonctions
-  susmentionnées.
-\end{inparaenum}
+% L'algorithme~\ref{repl:algo:indexof} présente les instructions de la fonction
+% \textsc{indexOf}. Celle-ci sert essentiellement à placer les éléments réçus dans
+% la séquence perçue par l'utilisateur.  Celle-ci est divisée en trois :
+% \begin{inparaenum}[(i)]
+% \item La fonction \textsc{getIndexesOf} retourne les indices successifs dans les
+%   listes triées constituants les fils des nœuds de l'arbre. Celle-ci utilise la
+%   fonction \textsc{binaryIndexOf} possédant un complexité temporelle
+%   logarithmique comparée à la taille du tableau trié parcouru.
+% \item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
+%   séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
+%   branches, les noeuds sauvegardent le nombre de sous-branches qu'ils possèdent
+%   (similairement à l'algorithme~\ref{repl:algo:get}).  La
+%   ligne~\ref{repl:line:optimization} définit la façon dont l'arbre est
+%   parcouru. Un optimisation consiste à parcourir l'arbre à partir de la borne la
+%   plus proche de l'indice à la profondeur concernée.
+% \item La fonction \textsc{indexOf} est composée des deux fonctions
+%   susmentionnées.
+% \end{inparaenum}
 
-\TODO{Figure explaining the operation.}
+% \TODO{Figure explaining the operation.}
 
-La complexité temporelle de cette fonction est proche de celle de la fonction
-\textsc{get} car basée sur le même principe. La seule différence est le surcoût
-logarithmique lié à la recherche dichotomique à chaque niveau de l'arbre. Encore
-une fois, les complexités linéaires ne sont pas problématiques car ces
-opérations peuvent être effectuées en arrière-plan. De plus, l'utilisateur
-possède une vue partielle du document. Si les mises à jour ne tombent pas dans
-cette fenêtre, la fonction peut arrêter son éxecution.
-
-
-\subsection{Modification de la structure}
-
-La structure d'arbre représentant le document réparti se modifie au rythme des
-insertions et suppressions effectuées par les utilisateurs, qu'ils soient
-distants ou non. 
-
-\subsubsection{insert}
+% La complexité temporelle de cette fonction est proche de celle de la fonction
+% \textsc{get} car basée sur le même principe. La seule différence est le surcoût
+% logarithmique lié à la recherche dichotomique à chaque niveau de l'arbre. Encore
+% une fois, les complexités linéaires ne sont pas problématiques car ces
+% opérations peuvent être effectuées en arrière-plan. De plus, l'utilisateur
+% possède une vue partielle du document. Si les mises à jour ne tombent pas dans
+% cette fenêtre, la fonction peut arrêter son éxecution.
 
 
-\begin{wrapfigure}{r}{0.6\textwidth}
-  \vspace{-35pt} %% (ugly)
-  \begin{minipage}[t]{0.6\textwidth}
-    \begin{algorithm}[H]
-      \input{input/replication/algoinsert.tex}
-      \caption{\label{repl:algo:insert} Insert.}
-    \end{algorithm}
-  \end{minipage}
-  \vspace{-15pt}
-\end{wrapfigure}
+% \subsection{Modification de la structure}
 
-L'algorithme~\ref{repl:algo:insert} présente les instructions de la fonction
-d'insertion.
+% La structure d'arbre représentant le document réparti se modifie au rythme des
+% insertions et suppressions effectuées par les utilisateurs, qu'ils soient
+% distants ou non. 
+
+% \subsubsection{insert}
 
 
-\subsubsection{delete}
+% \begin{wrapfigure}{r}{0.6\textwidth}
+%   \vspace{-35pt} %% (ugly)
+%   \begin{minipage}[t]{0.6\textwidth}
+%     \begin{algorithm}[H]
+%       \input{input/replication/algoinsert.tex}
+%       \caption{\label{repl:algo:insert} Insert.}
+%     \end{algorithm}
+%   \end{minipage}
+%   \vspace{-15pt}
+% \end{wrapfigure}
+
+% L'algorithme~\ref{repl:algo:insert} présente les instructions de la fonction
+% d'insertion.
+
+
+% \subsubsection{delete}
 
 %%% Local Variables:
 %%% mode: latex
