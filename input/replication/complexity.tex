@@ -254,6 +254,44 @@ nouvellement inséré. Si le comportement d'édition change, l'arbre commence à
 rééquilibrer et les performances se rapprochent de celles de l'édition
 aléatoire.
 
+\paragraph{Résumé.} Les tableaux~\ref{repl:table:lseqtime}
+et~\ref{repl:table:lseqlookup} synthétisent la complexité temporelle des
+opérations. L'arbre exponentiel permet d'obtenir des opérations de mise-à-jour
+de l'état efficace. En revanche, l'opération \textsc{lookup} qui permet
+d'interfacer l'arbre et la séquence souffre de ce choix de structure. Entre
+autres, le comportement d'édition monotone constitue le pire cas pour cette
+opération où l'accès se fait en temps linéaire. Heureusement, 
+\begin{inparaenum}[(i)]
+\item la vue n'a pas besoin d'être mise-à-jour si l'indice du nouvel élément se
+  trouve hors du champs de visibilité de l'utilisateur. Ainsi, la fonction
+  \textsc{lookup} peut s'arrêter plus tôt;
+\item un accès rapide aux identifiants alloués le plus récent ainsi que les
+  chemins qui lui sont adjacents efface le coût du \textsc{lookup} puisque ces
+  accès rapides peuvent être maintenus à jour pendant les insertions sans coût
+  additionnel.
+\end{inparaenum}
+
+\subsection{Résumé de l'analyse en complexité}
+
+L'analyse en complexité révèle les améliorations apportées par \LSEQ par rapport
+à l'état de l'art ainsi que leur coût. \LSEQ empire la complexité du pire cas
+afin d'améliorer ses performances sur les autres comportements d'édition
+considérés plus probables dans l'édition collaborative. Le résultat le plus
+important concerne la borne supérieure sur la complexité spatiale des
+identifiants, à savoir un polylogarithme comparé au nombre d'insertions dans la
+séquence. L'importance de ce résultat provient du fait qu'il s'étend à la
+complexité en communication de l'application qui l'utilise. En comparaison,
+l'état de l'art des fonctions d'allocation~\cite{preguica2009commutative,
+  weiss2009logoot} fournissent des identifiants dont la taille croît
+linéairement par rapport au nombre d'insertions dans la séquence.  En outre, la
+complexité spatiale de la structure ainsi que la complexité temporelle de ses
+opérations montre que le choix d'un arbre pour représenter la séquence est
+efficace. Néanmoins, selon les préférences, le choix d'un vecteur -- en tant que
+version applatie de l'arbre -- est possible afin d'améliorer les performances
+des opérations au prix d'un usage mémoire plus
+important~\cite{weiss2009logoot}. La section suivante s'attache à valider ces
+analyses en complexité au travers d'expérimentations.
+
 
 % \subsubsection{indexOf}
 % \label{repl:subsec:indexof}
