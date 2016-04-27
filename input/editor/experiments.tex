@@ -5,7 +5,7 @@
 
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.8\textwidth]{img/editor/communication.eps}
+    \includegraphics[width=0.8\textwidth]{img/editor/communication.eps}
     \caption{\label{editor:img:communication} Trafic moyen par seconde généré
       par chaque éditeur pendant la session d'édition. L'axe des abscisses
       montre la progression de l'expérimentation. L'axe des ordonnées montre le
@@ -18,11 +18,16 @@ passe à l'échelle en termes de nombre d'utilisateurs et de taille de
 documents.
 
 \paragraph{Description :} Cette expérimentation construit des réseaux de 101 à
-601 participants. Chaque session d'édition est en charge d'écrire un document
-artificiel de plusieurs millions de caractères en insérant ceux-ci à la fin du
-document. Les mesures concernent le trafic sortant moyen de chacun des
+601 participants. Pour cela, des machines sont reservées sur le banc d'essai
+Grid'5000. Sur chacune d'elle sont lancées un à plusieurs navigateurs web
+observant le processus d'intégration au réseau. Par exemple, 100 machines avec 6
+navigateurs chacunes permettent de créer le réseau à 601 participants -- le
+participant supplémentaire étant le créateur du document hébergeant aussi le
+serveur de signalisation.  Chaque session d'édition est en charge d'écrire un
+document artificiel de plusieurs millions de caractères en insérant ceux-ci à la
+fin du document. Les mesures concernent le trafic sortant moyen de chacun des
 membres. Globalement, 100 opérations sont effectuées par seconde, uniformément
-réparties parmi les participants. La session dure 7 heures.
+réparties entre les participants. La session dure 7 heures.
 
 \paragraph{Résultat :} La figure~\ref{editor:img:communication} montre le
 résultat de cette expérimentation.
