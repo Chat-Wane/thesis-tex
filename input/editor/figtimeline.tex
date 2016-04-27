@@ -1,0 +1,58 @@
+\begin{tikzpicture}[scale=1.3]
+  
+  \newcommand\X{ 20pt}
+  \newcommand\Y{-30pt}
+
+  \draw[->] (0pt,0pt) node[anchor=east]{$\pmb{c_1}$} -- (11*\X,0pt);
+  \draw[->] (0pt,-30pt) node[anchor=east]{$\pmb{c_2}$} -- (11*\X,\Y);
+  \draw[->] (0pt,-60pt) node[anchor=east]{$\pmb{c_3}$} -- (11*\X,2*\Y);
+
+  \scriptsize
+  \draw (0.5*\X,2+0*\Y) node[anchor=south]{[ ]} -- (0.5*\X,-2+0*\Y);
+  \draw (0.5*\X,2+1*\Y) node[anchor=south]{[ ]} -- (0.5*\X,-2+1*\Y);
+  \draw (0.5*\X,2+2*\Y) node[anchor=south]{[ ]} -- (0.5*\X,-2+2*\Y);
+
+  \draw[->,densely dashdotted] (1.5*\X,0pt) -- (2.5*\X,2*\Y);
+  \draw[->,densely dashdotted] (2.5*\X,0pt) -- (3.5*\X,1*\Y);
+  \draw[->,densely dashdotted] (2.5*\X,0pt) -- (3.5*\X,2*\Y);
+
+
+  \draw (5*\X,2+1*\Y) node[anchor=south]{[$\langle c_1,\,2,\,\pmb{\{1\}}\rangle$]}
+  -- (5*\X,-2+1*\Y);
+  \draw (5*\X,2+2*\Y) node[anchor=south]{[$\langle c_1,\,2,\,\varnothing\rangle$]}
+  -- (5*\X,-2+2*\Y);
+
+  \draw [->,densely dashdotted, very thick] (1.5*\X,0pt) to[out=35,in=135] (6.65*\X,0pt)
+  to[out=-45,in=110] (7.5*\X,\Y);
+
+  \draw[fill=white] (1.5*\X,0pt) circle (2pt);
+  \draw[fill=white] (2.5*\X,0pt) circle (2pt);
+
+  \draw[->,densely dashdotted] (6*\X,2*\Y)--(6.5*\X,1*\Y);
+  \draw[->,densely dashdotted] (6*\X,2*\Y)--(6.5*\X,0pt);
+
+  \draw[fill=black] (6*\X,2*\Y) circle (2pt);
+  
+  \draw[->,densely dashdotted, very thick]
+  (6.5*\X,1*\Y)to[out=-35,in=-145]node[anchor=north]{\textbf{wait}}(8.5*\X,1*\Y);
+
+
+  \draw (9.5*\X,2pt) node[anchor=south]
+  {[$\langle c_1,\,2,\,\varnothing\rangle \langle c_3,\,1,\,\varnothing\rangle$]}
+  -- (9.5*\X,-2pt);
+  \draw (9.5*\X,2+1*\Y) node[anchor=south]
+  {[$\langle c_1,\,2,\,\varnothing\rangle \langle c_3,\,1,\,\varnothing\rangle$]}
+  -- (9.5*\X,-2+1*\Y);
+  \draw (9.5*\X,2+2*\Y) node[anchor=south]
+  {[$\langle c_1,\,2,\,\varnothing\rangle \langle c_3,\,1,\,\varnothing\rangle$]}
+  -- (9.5*\X,-2+2*\Y);
+  
+  \begin{scope}[shift={(2*\X, 2.5*\Y)}]
+  \draw[->,densely dashdotted] (0pt,-1pt) -- (10pt,-1pt)
+  node[anchor=west]{messages};
+  \draw[fill=white] (55pt,0pt)node[anchor=west]{$\,insert$}circle (2pt);
+  \draw[fill=black] (92.5pt,0pt)
+  node[anchor=west]{$\,delete(\langle c_1,\,1\rangle)$} circle (2pt);
+  \end{scope}
+
+\end{tikzpicture}

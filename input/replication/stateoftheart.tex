@@ -324,14 +324,14 @@ une réplique.
 ($(o_1 \times o_2) \times o_3 \Leftrightarrow o_1 \times (o_2 \times o_3)$) et
 idempotentes ($o_1 \times o_1 \Leftrightarrow o_1$).
 
-\paragraph{Basée sur les différences :} Lors d'une opération, l'état de la
-réplique locale change. Un vecteur d'horloges permet d'identifier chacune des
-opérations effectuées. Une autre replique envoie alors son vecteur à cette
-première. Les différences entre les vecteurs permettent d'identifier les
-opérations manquantes avant de les envoyer. Comparé aux approches basées sur
-l'état, l'ensemble de la réplique n'a pas besoin d'être systématiquement
-envoyé. Comparé aux approches basées sur les opérations, le réseau n'a pas de
-propriétés particulières à assurer.
+\paragraph{Basée sur les différences~\cite{vanderlinde2016delta} :} Lors d'une
+opération, l'état de la réplique locale change. Un vecteur d'horloges permet
+d'identifier chacune des opérations effectuées. Une autre replique envoie alors
+son vecteur à cette première. Les différences entre les vecteurs permettent
+d'identifier les opérations manquantes avant de les envoyer. Comparé aux
+approches basées sur l'état, l'ensemble de la réplique n'a pas besoin d'être
+systématiquement envoyé. Comparé aux approches basées sur les opérations, le
+réseau n'a pas de propriétés particulières à assurer.
 
 
 Des CRDTs existent pour différent types de structures tels que les compteurs,
