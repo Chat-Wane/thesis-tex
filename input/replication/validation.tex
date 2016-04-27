@@ -119,3 +119,65 @@ conçue pour le comportement d'édition courant.
       moyenne des tailles des chemins alloués.}
   \end{center}
 \end{figure}
+
+
+\subsection{Complexités temporelles}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/time.eps}
+    \caption{\label{repl:img:time} Performances de la énième opération effectuée
+      sur \LSEQ. L'axe des abscisses montre le numéro de la énième
+      opération. L'axe des ordonnées montre le temps d'exécution de l'opération
+      en microsecondes. La figure du haut considère une structure remplie par
+      des insertions aléatoires. La figure du bas considère une structure
+      remplies par insertions montones.}
+  \end{center}
+\end{figure}
+
+\paragraph{Objectif :} Confirmer les complexités temporelles de \LSEQ. Des
+performances passant à l'echelle sont attendues.
+
+\paragraph{Description :} Cette expérience implique un utilisateur artificiel
+unique effectuant des opérations sur sa réplique du document. Le banc d'essai
+s'est déroulé sur un \emph{MacBook Pro} comportant un processeur \emph{2.5 GHz
+  Intel Core i5}, la version 4.1.1 de \emph{Node.js}, sur une architecture
+Darwin 64-bit. Pour chaque opération, un document de $I-1$ caractères est créé
+artificiellement. Les mesures s'effectuent sur la $I$\up{ème} opération. Les
+opérations prises en compte sont la fonction \textsc{lookup}, la partie locale
+de l'insertion, la partie distante de l'insertion, et la partie distante de la
+suppression -- la partie locale de cette dernière ne comprend que la propagation
+de l'identifiant ciblé aux autres membres. Les mesures sont effectués à
+plusieurs reprises sur deux types de documents. Tout d'abord, un document généré
+par un comportement d'édition aléatoire, i.e., l'arbre \LSEQ est
+équilibré. Ensuite, un document généré par un comportement d'édition monotone,
+i.e., une seule branche de l'arbre \LSEQ est remplie. Nous nous intéressons aux
+tendences plutôt qu'aux valeurs absolues. En effet, le langage \emph{Javascript}
+opère de nombreuses optimisations à la volée. Afin de montrer la contribution
+réelle de chacune des opérations, ces optimisations ont été limité au
+maximum. Les performances réelles des opérations sont donc nettement meilleures
+que celles présentes dans cette expérimentation.
+
+\paragraph{Résultat :} La figure~\ref{repl:img:time} montre les résultats de
+cette expérimentation. Nous observons que les valeurs mesurées, dans le cadre
+d'un arbre remplies par des éditions aléatoires, ne croissent pratiquement pas,
+et ce, quelle que soit l'opération. D'un autre coté, lorsque l'insertion locale
+après édition monotone reste stable, nous observons une croissance linéaire du
+temps d'exécution de la fonction \textsc{lookup}, et une plus faible évolution
+pour les parties distantes des opérations d'insertion et de suppression.
+
+\paragraph{Explication :} Après un comportement d'édition aléatoire, l'arbre de
+\LSEQ est équilibré. Par conséquent l'influence d'une opération se limite à un
+petit sous ensemble d'éléments composant le document. Par exemple, la fonction
+\textsc{lookup} n'a pas besoin d'explorer chaque élément de l'arbre. Elle rejète
+rapidement de nombreuses branches sans importances à chaque niveau de l'arbre
+car l'indice recherché ne tombe pas dans leur intervalle. Toutefois, cette
+remarque n'est pas vraie en ce qui concerne un arbre rempli par un comportement
+d'édition monotone. En effet, dans ce cas, la plupart des éléments sont
+localisés dans l'une -- et la plus profonde -- des branches de l'arbre. Ainsi,
+la fonction \textsc{lookup} va probablement explorer tous les niveaux et
+inspecter chaque élément pour en compter le nombre de fils afin d'actualiser son
+indice de progression courant. Les mesures concernant les opérations distantes
+suivent le même raisonnement. Elles sont plus efficaces car l'exploration des
+niveaux utilise la recherche dichotomique.
+
