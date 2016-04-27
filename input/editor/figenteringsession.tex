@@ -1,8 +1,10 @@
 
-\begin{tikzpicture}[scale=1.1]
+\begin{tikzpicture}[scale=1.3]
 
   \newcommand\X{30pt}
   \newcommand\Y{-30pt}
+  
+  \small
 
   \draw[->] (\X, 0)--(\X, 5+3*\Y); %% p1 p6
   \draw[->] (-5+2*\X, 0)--(5+\X, 0); %% p2 p1
@@ -23,15 +25,18 @@
   \draw[->] (0pt, \Y) -- (-5+3*\X, \Y); %% p8 p3
   
   \draw[fill=white] (-2*\X, 1.5*\Y) node{$e_9$} +(-5pt,-5pt) rectangle +(5pt,5pt);
-  \draw[<->, densely dashed] (-2*\X, 5+1.5*\Y) -- node[anchor=east]{join} (-2*\X, -5pt);
+  \draw[<->, densely dashed, color=darkblue, very thick]
+  (-2*\X, 5+1.5*\Y) -- node[anchor=east]{\DARKBLUE{join}} (-2*\X, -5pt);
 
   \draw[fill=white] (-2*\X, 0) node{$mediator_1$} +(-20pt, -5pt)rectangle+(20pt, 5pt);
-  \draw[<->, densely dashed] (20-2*\X, 0) -- node[anchor=south]{share} (-5+\X, 0);
-  \draw[<->, densely dashed] (20-2*\X, -5pt) -- (-5pt, \Y);
+  \draw[<->, densely dashed, color=darkblue, very thick]
+  (20-2*\X, 0) -- node[anchor=south]{\DARKBLUE{share}} (-5+\X, 0);
+  \draw[<->, densely dashed, color=darkblue, very thick]
+  (20-2*\X, -5pt) -- (-5pt, \Y);
   
   \draw[fill=white] (-2*\X, 3*\Y) node{$mediator_2$} +(-20pt, -5pt)rectangle+(20pt, 5pt);
-  \draw[<->, densely dashed] (20-2*\X, 3*\Y) -- (-5+\X, 3*\Y);
-  \draw[<->, densely dashed] (20-2*\X, 5+3*\Y) -- (-5pt, 2*\Y);
+  \draw[<->, densely dashed, color=darkblue] (20-2*\X, 3*\Y) -- (-5+\X, 3*\Y);
+  \draw[<->, densely dashed, color=darkblue] (20-2*\X, 5+3*\Y) -- (-5pt, 2*\Y);
 
   \draw[fill=white] (\X, 0)node{$e_1$}+(-5pt, -5pt)rectangle+(5pt, 5pt);
   \draw[fill=white] (2*\X, 0)node{$e_2$}+(-5pt, -5pt)rectangle+(5pt, 5pt);
