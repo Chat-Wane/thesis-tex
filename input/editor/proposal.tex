@@ -2,6 +2,12 @@
 \section{\CRATE : Un éditeur décentralisé dans les navigateurs}
 \label{editor:sec:crate}
 
+\CRATE est un éditeur décentralisé permettant l'édition en temps réel de
+documents directement dans les navigateurs web. Cette section décrit son
+architecture avant de détailler chacun des composants constituant cette
+architecture.
+
+
 \begin{figure}
   \begin{center}
     \input{input/editor/figarchitecture.tex}
@@ -44,12 +50,45 @@ s'il lui manque des opérations.
 
 \subsection{Communications}
 
+Les sessions d'édition peuvent rassembler de petits groupes comme de larges
+groupes pendant leur durée de vie. Par exemple, un cours de formation en ligne
+ouverte à tous (\emph{MOOC}) peut commencer avec un grand nombre d'étudiants
+dont le nombre peut s'amoindrir très rapidement par de manque
+d'intérêt~\cite{breslow2013studying}. De plus, les sessions d'édition varient en
+taille selon la portée du document. Par exemple, un document décrivant un projet
+personnel et dont la visibilité est limitée aux amis rassemble significativement
+moins de monde qu'un document décrivant un grand événement, tel que le rapport
+collaboratif d'une conférence. La couche de communication doit être en mesure de
+gérer de manière transparente toute session d'édition, quelle que soit sa
+taille, tout en passant à l'échelle.
+
+\CRATE utilise \SPRAY (cf. chapitre~\ref{network:chap:spray}) afin
+d'auto-ajuster son fonctionnement à la session d'édition. Ainsi, chaque éditeur
+possède une vue partielle avec laquelle communiquer. La taille de cette dernière
+croît et décroît logarithmiquement par rapport à la taille du réseau. Si une
+session d'éditoin démarre avec 10 auteurs, ils auront 2.3 voisins en moyenne. Si
+la session d'édition grandit pour atteindre le millier de participants, ceux-ci
+auront 6.9 voisins en moyenne. Enfin, si l'édition se retrouve avec 10
+participants à nouveau, ils auront à nouveau 2.3 voisins en moyenne.
+
+La diffusion des messages fait un usage intensif des voisinnages. Lorsqu'un
+utilisateur procède à des changements dans le document, l'éditeur l'envoie à son
+voisinnage. Chacun des voisins ayant reçu le message le transmet à son tour à
+son voisinnage. Les modifications sur le document atteignent rapidement tous les
+éditeurs par transitivité. La complexité en communication chez chaque éditeur
+est bornée par $\mathcal{O}(M\ln(R))$, où $M$ est la taille du message, et
+$\mathcal{R}$ est le nombre de répliques connectées au moment de la propagation.
+
 \begin{figure}
   \begin{center}
     \input{input/editor/figenteringsession.tex}
     \caption{\label{editor:fig:entering}Fonctionnement d'une session d'édition.}
   \end{center}
 \end{figure}
+
+La figure~\ref{editor:fig:entering} décrit le processus d'entrée dans le réseau.
+\TODO{Moar.}
+
 
 \subsection{Détection de causalité}
 
@@ -106,10 +145,6 @@ La barre d'état possède aussi des boutons tels que
 \item les engrenages servent à la configuration.
 \end{inparaenum}
 
-
-
-
-\subsection{Anti-entropie}
 
 %%% Local Variables:
 %%% mode: latex
