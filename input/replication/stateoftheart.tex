@@ -228,24 +228,24 @@ actuel de la réplique, indépendemment des opérations effectuées entre temps.
   \input{./input/replication/figotexample.tex}
   \caption{\label{repl:fig:otexample} Exemple de transformé
     opérationnel. L'opération de suppression des 3 premiers caractères sur la
-    réplique 3 ('RTY') est transformée afin de supprimer les 3 derniers caractères
-    sur les autres répliques.}
+    réplique 3 (\texttt{RTY}) est transformée afin de supprimer les 3 derniers
+    caractères sur les autres répliques.}
 \end{figure}
 
 La figure~\ref{repl:fig:otexample} illustre le principe de fonctionnement des
 approches basées sur les transformés opérationnels sur un scenario impliquant
 une séquence répliquée. Dans cet exemple, les répliques sont toutes initialisées
-avec la séquence 'RTY'. Ensuite, tandis que sur la réplique 1 trois caractères
-supplémentaires sont insérés en tête pour obtenir 'QWERTY', sur la réplique 3
-sont supprimés les trois caractères pour obtenir la séquence vide. Lors de la
-réception de cette dernière opération de suppression au niveau de la réplique 1,
-elle est interprétée comme une opération dont le contexte d'exécution n'avait
-pas encore intégré les insertions -- et donc pas décalé les indices des
-caractères. À ce titre, l'argument de l'opération se voit reattribué sa cible
-aux trois caractères à partir du troisième caractère non-inclu. Réciproquement,
-la réplique 3 intègre les insertions faites sur la réplique 1. Toutefois aucun
-changement n'est nécessaire. À terme, les répliques convergent vers la séquence
-'QWE'.
+avec la séquence \texttt{RTY}. Ensuite, tandis que sur la réplique 1 trois
+caractères supplémentaires sont insérés en tête pour obtenir \texttt{QWERTY},
+sur la réplique 3 sont supprimés les trois caractères pour obtenir la séquence
+vide. Lors de la réception de cette dernière opération de suppression au niveau
+de la réplique 1, elle est interprétée comme une opération dont le contexte
+d'exécution n'avait pas encore intégré les insertions -- et donc pas décalé les
+indices des caractères. À ce titre, l'argument de l'opération se voit reattribué
+sa cible aux trois caractères à partir du troisième caractère
+non-inclu. Réciproquement, la réplique 3 intègre les insertions faites sur la
+réplique 1. Toutefois aucun changement n'est nécessaire. À terme, les répliques
+convergent vers la séquence \texttt{QWE}.
 
 Dans le cadre de l'édition de texte, en plus des usuelles opérations d'insertion
 et de suppression, OT founit des opérations ciblant les chaînes de caractères
