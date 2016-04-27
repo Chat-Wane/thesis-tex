@@ -62,7 +62,7 @@ collaboratif d'une conférence. La couche de communication doit être en mesure 
 gérer de manière transparente toute session d'édition, quelle que soit sa
 taille, tout en passant à l'échelle.
 
-\CRATE utilise \SPRAY (cf. chapitre~\ref{network:chap:spray}) afin
+\CRATE utilise \SPRAY (cf. chapitre~\ref{net:chap:spray}) afin
 d'auto-ajuster son fonctionnement à la session d'édition. Ainsi, chaque éditeur
 possède une vue partielle avec laquelle communiquer. La taille de cette dernière
 croît et décroît logarithmiquement par rapport à la taille du réseau. Si une
@@ -87,10 +87,26 @@ $\mathcal{R}$ est le nombre de répliques connectées au moment de la propagatio
 \end{figure}
 
 La figure~\ref{editor:fig:entering} décrit le processus d'entrée dans le réseau.
-\TODO{Moar.}
-
+Une session d'édition, composée de 8 éditeurs existe. Celle-ci est inaccessible
+depuis l'exterieur. Pour rejoindre le réseau, au moins un des éditeurs doit
+partager son accès. Pour ce faire, il crée une connexion avec un serveur de
+signalisation facilement accessible via \emph{websocket}. L'éditeur ayant
+partagé son accès donne à son collègue une adresse URL contenant suffisamment
+d'informations pour qu'il retrouve le médiateur et demande à rejoindre la
+session d'édition. Lorsqu'il clique sur l'adresse, une connexion est établie
+avec le serveur de signalisation qui va jouer le rôle de médiateur afin de créer
+le premier canal de communication WebRTC entre le nouveau membre et l'éditeur
+partageant l'accès. Une fois celui-ci établi, le nouvel arrivant se déconnecte
+du médiateur et applique le protocole \SPRAY en utilisant le canal
+WebRTC. Ensuite, les éditeurs eux-même deviennent des médiateurs et permettent
+d'établir les connexions WebRTC d'un voisinnage à l'autre.
 
 \subsection{Détection de causalité}
+
+Pour préserver des répliques cohérentes, le même résultat doit advenir lors de
+la création de l'opération et de son intégration. Souvent, le comportement d'une
+opération dépend d'autres opérations précédemment intégrées.
+\TODO{Moar.}
 
 \begin{figure}
   \begin{center}
