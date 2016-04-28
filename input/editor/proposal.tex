@@ -77,7 +77,7 @@ voisinnage. Chacun des voisins ayant reçu le message le transmet à son tour à
 son voisinnage. Les modifications sur le document atteignent rapidement tous les
 éditeurs par transitivité. La complexité en communication chez chaque éditeur
 est bornée par $\mathcal{O}(M\ln(R))$, où $M$ est la taille du message, et
-$\mathcal{R}$ est le nombre de répliques connectées au moment de la propagation.
+$R$ est le nombre de répliques connectées au moment de la propagation.
 
 \begin{figure}
   \begin{center}
@@ -105,8 +105,57 @@ d'établir les connexions WebRTC d'un voisinnage à l'autre.
 
 Pour préserver des répliques cohérentes, le même résultat doit advenir lors de
 la création de l'opération et de son intégration. Souvent, le comportement d'une
-opération dépend d'autres opérations précédemment intégrées.
-\TODO{Moar.}
+opération dépend d'autres opérations précédemment intégrées. Par exemple, la
+génération d'une suppression nécessite l'existence de l'élément ciblé, et donc,
+que l'opération d'insertion de cet élément soit intégrée. Ces relations de
+précédence (\emph{happens before})~\cite{lamport1978time} contraignent l'ordre
+d'intégration des opérations.  Malheureusement, plus cet ordre est contraint,
+plus le maintenir devient honéreux. Par exemple, caractériser les relations
+causales d'une opération par rapport à toutes les autres nécessite au minimum
+$\mathcal{O}(W)$ où $W$ est le nombre de participants ayant effectué au moins
+une opération~\cite{charronbost1991concerning}. Ce surcoût concerne à la fois la
+mémoire locale et la taille des messages envoyés. Lorsqu'il est tolérable de
+payer ce prix localement, la taille des messages confine l'utilisation de telles
+contraintes sur l'ordre d'intégrations à de petites sessions d'édition bien
+contrôlées.
+
+\CRATE ne contraint l'ordre d'intégration que pour les paires d'opérations liées
+sémantiquement, c'est à dire que la suppression d'un élément suit toujours son
+insertion. Si les opérations sont receptionnées dans le désordre, la suppression
+attend l'insertion correspondante. En revanche, les insertions sont
+immédiatement intégrées lorsqu'elles sont reçues. Pour caractériser ces
+relations causales, \CRATE utilise un vecteur d'horloges avec
+exceptions~\cite{malkhi2007concise, mukund2014optimized}. Ce vecteur stocke pour
+chaque participant
+\begin{inparaenum}
+\item un entier désignant le compteur maximal connu de ce participant et
+\item une liste d'entiers désignant les exceptions, à savoir les opérations de
+  ce participants dont l'existence est connue mais qui ne sont pas encore
+  reçues.
+\end{inparaenum}
+Tandis qu'une telle structure conserve un surcoût local de l'ordre du vecteur
+d'horloges $\mathcal{O}(W)$, le surcoût en communication devient constant
+$\mathcal{O}(1)$.
+
+Cette structure sert aussi d'outil afin d'identifier les différences entre
+répliques lorsqu'un éditeur à besoin de récupérer l'état courant du document
+dans la session d'édition. Ce protocole
+d'anti-entropie~\cite{demers1987epidemic} fonctionne de la façon suivante :
+\begin{inparaenum}
+\item Un éditeur choisit un éditeur de son voisinage aléatoirement et lui envoie
+  son vecteur d'horloges avec exceptions.
+\item L'éditeur recevant un tel vecteur effectue la différence, entrée par
+  entrée, avec son propre vecteur. Ces différences permettent d'identifier les
+  opérations manquantes qui sont alors envoyées en réponse.
+\item L'éditeur recevant la réponse intègre les opérations normalement.
+\end{inparaenum}
+
+\CRATE utilise donc une approche basée sur les opérations lorsqu'il fonctionne
+normalement afin de permettre l'édition en temps réel. Lorsqu'il est en mode
+hors ligne, ou si le réseau subit des perturbations, alors \CRATE utilise un
+approche basée sur les différences. Le temps de convergence des répliques est
+rapide grâce à la diffusion des messages, et fiable grâce au méchanisme
+d'anti-entropie.
 
 \begin{figure}
   \begin{center}
@@ -117,10 +166,68 @@ opération dépend d'autres opérations précédemment intégrées.
   \end{center}
 \end{figure}
 
+La figure~\ref{editor:fig:timeline} montre une session d'édition impliquant 3
+participants. Les vecteurs d'horloges avec exceptions sont initialisés vides. Le
+collaborateur $c_1$ insère deux lettres dans le document et envoie les messages
+correspondants. Le collaborateur $c_3$ reçoit rapidement les deux messages et
+ajoute les identifiants des opérations à la structure de causalité. Les
+opérations sont intégrées dans la séquence répliquée. Au même moment, le
+collaborateur $c_2$ ne reçoit quant à lui que la seconde opération. Par
+conséquent, il marque la première opération de $c_1$ en tant qu'exception et
+intègre l'opération reçue. Le collaborateur $c_3$ supprime la première lettre
+insérée par $c_1$ et en envoie le message. Tandis que $c_1$ intègre la
+suppression immédiatement, $c_2$ doit attendre puisque l'opération d'insertions
+ciblée appartient aux exceptions. Une fois l'opération manquante reçue,
+l'exception disparait et l'insertion est appliquée suivie de la suppression.
+
 \subsection{Séquence répliquée}
+
+La convergence forte à terme définit qu'un système correcte si et seulement si
+les répliques intégrant un même ensemble d'opérations convergent vers un état
+équivalent~\cite{shapiro2011conflict}. La séquence répliquée a pour objectif de
+garantir cette propriété de convergence des copies. Ainsi, les membres d'une
+session d'édition lisent un document identique.
+
+\CRATE utilise un type de données sans résolutions de conflits conçu pour les
+séquences afin de représenter ses documents. Un telle structure se base sur des
+identifiants uniques et immuables. \CRATE utilise la fonction d'allocation \LSEQ
+(cf. chapitre~\ref{repl:chap:lseq}) afin de fournir ces identifiants. Ainsi, les
+suppressions suppriment réellement les éléments de la structure d'arbre
+sous-jacente. De plus, la croissance de ces identifiants est bornée entre une
+borne logarithmique et une borne polylogarithmique comparé au nombre
+d'insertions dans la séquence. Étant sous-linéaire, la complexité en
+communication devient acceptable. Étant sous-linéaire, la structure d'arbre
+représenant le document répliqué n'a pas besoin d'être rééquilibré et donc,
+l'éditeur n'a pas besoin d'exécuter un protocole de consensus qui ne passerait
+pas à l'échelle~\cite{mostefaoui2015signature}.
+
+Le facteur logarithmique de la dissémination de message, le coût constant
+apporté par la détection de causalité, et le coût des identifiants implique une
+complexité en communication attendue entre $\mathcal{O}((\log I).(\ln R))$ et
+$\mathcal{O}((\log I)^2.(\ln R))$ selon les comportements d'édition à l'œuvre,
+où $I$ est le nombre d'insertions effectuées sur la séquence, et $R$ le nombre
+de répliques dans la session d'édition au moment de la propagation de messages.
 
 
 \subsection{Interface utilisateur}
+
+Chaque participant possède une réplique du document partagé. Pourtant,
+l'application doit donner l'illusion d'un unique document accédé par plusieurs
+utilisateurs.
+
+\CRATE est un éditeur temps réel -- écrit en HTML, CSS, et JavaScript -- qui
+tourne directement dans les navigateurs web. Il établit des canals de
+communication d'un navigateur à l'autre en utilisant la récente technologie
+WebRTC~\cite{webrtc}. La zone de texte où l'utilisateur peut écrire est fournie
+grâce à l'éditeur JavaScript Ace~\cite{ace}.
+
+% Puisqu les CRDTs conçus pour les séquences fournissent des fonctions basées sur
+% les identifiants plutôt que sur les indices, \CRATE doit utiliser une fonction
+% \textsc{lookup} afin d'obtenir l'identifiant à l'indice voulu, et
+% inversement. \TODO{Moar.}
+
+% Les participants sont toujours en mesure de modifier le document lorsqu'ils le
+% souhaitent.
 
 \begin{figure}
   \begin{center}
