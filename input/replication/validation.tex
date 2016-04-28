@@ -7,7 +7,8 @@ données sans resolution de conflits conçue pour les séquences.  Cette section
 deux objectifs. Tout d'abord, elle examine la contribution de chacun des
 composants internes à \LSEQ décrits en §\ref{repl:sec:proposal}.  Ensuite, elle
 valide expérimentalement les analyses en complexité de \LSEQ faites en
-§\ref{repl:sec:complexity}.
+§\ref{repl:sec:complexity}. Dans toutes ces expérimentations, nous sommes plus
+interessés par l'allure des résultats que par leurs valeurs absolues.
 
 \subsection{Référence}
 
@@ -159,6 +160,42 @@ conçue pour le comportement d'édition courant.
   \end{center}
 \end{figure}
 
+\paragraph{Objectif :} Montrer que l'utilisation combinée d'un arbre exponentiel
+et de sous-fonctions d'allocation permet de pallier les faiblesses respectives
+de ceux-ci et d'obtenir une stratégie d'allocation sous-linéaire comparativement
+du nombre d'insertions effectuées sur le document. 
+
+\paragraph{Description} Trois documents chacun édité de façon différente :
+L'auteur du premier possède un comportement d'édition aléatoire; L'auteur du
+second possède un comportement d'édition monotone de gauche à droite; L'auteur
+du troisième de droite à gauche. La fonction d'allocation utilise un arbre
+exponentiel et deux sous-fonctions d'allocation conçues pour gérer les éditions
+monotones. Les sous-fonctions d'allocation sont assignées aléatoirement à chaque
+niveau de l'arbre. Les mesures sont faites à 100, 1k, 5k, 10k, 50k, 100k, 500k,
+1M insertions.
+
+\paragraph{Résultat :} La figure~\ref{repl:img:lseq} affiche les résultats
+obtenus lors de cette expérimentation. Nous observons que la progression de la
+taille des identifiants lors du comportement d'édition aléatoire reste
+logarithmique. Lors des deux autres comportements d'édition monotone, la
+croissance des identifiants suit une progression polylogarithmique comparé au
+nombre d'insertions effectuées dans la séquences. Cette observation confirme
+l'analyse en complexité spatiale des identifiants
+(cf. §\ref{repl:subsec:space}). Cependant, nous observons de petites
+différences entre les deux courbes résultant des comportements d'édition monotone.
+
+\paragraph{Explication :} Le comportement d'édition aléatoire conduit à un arbre
+exponentiel équilibré, d'où la croissance logarithmique des identifiants. Les
+autres cas d'édition sont très similaires car les sous-fonctions d'allocations
+ont la même probabilité d'apparaitre. Les différences s'expliquent par les
+différents choix lors des exécutions. La progression sous-linéaire s'explique
+grâce à l'augmentation d'arité de l'arbre lorsqu'il gagne en profondeur, i.e.,
+chaque nœud de l'arbre peut possèder jusqu'à deux fois plus de fils que son
+parent ne le peut. Lorsque la sous-fonction d'allocation employée ne s'accorde
+pas avec le comportement d'édition, la profondeur de l'arbre est incrémentée
+rapidement. Lorsque finalement la bonne sous-fonction d'allocation est trouvée,
+celle-ci couvre les dépenses qu'il a fallut déployer pour la trouver, i.e.,
+les pertes de niveaux dans l'arbre.
 
 \subsection{Complexité temporelle}
 
