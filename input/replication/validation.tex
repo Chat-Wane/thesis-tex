@@ -2,8 +2,12 @@
 \section{Validation}
 \label{repl:sec:validation}
 
-% Cette section a pour objectif de valider 
-
+\LSEQ est une fonction d'allocation d'identifiants pour les structures de
+données sans resolution de conflits conçue pour les séquences.  Cette section a
+deux objectifs. Tout d'abord, elle examine la contribution de chacun des
+composants internes à \LSEQ décrits en §\ref{repl:sec:proposal}.  Ensuite, elle
+valide expérimentalement les analyses en complexité de \LSEQ faites en
+§\ref{repl:sec:complexity}.
 
 \subsection{Référence}
 
@@ -17,6 +21,39 @@
   \end{center}
 \end{figure}
 
+
+\paragraph{Objectif :} Fournir une référence aux futures expérimentations afin
+de montrer les améliorations et les dégradations de chaque composant.
+
+\paragraph{Description :} La simulation concerne trois documents artificiels
+remplis respectivement par un comportement d'édition aléatoire, un comportement
+d'édition monotone de gauche à droite, et un comportement d'édition monotone de
+droite à gauche. La fonction d'allocation utilise un arbre d'arité maximale
+constante et une seule sous-fonction d'allocation conçue pour l'édition monotone
+de gauche à droite. Cette configuration correspond aux stratégies de l'état de
+l'art~\cite{preguica2009commutative, weiss2009logoot}.  La moyenne de la taille
+des identifiants est mesurée à 100, 1k, 5k, 10k, 50k, 100k insertions.
+
+\paragraph{Résultat :} La figure~\ref{repl:img:logoot} montre les résultats de
+cette expérimentation. Nous observons tout d'abord que la taille des
+identifiants croît logarithmiquement dans le cas des éditions faites à des
+positions aléatoires. Ensuite, les comportements d'édition monotone conduisent
+tout deux à une croissance linéaire. Toutefois, l'édition de gauche à droite
+reste bien plus efficace que l'édition de droite à gauche.
+
+\paragraph{Explication :} Le comportement d'édition aléatoire conduit à une
+structure d'arbre équilibrée. Les identifiants alloués restent petits. Le
+comportement d'édition montone de gauche à droite conduit à une croissance
+linéaire mais relativement faible. En effet, la stratégie d'allocation employée
+est conçue pour ce comportement : Des branches sont laissées disponibles en vue
+des prochaines insertions. La taille des identifiants grandit donc
+lentement. Toutefois, comme l'arité maximale de l'arbre reste constante, la
+structure ne s'adapte pas à la taille du document, d'où la croissance
+linéaire. Dans le cas du comportement d'édition monotone de droite à gauche,
+l'augmentation de la taille des identifiants est très forte car la stratégie
+employée favorise le comportement d'édition opposé. Ainsi les insertions ont tôt
+fait de ne plus avoir d'espace disponible conduisant à la création d'un nouvel
+espace, i.e. la profondeur de l'arbre augmente. L'augmentation reste linéaire.
 
 \subsection{Arbre exponentiel}
 
@@ -183,3 +220,8 @@ indice de progression courant. Les mesures concernant les opérations distantes
 suivent le même raisonnement. Elles sont plus efficaces car l'exploration des
 niveaux utilise la recherche dichotomique.
 
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
