@@ -2,6 +2,22 @@
 \section{Conclusion}
 \label{net:sec:conclusion}
 
+Dans ce chapitre, nous avons présenté \SPRAY, un protocole d'échantillonnage
+aléatoire de pairs s'auto-ajustant par rapport aux variations de la taille du
+réseau. Chaque nœud d'un réseau de taille $|\mathcal{N}|$ se voit attribuer une
+vue partielle du réseau de taille $\ln |\mathcal{N}|$ avec laquelle il peut
+communiquer. La topologie résultant des mélanges de voisinnages possède des
+propriétés proches des graphes aléatoires. Entre autres, le réseau est tolérent
+aux pannes et l'information se propage très rapidement. Bien que les connexions
+ne s'établissent que de voisin à voisin, le réseau converge vers une topologie
+dont les propriétés sont stables en très peu de temps.
+
+\begin{itemize}
+\item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
+    que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
+\end{itemize}
+
+
 \begin{algorithm}[h]
   \input{input/network/broadcastalgo.tex}
   \caption{\label{net:algo:broadcast} Dissémination de messages.}
@@ -14,8 +30,13 @@ terminaison de la dissémination, i.e., un message ne voyage pas indéfiniement
 dans le réseau. Avec au minimum une transmission par nœud, le coût en
 communication à chaque nœud se voit attribuer un facteur multiplicatif de
 l'ordre de la taille de sa vue partielle. Grâce à \SPRAY, cette dernière évolue
-automatiquement vers le logarithme de la taille globale du réseau. Le traffic
+automatiquement vers le logarithme de la taille globale du réseau. Le trafic
 généré hérite de cet ajustement automatique.
 
-\TODO{Moar.}
-%% Ainsi, en total transparence pour le développeur d'application, 
+Un développeur peut utiliser \SPRAY afin que le trafic généré suive les
+variations du réseau, et ce, sans configuration préalable de sa part. Le
+chapitre~\ref{editor:chap:crate} montre un exemple d'utilisation de \SPRAY dans
+le contexte de l'édition collaborative temps réel. Dans ce cadre, les sessions
+d'édition peuvent être de taille très différentes en fonction de la popularité
+du document et au cours du temps. 
+
