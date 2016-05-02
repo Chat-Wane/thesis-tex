@@ -1,17 +1,65 @@
 
 \section{État de l'art}
 
+Les éditeurs collaboratifs répartis autorisant l'édition temps réel dans les
+navigateurs web sont centralisés. Entre autres, les éditeurs tels que Google
+Docs~\cite{googledocs} ou Etherpad~\cite{etherpad} ont rendu l'édition
+collaborative aisée pour les millions d'utilisateurs à travers le monde.
 
-\subsection{Centralisées}
+\begin{figure}
+  \begin{center}
+    \input{input/editor/figserviceprovider.tex}
+    \caption{\label{editor:fig:serviceprovider} Les transmissions aux clients
+      connectés et les transformations d'opérations sont à la charge du 
+      fournisseur de services.}
+  \end{center}
+\end{figure}
 
-L'exemple canonique de Google Docs~\cite{googledocs}.
+La figure~\ref{editor:fig:serviceprovider} montre le fonctionnement de ces
+éditeurs. Un serveur central possède le document. Les participants se connectent
+à ce serveur (i.e. $e_1$, $e_2$, et $e_3$) ou à un serveur associé (i.e. $e_4$,
+$e_5$, $e_6$, $e_7$) mis à disposition de manière élastique afin d'alléger la
+charge de diffusion des messages du premier. Lorsque le collaborateur $e_1$
+effectue une action telle que l'insertion d'un caractère, l'opération est émise
+au serveur possédant le document. Celui-ci, fonctionnant avec une approche de
+transformés opérationnels, transforme l'opération reçue vis-à-vis de toutes
+celles que l'utilisateur n'avait pas encore reçu lors de la création de son
+opération. La transformation s'avère toutefois moins coûteuse puisque seul le
+serveur doit l'effectuer. En particulier, le vecteur de contexte transporté dans
+les messages des approches OT décentralisées n'existe pas dans les versions
+centralisée puisque seule importe la paire de versions de l'utilisateur et du
+serveur. En revanche, le serveur est en charge de toutes les transformations. De
+plus, il doit diffuser l'ensemble des changements aux participants. Le
+fournisseur de service prend en charge la presque intégralité du coût de la
+session d'édition. Pour les utilisateurs, se posent toujours les problèmes de
+confidentialité : Le fournisseur de service voit les documents et peut en
+utiliser le contenu à ses propres fins. Pire encore, la propriété du document
+doit bien souvent être accordée au fournisseur de service. À cela s'ajoute le
+problème du point individuel de défaillance : Lorsque le serveur hébergeant le
+document tombe en panne, le document n'est plus accessible.
 
-\subsection{Décentralisées}
-
+Malgré tous ces défauts, ces approches centralisées sont les plus populaires.
 Jusqu'à présent, aucun éditeur décentralisé dans le navigateur web n'avait été
-déployé.
+déployé. La récente technologie WebRTC permet d'établir des canaux de
+communication d'un navigateur à l'autre. En d'autres termes, les applications
+réellement décentralisée aussi facile d'accès que les applications web du Nuage
+deviennent possibles.
 
-\paragraph{WebRTC.}
+\paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
+  Communication}.  Cette technologie permet l'établissement de canaux de
+communication d'un navigateur web à l'autre. Établir une connexion WebRTC
+requière une négociation où le nœud d'origine et le nœud de réception s'envoient
+mutuellement des moyens d'accès distants dans l'ordre définit du plus aisé au
+plus ardu. Par exemple, les échanges vont d'abord concerner la boucle locale
+(\emph{localhost}), puis le réseau local (e.g. $192.168.255.255$), puis
+l'internet\ldots Aussitôt que la négociation s'achève avec succès, un canal de
+communication bidirectionnel est établi. Les nœuds peuvent alors communiquer
+entre eux.
+
+\noindent Comparé aux méthodes plus traditionnelles d'établissement de
+connexions (\TODO{Spécifier}), les connexions WebRTC sont nettement plus
+coûteuse à mettre en place et à entretenir. À ce titre, elles ne doivent pas
+être établies à la légère.
 
 %%% Local Variables:
 %%% mode: latex

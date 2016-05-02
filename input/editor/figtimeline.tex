@@ -17,13 +17,14 @@
   \draw[->,densely dashdotted] (2.5*\X,0pt) -- (3.5*\X,2*\Y);
 
 
-  \draw (5*\X,2+1*\Y) node[anchor=south]{[$\langle c_1,\,2,\,\pmb{\{1\}}\rangle$]}
+  \draw (5*\X,2+1*\Y) node[anchor=south]{[$\langle c_1,\,2,\,\DARKBLUE{\pmb{\{1\}}}\rangle$]}
   -- (5*\X,-2+1*\Y);
   \draw (5*\X,2+2*\Y) node[anchor=south]{[$\langle c_1,\,2,\,\varnothing\rangle$]}
   -- (5*\X,-2+2*\Y);
 
-  \draw [->,densely dashdotted, very thick] (1.5*\X,0pt) to[out=35,in=135] (6.65*\X,0pt)
-  to[out=-45,in=110] (7.5*\X,\Y);
+  \draw [->,densely dashdotted, very thick, color=darkblue]
+  (1.5*\X,0pt) to[out=35,in=135] node[anchor=north]{\DARKBLUE{\textbf{slow}}}
+  (6.65*\X,0pt) to[out=-45,in=110] (7.5*\X,\Y);
 
   \draw[fill=white] (1.5*\X,0pt) circle (2pt);
   \draw[fill=white] (2.5*\X,0pt) circle (2pt);
@@ -33,8 +34,9 @@
 
   \draw[fill=black] (6*\X,2*\Y) circle (2pt);
   
-  \draw[->,densely dashdotted, very thick]
-  (6.5*\X,1*\Y)to[out=-35,in=-145]node[anchor=north]{\textbf{wait}}(8.5*\X,1*\Y);
+  \draw[->,densely dashdotted, very thick, color=darkblue]
+  (6.5*\X,1*\Y)to[out=-35,in=-145]
+  node[anchor=north]{\DARKBLUE{\textbf{wait}}}(8.5*\X,1*\Y);
 
 
   \draw (9.5*\X,2pt) node[anchor=south]
