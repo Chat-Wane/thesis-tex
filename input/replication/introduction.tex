@@ -49,32 +49,39 @@ ces identifiants impacte directement le trafic généré, et donc le passage à
 l'échelle de l'approche. Deux classes de CRDTs conçues pour les séquences
 existent :
 
-\begin{itemize}
-\item Les CRDTs tels que WOOT transportent un identifiant de taille constante --
-ce qui est optimal. Toutefois, les éléments supprimés sont simplement cachés à
+\paragraph{Pierre tombales.}
+Les CRDTs tels que WOOT transportent un identifiant de taille constante -- ce
+qui est optimal. Toutefois, les éléments supprimés sont simplement cachés à
 l'utilisateur et impactent négativement les performances du système. Pour s'en
 débarasser, l'exécution d'un protocole de ramasse-miète réparti est
 nécessaire. Malheureusement, ceux-ci ne passent pas à l'échelle.
 
-\item Les CRDTs tels que Logoot ne nécessitent pas de pierres tombales mais
+\paragraph{Identifiants de taille variable.}
+Les CRDTs tels que Logoot ne nécessitent pas de pierres tombales mais
 transportent des identifiants dont la taille varie à la génération. En fonction
 de la stratégie d'allocation, ces identifiants peuvent croitre linérairement
 comparé au nombre d'insertions effectuées sur le document. Équilibrer la
-structure revient à éxecuter un protocol de consensus qui ne passe pas à
+structure revient à exécuter un protocole de consensus qui ne passe pas à
 l'échelle.
-\end{itemize}
 
-\TODO{Meow state problem ?}
+Le problème est le suivant : \textbf{Afin d'éviter tout protocole additionnel de
+relocalisation des identifiants, comment allouer ces identifiants pour que leur
+taille soit directement sous-linéaire?} Ce chapitre présente \LSEQ, une fonction
+d'allocation d'identifiants dont la taille croît de manière polylogarithmique
+par rapport au nombre d'insertions dans la séquence. À ce titre, elle permet
+d'éviter l'utilisation de protocole de relocalisation. Par conséquent, cette
+structure passe à l'échelle. 
 
 La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
-le schema de réplication pessimiste avant de détailler le schema qui lui est
-préféré : la réplication optimiste. La section présente ensuite les différentes
+le schéma de réplication pessimiste avant de détailler le schéma qui lui est
+préféré : La réplication optimiste. La section présente ensuite les différentes
 approches pour la réplication de séquences. En particulier, le fonctionnement
 des approches proposant des opérations commutatives est étudié. La
 section~\ref{repl:sec:motivations} expose les défaillances de l'état de
 l'art. La section~\ref{repl:sec:proposal} présente \LSEQ, une approche basée sur
-les opérations commutative dont la complexité est bornée supérieurement par un
-polylogarithme sur le nombre d'insertions effectuées dans le document. La
+les opérations commutatives dont la complexité est sous-linéaire. La
+section~\ref{repl:sec:complexity} s'attache à démontrer ces bornes ainsi que les
+conditions sous lesquelles celles-ci s'appliquent. La
 section~\ref{repl:sec:validation} valide \LSEQ au travers de simulations. La
 section~\ref{repl:sec:conclusion} conclut ce chapitre.
 

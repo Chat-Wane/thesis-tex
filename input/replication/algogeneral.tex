@@ -49,7 +49,7 @@
     \State \textbf{let}
     $\langle p,\, q \rangle \leftarrow \textsc{convert2Path}(previous,\, next)$;
     \State \textbf{let}
-    $newPath \leftarrow \textsc{allocPath}(p,\,q)$; \label{line:allocpath}
+    $newPath \leftarrow \DARKBLUE{\textsc{allocPath}(p,\,q)}$; \label{line:allocpath}
     \State \textbf{let} 
     $newDis \leftarrow \textsc{allocDis}(p,\, newPath,\, q)$; \label{line:allocdes}
     \State $\textsc{broadcast}(\text{'insert'},\,
