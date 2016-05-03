@@ -43,7 +43,7 @@ arbre nécessite nécessite un bit additionnel par concaténation.
 \begin{figure}
   \begin{center}
     \input{input/replication/figexponentialtree.tex}
-    \caption{\label{repl:fig:exponentialtree}Exemple d'arbre exponentiel.}
+    \caption{\label{repl:fig:exponentialtree}Arbre exponentiel.}
   \end{center}
 \end{figure}
 
@@ -64,17 +64,34 @@ aussi simple que l'édition de droite à gauche doit impérativement être gér�
 \subsection{Sous-fonctions d'allocation}
 \label{repl:subsec:suballocation}
 
-Une fonction d'allocation optimale nécessite la connaissance du nombre et de la
-position des éditions successives. La fonction peut alors allouer des
-identifiants dont la taille est logarithmique comparé à celle du
+L'allocation d'identifiants optimale suppose de connaître le nombre et la
+position des éditions successives. Avec cette connaissance, les identifiants
+auraient une croissance logarithmique comparée à la taille
 document. Malheureusement, aucune de ces deux informations n'est disponible dans
-l'édition collaborative en temps réel. Dans ces conditions, nous supposerons que
-le comportement d'édition est une suite d'éditions adjacentes les unes des
-autres -- comme l'édition en tête ou l'édition en fin -- ou à des positions
-aléatoires, ou enfin, une composition de ceux-ci.
+l'édition collaborative en temps réel.
+
+Dans ces conditions, nous supposerons que le comportement d'édition est une
+suite d'éditions adjacentes les unes des autres -- comme l'édition en tête ou
+l'édition en fin -- ou à des positions aléatoires, ou enfin, une composition de
+ceux-ci.
+
+\begin{figure}
+  \begin{center}
+    \subfloat[Sous-fonction d'allocation conçue pour l'édition de gauche à droite]
+    [\label{repl:fig:suballocationA}\TODO{Sous-fonction d'allocation conçue 
+    pour l'édition de gauche à droite}]
+    {\input{input/replication/figsuballocationA.tex}}
+    \hspace{20pt}
+    \subfloat[Sous-fonction d'allocation conçue pour l'édition de droite à gauche]
+    [\label{repl:fig:suballocationB}\TODO{Sous-fonction d'allocation conçue
+    pour l'édition de droite à gauche}]
+    {\input{input/replication/figsuballocationB.tex}}
+    \caption{Deux sous-fonctions d'allocation.}
+  \end{center}
+\end{figure}
 
 Afin de gérer ces types d'édition, employer une fonction d'allocation conçue
-pour l'édition en fin ne suffit pas. \TODO{Moar. Maybe merge the choice.}
+pour l'édition en fin ne suffit pas. \TODO{Moar. Talk about boundary.}
 
 \subsection{Choix de sous-fonction d'allocation}
 \label{repl:subsec:allocationchoice}
@@ -85,6 +102,21 @@ celle-ci. Cela pose deux problèmes, à savoir,
 \item quel événement déclanche une prise de décision, et lorsque cela survient, 
 \item quelle sous-fonction employer.
 \end{inparaenum}
+
+
+\subsection{Résumé}
+
+\begin{figure}
+  \begin{center}
+    \subfloat[Édition de gauche à droite dans \LSEQ]
+    [Édition de gauche à droite dans \LSEQ]
+    {\input{input/replication/figlseqtreeexampleA.tex}}
+    \subfloat[Édition de droite à gauche dans \LSEQ]
+    [Édition de droite à gauche dans \LSEQ]
+    {\input{input/replication/figlseqtreeexampleB.tex}}
+    \caption{\TODO{Meow}}
+  \end{center}
+\end{figure}
 
 
 %%% Local Variables:
