@@ -36,13 +36,30 @@ réponses similaires quelle que soit la réplique.
 \label{repl:subsec:exponentialtree}
 
 Un arbre exponentiel est une structure d'arbre dont chacun des nœuds possède une
-arité maximale $k$ fois supérieure à celle de son parent. Ainsi, si $k$ est fixé
-à 2 et que la racine peut accueillir 8 fils, alors chacun de ces fils peut
-accueillir à son tour 16 fils etc. Ainsi, la progression du nombre de fils dans
-une branche est exponentielle.
+arité maximale $k$ fois supérieure à celle de son parent. Ainsi, la progression
+du nombre de fils dans une branche est exponentielle. Un chemin dans un tel
+arbre nécessite nécessite un bit additionnel par concaténation.
 
-\TODO{Moar.}
+\begin{figure}
+  \begin{center}
+    \input{input/replication/figexponentialtree.tex}
+    \caption{\label{repl:fig:exponentialtree}Exemple d'arbre exponentiel.}
+  \end{center}
+\end{figure}
 
+La figure~\ref{repl:fig:exponentialtree} montre un arbre exponentiel. L'arbre
+commence avec une arité maximale de 2. Puis chacun de ces fils a une arité
+maximale de 4. Puis chacun de ces fils a une arité maximale de 8. Un chemin de
+profondeur 3 tel que [1.3.7] nécessite alors 1+2+3 = 6 bits pour sa
+représentation en mémoire.
+
+Plus généralement, un chemin de profondeur $e$ requière
+$\textstyle\sum\nolimits_{i=1}^{e}i = {e^2 + e \over{2}}$ bits. Cette progression
+quadratique en fonction de la profondeur rend essentielle la prise en charge des
+comportements d'édition conduisant au pire cas
+(cf. figure~\ref{repl:fig:allocpathexampleB}). En particulier, un comportement
+aussi simple que l'édition de droite à gauche doit impérativement être géré
+(cf. figure~\ref{repl:img:motivationsB}).
 
 \subsection{Sous-fonctions d'allocation}
 \label{repl:subsec:suballocation}
