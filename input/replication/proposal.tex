@@ -32,6 +32,44 @@ une sous-fonction d'allocation parmi celles disponibles
 (cf. §\ref{repl:subsec:allocationchoice}). Cette fonction de choix doit fournir des
 réponses similaires quelle que soit la réplique.
 
+\subsection{Arbre exponentiel}
+\label{repl:subsec:exponentialtree}
+
+Un arbre exponentiel est une structure d'arbre dont chacun des nœuds possède une
+arité maximale $k$ fois supérieure à celle de son parent. Ainsi, si $k$ est fixé
+à 2 et que la racine peut accueillir 8 fils, alors chacun de ces fils peut
+accueillir à son tour 16 fils etc. Ainsi, la progression du nombre de fils dans
+une branche est exponentielle.
+
+\TODO{Moar.}
+
+
+\subsection{Sous-fonctions d'allocation}
+\label{repl:subsec:suballocation}
+
+Une fonction d'allocation optimale nécessite la connaissance du nombre et de la
+position des éditions successives. La fonction peut alors allouer des
+identifiants dont la taille est logarithmique comparé à celle du
+document. Malheureusement, aucune de ces deux informations n'est disponible dans
+l'édition collaborative en temps réel. Dans ces conditions, nous supposerons que
+le comportement d'édition est une suite d'éditions adjacentes les unes des
+autres -- comme l'édition en tête ou l'édition en fin -- ou à des positions
+aléatoires, ou enfin, une composition de ceux-ci.
+
+Afin de gérer ces types d'édition, employer une fonction d'allocation conçue
+pour l'édition en fin ne suffit pas. \TODO{Moar. Maybe merge the choice.}
+
+\subsection{Choix de sous-fonction d'allocation}
+\label{repl:subsec:allocationchoice}
+
+L'emploi de plusieurs sous-fonctions d'allocation oblige à choisir parmi
+celle-ci. Cela pose deux problèmes, à savoir,
+\begin{inparaenum}[(i)]
+\item quel événement déclanche une prise de décision, et lorsque cela survient, 
+\item quelle sous-fonction employer.
+\end{inparaenum}
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../../paper"
