@@ -3,25 +3,26 @@
 \label{conclu:sec:summary}
 
 Dans ce manuscrit, notre objectif a été de fournir une solution complète en
-réponse aux problèmes de passage à l'échelle et de facilité d'accès aux éditeurs
+réponse aux problèmes de passage à l'échelle et de facilité d'accès des éditeurs
 collaboratifs temps réel. Nos contributions s'étalent sur les trois points
-suivants : 
+suivants :
 
 \paragraph{Communication.} Les réseaux dont la topologie possède des similitudes
 avec les graphes aléatoires sont au cœur de nombreuses approches
 décentralisées. L'état de l'art se divise en deux catégories caractérisées par
-la vue partielle quelles fournissent :
+les vues partielles qu'elles fournissent :
 \begin{inparaenum}[(i)]
 \item Les approches dont les vues partielles sont de taille constante définie
   lors de la configuration sont les plus nombreuses. Malheureusement, le
-  développeur d'application doit prévoir les dimensions du réseau géré par son
+  développeur doit prévoir les dimensions du réseau gérées par son
   application. Cela n'est pas toujours possible et conduit à un
-  surdimmensionnement des vues partielles. 
+  surdimmensionnement des vues partielles.
 \item L'approche dont les vue partielle sont de taille variable ne supporte pas
   bien la dynamicité des réseaux. 
 \end{inparaenum}
 Nous proposons une approche, nommée \SPRAY, débarassant le développeur de ces
-considérations. La taille des vues partielles suit grâcieusement.
+considérations. La taille des vues partielles suit gracieusement la taille du
+réseau. \TODO{Moar}
 
 
 \paragraph{Structure de données répliquée.}

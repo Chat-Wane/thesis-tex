@@ -47,17 +47,17 @@ intégrés.
   son propre ensemble d'éditeurs connus. Les changements atteignent tous les
   éditeurs par transitivité. La taille de cet ensemble est déterminante. En
   effet, lorsqu'elle augmente, le trafic généré augmente au risque de dépasser
-  les capacités de l'appareil émetteur; lorsqu'elle diminue, le réseau risque
-  des déconnexions partielles auquel cas les changements ne parviennent plus à
-  tous les éditeurs.
+  les capacités de l'appareil émetteur; lorsqu'elle diminue, le réseau risque de
+  se fragmenter en îlots, auquel cas les changements ne parviennent plus à tous
+  les éditeurs.
 
   Afin de configurer la taille de cet ensemble idéalement, le développeur doit
-  connaitre la taille des réseaux qu'il souhaite supporter. Malheureusement,
+  connaître la taille des réseaux qu'il souhaite supporter. Malheureusement,
   celle-ci varie, que ce soit pendant la durée de vie du réseau, e.g., une cours
   de formation en ligne (\emph{MOOC}) voit sa population fluctuer selon
-  l'interêt qu'il suscite; ou entre les réseaux créés par une même application,
-  e.g., un document créé pour un événement de grande ampleur n'a pas la même
-  audience que celle d'un rapport de projet écrit par des étudiants.
+  l'interêt qu'il suscite; ou entre les réseaux d'une même application, e.g., un
+  document créé pour un événement de grande ampleur n'a pas la même audience que
+  celle d'un rapport de projet écrit par des étudiants.
 
   % La première partie de cette question met en lumière la force du Nuage à
   % fournir des services dont l'utilisation et la configuration sont
@@ -88,7 +88,7 @@ intégrés.
 
   Supposons qu'un tel protocole de communication existe. Les messages
   transportés par celui-ci se doivent d'être léger, et pourtant suffisamment
-  descriptifs pour réconstruire un document identique indépendemment de l'auteur
+  descriptifs pour reconstruire un document identique indépendemment de l'auteur
   recevant le message.
 
   Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
@@ -125,7 +125,7 @@ intégrés.
     le caractère à l'utilisateur. Afin de supprimer ces caractères cachés et
     conserver de bonnes performances, un protocole de ramasse-miète réparti doit
     être exécuté régulièrement. Malheureusement, ce genre de protocoles s'avère
-    extrêmement coûteux.
+    extrêmement coûteux;
   \item soit des listes dont la taille, définie à la génération, peut grandir
     très vite. Cette croissance impacte négativement les performances du
     système. Pour y remédier, un protocole de relocalisation des identifiants
