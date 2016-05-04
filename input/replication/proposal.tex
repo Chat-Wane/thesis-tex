@@ -71,52 +71,120 @@ document. Malheureusement, aucune de ces deux informations n'est disponible dans
 l'édition collaborative en temps réel.
 
 Dans ces conditions, nous supposerons que le comportement d'édition est une
-suite d'éditions adjacentes les unes des autres -- comme l'édition en tête ou
-l'édition en fin -- ou à des positions aléatoires, ou enfin, une composition de
-ceux-ci.
+suite d'éditions adjacentes les unes des autres -- comme l'édition de gauche à
+droite et l'édition de droite à gauche -- ou à des positions aléatoires, ou
+enfin, une composition de ceux-ci. Afin de gérer ces types d'édition, employer
+une unique fonction d'allocation conçue pour l'édition de gauche à droite ne
+suffit pas.
 
 \begin{figure}
   \begin{center}
     \subfloat[Sous-fonction d'allocation conçue pour l'édition de gauche à droite]
-    [\label{repl:fig:suballocationA}\TODO{Sous-fonction d'allocation conçue 
-    pour l'édition de gauche à droite}]
+    [\label{repl:fig:suballocationA}Sous-fonction d'allocation conçue 
+    pour l'édition de gauche à droite]
     {\input{input/replication/figsuballocationA.tex}}
     \hspace{20pt}
     \subfloat[Sous-fonction d'allocation conçue pour l'édition de droite à gauche]
-    [\label{repl:fig:suballocationB}\TODO{Sous-fonction d'allocation conçue
-    pour l'édition de droite à gauche}]
+    [\label{repl:fig:suballocationB}Sous-fonction d'allocation conçue
+    pour l'édition de droite à gauche]
     {\input{input/replication/figsuballocationB.tex}}
-    \caption{Deux sous-fonctions d'allocation.}
+    \caption{\label{repl:fig:suballocation}Deux sous-fonctions d'allocation.}
   \end{center}
 \end{figure}
 
-Afin de gérer ces types d'édition, employer une fonction d'allocation conçue
-pour l'édition en fin ne suffit pas. \TODO{Moar. Talk about boundary.}
+La figure~\ref{repl:fig:suballocation} décrit le fonctionnement des deux
+sous-fonctions d'allocation employées par \LSEQ. Les arbres possèdent une arité
+maximale de 256 fils à ce niveau. Lorsqu'une insertion est effectuée, un nombre
+aléatoire est tiré dans l'espace disponible avec une borne supérieure imposée
+(la \emph{boundary}). Cette borne permet de laisser un petit espace libre entre
+les identifiants des caractères afin de laisser du jeu pour les éventuelles
+corrections orthographiques.  Comme le montre la
+figure~\ref{repl:fig:suballocationA}, si la borne commence proche du caractère
+précédent, alors la fonction d'allocation est adaptée à l'édition de gauche à
+droite car elle laisse un espace important pour les insertions à venir à droite
+du nouvel élément. Au contraire, comme le montre la
+figure~\ref{repl:fig:suballocationB}, si la borne commence proche du caractère
+suivant, alors la fonction d'allocation est adaptée à l'édition de droite à
+gauche.
 
 \subsection{Choix de sous-fonction d'allocation}
 \label{repl:subsec:allocationchoice}
 
-L'emploi de plusieurs sous-fonctions d'allocation oblige à choisir parmi
-celle-ci. Cela pose deux problèmes, à savoir,
+L'utilisation de plusieurs sous-fonctions d'allocation oblige à choisir parmi
+celles-ci. Cela pose deux problèmes, à savoir,
 \begin{inparaenum}[(i)]
 \item quel événement déclanche une prise de décision, et lorsque cela survient, 
 \item quelle sous-fonction employer.
 \end{inparaenum}
 
+Pour chaque niveau de l'arbre, \LSEQ assigne une sous-fonction d'allocation
+grâce à une fonction de hachage. Cette fonction doit retourner les même
+résultats quel que soit le participant. Pour cela, une graine, commune à tous
+les participants, est placée dans la séquence répliquée. Lorsqu'un nouveau
+participant arrive, il réplique la graine avec la séquence.
+
+Afin de ne privilégier aucun comportement d'édition, le choix parmi les
+sous-fonctions doit être uniformément réparti. De plus, afin de ne pas faciliter
+les comportements malveillants, la fonction de hachage doit rendre les choix
+imprévisibles.
 
 \subsection{Résumé}
+
+La fonction \textsc{allocPath} choisit le chemin associé à chaque élément afin
+d'encoder sa position relative à l'égard de ses éléments adjacents dans la
+séquence. Dans le but de conserver de bonnes performances, la structure d'arbre
+sous-jacente doit garder une petite profondeur.
+
+\begin{algorithm}
+  \input{input/replication/algoallocpath.tex}
+  \caption{\label{repl:algo:allocpath}Allocation des chemins selon \LSEQ.}
+\end{algorithm}
+
+L'algorithme~\ref{repl:algo:allocpath} montre les instructions de \LSEQ. Tout
+d'abord, la fonction \textsc{allocPath} calcule la distance entre les deux
+chemins adjacents. L'objectif est de trouver le plus petit niveau de l'arbre
+contenant assez d'espace pour accueillir le nouvel élément.
+Ensuite, la fonction de hachage $h$ (cf. §\ref{repl:subsec:allocationchoice})
+défère l'allocation du chemin à une sous-fonction d'allocation
+(cf. §\ref{repl:subsec:suballocation}) selon la profondeur trouvée. 
+La sous-fonction d'allocation calcule alors l'intervalle à disposition et la
+profondeur du nouveau chemin. Si l'intervalle est plus grand que la limite
+imposée, alors ce premier est restreint. Le nouveau chemin commence à partir de
+l'un des chemin adjacent auquel est ajouté ou soustrait une valeur aléatoire
+dans le nouvel intervalle.
 
 \begin{figure}
   \begin{center}
     \subfloat[Édition de gauche à droite dans \LSEQ]
-    [Édition de gauche à droite dans \LSEQ]
+    [\label{repl:fig:lseqtreeexampleA} Édition de gauche à droite dans \LSEQ]
     {\input{input/replication/figlseqtreeexampleA.tex}}
     \subfloat[Édition de droite à gauche dans \LSEQ]
-    [Édition de droite à gauche dans \LSEQ]
+    [\label{repl:fig:lseqtreeexampleB} Édition de droite à gauche dans \LSEQ]
     {\input{input/replication/figlseqtreeexampleB.tex}}
-    \caption{\TODO{Meow}}
+    \caption{\label{repl:fig:lseqtreeexample} Exemple d'arbres exponentiels
+      \LSEQ remplis par deux comportements d'édition antagonistes résultant sur
+      une même séquence \texttt{QWERTY}.}
   \end{center}
 \end{figure}
+
+La figure~\ref{repl:fig:lseqtreeexample} montre le résultat de la stratégie
+d'allocation \LSEQ après deux comportements d'éditions : L'un écrit de gauche à
+droite, l'autre écrit de droite à gauche. Dans les deux cas, la séquence est
+\texttt{QWERTY}; l'arité maximale commence à $2^5$ et est doublée à chaque
+niveau; la fonction de hachage désigne comme étant les sous-fonctions conçues
+pour l'édition de gauche à droite, et pour l'édition de droite à gauche, pour
+les niveaux 1 et 2 respectivement. La figure~\ref{repl:fig:lseqtreeexampleA}
+montre le cas de l'édition de gauche à droite. Dans ce cas, le comportement
+d'édition attendu par la sous-fonction d'allocation est bon, et les chemins
+restent alloués au premier niveau de l'arbre. D'un autre coté, la
+figure~\ref{repl:fig:lseqtreeexampleB} montre le cas de l'édition de droite à
+gauche. Dans ce cas, la sous-fonction d'allocation du premier niveau n'est pas
+adaptée. La profondeur de l'arbre augmente dès la seconde insertion. En
+revanche, puisque la sous-fonction d'allocation choisie à ce niveau est adaptée,
+la profondeur de l'arbre n'augmente pas d'avantage. Si le comportement d'édition
+reste ainsi, l'allocation finira par compenser les pertes subies par le mauvais
+choix de sous-fonction au premier niveau de l'arbre. 
+
 
 
 %%% Local Variables:
