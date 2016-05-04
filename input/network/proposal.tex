@@ -38,64 +38,6 @@ nœud : le processus d'entrée (cf. §\ref{net:subsec:joining}) , les mélanges 
 répétition (cf. §\ref{net:subsec:shuffling}, la gestion des départs
 (cf. §\ref{net:subsec:leaving}).
 
-
-% \begin{figure*}
-% \centering
-% \subfloat[Figure A][\label{fig:webrtcA}
-% $p_1$ connects to $p_2$ using the signaling service.
-% 1: $p_1$ pushes its offer ticket;
-% 2: $p_2$ pulls the ticket;
-% 3: $p_2$ pushes its response;
-% 4: $p_1$: pulls the response and establishes a
-% bidirectional connection with $p_2$. $p_3$ does the same with $p_2$.
-% Figure~\ref{fig:webrtcB} depicts the resulting network.]{
-%   \input{input/spray/signalingexampleA.tex}}
-% \hspace{5pt}
-% \subfloat[Figure B][\label{fig:webrtcB}
-% $p_1$ connects to $p_3$ using $p_2$ as mediator.
-% 1: $p_1$ sends its offer ticket to $p_2$;
-% 2: $p_2$ forwards it to $p_3$ and registers $p_1$ as the emitter;
-% 3: $p_3$ sends its response to $p_2$;
-% 4: $p_2$ forwards it to the emitter $p_1$ which connects to $p_3$.]{
-%   \input{input/spray/signalingexampleB.tex}}
-% \hspace{5pt}
-% \subfloat[Figure C][\label{fig:webrtcC}
-% The resulting network overlay: a fully connected network composed of
-% 3 members.]{
-%   \input{input/spray/signalingexampleC.tex}}
-% \caption{\label{fig:webrtc}Creating an overlay network on top of WebRTC.}
-% \end{figure*}
-
-
-% WebRTC permet la communication en temps réel entre navigateurs web et ce, même
-% en présence de configurations réseaux complexes impliquant firewall, proxy, ou
-% NAT (Network Address Translation). Toutefois, WebRTC ne gère ni l'adressage, ni
-% le routage. Pour établir une connexion, les navigateurs s'échangent des offres
-% et acquittements via un médiateur commun (e.g. mails, services dédiés de
-% signalement, connections WebRTC connues, etc.). Dans la
-% figure~\ref{fig:webrtcA}, $p_1$ souhaite se connecter à $p_2$. Par conséquence,
-% $p_1$ envoie son ticket d'offre au service de signalement connu. Le pair $p_2$
-% récupère l'offre, la poinçonne et la renvoie au service de signalement. Enfin,
-% $p_1$ récupère le ticket poinçonné et établie une connexion bidirectionnelle
-% avec $p_2$. De manière identique, $p_3$ établie une connexion avec $p_2$. Nous
-% appellerons la procédure d'aller-retour des tickets un \emph{three-way
-%   handshake}. Désormais, le pair $p_1$ est capable d'établir une connexion avec
-% $p_3$ sans passer par l'intermédiaire du serveur. Pour cela, il utilise $p_2$
-% comme médiateur. Toutefois, si le pair $p_2$ crash durant cette procédure, la
-% connexion ne pourra s'effectuer correctement, et ce même si une route
-% alternative existe (puisque WebRTC ne gère pas le routage).
-
-% Utiliser les services de signalement et les connections WebRTC existantes permet
-% de déployer facilement les protocoles d'échantillonnage aléatoire de
-% pairs~\cite{jelasity2007gossip}. Ces derniers étant présent dans les navigateurs
-% modernes disponibles sur les smartphones, les tablettes, etc. Dans ce contexte,
-% il est impératif de conserver autant que possible un petit nombre de connections
-% afin de réduire le trafic réseau et limiter la consommation de ressources.
-
-%\subsubsection{Facilité d'accès}
-%\subsubsection{Contraintes supplémentaires}
-
-
 \subsection{Rejoindre le réseau}
 \label{net:subsec:joining}
 

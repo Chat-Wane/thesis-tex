@@ -47,19 +47,75 @@ deviennent possibles.
 
 \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
   Communication}.  Cette technologie permet l'établissement de canaux de
-communication d'un navigateur web à l'autre. Établir une connexion WebRTC
-requière une négociation où le nœud d'origine et le nœud de réception s'envoient
-mutuellement des moyens d'accès distants dans l'ordre définit du plus aisé au
-plus ardu. Par exemple, les échanges vont d'abord concerner la boucle locale
-(\emph{localhost}), puis le réseau local (e.g. $192.168.255.255$), puis
-l'internet\ldots Aussitôt que la négociation s'achève avec succès, un canal de
-communication bidirectionnel est établi. Les nœuds peuvent alors communiquer
-entre eux.
+communication d'un navigateur web à l'autre, et ce, même en présence de
+configurations réseaux complexes impliquant firewall, proxy, ou NAT (Network
+Address Translation). Toutefois, WebRTC ne gère ni l'adressage, ni le routage.
+Établir une connexion WebRTC requière une négociation où le nœud d'origine et le
+nœud de réception s'envoient mutuellement des moyens d'accès distants dans
+l'ordre définit du plus aisé au plus ardu. Par exemple, les échanges vont
+d'abord concerner la boucle locale (\emph{localhost}), puis le réseau local
+(e.g. $192.168.255.255$), puis l'internet\ldots Aussitôt que la négociation
+s'achève avec succès, un canal de communication bidirectionnel est établi. Les
+nœuds peuvent alors communiquer entre eux.
+
+\begin{figure*}
+  \begin{center}
+    \subfloat[Figure A][\label{editor:fig:webrtcA}
+    $e_1$ se connecte à $e_2$ via un médiateur.
+    1: $e_1$ crée ses offres;
+    2: $e_2$ récupère ces offres;
+    3: $e_2$ crée ses offres en réponse;
+    4: $e_1$: reçoit les offres et établit une connexion bidirectionnelle avec
+    $e_2$. $e_3$ en fait de même avec $e_2$.
+    La figure~\ref{editor:fig:webrtcB} décrit le réseau en résultant.]{
+      \input{input/editor/figsignalingexampleA.tex}}
+    \hspace{5pt}
+    \subfloat[Figure B][\label{editor:fig:webrtcB}
+    $e_1$ se connecte à $e_3$ en utilisant $e_2$ comme médiateur.
+    1: $e_1$ envoie ses offres à $e_2$;
+    2: $e_2$ redirige les offres à $e_3$;
+    3: $e_3$ envoie ses offres en réponse à $e_2$;
+    4: $e_2$ redirige les offres vers $e_1$ qui se connecte à $e_3$.]{
+      \input{input/editor/figsignalingexampleB.tex}}
+    \hspace{5pt}
+    \subfloat[Figure C][\label{editor:fig:webrtcC}
+    Le réseau superposé : Un réseau complètement connecté composé de 3 membres.]{
+      \input{input/editor/figsignalingexampleC.tex}}
+    \caption{\label{fig:webrtc}Créer un réseau superposé au dessus de WebRTC.}
+  \end{center}
+\end{figure*}
+
+\noindent Pour établir une connexion, les navigateurs s'échangent des offres et
+acquittements via un médiateur commun (e.g. mails, services dédiés de
+signalement, connexions WebRTC connues, etc.). Dans la figure~\ref{editor:fig:webrtcA},
+$e_1$ souhaite se connecter à $e_2$. Par conséquent, $e_1$ envoie ses offres au
+service de signalement connu. Le nœud $e_2$ récupère l'offre et envoie ses
+propres offres en réponse au service de signalement. Enfin, $e_1$ récupère les
+offres de $e_2$ et établit une connexion bidirectionnelle avec $e_2$. De manière
+identique, $e_3$ établit une connexion avec $e_2$. Désormais, le nœud $e_1$ est
+capable d'établir une connexion avec $e_3$ sans passer par l'intermédiaire du
+serveur. Pour cela, il utilise $e_2$ comme médiateur. Toutefois, si le nœud
+$e_2$ tombe en panne durant cette procédure, la connexion ne pourra s'effectuer
+correctement, et ce, même si une route alternative existe (puisque WebRTC ne
+gère pas le routage).
 
 \noindent Comparé aux méthodes plus traditionnelles d'établissement de
-connexions (\TODO{Spécifier}), les connexions WebRTC sont nettement plus
-coûteuse à mettre en place et à entretenir. À ce titre, elles ne doivent pas
-être établies à la légère.
+connexions, les connexions WebRTC sont nettement plus coûteuse à mettre en place
+et à entretenir. À ce titre, elles ne doivent pas être établies à la légère.
+
+
+
+
+
+% Utiliser les services de signalement et les connections WebRTC existantes permet
+% de déployer facilement les protocoles d'échantillonnage aléatoire de
+% pairs~\cite{jelasity2007gossip}. Ces derniers étant présent dans les navigateurs
+% modernes disponibles sur les smartphones, les tablettes, etc. Dans ce contexte,
+% il est impératif de conserver autant que possible un petit nombre de connections
+% afin de réduire le trafic réseau et limiter la consommation de ressources.
+
+
+
 
 %%% Local Variables:
 %%% mode: latex
