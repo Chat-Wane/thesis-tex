@@ -1,0 +1,61 @@
+
+\lettrine{L}es éditeurs collaboratifs ont été largement popularisés par les
+services tels que Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}. Ces
+services, directement accessibles via les navigateurs web, rendent aisée la
+participation aux sessions d'édition temps réel. Grâce à une simple URL
+(\emph{Uniform Resource Locator}), le navigateur est en mesure de charger le
+document partagé. Chaque modification apportée au document est visible des
+collaborateurs ayant ouvert le document.
+
+La facilité d'accès au document est possible grâce à un serveur centralisé mis à
+disposition par un fournisseur de service. Malheureusement, cela pose des
+problèmes de confidentialité, de passage à l'échelle, et de tolérence aux
+pannes. La décentralisation permet de résourdre ces problèmes, hélas, au prix de
+l'aisance d'accès.
+
+Un éditeur collaboratif fonctionne grâce à quatre couches :
+\begin{inparaenum}[(i)]
+\item Une couche réseau afin de propager les opérations;
+\item Une couche de détection de causalité afin que les opérations soient
+  délivrées dans un certain ordre;
+\item Une couche de structure de données afin d'obtenir un document identique
+  partout;
+\item Une couche d'interface graphique afin de fournir la possibilité à
+  l'utilisateur de lire et modifier le document.
+\end{inparaenum}
+À cet égard, le problème est le suivant :
+
+\begin{itemize}
+\item[\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la
+    construction d'un éditeur collaboratif temps réel dont les performances
+    passent à l'échelle et dont le déploiement soit aussi simple que sur le
+    Nuage?}
+\end{itemize}
+
+La récente possibilité d'établir des canaux de communication d'un navigateur à
+l'autre -- grâce à WebRTC -- ouvre la voie aux applications décentralisées
+directement accessibles dans le navigateur web.
+
+Ce chapitre présente \CRATE, un éditeur collaboratif décentralisé dans le
+navigateur. À ce titre, un document n'appartient qu'aux membres de la session
+d'édition. Au lieu d'avoir à déployer un serveur, les même membres participent
+activement au bon fonctionnement de la session d'édition. \CRATE utilise \SPRAY
+(cf. §\ref{net:chap:spray}) et \LSEQ (cf. §\ref{repl:chap:lseq}). Grâce à cela,
+le trafic généré par l'application est logarithmique comparé à la taille de la
+session d'édition, et polylogarithmique comparé au nombre d'insertions
+effectuées dans le document. À ce titre, l'application passe à l'échelle.
+
+Le reste de ce chapitre s'organise de la façon suivante : Tout d'abord, la
+section~\ref{editor:sec:stateoftheart} présente l'état de l'art en de plus
+amples détails. La section~\ref{editor:sec:crate} introduit \CRATE, son
+architecture et ses composants internes, ainsi que son fonctionnement. La
+section~\ref{editor:sec:experimentation} décrit les résultats obtenus lors d'une
+expérimentation à large échelle impliquant jusqu'à 600 navigateurs. La
+section~\ref{editor:sec:conclusion} conclut ce chapitre.
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
