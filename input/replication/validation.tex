@@ -7,7 +7,8 @@ données sans resolution de conflits conçue pour les séquences.  Cette section
 deux objectifs. Tout d'abord, elle examine la contribution de chacun des
 composants internes à \LSEQ décrits en §\ref{repl:sec:proposal}.  Ensuite, elle
 valide expérimentalement les analyses en complexité de \LSEQ faites en
-§\ref{repl:sec:complexity}. Dans toutes ces expérimentations, nous sommes plus
+§\ref{repl:sec:complexity}. Enfin, elle montre l'influence de la concurrence sur
+l'allocation d'identifiants. Dans toutes ces expérimentations, nous sommes plus
 interessés par l'allure des résultats que par leurs valeurs absolues.
 
 \subsection{Référence}
@@ -270,7 +271,7 @@ niveaux utilise la recherche dichotomique.
 
 \begin{figure}
   \begin{center}
-    \includegraphics[angle=-90, width=0.8\textwidth]{img/lseq/latency.eps}
+    \includegraphics[angle=-90,width=0.8\textwidth]{img/lseq/latency.eps}
     \vspace{25pt}
     \caption{\label{repl:img:latency}Effets de la concurrence sur la taille des
       identifiants. L'axe des abscisses montre le nombre d'opérations effectuées
@@ -278,6 +279,38 @@ niveaux utilise la recherche dichotomique.
       (en octets).}
   \end{center}
 \end{figure}
+
+\paragraph{Objectif :} Montrer que plus la concurrence est élevée, plus les
+identifiants alloués sont petits.
+
+\paragraph{Description :} Deux utilisateurs artificiels dont le comportement est
+monotone écrivent de gauche à droite un même document. Grâce à
+\emph{netem}~\cite{netem}, une latence est ajoutée sur le transport des
+messages créant des opérations concurrentes. Les documents atteignent 10k
+caractères. Les mesures sur la taille moyenne des messages envoyés sont
+effectuées tout au long de l'expérimentation. La fonction d'allocation employée
+est celle de \LSEQ : Un arbre exponentiel avec deux sous-fonctions
+d'allocations. 
+
+\paragraph{Résultat :} La figure~\ref{repl:img:latency} montre les résultats de
+cette expérimentation. Comme attendu, plus la latence est élevée, et donc plus
+la concurrence est élevée, plus les messages sont de petite taille. Les
+expérimentations sans concurrence présentent donc la borne supérieure des
+fonctions d'allocation. La figure~\ref{repl:img:latency} nous montre aussi, avec
+une plus fine granularité, la croissance polylogarithmique des messages qui
+confirme une seconde fois l'analyse en complexité spatiale des identifiants.
+
+\paragraph{Explication :} Les insertions effectuées par les participants ciblent
+une même position dans le document. Toutefois, ils ne prennent connaissance de
+cela que quelques temps plus tard, lorsque le message correspondant leur est
+parvenu. Ainsi, les opérations sont-elles réellement concurrentes. Les
+insertions étant effectuées en concurrence à la même position dans la séquence,
+les opérations partagent le même espace d'allocation. Entre autre, les
+identifiants ont une chance d'obtenir le même chemin dans l'arbre. En moyenne,
+ils sont plus rapproché les uns des autres. Il est important de noter que les
+documents résultant de ces expérimentations sont différents. En d'autres termes,
+la série de caractères composant le document est différente en fonction de la
+latence.
 
 
 %%% Local Variables:
