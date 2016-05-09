@@ -2,9 +2,33 @@
 \section{Conclusion}
 \label{editor:sec:conclusion}
 
+Ce chapitre a présenté \CRATE, un éditeur collaboratif décentralisé fonctionnant
+directement dans les navigateurs web.
 
 \begin{itemize}
 \item [\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la construction
   d'un éditeur collaboratif temps réel dont les performances passent à l'échelle
   et dont le deploiement soit aussi simple que sur le Nuage?}
 \end{itemize}
+
+Afin de passer à l'échelle, \CRATE utilise \SPRAY, un protocole
+d'échantillonnage aléatoire de pairs permettant d'adapter les vues partielles de
+chaque éditeur à la taille de la session d'édition. De plus, \CRATE contraint au
+minimum l'ordre d'intégration des opérations. Cela lui permet de ne pas ajouter
+de surcoût sur les messages. Enfin, \CRATE utilise \LSEQ, une fonction
+d'allocation d'identifiants dont les identifiants ont une borne supérieures
+sous-linéaire par rapport au nombre d'insertions effectuées dans le
+document. Grâce à ces composants internes, \CRATE ajuste son trafic généré
+logarithmiquement par rapport à la taille de la session d'édition, et
+polylogarithmiquement par rapport au nombre d'insertions effectuées sur le
+document. Par conséquent, \CRATE passe à l'échelle. Ces affirmations ont été
+validées au travers d'expérimentations impliquant jusqu'à 601 navigateurs
+écrivant en temps réel. Le trafic mesurée suit les attentes susmentionnées.
+
+\CRATE est accessible via un navigateur web. Lorsqu'un utilisateur partage son
+document, il autorise l'accès par son intermédiaire à la session d'édition. À
+l'instar des solutions centralisée (e.g. Google Docs), le partage s'effectue
+simplement avec une URL.
+
+Le chapitre~\ref{conclu:chap:conclusion} revient sur les précédentes
+contributions et présente les perspectives scientifiques ouvertes par celles-ci.
