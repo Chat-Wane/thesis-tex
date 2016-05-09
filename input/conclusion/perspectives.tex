@@ -4,16 +4,14 @@
 
 Les travaux réalisés lors de cette thèse et présenté dans ce manuscrit offrent
 de nombreuses perspectives de différente granularité. Tout d'abord, chacun des
-composants de notre éditeur collaboratif peut être amélioré. Par exemple, le
-protocole d'échantillonnage de pairs \SPRAY souffre des problèmes de sécurité
-inhérents à ce type de protocole ciblant de grandes échelles. Ensuite, l'éditeur
-lui-même offre des opportunités inédites. Par exemple, son intégration, non en
-opposition, mais en complément des approches actuellement centralisés. Enfin,
-l'architecture ouvre aussi la voie à un plus large champs d'applications
-décentralisées directement accessibles via les navigateurs web.
+composants de notre éditeur collaboratif peut être amélioré ou étendu. Ensuite,
+l'éditeur lui-même offre des opportunités inédites. Par exemple, son
+intégration, non en opposition, mais en complément des approches actuellement
+centralisés. Enfin, l'architecture ouvre aussi la voie à un plus large champs
+d'applications décentralisées directement accessibles via les navigateurs web.
 
-Cette section fournit les détails de perspectives scientifiques concernant ces
-travaux de thèse.
+Cette section fournit une liste non-exhaustive de perspectives scientifiques
+concernant ces travaux de thèse.
 
 \subsection{Fusion de réseaux}
 
@@ -110,13 +108,35 @@ $\log\log N$ redirections, où $N$ est le nombre de membres du réseau. Grâce �
 \SPRAY, cette propriété pourrait rester vraie quelle que soit la taille du
 réseau.
 
-\subsection{Sécurité}
+% \subsection{Sécurité}
+
+% Les protocoles d'appartenance à un réseau font face à des problèmes de sécurités
+% inhérents aux protocoles ciblant de larges dimensions. 
 
 \subsection{Compromis causalité et concurrence}
 
 \CRATE comprend une couche dédiée à la détection de relations causales. La
-structure utilisée est celle d'un vecteur d'horloges avec des exceptions. 
+structure utilisée est celle d'un vecteur d'horloges avec des
+exceptions. Celle-ci, similairement aux vecteurs d'horloges, stockent un entier
+par participants. Pour les dispositifs informatiques aux configurations plus
+modestes tels que les téléphones portables, la progression linéaire de ces
+vecteurs peut poser problème. 
 
+Une perspective possible serait de remplacer ce vecteur d'horloges de taille
+$N$, où $N$ est le nombre de membres ayant jamais participé à la session
+d'édition, par un vecteur d'horloges de taille $K$, où $K$ est un entier
+nettement inférieur à $N$. L'intuition derrière cette structure provient du
+fait que lorsqu'il n'y a pas de concurrence, une seule horloge de Lamport suffit
+pour caractériser la causalité. Si la concurrence augmente, alors des doublons
+peuvent apparaître. L'intégration, en présence de doublons, peut conduire à des
+incohérences.
+
+L'idée serait alors d'avoir un vecteur s'ajustant à la concurrence du système
+afin de borner la fréquence des erreurs. À cela s'ajouterait un méchanisme de
+recouvrement sur erreur afin d'intégrer l'opération arrivée en retard (similaire
+aux transformés opérationnels mais étendu aux opérations non-concurrentes).
+Enfin, rendre le système fiable -- tous les messages parviennent à tous les
+participants -- nécessiterait un méchanisme d'anti-entropie sur cette structure.
 
 \subsection{Wiki réparti temps réel}
 
@@ -126,23 +146,30 @@ réel. Le succès de l'encyclopédie Wikipédia n'est plus à démontrer. Hélas
 modèle même d'édition provoque l'apparition de conflits. Ces conflits ne
 concernent pas seulement des points de vue divergeants, mais aussi des éditions
 placées aux même endroit dans le document au même moment. Les conflits doivent
-être résolus manuellement ce qui constitue une tâche périlleuse, à tel point que
-les discussions quant à l'organisation de l'écriture ont énormément augmenté ces
-dernières années (\REF). \TODO{Moar.}
+être résolus manuellement ce qui constitue une tâche compliquée, à tel point que
+les discussions quant à l'organisation de l'écriture ont énormément augmenté au
+cours du temps.
 
 Autoriser l'édition temps réel des pages de Wiki permettrait à différent
 utilisateurs de voir les modifications effectués par d'autres collaborateurs
 afin d'agir en conséquence. Dans ce cas, les seuls conflits restants sont ceux
-d'ordre sémantique. \TODO{Moar.}
+d'ordre sémantique.
 
-Dans un second temps, décentraliser ces sessions d'édition temps réel permet de
-soulager le fournisseur du service des coûts liés à l'édition. Seul le stockage
-final reste de sa responsabilité. \TODO{And moar.} 
+De plus, décentraliser ces sessions d'édition temps réel permet de soulager le
+fournisseur du service des coûts liés à l'édition. Les membres d'une session
+d'édition participent seuls au bon fonctionnement de la session. Une fois le
+travail accompli, le document est sauvegardé sur le serveur et versionné
+normalement. Globalement, seul le stockage final reste de sa responsabilité.
 
-\CRATE permet de placer des liens à d'autres sessions d'édition dans le
-document. Ce simple méchanisme permet de naviguer d'un document à
-l'autre. \TODO{Moar.}
+Enfin, \CRATE permet de placer des liens à d'autres sessions d'édition dans le
+document. Ce simple méchanisme permet de naviguer d'un document à l'autre, d'une
+session d'édition à l'autre, et plus généralement d'un réseau à un autre. Il est
+alors possible de naviguer très simplement parmi ces réseaux, pour peu qu'ils
+soient encore vivants et accessibles.
 
+% Certains projets, comme \emph{The Fold}
+% bénéficient d'une foule de gens volontaires qui mettent leur machine à
+% disposition afin d'améliorer la puissance calculatoire du système.
 
 \subsection{O'Browser, Where Art Thou?}
 
@@ -164,8 +191,8 @@ La question est alors simple : \emph{Quelles autres applications décentralisée
 sur les composants nécessaires afin d'écrire ces applications. Enfin, serait-il
 possible d'écrire un langage de programmation permettant de composer les
 différents éléments tout en garantissant certaines propriétés sur, par exemple,
-le critère de cohérence. Une telle avancée permettrait de rendre le web
-décentralisé, tel qu'il le fut pensé à l'origine.
+le critère de cohérence ou la sécurité. Une telle avancée permettrait de rendre
+le web décentralisé, tel qu'il le fut pensé à l'origine.
 
 %%% Local Variables:
 %%% mode: latex
