@@ -10,9 +10,10 @@ collaborative aisée pour les millions d'utilisateurs à travers le monde.
 \begin{figure}
   \begin{center}
     \input{input/editor/figserviceprovider.tex}
-    \caption{\label{editor:fig:serviceprovider} Les transmissions aux clients
-      connectés et les transformations d'opérations sont à la charge du 
-      fournisseur de services.}
+    \caption[Fonctionnement des éditeurs centralisés]
+    {\label{editor:fig:serviceprovider} Les transmissions aux clients connectés
+      et les transformations d'opérations sont à la charge du fournisseur de
+      services.}
   \end{center}
 \end{figure}
 
@@ -61,7 +62,8 @@ nœuds peuvent alors communiquer entre eux.
 
 \begin{figure*}
   \begin{center}
-    \subfloat[Figure A][\label{editor:fig:webrtcA}
+    \subfloat[Des nœuds utilisent un médiateur pour se connecter]
+    [\label{editor:fig:webrtcA}
     $e_1$ se connecte à $e_2$ via un médiateur.
     1: $e_1$ crée ses offres;
     2: $e_2$ récupère ces offres;
@@ -71,7 +73,8 @@ nœuds peuvent alors communiquer entre eux.
     La figure~\ref{editor:fig:webrtcB} décrit le réseau en résultant.]{
       \input{input/editor/figsignalingexampleA.tex}}
     \hspace{5pt}
-    \subfloat[Figure B][\label{editor:fig:webrtcB}
+    \subfloat[Des nœuds utilisent l'un des leurs comme médiateur]
+    [\label{editor:fig:webrtcB}
     $e_1$ se connecte à $e_3$ en utilisant $e_2$ comme médiateur.
     1: $e_1$ envoie ses offres à $e_2$;
     2: $e_2$ redirige les offres à $e_3$;
@@ -79,10 +82,12 @@ nœuds peuvent alors communiquer entre eux.
     4: $e_2$ redirige les offres vers $e_1$ qui se connecte à $e_3$.]{
       \input{input/editor/figsignalingexampleB.tex}}
     \hspace{5pt}
-    \subfloat[Figure C][\label{editor:fig:webrtcC}
+    \subfloat[Réseau superposé en résultant]
+    [\label{editor:fig:webrtcC}
     Le réseau superposé : Un réseau complètement connecté composé de 3 membres.]{
       \input{input/editor/figsignalingexampleC.tex}}
-    \caption{\label{fig:webrtc}Créer un réseau superposé au dessus de WebRTC.}
+    \caption[Création d'un réseau superposé sur WebRTC]
+    {\label{fig:webrtc}Créer un réseau superposé au dessus de WebRTC.}
   \end{center}
 \end{figure*}
 
@@ -103,10 +108,7 @@ gère pas le routage).
 \noindent Comparé aux méthodes plus traditionnelles d'établissement de
 connexions, les connexions WebRTC sont nettement plus coûteuse à mettre en place
 et à entretenir. À ce titre, elles ne doivent pas être établies à la légère.
-
-
-
-
+ 
 
 % Utiliser les services de signalement et les connections WebRTC existantes permet
 % de déployer facilement les protocoles d'échantillonnage aléatoire de
@@ -114,8 +116,6 @@ et à entretenir. À ce titre, elles ne doivent pas être établies à la légè
 % modernes disponibles sur les smartphones, les tablettes, etc. Dans ce contexte,
 % il est impératif de conserver autant que possible un petit nombre de connections
 % afin de réduire le trafic réseau et limiter la consommation de ressources.
-
-
 
 
 %%% Local Variables:

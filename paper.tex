@@ -127,12 +127,21 @@
 
 \begin{document}
 
-\maketitle
+\maketitle%
+\dominitoc%
 
-\dominitoc
-\tableofcontents
-\listoftables
+\begingroup
+\tableofcontents\clearpage
+\let\cleardoublepage\relax
+\let\clearpage\relax
 \listoffigures
+\vspace{-20pt}
+\listoftables
+\vspace{-20pt}
+\renewcommand\listalgorithmname{Liste des algorithmes}
+\listofalgorithms%
+\endgroup
+
 \input{./input/abstract.tex}
 
 %% change spacing in the main document
