@@ -94,12 +94,12 @@ modification est autorisée ou non.
 
 \begin{figure*}
   \centering
-  \subfloat[Une demande de modification est effectuée.]
+  \subfloat[Une demande de modification est effectuée]
   [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
   {\input{./input/replication/figpessimisticexampleA.tex}}
   \hspace{40pt}
   \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
-  la première demande.]
+  la première demande]
   [Le serveur $n_4$ demande également si sa modification est acceptée pendant
   que le cœur est occupé avec la modification de $n_5$.]
   {\input{./input/replication/figpessimisticexampleB.tex}}
@@ -108,7 +108,8 @@ modification est autorisée ou non.
   [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
   est refusée.]
   {\input{./input/replication/figpessimisticexampleC.tex}}
-  \caption{\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
+  \caption[Quorum en réplication pessimiste]
+  {\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
     pessimiste. La modification de $n_5$ est propagée.}
 \end{figure*}
 
@@ -167,15 +168,16 @@ ayant reçu et intégré les mêmes modifications possèdent un état équivalen
 
 \begin{figure*}
   \centering
-  \subfloat[Modifications concurrentes.]
+  \subfloat[Modifications concurrentes]
   [Les serveurs $n_1$ et $n_3$ modifient leur couleur en même temps.]
   {\input{./input/replication/figoptimisticexampleA.tex}}
   \hspace{10pt}
-  \subfloat[Plusieurs états possibles.]
+  \subfloat[Plusieurs états possibles]
   [Les répliques convergent. Plusieurs états de convergence sont possibles.]
   {\input{./input/replication/figoptimisticexampleB.tex}}
-  \caption{\label{repl:fig:optimisticexample} Exemple de réplication optimiste
-    avec modifications concurrentes.}
+  \caption[Convergence en réplication optimiste]
+  {\label{repl:fig:optimisticexample} Exemple de réplication optimiste avec
+    modifications concurrentes.}
 \end{figure*}
 
 
@@ -226,10 +228,10 @@ actuel de la réplique, indépendemment des opérations effectuées entre temps.
 \begin{figure}
   \centering
   \input{./input/replication/figotexample.tex}
-  \caption{\label{repl:fig:otexample} Exemple de transformé
-    opérationnel. L'opération de suppression des 3 premiers caractères sur la
-    réplique 3 (\texttt{RTY}) est transformée afin de supprimer les 3 derniers
-    caractères sur les autres répliques.}
+  \caption[Exemple de transformé opérationnel] {\label{repl:fig:otexample}
+    Exemple de transformé opérationnel. L'opération de suppression des 3
+    premiers caractères sur la réplique 3 (\texttt{RTY}) est transformée afin de
+    supprimer les 3 derniers caractères sur les autres répliques.}
 \end{figure}
 
 La figure~\ref{repl:fig:otexample} illustre le principe de fonctionnement des
@@ -285,7 +287,7 @@ pannes -- le serveur constitue un point individuel de défaillance.
 
 \noindent Malgré tous ces défauts, les approches centralisées sont les plus
 courantes aujourd'hui avec, notamment, les éditeurs collaboratifs bien connus
-tels que Google Docs (\REF) ou Etherpad (\REF).
+tels que Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}.
 
 
 \subsubsection{Structure de données sans résolutions de conflits}
@@ -340,14 +342,16 @@ les ensembles, ou les graphes.\\
 \begin{minipage}[t]{0.48\textwidth}
   \begin{algorithm}[H]
     \input{input/replication/algocounterA.tex}
-    \caption{\label{repl:algo:counterA} Counter using set.}
+    \caption[Compteur utilisant un ensemble]
+    {\label{repl:algo:counterA} Compteur utilisant un ensemble.}
   \end{algorithm}
 \end{minipage}%
 \hfill%
 \begin{minipage}[t]{0.48\textwidth}
   \begin{algorithm}[H]
     \input{input/replication/algocounterB.tex}
-    \caption{\label{repl:algo:counterB} Counter using vector.}
+    \caption[Compteur utilisant un vecteur]
+    {\label{repl:algo:counterB} Compteur utilisant un vecteur.}
   \end{algorithm}
 \end{minipage}
 }
@@ -446,9 +450,10 @@ D'où les suppressions réelles impossibles.
 \begin{figure}
   \centering
   \input{input/replication/figwootexample.tex}
-  \caption{\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT
-    représentant la séquence \texttt{QWERTY}. Bien que supprimé, le caractère
-    \texttt{Z} est indispensable au bon ordonnancement de la séquence.}
+  \caption[Diagramme de Hasse dans WOOT]
+  {\label{repl:fig:wootexample}Le diagramme de Hasse du modèle WOOT représentant
+    la séquence \texttt{QWERTY}. Bien que supprimé, le caractère \texttt{Z} est
+    indispensable au bon ordonnancement de la séquence.}
 \end{figure}
 
 \noindent La figure~\ref{repl:fig:wootexample} illustre la nécessité de
@@ -581,21 +586,22 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
 
 \begin{figure}
   \centering
-  \subfloat[Un arbre est l'union de ses identifiants.]
+  \subfloat[Un arbre est l'union de ses identifiants]
   [\label{repl:fig:treeexample}L'arbre représentant la séquence est
   construit grâce à l'union des identifiants et utilise principalement les
   chemins pour ordonner ses caractères.]
   {\input{input/replication/figtreeexample.tex}}
   \hspace{20pt}
   \subfloat[Les désambiguateurs interviennent lorsqu'un chemin identique a été
-  alloué.]
+  alloué]
   [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
   maintenir un état équivalent, même en présence d'insertions concurrentes ayant
   résulté en des chemins identiques. Par soucis de simplicité, seuls les
   désambiguateurs des caractères \texttt{E}, \texttt{R}, et \texttt{T}
   sont affichés.]
   {\input{input/replication/figdisexample.tex}}
-  \caption{Arbres contenant la séquence \texttt{QWERTY}.}
+  \caption[Arbres contenant une séquence répliquée]
+  {Arbres contenant la séquence \texttt{QWERTY}.}
 \end{figure}
 
 La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
@@ -694,8 +700,8 @@ $(\mathcal{I},\, <_\mathcal{I})$.
 
 \begin{algorithm}[h]
   \input{input/replication/algogeneral.tex}
-  \caption{\label{repl:algo:general}Séquences avec identifiants de taille
-    variable.}
+  \caption[Séquences avec identifiants de taille variable]
+  {\label{repl:algo:general}Séquences avec identifiants de taille variable.}
 \end{algorithm}
 
 La fonction \textsc{allocPath} choisit le chemin dans l'arbre entre deux autres
@@ -715,8 +721,8 @@ performances.
   [\label{repl:fig:allocpathexampleB}Allocation pire cas]
   {\input{input/replication/figallocpathexampleB.tex}}
   \end{center}
-  \caption{Une même stratégie d'allocation face à des comportements d'édition
-    différents.}
+  \caption[Une stratégie d'allocation contre les comportements d'édition] {Une
+    même stratégie d'allocation face à des comportements d'édition différents.}
 \end{figure}
 
 Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
@@ -803,8 +809,9 @@ approche représente le document sous forme d'arbre binaire avec parcours infixe
     % [Optimisation pour l'édition de gauche à droite dans Treedoc]
     % {\input{input/replication/treedocexampleB.tex}}      
     \input{input/replication/figtreedocexample.tex}
-    \caption{\label{repl:fig:treedocexample}Example de sequence dont les
-      chemins sont alloués grâce à Treedoc.}
+    \caption[Chemins alloués par Treedoc]
+    {\label{repl:fig:treedocexample}Example de séquence dont les chemins sont
+      alloués grâce à Treedoc.}
   \end{center}
 \end{figure*}
 

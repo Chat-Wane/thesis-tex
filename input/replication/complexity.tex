@@ -48,18 +48,19 @@ selon le comportement d'édition remplissant l'arbre exponentiel.
 
 \begin{figure}
   \begin{center}
-    \subfloat[Arbre \LSEQ rempli par des éditions aléatoires.]
+    \subfloat[Arbre \LSEQ rempli par des éditions aléatoires]
     [\label{repl:fig:randomlseqtree}Arbre \LSEQ rempli par des éditions aléatoires.]
     {\input{input/replication/figrandomlseqtree.tex}}
     \hspace{10pt}
-    \subfloat[Arbre \LSEQ rempli par des éditions monotones.]
+    \subfloat[Arbre \LSEQ rempli par des éditions monotones]
     [\label{repl:fig:monotoniclseqtree}Arbre \LSEQ rempli par des éditions monotones.]
     {\input{input/replication/figmonotoniclseqtree.tex}}
     \hspace{10pt}
-    \subfloat[Arbre \LSEQ rempli dans le pire cas.]
+    \subfloat[Arbre \LSEQ rempli dans le pire cas]
     [\label{repl:fig:worstlseqtree}Arbre \LSEQ rempli dans le pire cas.]
     {\input{input/replication/figworstlseqtree.tex}}
-    \caption{Arbres exponentiels}
+    \caption[Influence des comportements d'édition sur l'arbre exponentiel]
+    {Influence des comportements d'édition sur l'arbre exponentiel.}
   \end{center}
 \end{figure}
 
@@ -98,9 +99,10 @@ elle aussi $\mathcal{O}(I^2)$.
 
 \begin{table}
   \begin{center}
-    \caption{\label{repl:table:lseqspace}
-      Bornes supérieures de la complexité spatiale de \LSEQ, Logoot, et Treedoc. Où
-      $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \caption[Bornes supérieures de la complexité spatiale de \LSEQ, Logoot, et
+    Treedoc] {\label{repl:table:lseqspace} Bornes supérieures de la complexité
+      spatiale de \LSEQ, Logoot, et Treedoc. Où $I$ est le nombre d'insertions
+      effectuées sur la séquence.}
     \input{input/replication/tablelseqspace.tex}
   \end{center}
 \end{table}
@@ -167,9 +169,9 @@ profonde.
 
 \begin{table}
   \begin{center}
-    \caption{\label{repl:table:lseqtime}
-      Bornes supérieures de la complexité temporelle de \LSEQ. Où
-      $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \caption[Bornes supérieures de la complexité temporelle de \LSEQ]
+    {\label{repl:table:lseqtime} Bornes supérieures de la complexité temporelle
+      de \LSEQ. Où $I$ est le nombre d'insertions effectuées sur la séquence.}
     \input{input/replication/tablelseqtime.tex}
   \end{center}
 \end{table}
@@ -213,9 +215,9 @@ d'édition ayant rempli la structure, les performances peuvent varier.
 \begin{figure}
   \centering
   \input{input/replication/figgetexample.tex}
-  \caption{\label{repl:fig:getexample} Exemple de parcours effectué lors de la
-    recherche de l'identifiant en position 5 correspondant au caractère
-    \texttt{Y}.}
+  \caption[Recherche d'identifiants dans l'arbre] {\label{repl:fig:getexample}
+    Exemple de parcours effectué lors de la recherche de l'identifiant en
+    position 5 correspondant au caractère \texttt{Y}.}
 \end{figure}
 
 \TODO{Rework.}
@@ -235,9 +237,10 @@ caractère \texttt{T}), et aurait donc été plus efficace.
 
 \begin{table}
   \begin{center}
-    \caption{\label{repl:table:lseqlookup} Bornes supérieures de la complexité
-      temporelle de l'opération \textsc{get} de \LSEQ. Où $I$ est le nombre
-      d'insertions effectuées sur la séquence.}
+    \caption[Bornes supérieures de la complexité temporelle de l'opération
+    \textsc{get} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures de
+      la complexité temporelle de l'opération \textsc{get} de \LSEQ. Où $I$ est
+      le nombre d'insertions effectuées sur la séquence.}
     \input{input/replication/tablelseqlookup.tex}
   \end{center}
 \end{table}

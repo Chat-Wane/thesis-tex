@@ -16,10 +16,11 @@ interessés par l'allure des résultats que par leurs valeurs absolues.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/logoot.eps}
-    \caption{\label{repl:img:logoot} Arbre à arité constante avec stratégie
-      d'allocation adaptée à l'édition en fin. L'axe des abscisses montre la
-      taille du document sur une échelle logarithmique en base décimale. L'axe
-      des ordonnées montre la moyenne des tailles des chemins alloués.}
+    \caption[Référence de la taille des chemins]
+    {\label{repl:img:logoot} Arbre à arité constante avec stratégie d'allocation
+      adaptée à l'édition en fin. L'axe des abscisses montre la taille du
+      document sur une échelle logarithmique en base décimale. L'axe des
+      ordonnées montre la moyenne des tailles des chemins alloués.}
   \end{center}
 \end{figure}
 
@@ -62,7 +63,8 @@ espace, i.e. la profondeur de l'arbre augmente. L'augmentation reste linéaire.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/double.eps}
-    \caption{\label{repl:img:exponentialtree} Arbre exponentiel avec stratégie
+    \caption[Influence de l'arbre exponentiel sur la taille des chemins]
+    {\label{repl:img:exponentialtree} Arbre exponentiel avec stratégie
       d'allocation adaptée à l'édition en fin. L'axe des abscisses montre la
       taille du document sur une échelle logarithmique en base décimale. L'axe
       des ordonnées montre la moyenne des tailles des chemins alloués.}
@@ -116,7 +118,8 @@ quadratique.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/robin.eps}
-    \caption{\label{repl:img:suballocation} Arbre à arité constante et deux
+    \caption[Influence de deux sous-fonctions d'allocations sur la taille des
+    chemins] {\label{repl:img:suballocation} Arbre à arité constante et deux
       sous-stratégies d'allocation. L'axe des abscisses montre la taille du
       document sur une échelle logarithmique en base décimale. L'axe des
       ordonnées montre la moyenne des tailles des chemins alloués.}
@@ -162,10 +165,11 @@ conçue pour le comportement d'édition courant.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/lseq.eps}
-    \caption{\label{repl:img:lseq} Arbre exponentiel avec deux sous-stratégies
-      d'allocation. L'axe des abscisses montre la taille du document sur une
-      échelle logarithmique en base décimale. L'axe des ordonnées montre la
-      moyenne des tailles des chemins alloués.}
+    \caption[Combinaison de l'arbre exponentiel et des sous-fonctions
+    d'allocation] {\label{repl:img:lseq} Arbre exponentiel avec deux
+      sous-stratégies d'allocation. L'axe des abscisses montre la taille du
+      document sur une échelle logarithmique en base décimale. L'axe des
+      ordonnées montre la moyenne des tailles des chemins alloués.}
   \end{center}
 \end{figure}
 
@@ -211,12 +215,12 @@ les pertes de niveaux dans l'arbre.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/time.eps}
-    \caption{\label{repl:img:time} Performances de la énième opération effectuée
-      sur \LSEQ. L'axe des abscisses montre le numéro de la énième
-      opération. L'axe des ordonnées montre le temps d'exécution de l'opération
-      en microsecondes. La figure du haut considère une structure remplie par
-      des insertions aléatoires. La figure du bas considère une structure
-      remplies par insertions montones.}
+    \caption[Performances de \LSEQ] {\label{repl:img:time} Performances de la
+      énième opération effectuée sur \LSEQ. L'axe des abscisses montre le numéro
+      de la énième opération. L'axe des ordonnées montre le temps d'exécution de
+      l'opération en microsecondes. La figure du haut considère une structure
+      remplie par des insertions aléatoires. La figure du bas considère une
+      structure remplies par insertions montones.}
   \end{center}
 \end{figure}
 
@@ -273,7 +277,8 @@ niveaux utilise la recherche dichotomique.
   \begin{center}
     \includegraphics[angle=-90,width=0.8\textwidth]{img/lseq/latency.eps}
     \vspace{25pt}
-    \caption{\label{repl:img:latency}Effets de la concurrence sur la taille des
+    \caption[Effet de la concurrence sur les identifiants]
+    {\label{repl:img:latency}Effets de la concurrence sur la taille des
       identifiants. L'axe des abscisses montre le nombre d'opérations effectuées
       sur le document. L'axe des ordonnées montre la taille des messages envoyés
       (en octets).}
