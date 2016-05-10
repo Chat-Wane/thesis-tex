@@ -37,14 +37,15 @@ supprimant les duplicats.
   
 \begin{figure}
   \centering
-  \subfloat[Choix aléatoire des pairs dans \CYCLON.]
+  \subfloat[Choix aléatoire des pairs dans \CYCLON]
   [\label{net:fig:cyclonexampleA} L'initiateur du mélange choisit d'envoyer $n_5$ et lui-même à son plus vieux voisin $n_2$. En retour, il lui propose $n_6$ et $n_7$.]
   {\input{input/network/figcyclonexampleA.tex}}
   \hspace{35pt}
-  \subfloat[Établissement des connexions après le mélange dans \CYCLON.]
+  \subfloat[Établissement des connexions après le mélange dans \CYCLON]
   [\label{net:fig:cyclonexampleB} Les arcs sont échangés de part et d'autre.]
   {\input{input/network/figcyclonexampleB.tex}}
-  \caption{\label{net:fig:cyclonexample} Exemple de mélange dans \CYCLON. Pour
+  \caption[Exemple de mélange par \CYCLON]
+  {\label{net:fig:cyclonexample} Exemple de mélange par \CYCLON. Pour
     améliorer la lisibilité, seuls les vues partielles du $n_1$ et $n_2$ sont
     explicitées.}
 \end{figure}
@@ -87,15 +88,16 @@ ajustée.
 
 \begin{figure}
   \centering
-  \subfloat[Initiation du mélange dans Newscast.]
+  \subfloat[Initiation du mélange dans Newscast]
   [\label{net:fig:newscastexampleA} L'initiateur du mélange $n_2$ aléatoirement et lui envoit sa vue à laquelle il s'ajoute avec une estampille à jour. À la reception, $n_2$ en fait de même.]
   {\input{input/network/fignewscastexampleA.tex}}
   \hspace{35pt}
-  \subfloat[Établissement des connexions après le mélange dans Newscast.]
+  \subfloat[Établissement des connexions après le mélange dans Newscast]
   [\label{net:fig:newscastexampleB} Les arcs sont échangés de part et d'autre en conservant les estampilles les plus récentes.]
   {\input{input/network/fignewscastexampleB.tex}}
-  \caption{\label{net:fig:newscastexample} Exemple de mélange dans
-    Newscast. Ici, les estampilles sont simplement formatées hh:mm.}
+  \caption[Exemple de mélange par Newscast]
+  {\label{net:fig:newscastexample} Exemple de mélange par Newscast. Ici, les
+    estampilles sont simplement formatées hh:mm.}
 \end{figure}
 
 \noindent La figure~\ref{net:fig:newscastexample} montre un exemple de mélange
@@ -171,8 +173,9 @@ vieux. Cela met en danger la robustesse du réseau face aux défaillances.
 \begin{figure}
   \centering
   \input{input/network/figscampexample.tex}
-  \caption{\label{net:fig:scampexample} Exemple de pair rejoignant le réseau
-    dans \SCAMP.}
+  \caption[Entrée dans un réseau par \SCAMP]
+  {\label{net:fig:scampexample} Exemple de nœud rejoignant le réseau dans
+    \SCAMP.}
 \end{figure}
 
 \noindent La figure~\ref{net:fig:scampexample} montre l'entrée d'un nœud $n_1$
@@ -209,18 +212,18 @@ effet, certains nœuds peuvent se trouver sans voisins dans l'une de leur vue.
   
 
 \begin{figure}
-  \centering \subfloat[Départ d'un pair dans \SCAMP.]
+  \centering \subfloat[Départ d'un nœud avec \SCAMP.]
   [\label{net:fig:scampexampleB} Le nœud $n_1$ souhaite quitter le réseau. Il
   en informe ses vues partielles afin d'effectuer un pont entre eux.]
   {\input{input/network/figscampexampleB.tex}}
   \hspace{45pt}
-  \subfloat[Établissement de connexions entre vues partielles dans \SCAMP.]
+  \subfloat[Réparation des vues partielles avec \SCAMP.]
   [\label{net:fig:scampexampleC} Le nœud $n_1$ notifie aux nœuds $n_2$ et
   $n_3$ qu'ils doivent ajouter $n_5$ et $n_6$ dans leur vue partielle sortante
   respective.]  {\input{input/network/figscampexampleC.tex}}
-  \caption{\label{net:fig:scampexample2} Exemple de sortie de réseau dans
-    \SCAMP. Seules les vues partielles entrante et sortante de $n_1$ sont
-    explicitées.}
+  \caption[Protocole de sortie de \SCAMP]
+  {\label{net:fig:scampexample2} Exemple de sortie de réseau dans \SCAMP. Seules
+    les vues partielles entrante et sortante de $n_1$ sont explicitées.}
 \end{figure}
 
 \noindent La figure~\ref{net:fig:scampexample2} présente le mécanisme activé lors du

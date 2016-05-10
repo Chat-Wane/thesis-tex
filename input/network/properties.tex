@@ -39,16 +39,17 @@ plate-forme Github à l'adresse : \url{http://github.com/justayak/peersim-spray}
 
 \begin{figure*}
   \centering
-  \subfloat[Coefficient d'agglomération de \CYCLON.]
-  [Coefficient d'agglomération de \CYCLON.]
+  \subfloat[Coefficient d'agglomération de \CYCLON]
+  [Coefficient d'agglomération de \CYCLON]
   {\includegraphics[width=0.47\textwidth]{img/spray/cycloncluster.eps}}
   \hspace{10pt}
-  \subfloat[Coefficient d'agglomération de \SPRAY.]
-  [Coefficient d'agglomération de \SPRAY.]
+  \subfloat[Coefficient d'agglomération de \SPRAY]
+  [Coefficient d'agglomération de \SPRAY]
   {\includegraphics[width=0.47\textwidth]{img/spray/spraycluster.eps}}
-  \caption{\label{net:fig:clustering}L'axe des abscisses marque le temps écoulé
-    en nombre de cycles. L'axe des ordonnées note le coefficient d'agglomération
-    sur une échelle logarithmique de base 10.}
+  \caption[Coefficient d'agglomération]{\label{net:fig:clustering}L'axe des
+    abscisses marque le temps écoulé en nombre de cycles. L'axe des ordonnées
+    note le coefficient d'agglomération sur une échelle logarithmique de base
+    10.}
 \end{figure*}
 
 Le coefficient d'agglomération désigne une mesure de groupement des nœuds. En
@@ -126,10 +127,10 @@ petites (10k et 100k nœuds).
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/avgpath.eps}
-  \caption{\label{net:fig:shortestpath} La moyenne des plus courts chemins dans
-    \SPRAY et \CYCLON. L'axe des abscisses montre le nombre de nœuds appartenant
-    aux réseaux sur une échelle logarithmique de base 10. L'axe des ordonnées
-    montre la moyenne des plus courts chemins.}
+  \caption[Plus courts chemins moyens]{\label{net:fig:shortestpath} La moyenne
+    des plus courts chemins dans \SPRAY et \CYCLON. L'axe des abscisses montre
+    le nombre de nœuds appartenant aux réseaux sur une échelle logarithmique de
+    base 10. L'axe des ordonnées montre la moyenne des plus courts chemins.}
 \end{figure}
 
 La moyenne des plus courts chemins permet de mesurer à quel point les nœuds sont
@@ -189,11 +190,11 @@ passe mieux à l'échelle en terme de taille réseau.
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/histo.eps}
-  \caption{\label{net:fig:inview} Distribution du nombre d'arcs entrants à
-    chaque nœud dans \CYCLON et \SPRAY. L'axe des ordonnées montre la proportion
-    de nœuds ayant une vue entrante de la taille correspondante sur l'axe des
-    abscisses. Les figure du haut et du bas sont respectivement dédiées aux
-    exécutions concernant \CYCLON et \SPRAY.}
+  \caption[Distribution du nombre d'arcs entrants]{\label{net:fig:inview} Distribution
+    du nombre d'arcs entrants à chaque nœud dans \CYCLON et \SPRAY. L'axe des
+    ordonnées montre la proportion de nœuds ayant une vue entrante de la taille
+    correspondante sur l'axe des abscisses. Les figure du haut et du bas sont
+    respectivement dédiées aux exécutions concernant \CYCLON et \SPRAY.}
 \end{figure}
 
 La distribution des arcs entrants correspond au nombre de fois qu'un nœud est
@@ -252,22 +253,22 @@ continuer à disséminer les informations.
 
 \begin{figure*}
   \centering 
-  \subfloat[Nombre d'arcs et variance du réseau.]
+  \subfloat[Nombre d'arcs et variance du réseau]
   [\label{net:fig:churnA} L'axe des abscisses montre le temps écoulé en terme de
   cycles. L'axe des ordonnées de la figure du haut montre le nombre total d'arcs
   dans le réseau tandis que l'axe des ordonnées de la figure du bas montre la
   variance $\sigma^2$ de la taille des vues partielles.]
   {\includegraphics[width=0.47\textwidth]{img/spray/churn.eps}}
   \hspace{10pt}
-  \subfloat[Taille moyenne des vues partielles.]
+  \subfloat[Taille moyenne des vues partielles]
   [\label{net:fig:churnB} L'axe des abscisses montre le temps écoulé en terme de
   cycles. L'axe des ordonnées montre la taille moyenne des vues partielles.]
   {\includegraphics[width=0.47\textwidth]{img/spray/avgpv.eps}}
-  \caption{\label{net:fig:churn} Évolution du nombre d'arcs dans un réseau
-    dynamique : 250 nœuds rejoignent le réseau aux cycles $0$, $10$, $20$, et
-    $30$. Puis 500 nœuds quittent le réseau au cycle $40$. Enfin, 250 nœuds
-    rejoignent le réseau au cycles $60$ and $70$. Au plus haut, le réseau
-    comprend 1k nœuds.}
+  \caption[Évolution du nombre d'arcs dans un réseau dynamique]
+  {\label{net:fig:churn} Évolution du nombre d'arcs dans un réseau dynamique :
+    250 nœuds rejoignent le réseau aux cycles $0$, $10$, $20$, et $30$. Puis 500
+    nœuds quittent le réseau au cycle $40$. Enfin, 250 nœuds rejoignent le
+    réseau au cycles $60$ and $70$. Au plus haut, le réseau comprend 1k nœuds.}
 \end{figure*}
 
 Un réseau est dynamique lorsque des nœuds peuvent le rejoindre et le quitter --
@@ -344,10 +345,11 @@ des départs.
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/resilience.eps}
-  \caption{\label{net:fig:robustness} Robustesse de \CYCLON et \SPRAY face aux
-    défaillances aléatoires massives. L'axe des abscisses montre le pourcentage
-    de nœuds supprimé en une fois. L'axe des ordonnées montre le ratio entre le
-    nombre de composantes connexes et la taille du réseau après suppression.}
+  \caption[Robustesse aux pannes aléatoires] {\label{net:fig:robustness}
+    Robustesse de \CYCLON et \SPRAY face aux défaillances aléatoires
+    massives. L'axe des abscisses montre le pourcentage de nœuds supprimé en une
+    fois. L'axe des ordonnées montre le ratio entre le nombre de composantes
+    connexes et la taille du réseau après suppression.}
 \end{figure}
 
 La robustesse d'un réseau est sa capacité à rester connexe lorsque des
@@ -419,10 +421,10 @@ permettent de les raccommoder.
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/duplicates.eps}
-  \caption{\label{net:fig:duplicates} Proportion de doublons parmi les nœuds.
-    L'axe des abscisses montre la taille du réseau sur une échelle logarithmique
-    de base 10. L'axe des ordonnées montre le pourcentage de vues ne possédant
-    pas de doublons.}
+  \caption[Proportion de redondance dans \SPRAY]{\label{net:fig:duplicates}
+    Proportion de doublons parmi les nœuds.  L'axe des abscisses montre la
+    taille du réseau sur une échelle logarithmique de base 10. L'axe des
+    ordonnées montre le pourcentage de vues ne possédant pas de doublons.}
 \end{figure}
 
 Les arcs doublons sont une spécificité de \SPRAY. Ceux-ci permettent de ne pas

@@ -57,7 +57,8 @@ répétition (cf. §\ref{net:subsec:shuffling}, la gestion des départs
   [L'événement \textsc{onFwdSubs}($n_1$) est déclanché en $n_{3-6}$.
   Chacun de ces nœuds ajoute $n_1$ dans sa vue partielle.]
   {\input{./input/network/figjoiningexampleC.tex}}
-  \caption{\label{net:fig:joiningexample} Exemple de processus d'entrée dans
+  \caption[Processus d'entrée par \SPRAY]
+  {\label{net:fig:joiningexample} Exemple de processus d'entrée dans
     le réseau de \SPRAY.}
 \end{figure*}
 
@@ -76,8 +77,9 @@ de l'ordre de $|\mathcal{N}| \ln |\mathcal{N}|$ arcs, similaire au seuil de
 connexité exigé par les graphes aléatoires~\cite{erdos1959random}.
 
 \begin{algorithm}[h]
-\input{input/network/algojoining.tex}
-\caption{\label{net:algo:joining}The joining protocol of \SPRAY.}
+  \input{input/network/algojoining.tex}
+  \caption[Processus d'entrée de \SPRAY] {\label{net:algo:joining}Processus
+    d'entrée de \SPRAY.}
 \end{algorithm}
 
 L'algorithme~\ref{net:algo:joining} présente les instructions de \SPRAY
@@ -132,7 +134,8 @@ deviennent négligeable dès lors que le réseau grandit.
 
 \begin{algorithm}[h]
   \input{./input/network/algoshuffle.tex}
-  \caption{\label{net:algo:shuffle}The cyclic protocol of \SPRAY.}
+  \caption[Processus périodique de mélange de \SPRAY]
+  {\label{net:algo:shuffle}Processus périodique de mélange de \SPRAY.}
 \end{algorithm}
 
 L'algorithme~\ref{net:algo:shuffle} montre les instructions periodiquement
@@ -181,20 +184,21 @@ l'échantillon qu'ils ont envoyé avant d'intégrer celui qu'ils ont réçu.
 
 \begin{figure*}
   \centering
-  \subfloat[Deux nœuds commencent à échanger leurs vues dans \SPRAY.]
+  \subfloat[Deux nœuds commencent à échanger leurs vues dans \SPRAY]
   [Le nœud $n_6$ initie un mélange avec $n_1$ lui envoyant $\{n_6,\,n_9\}$.]
   {\input{./input/network/figshuffleexampleA.tex}}
   \hspace{40pt}
-  \subfloat[Un nœud \SPRAY receptionne et répond à l'échange.]
+  \subfloat[Un nœud \SPRAY réceptionne et répond à l'échange]
   [Le nœud $n_1$ reçoit le message de $n_6$. En réponse, il envoie le 
   multiensemble $\{n_2\}$. Il ajoute $\{n_6,\,n_9\}$ à sa vue.]
   {\input{./input/network/figshuffleexampleB.tex}}
   \hspace{10pt}
-  \subfloat[Le nœud initiateur réçoit la réponse et établit des connexions.]
+  \subfloat[Le nœud initiateur reçoit la réponse et établit des connexions]
   [Le nœud $n_6$ reçoit la réponse de $n_1$ et ajoute $\{n_2\}$ à sa vue
   partielle.]
   {\input{./input/network/figshuffleexampleC.tex}}
-  \caption{\label{net:fig:cyclicexample}Exemple du processus de mélange dans \SPRAY.}
+  \caption[Processus de mélange périodique de \SPRAY]
+  {\label{net:fig:cyclicexample}Exemple du processus de mélange dans \SPRAY.}
 \end{figure*}
 
 La figure~\ref{net:fig:cyclicexample} décrit le méchanisme périodique de
@@ -269,7 +273,8 @@ entrée.
 
 \begin{algorithm}[h]
   \input{./input/network/algoleaving.tex}
-  \caption{\label{net:algo:leaving}The crash/departure handler of \SPRAY.}
+  \caption[Gestion des pannes et départs de \SPRAY]
+  {\label{net:algo:leaving}Gestion des pannes et départs de \SPRAY.}
 \end{algorithm}
 
 L'algorithme~\ref{net:algo:leaving} montre la manière selon laquelle \SPRAY gère
@@ -282,21 +287,22 @@ dépend de la taille de la vue partielle avant suppression.
 
 \begin{figure*}
   \centering
-  \subfloat[Un nœud \SPRAY quitte le réseau.]
+  \subfloat[Un nœud \SPRAY quitte le réseau]
   [Le nœud $n_1$ quitte le réseau.]
   {\input{./input/network/figleavingexampleA.tex}}
   \hspace{40pt}
-  \subfloat[Certains nœuds détectent le départ.]
+  \subfloat[Certains nœuds détectent le départ]
   [Les nœuds $n_{3-5}$ s'aperçoivent qu'ils ne peuvent plus communiquer avec
   $n_1$]
   {\input{./input/network/figleavingexampleB.tex}}
   \hspace{40pt}
-  \subfloat[Certains nœuds dupliquent des arcs.]
+  \subfloat[Certains nœuds dupliquent des arcs]
   [Les nœuds $n_3$ et $n_5$ établissent des arcs doublons dans leur
   vue partielle.]
   {\input{./input/network/figleavingexampleC.tex}}
-  \caption{\label{net:fig:leavingexample}Exemple de gestion de
-    départs/défaillances dans \SPRAY.}
+  \caption[Gestion des départs et défaillances dans
+  \SPRAY]{\label{net:fig:leavingexample}Exemple de gestion de départs et
+    défaillances dans \SPRAY.}
 \end{figure*}
 
 La figure~\ref{net:fig:leavingexample} montre un exemple de réaction lors du
