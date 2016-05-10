@@ -1,124 +1,35 @@
 
 \section{Contexte}
 
-% De nos jours, le \emph{Cloud Computing} a réussi à imposer son hégémonie. Grâce
-% à ses facilités d'utilisation, il libère ses utilisateurs de nombreuses
-% préocupations liées aux configurations. Ceux-ci peuvent alors aisément héberger
-% leurs applications et données sur des serveurs distants. Par exemple, les
-% services apportés par Dropbox, ou Google Drive, ont été largement adoptés par le
-% public.  Hélas, les fournisseurs de services possèdent \emph{de facto} les
-% données et sont en mesure de les exploiter à leur propre profit. Ces inquiètudes
-% vis-à-vis de la confidentialité se sont par ailleurs avérée légitime en 2013
-% lors des révélations sur PRISM~\cite{gellman2013us}.
-
-% Afin de résoudre ces problématiques de confidentialité, les utilisateurs peuvent
-% se débarasser des serveurs centralisés en stockant eux-même leurs données. Les
-% opérations sont directement effectuées sur ces données locales avant d'être
-% partagées avec les éventuels utilisateurs de ces données. Toutefois, les
-% facilités autrefois apportées par le \emph{Cloud} et la centralisation
-% n'existent plus. Il est nécéssaire de redéfinir structures de données et
-% algorithmes afin de s'adapter à la répartition des utilisateurs.
-
-% Plus récement, l'idée d'un \emph{Fog Computing} émerge en tant qu'unificateur
-% des deux approches antagonistes susmentionnées, i.e., un \emph{Cloud} dont
-% l'infrastructure se rapproche des utilisateurs finaux. L'idée commence à se
-% concrètiser avec la récente possibilité accordée aux plus répendus des
-% programmes -- les navigateurs Web -- de communiquer entre eux grâce à
-% WebRTC. Ainsi chaque navigateur, qu'il soit sur smartphone, tablette, ou unité
-% centrale, est capable de fournir ses capacités de calcul, de stockage, ou de
-% bande passante au service du \emph{Fog Computing}.
-
-% \lettrine{L}'Histoire débute lorsque l'Homme commence à écrire pour palier sa
-% mémoire limitée (\REF). L'émergence de l'outil textuel comme relai de la parole
-% permet de nombreuses avancées sur le plan scientifique, juridique, culturel etc
-% (\REF).  L'information physiquement sauvegardée traverse les époques, si bien
-% que les plus anciennes traces d'écriture connues datent de plusieurs millinaires
-% avant Jesus-Christ (\REF). Depuis les tablettes cunéiformes de Mésopotamie, le
-% support d'écriture à beaucoup évolué. De nos jours, l'édition de texte se fait
-% principalement par ordinateur où le document est enregistré sous format
-% numérique. Outre les qualités de reproduction apportées par cette mémorisation,
-% l'interconnexion des ordinateurs étend l'édition à plusieurs auteurs
-% géographiquement et temporellement répartis.
-
-\lettrine{L}'émergence de l'outil textuel comme relai de la parole a permi de
-nombreuses avancées sur le plan scientifique, juridique, culturel etc
-(\REF). Peu à peu, l'informatique a étendu l'édition à plusieurs auteurs en
-facilitant les interactions distantes. Si l'objectif de collaboration est
+\lettrine{L}'émergence de l'outil textuel comme relai de la parole a permis de
+nombreuses avancées sur le plan scientifique, juridique, culturel
+etc. Récemment, l'informatique a étendu l'édition textuelle à plusieurs auteurs
+en facilitant les interactions distantes. Si l'objectif de collaboration est
 demeuré inchangé depuis les premiers éditeurs, les dimensions du système, quant
 à elles, ont crû.
 
 En effet, l'adoption des éditeurs collaboratifs de
 textes~\cite{ellis1991groupware} n'a eu de cesse d'augmenter ces dernières
-décénies (\REF). Quelle que soit l'heure, quel que soit le lieu, un auteur peut
-rédiger son document numérique avec ses collaborateurs dont les expertises
-combinées en amélioreront la qualité. Ainsi, l'encyclopédie \emph{Wikipédia}
-compte des millions d'articles rédigés par des millions d'auteurs. La version
-anglaise possède une fiabilité combarable à celle de l'\emph{Encyclop\ae{}dia
+décénies. Quelle que soit l'heure, quel que soit le lieu, un auteur peut rédiger
+son document numérique avec ses collaborateurs dont les expertises combinées en
+amélioreront la qualité. Ainsi, l'encyclopédie \emph{Wikipédia} compte des
+millions d'articles rédigés par des millions d'auteurs et sa version anglaise
+possède une fiabilité combarable à celle de l'\emph{Encyclop\ae{}dia
   Britannica}~\cite{giles2005internet}.
 
-Améliorant à la fois efficacité et implication des utilisateurs (\REF), les
-éditeurs collaboratifs sont d'une indéniable utilitée. Toutefois, les outils
-proposés actuellement ne sont pas sans défaut. Les éditeurs basés sur serveur
-central, tel que \emph{Google Docs}~\cite{nichols1995high}, posent des problèmes
-de confidentialité et de passage à l'échelle. L'inquiètude du public vis-à-vis
-des fournisseurs de services s'est par ailleurs avérée légitime lors des fuites
-sur \emph{PRISM}~\cite{gellman2013us}. Afin de se réconcilier avec le principe
-de l'Internet sans autorité centrale opérant de manière complètement répartie,
+Améliorant à la fois efficacité et implication des utilisateurs, les éditeurs
+collaboratifs sont d'une indéniable utilité. Toutefois, les outils proposés
+actuellement ne sont pas sans défaut. Les éditeurs basés sur serveur central,
+tel que \emph{Google Docs}~\cite{nichols1995high}, posent des problèmes de
+confidentialité et de passage à l'échelle. L'inquiètude du public vis-à-vis des
+fournisseurs de services s'est par ailleurs avérée légitime lors des fuites sur
+\emph{PRISM}~\cite{gellman2013us}. Afin de se réconcilier avec le principe de
+l'Internet sans autorité centrale opérant de manière complètement répartie,
 certains éditeurs se débarassent des serveurs et résolvent par la même les
 problèmes de confidentialité. Toutefois, les problèmes de passage à l'échelle
-(\REF) deumeurent auxquels s'ajoutent les difficultés d'utilisation autrefois
-résolues par le Nuage~\cite{mell2011national}.
+deumeurent auxquels s'ajoutent les difficultés d'utilisation autrefois résolues
+par le Nuage~\cite{mell2011national}.
 
-% Afin de garantir des documents accessibles et réactifs aux changements, les
-% éditeurs collaboratifs utilisent la réplication
-% optimiste~\cite{saito2005optimistic} qui consiste à copier le document
-% localement afin de le modifier directement. Dans un second temps, les
-% modifications sont envoyées à tous les participants qui les appliques sur leur
-% propre copie.  Ces dernières peuvent diverger temporairement, mais convergent
-% inéluctablement vers un état identique~\cite{bailis2013eventual}.
-
-% Dans ce manuscrit, nous nous intéressons tout d'abord aux structures de données
-% répliquées dîtes \emph{sans résolution de conflits
-% (CRDTs)}~\cite{shapiro2011comprehensive, shapiro2011conflict}. Ce genre de
-% structure~\cite{ahmed2011evaluating, andre2013supporting, conway2014language,
-% grishchenko2010deep, oster2006data, preguica2009commutative, roh2011replicated,
-% weiss2007wooki, weiss2009logoot, wu2010partial, yu2012stringwise} fournit deux
-% opérations élémentaires pour éditer le document : l'insertion et la suppression
-% d'un élément pouvant, selon la granularité choisie, être un caractère, une
-% ligne, ou un paragraphe etc. La particularité de ces structures réside dans la
-% commutativité de ces opérations qui allège le coût de celles-ci grâce à plus de
-% fléxibilité.
-
-% Ces structures de données répliquées génèrent un identificateur par caractère
-% inséré dans le document. Ces identificateurs permettent d'ordonner les
-% caractères quel que soit l'ordre d'intégration des modifications. Toutefois ils
-% représentent un surcoût par rapport au simple document. Plusieurs approches
-% proposant différents compromis existent. Cette thèse s'interesse plus
-% précisément à la famille dont les identifiants ont une taille variable à la
-% génération~\cite{andre2013supporting, preguica2009commutative, weiss2009logoot}.
-% Il est crucial de maintenir cette taille bornée afin que la structure repliquée
-% représentant le document reste d'acceptable proportion.
-
-% Dans ce manuscrit, nous nous intéressons dans un second temps à la dissémination
-% des modifications aux participants. En effet, afin de garantir la cohérence à
-% terme~\cite{bailis2013eventual}, les structures de données répliquées émettent
-% l'hypothèse que tous les participants reçoivent toutes les modifications
-% inéluctablement. La dissémination épidémique~\cite{birman1999bimodal,
-% demers1987epidemic, eugster2003lightweight} (ou rumeur) est un moyen efficace
-% d'y parvenir. Pour cela, chaque participant possède une liste de voisins membre
-% de la session d'édition avec lesquels communiquer. Chaque modification effectuée
-% sur le document est transmise au voisinage qui la transmet à son tour à son
-% voisinage etc. Par transitivité, tous les participants reçoivent les
-% modifications.
-
-% Pour obtenir les liste de membres, le mécanisme de dissémination peut s'appuyer
-% sur les protocoles d'échantillonnage aléatoire de
-% pairs~\cite{eugster2003lightweight, ganesh2001scamp, jelasity2007gossip,
-% tolgyeski2009adaptive, voulgaris2005cyclon}. Les réseaux générés partagent de
-% nombreuses similarités avec les graphes aléatoires~\cite{erdos1959random} tels
-% la robustesse aux défaillances, un faible diamêtre, etc. Hélas, la plupart de
-% ces approches n'adaptent pas leur fonctionnement à la taille réelle du réseau.
-% \TODO{Moar about problem.}
 
 %%% Local Variables:
 %%% mode: latex
