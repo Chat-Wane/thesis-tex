@@ -1,0 +1,42 @@
+
+\begin{tikzpicture}[scale=1.2]
+
+  \newcommand\X{125pt}
+  \newcommand\Y{100pt}
+  
+  \newcommand\LIGHTGRAY{gray!20}
+  \newcommand\MEDIUMGRAY{gray!40}
+  
+  \draw(0,0) +(-\X, -\Y) rectangle +( \X, \Y);
+  
+  \draw[fill=\LIGHTGRAY](-0.5*\X,-0.5*\Y) +(-0.5*\X,-0.5*\Y) rectangle +(0.5*\X,0.5*\Y);
+  \draw(-0.5*\X, 0.5*\Y) +(-0.5*\X,-0.5*\Y) rectangle +(0.5*\X,0.5*\Y);
+  \draw(0.5*\X,-0.5*\Y) +(-0.5*\X,-0.5*\Y) rectangle +(0.5*\X,0.5*\Y);
+  \draw[fill=\LIGHTGRAY](0.5*\X, 0.5*\Y) +(-0.5*\X,-0.5*\Y) rectangle +(0.5*\X,0.5*\Y);
+  
+  \draw(-0.5*\X,\Y) node[anchor=south]{\textsc{same time}};
+  \draw(0.5*\X,\Y) node[anchor=south]{\textsc{different time}};
+  \draw(-\X,0.5*\Y) node[anchor=east]{\textsc{same place}};
+  \draw(-\X,-0.5*\Y) node[anchor=east]{\textsc{different place}};
+
+  \small
+
+  \draw (-0.5*\X, 0.5*\Y) node[align=center]{\textbf{Face to face interactions}\\
+    (e.g. decision rooms, single\\ display groupware, shared\\ table, wall displays,
+    roomware)};
+
+  \draw ( 0.5*\X, 0.5*\Y) node[align=center]{\textbf{Continuous task}\\ (e.g. team rooms,
+    large public\\ displays, shift work, groupware,\\ project management)};
+
+  \draw (-0.5*\X,-0.5*\Y) node[align=center]{\DARKBLUE{\textbf{Remote
+        interactions}}\\
+    (e.g. video,
+    conferencing,\\ instant messaging,\\ chats/MUDs/virtual worlds,\\ shared screens,
+    multi-user\\ editors)};
+
+  \draw ( 0.5*\X,-0.5*\Y) node[align=center]{
+    \DARKBLUE{\textbf{Communication + coordination}}\\
+    (e.g. email, bulletin boards,\\ blogs, asynchronous\\ conferencing, group
+    calendars,\\ workflow, version control,\\ wikis)};
+
+\end{tikzpicture}
