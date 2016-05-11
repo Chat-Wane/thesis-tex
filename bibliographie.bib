@@ -864,24 +864,6 @@ ISSN={1045-9219},}
                   Collaborative Editing}},
     author = {Andr{\'e}, Luc and Martin, St{\'e}phane and Oster, G{\'e}rald and
                   Ignat, Claudia-Lavinia},
-    abstract = {{Since the Web 2.0 era, the Internet is a huge content editing
-                  place in which users contribute to the content they
-                  browse. Users do not just edit the content but they
-                  collaborate on this content. Such shared content can be
-                  edited by thousands of people. However, current consistency
-                  maintenance algorithms seem not to be adapted to massive
-                  collaborative updating. Shared data is usually fragmented
-                  into smaller atomic elements that can only be added or
-                  removed. Coarse-grained data leads to the possibility of
-                  conflicting updates while fine-grained data requires more
-                  metadata. In this paper we offer a solution for handling an
-                  adaptable granularity for shared data that overcomes the
-                  limitations of fixed-grained data approaches. Our approach
-                  defines data at a coarse granularity when it is created and
-                  refines its granularity only for facing possible conflicting
-                  updates on this data. We exhibit three implementations of our
-                  algorithm and compare their performances with other
-                  algorithms in various scenarios.}},
     language = {Anglais},
     affiliation = {SCORE - INRIA Nancy - Grand Est / LORIA},
     booktitle = {{CollaborateCom - 9th IEEE International Conference on Collaborative Computing: Networking, Applications and Worksharing - 2013}},
@@ -1154,28 +1136,6 @@ title={{LSEQ: an Adaptive Structure for Sequences in Distributed Collaborative
                   Editing}},
 author ={N{\'e}delec, Brice and Molli, Pascal and Mostéfaoui, Achour and
                   Desmontils, Emmanuel},
-abstract = {{Distributed collaborative editing systems allow users to work
-                  distributed in time, space and across organisations. Trending
-                  distributed collaborative editors such as Google Docs,
-                  Etherpad or Git have grown in popularity over the years. A
-                  new kind of distributed editors based on a family of
-                  distributed data structure replicated on several sites called
-                  Conflict-free Replicated Data Type (CRDT for short) appeared
-                  recently. This paper considers a CRDT that represents a
-                  distributed sequence of basic elements that can be lines,
-                  words or characters (sequence CRDT). The possible operations
-                  on this sequence are the insertion and the deletion of
-                  elements. Compared to the state of the art, this approach is
-                  more decentralised and scales better in terms of the number
-                  of participants. However, its space complexity is linear with
-                  respect to the total number of inserts and the insertion
-                  points in the document. This makes the overall performances
-                  of such editors dependent on the editing behaviour of
-                  users. This paper proposes and models LSEQ, an adaptive
-                  allocation strategy for a sequence CRDT. LSEQ achieves in the
-                  average a sub-linear spatial-complexity whatever is the
-                  editing behaviour. A series of experiments validates LSEQ
-                  showing that it outperforms existing approaches.}},
 keywords = {Distributed Documents; Document Authoring Tools and Systems;
                   Distributed Collaborative Editing; Real-time Editing;
                   Conflict-free Replicated Data Types},
@@ -1184,7 +1144,7 @@ affiliation = {GDD - LINA},
 booktitle = {{13th ACM Symposium on Document Engineering}},
 adress = {Florence, Italy},
 editor = {ACM},
-audience = {internationale },
+audience = {internationale},
 doi = {10.1145/2494266.2494278},
 year = {2013},
 month = Sep,
@@ -1199,28 +1159,6 @@ url = {http://doi.acm.org/10.1145/2494266.2494278},
     title = {{Evaluating CRDTs for Real-time Document Editing}},
     author = {Ahmed-Nacer, Mehdi and Ignat, Claudia-Lavinia and Oster, Gérald
                   and Roh, Hyun-Gul and Urso, Pascal},
-    abstract = {{Nowadays, real-time editing systems are catching on. Tools
-                  such as Etherpad or Google Docs enable multiple authors at
-                  dispersed locations to collaboratively write shared
-                  documents. In such systems, a replication mechanism is
-                  required to ensure consistency when merging concurrent
-                  changes performed on the same document. Current editing
-                  systems make use of operational transformation (OT), a
-                  traditional replication mechanism for concurrent document
-                  editing. Recently, Commutative Replicated Data Types (CRDTs)
-                  were introduced as a new class of replication mechanisms
-                  whose concurrent operations are designed to be natively
-                  commutative. CRDTs, such as WOOT, Logoot, Treedoc, and RGAs,
-                  are expected to be substitutes of replication mechanisms in
-                  collaborative editing systems. This paper demonstrates the
-                  suitability of CRDTs for real-time collaborative editing. To
-                  reflect the tendency of decentralised collaboration, which
-                  can resist censorship, tolerate failures, and let users have
-                  control over documents, we collected editing logs from
-                  real-time peer-to-peer collaborations. We present our
-                  experiment results obtained by replaying those editing logs
-                  on various CRDTs and an OT algorithm implemented in the same
-                  environment.}},
     keywords = {benchmark; collaboration; commutative replicated data types;
                   real-time editing},
     language = {Anglais},
@@ -1237,35 +1175,44 @@ url = {http://doi.acm.org/10.1145/2494266.2494278},
 }
 
 @article{saito2005optimistic,
- author = {Saito, Yasushi and Shapiro, Marc},
- title = {Optimistic replication},
- journal = {ACM Comput. Surv.},
- issue_date = {March 2005},
- volume = {37},
- number = {1},
- month = mar,
- year = {2005},
- issn = {0360-0300},
- pages = {42--81},
- numpages = {40},
- url = {http://doi.acm.org/10.1145/1057977.1057980},
- doi = {10.1145/1057977.1057980},
- acmid = {1057980},
- publisher = {ACM},
- address = {New York, NY, USA},
- keywords = {Replication, disconnected operation, distributed systems, large scale systems, optimistic techniques},
+  author = {Saito, Yasushi and Shapiro, Marc},
+  title = {Optimistic replication},
+  journal = {ACM Comput. Surv.},
+  issue_date = {March 2005},
+  volume = {37},
+  number = {1},
+  month = mar,
+  year = {2005},
+  issn = {0360-0300},
+  pages = {42--81},
+  numpages = {40},
+  url = {http://doi.acm.org/10.1145/1057977.1057980},
+  doi = {10.1145/1057977.1057980},
+  acmid = {1057980},
+  publisher = {ACM},
+  address = {New York, NY, USA},
+  keywords = {Replication, disconnected operation, distributed systems, large
+                  scale systems, optimistic techniques},
 } 
 
 
 @techreport{shapiro2011comprehensive,
     hal_id = {inria-00555588},
     url = {http://hal.inria.fr/inria-00555588},
-    title = {{A comprehensive study of Convergent and Commutative Replicated Data Types}},
-    author = {Shapiro, Marc and Pregui{\c c}a, Nuno and Baquero, Carlos and Zawirski, Marek},
-    abstract = {{Eventual consistency aims to ensure that replicas of some mutable shared object converge without foreground synchronisation. Previous approaches to eventual consistency are ad-hoc and error-prone. We study a principled approach: to base the design of shared data types on some simple formal conditions that are sufficient to guarantee eventual consistency. We call these types Convergent or Commutative Replicated Data Types (CRDTs). This paper formalises asynchronous object replication, either state based or operation based, and provides a sufficient condition appropriate for each case. It describes several useful CRDTs, including container data types supporting both \add and \remove operations with clean semantics, and more complex types such as graphs, montonic DAGs, and sequences. It discusses some properties needed to implement non-trivial CRDTs.}},
-    keywords = {eventual consistency; optimistic replication; replicated data types; distributed algorithms; distributed systems; Data replication; commutative operations},
+    title = {{A comprehensive study of Convergent and Commutative Replicated
+                  Data Types}},
+    author = {Shapiro, Marc and Pregui{\c c}a, Nuno and Baquero, Carlos and
+                  Zawirski, Marek},
+    keywords = {eventual consistency; optimistic replication; replicated data
+                  types; distributed algorithms; distributed systems; Data
+                  replication; commutative operations},
     language = {Anglais},
-    affiliation = {REGAL - INRIA Rocquencourt , Laboratoire d'Informatique de Paris 6 - LIP6 , Centro de Investiga{\c c}{\\~a}o em Inform{\'a}tica e Tecnologias da Informa{\c c}{\\~a}o - CITI , Universidade do Minho Departamento de Inform{\'a}tica Distributed Systems Group - Universidade do Minho Departamento de Inform{\'a}tica},
+    affiliation = {REGAL - INRIA Rocquencourt , Laboratoire d'Informatique de
+                  Paris 6 - LIP6 , Centro de Investiga{\c c}{\\~a}o em
+                  Inform{\'a}tica e Tecnologias da Informa{\c c}{\\~a}o - CITI ,
+                  Universidade do Minho Departamento de Inform{\'a}tica
+                  Distributed Systems Group - Universidade do Minho Departamento
+                  de Inform{\'a}tica},
     pages = {50},
     type = {Rapport de recherche},
     institution = {INRIA},
@@ -1278,7 +1225,8 @@ url = {http://doi.acm.org/10.1145/2494266.2494278},
 
 @article{shapiro2011conflict,
   title={Conflict-free replicated data types},
-  author={Shapiro, Marc and Pregui{\c{c}}a, Nuno and Baquero, Carlos and Zawirski, Marek},
+  author={Shapiro, Marc and Pregui{\c{c}}a, Nuno and Baquero, Carlos and
+                  Zawirski, Marek},
   journal={Stabilization, Safety, and Security of Distributed Systems},
   pages={386--400},
   year={2011},
@@ -1411,26 +1359,28 @@ url = {http://doi.acm.org/10.1145/2494266.2494278},
   publisher={ACM}
 }
 
-@inproceedings{Ellis:1989:CCG:67544.66963,
- author = {Ellis, Clarence A. and Gibbs, Simon J.},
- title = {Concurrency control in groupware systems},
- booktitle = {Proceedings of the 1989 ACM SIGMOD international conference on Management of data},
- series = {SIGMOD '89},
- year = {1989},
- isbn = {0-89791-317-5},
- location = {Portland, Oregon, USA},
- pages = {399--407},
- numpages = {9},
- url = {http://doi.acm.org/10.1145/67544.66963},
- doi = {10.1145/67544.66963},
- acmid = {66963},
- publisher = {ACM},
- address = {New York, NY, USA},
+@inproceedings{ellis1989concurrency,
+  author = {Ellis, Clarence A. and Gibbs, Simon J.},
+  title = {Concurrency control in groupware systems},
+  booktitle = {Proceedings of the 1989 ACM SIGMOD international conference on
+                  Management of data},
+  series = {SIGMOD '89},
+  year = {1989},
+  isbn = {0-89791-317-5},
+  location = {Portland, Oregon, USA},
+  pages = {399--407},
+  numpages = {9},
+  url = {http://doi.acm.org/10.1145/67544.66963},
+  doi = {10.1145/67544.66963},
+  acmid = {66963},
+  publisher = {ACM},
+  address = {New York, NY, USA},
 } 
 
 
 @article{yu2002design,
-  title={Design and evaluation of a conit-based continuous consistency model for replicated services},
+  title={Design and evaluation of a conit-based continuous consistency model for
+                  replicated services},
   author={Yu, Haifeng and Vahdat, Amin},
   journal={ACM Transactions on Computer Systems (TOCS)},
   volume={20},
@@ -1449,39 +1399,39 @@ url = {http://doi.acm.org/10.1145/2494266.2494278},
 }
 
 @INPROCEEDINGS{zawirskiasynchronous,
-                    author = {Zawirski, Marek and Shapiro, Marc and Pregui{\c c}a, Nuno},
-               x-lip6teams = {REGAL},
-                  x-lip6id = {4600},
+  author = {Zawirski, Marek and Shapiro, Marc and Pregui{\c c}a, Nuno},
+  x-lip6teams = {REGAL},
+  x-lip6id = {4600},
   x-international-audience = {no},
-                     month = may,
-                     title = {{A}synchronous rebalancing of a replicated tree},
-                 booktitle = {Conf. Fran{\c c}aise de Syst{\`{e}}mes d'Exploitation (CFSE)},
-                      year = {2011},
-                     pages = {12},
-                   address = {Saint-Malo, France},
-                       url = {http://lip6.fr/Marc.Shapiro/papers/Asynch rebalancing of a replicated tree Zawirski-CFSE-2011.pdf}
+  month = may,
+  title = {{A}synchronous rebalancing of a replicated tree},
+  booktitle = {Conf. Fran{\c c}aise de Syst{\`{e}}mes d'Exploitation (CFSE)},
+  year = {2011},
+  pages = {12},
+  address = {Saint-Malo, France},
+  url = {http://lip6.fr/Marc.Shapiro/papers/Asynch rebalancing of a replicated tree Zawirski-CFSE-2011.pdf}
 }
 
 
-
-
-
-@article{DeCandia:2007:DAH:1323293.1294281,
- author = {DeCandia, Giuseppe and Hastorun, Deniz and Jampani, Madan and Kakulapati, Gunavardhan and Lakshman, Avinash and Pilchin, Alex and Sivasubramanian, Swaminathan and Vosshall, Peter and Vogels, Werner},
- title = {Dynamo: Amazon's Highly Available Key-value Store},
- journal = {SIGOPS Oper. Syst. Rev.},
- issue_date = {December 2007},
- volume = {41},
- number = {6},
- month = oct,
- year = {2007},
- issn = {0163-5980},
- pages = {205--220},
- numpages = {16},
- url = {http://doi.acm.org/10.1145/1323293.1294281},
- doi = {10.1145/1323293.1294281},
- acmid = {1294281},
- publisher = {ACM},
- address = {New York, NY, USA},
- keywords = {performance, reliability, scalability},
+@article{decandia2007dynamo,
+  author = {DeCandia, Giuseppe and Hastorun, Deniz and Jampani, Madan and
+                  Kakulapati, Gunavardhan and Lakshman, Avinash and Pilchin,
+                  Alex and Sivasubramanian, Swaminathan and Vosshall, Peter and
+                  Vogels, Werner},
+  title = {Dynamo: Amazon's Highly Available Key-value Store},
+  journal = {SIGOPS Oper. Syst. Rev.},
+  issue_date = {December 2007},
+  volume = {41},
+  number = {6},
+  month = oct,
+  year = {2007},
+  issn = {0163-5980},
+  pages = {205--220},
+  numpages = {16},
+  url = {http://doi.acm.org/10.1145/1323293.1294281},
+  doi = {10.1145/1323293.1294281},
+  acmid = {1294281},
+  publisher = {ACM},
+  address = {New York, NY, USA},
+  keywords = {performance, reliability, scalability},
 } 
