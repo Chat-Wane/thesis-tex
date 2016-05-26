@@ -5,38 +5,46 @@ Le reste du manuscrit est découpé en 4 chapitres :
 
 \paragraph{Le chapitre~\ref{net:chap:spray}} commence par décrire les protocoles
 réseau qui nous permettront de construire les sessions d'édition : les
-protocoles d'échantillonnage aléatoire de pairs. Ceux-ci fournissent une vue
-partielle du réseau à chaque membre. Cette vue peut être utilisée afin de
-communiquer à l'ensemble du réseau. L'état de l'art se décompose en deux
-familles :
+protocoles d'échantillonnage aléatoire de pairs~\cite{jelasity2004peer,
+  jelasity2007gossip}. Ceux-ci fournissent une vue partielle du réseau à chaque
+membre. Cette vue peut être utilisée afin de communiquer à l'ensemble du
+réseau. L'état de l'art se décompose en deux familles :
 \begin{inparaenum}[(i)]
-\item Les vues partielles sont de taille constante configurée \emph{a priori};
-\item Les vues partielles s'adaptent aux dimensions du réseau à la volée.
+\item Les vues partielles sont de taille constante configurée \emph{a
+    priori}~\cite{eugster2003lightweight, jelasity2007gossip,
+    leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon};
+\item Les vues partielles s'adaptent aux dimensions du réseau à la
+  volée~\cite{ganesh2001scamp, ganesh2003peer}.
 \end{inparaenum}
-Ensuite, le chapitre décrit le fonctionnement de \SPRAY appartenant à cette
-seconde famille. Le cycle de vie d'un pair est décomposé entre le moment où il
-rejoint, le temps où il reste membre du réseau, et le moment où il le
-quitte. Tout au long de ce processus, le système dans sa globalité doit rester
-consistant sur la taille des vues partielles ainsi que sur leur contenu.  Le
-chapitre décrit les propriétés assurées par \SPRAY et les compares à un
-représentant de l'état de l'art nommé \CYCLON.
+Ensuite, le chapitre décrit le fonctionnement de \SPRAY~\cite{nedelec2015spray}
+appartenant à cette seconde famille. Le cycle de vie d'un pair est décomposé
+entre le moment où il rejoint, le temps où il reste membre du réseau, et le
+moment où il le quitte. Tout au long de ce processus, le système dans sa
+globalité doit rester consistant sur la taille des vues partielles ainsi que sur
+leur contenu.  Le chapitre décrit les propriétés assurées par \SPRAY et les
+compare à un représentant de l'état de l'art nommé
+\CYCLON~\cite{voulgaris2005cyclon}.
 
 \paragraph{Le chapitre~\ref{repl:chap:lseq}} décrit la structure de données
 répliquée représentant le document partagé. Il commence par la présentation des
 deux grands schémas de réplication avant de passer en revue les approches
-appartenant à la réplication dîte optimiste. En particulier, les approches à
-transformés opérationnels et les approches à structure de données sans
-résolution de conflits. Ensuite, le chapitre détaille \LSEQ, une fonction
-d'allocation d'identifiants conçue pour ces dernières et dont la taille est
-bornée supérieurement selon le polylogarithme de la taille du document. Le reste
-du chapitre s'attache à valider cette propriété.
+appartenant à la réplication dîte optimiste~\cite{demers1987epidemic,
+  saito2005optimistic}. En particulier, les approches à transformés
+opérationnels et les approches à structure de données sans résolution de
+conflits~\cite{burckhardt2014replicated, shapiro2011conflict}. Ensuite, le
+chapitre détaille \LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une
+fonction d'allocation d'identifiants conçue pour ces dernières et dont la taille
+est bornée supérieurement selon le polylogarithme de la taille du document. Le
+reste du chapitre s'attache à valider cette propriété.
 
-\paragraph{Le chapitre~\ref{editor:chap:crate}} décrit \CRATE, un éditeur
-collaboratif réparti et décentralisé fonctionnant dans les navigateurs web.
-Tout d'abord, le chapitre décrit le fonctionnement des éditeurs web bien connus.
-Ensuite, il présente la récente technologie WebRTC ayant ouvert la voie aux
+\paragraph{Le chapitre~\ref{editor:chap:crate}} décrit
+\CRATE~\cite{nedelec2016crate}, un éditeur collaboratif temps réel décentralisé
+fonctionnant dans les navigateurs web.  Tout d'abord, le chapitre décrit la
+traditionnelle architecture client-serveur employée des éditeurs web bien connus
+tels que Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}.  Ensuite, il
+présente la récente technologie WebRTC~\cite{webrtc} ayant ouvert la voie aux
 applications décentralisées sur navigateurs. Le chapitre décrit les composants
-employés par \CRATE.  Profitant des propriétés de \SPRAY et \LSEQ, \CRATE
+employés par \CRATE.  Profitant des propriétés de \SPRAY et de \LSEQ, \CRATE
 parvient à adapter le trafic généré par l'édition à la taille de la session et à
 la taille du document. Des expérimentations à large échelle confirment cette
 analyse.
