@@ -33,8 +33,9 @@ intégrés.
     Nuage?}
   
   Malheureusement, la couche réseau et la couche structure font actuellement
-  obstacle au passage à l'échelle. En effet, les solutions centralisées, où un
-  serveur fait office d'intermédiaire entre les clients, posent des problèmes
+  obstacle au passage à l'échelle. En effet, les solutions
+  centralisées~\cite{nichols1995high}, où un serveur fait office d'intermédiaire
+  entre les clients, posent des problèmes
   \begin{inparaenum}[(i)]
   \item de confidentialité
   \item de censure,
@@ -46,16 +47,17 @@ intégrés.
   document. Pour ce faire, chaque éditeur possède un ensemble d'éditeurs avec
   lequel communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à
   son propre ensemble d'éditeurs connus. Les changements atteignent tous les
-  éditeurs par transitivité. La taille de cet ensemble est déterminante. En
-  effet, lorsqu'elle augmente, le trafic généré augmente au risque de dépasser
-  les capacités de l'appareil émetteur; lorsqu'elle diminue, le réseau risque de
-  se fragmenter en îlots, auquel cas les changements ne parviennent plus à tous
-  les éditeurs.
+  éditeurs par transitivité~\cite{birman1999bimodal}. La taille de cet ensemble
+  est déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
+  risque de dépasser les capacités de l'appareil émetteur; lorsqu'elle diminue,
+  le réseau risque de se fragmenter en îlots, auquel cas les changements ne
+  parviennent plus à tous les éditeurs.
 
-  Afin de configurer la taille de cet ensemble idéalement, le développeur doit
-  connaître la taille des réseaux qu'il souhaite supporter. Malheureusement,
-  celle-ci varie, que ce soit pendant la durée de vie du réseau, e.g., une cours
-  de formation en ligne (\emph{MOOC}) voit sa population fluctuer selon
+  Afin de configurer la taille de cet ensemble
+  idéalement~\cite{erdos1959random}, le développeur doit connaître la taille des
+  réseaux qu'il souhaite supporter. Malheureusement, celle-ci varie, que ce soit
+  pendant la durée de vie du réseau, e.g., une cours de formation en ligne
+  (\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
   l'interêt qu'il suscite; ou entre les réseaux d'une même application, e.g., un
   document créé pour un événement de grande ampleur n'a pas la même audience que
   celle d'un rapport de projet écrit par des étudiants.
@@ -97,7 +99,8 @@ intégrés.
   et, lorsqu'une modification est effectuée, elle est directement appliquée sur
   leur copie avant d'être envoyée au reste des éditeurs où elle est intégrée. Un
   système est correct si, et seulement si, lorsque les même changements ont été
-  intégrés, les utilisateurs lisent le même document~\cite{shapiro2011conflict}.
+  intégrés, les utilisateurs lisent le même
+  document~\cite{burckhardt2014replicated, shapiro2011conflict}.
 
   L'utilisation des structures de données ``classiques'' telles que les listes
   n'est pas directement possible du fait de la latence entre les
@@ -115,24 +118,26 @@ intégrés.
   que le second caractère soit supprimé, et non plus le
   premier. Malheureusement, la détection de ces cas nécessite de transporter des
   données avec chaque opération dont le coût est prohibitivement
-  élevé.
+  élevé~\cite{sun2009contextbased}.
 
-  Une seconde famille d'approches~\cite{shapiro2011conflict} consiste à utiliser
-  des structures de données dont les opérations sont commutatives. Pour que les
+  Une seconde famille d'approches consiste à utiliser des structures de données
+  dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
   opérations commutent, ces approches associent à chaque caractère un
   identifiant unique et immuable. Toutefois, ces identifiants sont
   \begin{inparaenum}[(i)]
-  \item soit indestructibles -- l'opération de suppression se contente de cacher
-    le caractère à l'utilisateur. Afin de supprimer ces caractères cachés et
-    conserver de bonnes performances, un protocole de ramasse-miète réparti doit
-    être exécuté régulièrement. Malheureusement, ce genre de protocoles s'avère
-    extrêmement coûteux;
+  \item soit indestructibles~\cite{oster2006data}. L'opération de suppression
+    se contente alors de cacher le caractère à l'utilisateur. Afin de supprimer ces
+    caractères cachés et conserver de bonnes performances, un protocole de
+    ramasse-miète réparti doit être exécuté
+    régulièrement~\cite{abdullahi1998garbage}. Malheureusement, ce genre de
+    protocoles s'avère extrêmement coûteux;
   \item soit des listes dont la taille, définie à la génération, peut grandir
-    très vite. Cette croissance impacte négativement les performances du
-    système. Pour y remédier, un protocole de relocalisation des identifiants
-    doit être exécuté régulièrement. Malheureusement, ces protocoles
-    s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le
-    coût s'avère très élevé.
+    très vite~\cite{weiss2009logoot}. Cette croissance impacte négativement les
+    performances du système. Pour y remédier, un protocole de relocalisation des
+    identifiants doit être exécuté régulièrement. Malheureusement, ces
+    protocoles s'apparentent à l'obtention d'un consensus dans un contexte
+    réparti dont le coût s'avère également très
+    élevé~\cite{mostefaoui2015signature}.
   \end{inparaenum}
 
   \begin{itemize}

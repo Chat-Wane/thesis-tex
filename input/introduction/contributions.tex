@@ -3,44 +3,52 @@
 
 
 Afin de répondre à la question de recherche \textbf{QR A.}, nous nous sommes
-interessé dans un premier temps aux protocoles d'appartenance
+interessés dans un premier temps aux protocoles d'appartenance
 (\emph{membership}) aux réseaux. Plus particulièrement à ceux dont la topologie
 résultante possède des propriétés similaires à celles des graphes
-aléatoires. Parmi ces propriétés se trouve la capacité à gérer les connexions et
-déconnexions fréquentes. Ces protocoles sont regroupés sous l'appellation de
-``protocoles d'échantillonnage aléatoire de pairs'' et servent de base à de
-nombreux protocoles répartis (\REF). Nous proposons une nouvelle approche nommée
-\SPRAY appartenant à cette famille. Comparé à l'état de l'art, \SPRAY s'adapte à
-la taille du réseau automatiquement en suivant une progression logarithmique
-comparativement à la taille globale du réseau. Nous mettons cela en évidence
-grâce à des simulations.  Les protocoles de diffusion épidémique de messages
-(\emph{gossip}) qui en dépendent bénéficient à leur tour de cette
-adaptation. Par conséquent, le trafic généré peut s'adapter à la taille réelle
-du réseau.
+aléatoires~\cite{erdos1959random}. Parmi ces propriétés se trouve la capacité à
+gérer les connexions et déconnexions fréquentes. Ces protocoles sont regroupés
+sous l'appellation de ``protocoles d'échantillonnage aléatoire de
+pairs''~\cite{jelasity2007gossip} et servent de base à de nombreux protocoles
+répartis~\cite{montresor2005chord}. Nous proposons une nouvelle approche nommée
+\SPRAY~\cite{nedelec2015spray} appartenant à cette famille. Comparé à l'état de
+l'art~\cite{eugster2003lightweight, ganesh2001scamp, jelasity2007gossip,
+  leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon}, \SPRAY
+s'adapte à la taille du réseau automatiquement en suivant une progression
+logarithmique comparativement à la taille globale du réseau. Nous mettons cela
+en évidence grâce à des simulations.  Les protocoles de diffusion
+épidémique~\cite{birman1999bimodal} de messages (\emph{gossip}) qui en dépendent
+bénéficient à leur tour de cette adaptation. Entre autres, Le trafic généré peut
+s'adapter à la taille réelle du réseau.
 
 Afin de répondre à la question de recherche \textbf{QR B.}, nous nous sommes
-interessés aux approches appartenant à la réplication optimiste, i.e., un schéma
-de réplication où le document partagé est copié chez chaque utilisateur afin de
+interessés aux approches appartenant à la réplication
+optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e., un schéma de
+réplication où le document partagé est copié chez chaque utilisateur afin de
 fournir réactivité et disponibilité. Nous nous intéressons particulièrement à un
-type de données pour séquences dont les opérations commutent par nature. Elles
-présentent l'avantage de supporter efficacement les opérations concurrentes. Ces
-approches associent un identifiant unique et immuable à chacun de leurs
-éléments. Nous proposons \LSEQ dont la taille des identifiants est bornée
-polylogarithmiquement par rapport au nombre d'insertions effectuées dans le
-document. Nous définissons les conditions sous lesquelles s'appliquent cette
-borne et en fournissons la preuve. Au travers de simulations, nous validons
-\LSEQ et ses complexités.
+type de données pour séquences dont les opérations commutent par
+nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
+  shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
+supporter efficacement les opérations concurrentes~\cite{ahmed2011evaluating,
+  ahmed2015evaluation}. Ces approches associent un identifiant unique et
+immuable à chacun de leurs éléments. Nous proposons
+\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq} dont la taille des
+identifiants est bornée polylogarithmiquement par rapport au nombre d'insertions
+effectuées dans le document. Nous définissons les conditions sous lesquelles
+s'appliquent cette borne et en fournissons la preuve. Au travers de simulations,
+nous validons \LSEQ et ses complexités.
 
 Afin de répondre à la question de recherche \textbf{QR.} dans son ensemble, nous
-avons réunis les deux approches susmentionnées dans un éditeur collaboratif
-décentralisé nommé \CRATE. Ce dernier fonctionne directement dans les
-navigateurs web. Il permet l'édition de documents n'importe quand, n'importe où,
-quel que soit le nombre d'auteurs, sans fournisseurs tiers. Comparé à l'état de
-l'art (\REF), \CRATE résoud les problèmes de confidentialité et de passage à
-l'échelle tout en conservant une facilité d'accès. Nous validons \CRATE aux
-travers d'expériences réunissant jusqu'à 600 éditeurs sur le banc d'essai
-Grid'5000. Les résultats confirment le facteur multiplicatif logarithmique de
-\SPRAY et les messages de taille polylogarithmique de \LSEQ.
+avons réuni les deux approches susmentionnées dans un éditeur collaboratif
+décentralisé nommé \CRATE~\cite{nedelec2016crate}. Ce dernier fonctionne
+directement dans les navigateurs web. Il permet l'édition de documents n'importe
+quand, n'importe où, quel que soit le nombre d'auteurs, sans fournisseurs
+tiers. Comparé à l'état de l'art (\REF), \CRATE résoud les problèmes de
+confidentialité et de passage à l'échelle tout en conservant une facilité
+d'accès. Nous validons \CRATE aux travers d'expériences réunissant jusqu'à 600
+éditeurs sur le banc d'essai Grid'5000. Les résultats confirment le facteur
+multiplicatif logarithmique de \SPRAY et les messages de taille
+polylogarithmique de \LSEQ.
 
 
 
