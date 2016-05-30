@@ -1,12 +1,78 @@
 
 \section{Questions de recherche}
 
+Un éditeur collaboratif de textes permet à plusieurs utilisateurs d'éditer un
+même document~\cite{ellis1989concurrency}. Pour se faire, un utilisateur crée le
+document et le partage avec ses collaborateurs. Ces derniers sont alors en
+mesure de visionner et de modifier le document. L'édition
+\emph{asynchrone}~\cite{johansen1988groupware} divise la tâche entre l'édition
+et la synchronisation des modifications. L'échange de documents par courriels ou
+les gestionnaires de versions \emph{Git}~\cite{git} ou
+\emph{Subversion}~\cite{svn} font parties de cette catégorie. L'édition
+\emph{temps réel}~\cite{ellis1991groupware, johansen1988groupware} permet de
+visionner et partager les changements immédiatement. Ainsi, l'ajout d'une lettre
+dans le document par un participant se répercute directement chez tous le monde
+(modulo la latence sur les canaux permettant de transmettre les
+changements). L'éditeur web \emph{Google Docs}~\cite{googledocs} appartient à
+cette catégorie.  Dans ce manuscrit, nous nous intéressons à ces deux modes
+d'édition représentant respectivement les modes d'édition ``hors ligne'' et ``en
+ligne''.
+
+En dépit des indéniables améliorations apportées par l'édition
+collaborative~\cite{noel2004empirical}, son adoption massive par le public
+demeure récente~\cite{perkel2014scientific}. L'intervention du web participe
+pour beaucoup à la popularité des éditeurs
+collaboratifs~\cite{mogan2010impact}. Les utilisateurs accèdent facilement à
+leurs documents via le navigateur web de leur ordinateur ou portable.  Les
+utilisateurs partagent leurs documents aisément grâce à de simple URL
+(\emph{Uniform Resource Locator}). Hélas, l'utilisation du web comme support à
+la collaboration apporte aussi de nombreux défauts. En effet, son organisation
+éminemment centralisée pose les problèmes suivants :
+
+\paragraph{Confidentialité :} Chaque lettre tappée transite par un serveur
+appartenant à un fournisseur de services. Ce dernier est en mesure de lire le
+document et d'en vendre ou d'en concéder le contenu à des tiers tels que des
+entreprises publicitaires ou des entités du gouvernement~\cite{gellman2013us};
+
+\paragraph{Censure :} Bien souvent, la propriété du document doit être concédée
+au fournisseur de service. À tout moment, celui-ci peut se voir supprimé, au bon
+vouloir du fournisseur, si son contenu est jugé contradictoire aux termes du
+service;
+
+\paragraph{Passage à l'échelle :} Un serveur est en charge du document. Si le
+nombre d'utilisateurs grimpe, le serveur risque de ne pouvoir le supporter. Les
+utilisateurs souffrent alors de baisses en qualité de service. Par exemple, leur
+document peut devenir temporairement inaccessible;
+
+\paragraph{Point individuel de défaillance :} Puisqu'un seul serveur est en
+charge du document, si celui-ci tombe en panne, l'accès aux documents qu'il
+héberge est compromis.
+  
+La décentralisation permet de résoudres les problèmes liés à la confidentialité,
+à la censure, et aux défaillances. Un document appartient réellement à ceux qui
+l'éditent. Toutefois, les problèmes de passage à l'échelle demeurent auxquels
+s'ajoutent les difficultés d'utilisations autrefois résolues grâce au web et au
+Nuage~\cite{mell2011national}. Heureusement, la récente technologie
+WebRTC~\cite{webrtc} permet d'établir des canaux de communication d'un
+navigateur web à l'autre. Cette technologie offre la possibilité de développer
+des applications aussi faciles d'accès qu'un service web tout en se passant de
+leur fournisseur. Grâce à cela, un nouvel écosystème d'applications
+décentralisées directement intégrées au web est en train de
+fleurir~\cite{webtorrent}.
+
+\begin{itemize}
+\item [\textbf{QR.}] \textbf{L'édition collaborative temps réel est-elle
+    possible sur le web, sans l'intervention de tiers et sans limites quant aux
+    dimensions du système?}
+%%\end{itemize}
+
 \begin{figure}
-  \centering
-  \input{input/introduction/architecture.tex}
-  \caption[Architecture des éditeurs collaboratifs]
-  {\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
-    collaboratifs.}
+  \begin{center}
+    \input{input/introduction/architecture.tex}
+    \caption[Architecture des éditeurs collaboratifs]
+    {\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
+      collaboratifs.}
+  \end{center}
 \end{figure}
 
 L'architecture d'un éditeur collaboratif est constituée de quatres parties
@@ -15,10 +81,10 @@ L'architecture d'un éditeur collaboratif est constituée de quatres parties
 \item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
   document, 
 \item la structure de données représentant le document partagé,
-\item la structure de causalité qui permet d'ordonner les changements sur le
-  document,
-\item la couche réseau qui permet d'envoyer et recevoir les changements sur le
-  document.
+\item la structure de causalité qui permet d'ordonner les changements effectués
+  sur le document,
+\item la couche réseau qui permet d'envoyer et recevoir les changements
+  effectués sur le document.
 \end{inparaenum}
 
 Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
@@ -26,41 +92,44 @@ Cela concerne aussi bien le nombre d'utilisateurs, que la taille des documents,
 que la fréquence des changements ainsi que la durée avant laquelle ils sont
 intégrés.
 
-\begin{itemize}
-\item [\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la
-    construction d'un éditeur collaboratif temps réel dont les performances
-    passent à l'échelle et dont le déploiement soit aussi simple que sur le
-    Nuage?}
+% \begin{itemize}
+% \item [\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la
+%     construction d'un éditeur collaboratif temps réel dont les performances
+%     passent à l'échelle et dont le déploiement soit aussi simple que sur le
+%     Nuage?}
   
-  Malheureusement, la couche réseau et la couche structure font actuellement
-  obstacle au passage à l'échelle. En effet, les solutions
-  centralisées~\cite{nichols1995high}, où un serveur fait office d'intermédiaire
-  entre les clients, posent des problèmes
-  \begin{inparaenum}[(i)]
-  \item de confidentialité
-  \item de censure,
-  \item de passage à l'échelle,
-  \item de point unique de défaillance.
-  \end{inparaenum}
-  Seule la décentralisation permet résoudre ces problèmes. Un client est aussi
-  serveur et contribue à la disséminations des changements effectués sur le
-  document. Pour ce faire, chaque éditeur possède un ensemble d'éditeurs avec
-  lequel communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à
-  son propre ensemble d'éditeurs connus. Les changements atteignent tous les
-  éditeurs par transitivité~\cite{birman1999bimodal}. La taille de cet ensemble
-  est déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
-  risque de dépasser les capacités de l'appareil émetteur; lorsqu'elle diminue,
-  le réseau risque de se fragmenter en îlots, auquel cas les changements ne
-  parviennent plus à tous les éditeurs.
+  % Malheureusement, la couche réseau et la couche structure font actuellement
+  % obstacle au passage à l'échelle. En effet, les solutions
+  % centralisées~\cite{nichols1995high}, où un serveur fait office d'intermédiaire
+  % entre les clients, posent des problèmes
+  % \begin{inparaenum}[(i)]
+  % \item de confidentialité
+  % \item de censure,
+  % \item de passage à l'échelle,
+  % \item de point unique de défaillance.
+  % \end{inparaenum}
+  %%Seule la décentralisation permet résoudre ces problèmes. Un client est aussi
 
-  Afin de configurer la taille de cet ensemble
-  idéalement~\cite{erdos1959random}, le développeur doit connaître la taille des
-  réseaux qu'il souhaite supporter. Malheureusement, celle-ci varie, que ce soit
-  pendant la durée de vie du réseau, e.g., une cours de formation en ligne
-  (\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
-  l'interêt qu'il suscite; ou entre les réseaux d'une même application, e.g., un
-  document créé pour un événement de grande ampleur n'a pas la même audience que
-  celle d'un rapport de projet écrit par des étudiants.
+Pour un éditeur décentralisé, chaque client est aussi un serveur et participe
+activement au bon fonctionnement du système. Ainsi, il contribue à la
+disséminations des changements effectués sur le document. Pour ce faire, chaque
+éditeur possède un ensemble d'éditeurs avec lequel communiquer. Lorsqu'un
+éditeur reçoit un changement, il le propage à son propre ensemble d'éditeurs
+connus. Les changements atteignent tous les éditeurs par
+transitivité~\cite{birman1999bimodal}. La taille de cet ensemble est
+déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
+risque de dépasser les capacités de l'appareil émetteur; lorsqu'elle diminue, le
+réseau risque de se fragmenter en îlots, auquel cas les changements ne
+parviennent plus à tous les éditeurs.
+
+Afin de configurer la taille de cet ensemble idéalement~\cite{erdos1959random},
+le développeur doit connaître la taille des réseaux qu'il souhaite
+supporter. Malheureusement, celle-ci varie, que ce soit pendant la durée de vie
+du réseau, e.g., une cours de formation en ligne
+(\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
+l'interêt qu'il suscite; ou entre les réseaux d'une même application, e.g., un
+document créé pour un événement de grande ampleur n'a pas la même audience que
+celle d'un rapport de projet écrit par des étudiants.
 
   % La première partie de cette question met en lumière la force du Nuage à
   % fournir des services dont l'utilisation et la configuration sont
@@ -85,8 +154,11 @@ intégrés.
   %     utiliser dont les performances passent à l'échelle, dont le bon
   %     fonctionnement soit résistant aux connexions et déconnexions fréquentes
   %     (\emph{churn}) possibles dans ce contexte?}    
-  \item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
-      que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
+  % \item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
+  %    que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
+  \item [\textbf{QR A.}] \textbf{Afin d'ajuster le trafic à la session
+      d'édition, comment adapter efficacement le voisinage de chaque éditeur
+      aux fluctuations des réseaux?}
   \end{itemize}
 
   Supposons qu'un tel protocole de communication existe. Les messages
