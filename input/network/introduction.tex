@@ -1,18 +1,20 @@
 
-\lettrine{C}ommuniquer des informations d'une machine à une autre est un besoin
-ancien. Une solution se developpe rapidement sous l'impulsion du projet Arpanet
-qui deviendra plus tard la base de l'internet. Initialement créé dans le but de
-connecter une machine à une autre, l'échelle évolue afin d'impliquer plusieurs
-machines communicant entre elles. Il s'agit alors d'un réseau de communication.
+% \lettrine{C}ommuniquer des informations d'une machine à une autre est un besoin
+% ancien. Une solution se developpe rapidement sous l'impulsion du projet Arpanet
+% qui deviendra plus tard la base de l'internet. Initialement créé dans le but de
+% connecter une machine à une autre, l'échelle évolue afin d'impliquer plusieurs
+% machines communicant entre elles. Il s'agit alors d'un réseau de communication.
 
-Les machines d'un réseau sont adressables : Grâce à une métadonnée, un message
-émis par une machine trouve un chemin jusqu'à la machine ciblée. Par exemple,
-une adresse IP (\emph{Internet Protocol}) permet de retrouver une machine de
-manière transparente : Les infrastructures sous-jacentes sur l'itinéraire entre
-les machines, tels que les routeurs, sont inconnues. Un réseau construit sur de
-telles adresses logiques est appelé réseau superposé (\emph{network
-  overlay}). Un réseau superposé peut être construit sur un autre réseau
-superposé.
+
+
+% Les machines d'un réseau sont adressables : Grâce à une métadonnée, un message
+% émis par une machine trouve un chemin jusqu'à la machine ciblée. Par exemple,
+% une adresse IP (\emph{Internet Protocol}) permet de retrouver une machine de
+% manière transparente : Les infrastructures sous-jacentes sur l'itinéraire entre
+% les machines, tels que les routeurs, sont inconnues. Un réseau construit sur de
+% telles adresses logiques est appelé réseau superposé (\emph{network
+%   overlay}). Un réseau superposé peut être construit sur un autre réseau
+% superposé.
 
 \begin{figure}
   \begin{center}
@@ -21,52 +23,66 @@ superposé.
   \end{center}
 \end{figure}
 
-Toutes sortes de réseaux superposés existent. Par exemple, si chaque machine
-possède un canal de communication avec chacunes des autres machines, alors la
-topologie correspond à celle d'un graphe complet
-(cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
-d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
-grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
+\lettrine{U}n réseau superposé (\emph{network overlay}) est un ensemble de
+machines pouvant communiquer entre elles au dessus d'un autre réseau tels que,
+par exemple, l'internet ou un autre réseau superposé.  Toutes sortes de réseaux
+superposés existent. Si chaque machine possède un canal de communication avec
+chacunes des autres machines, alors la topologie correspond à celle d'un graphe
+complet (cf. figure~\ref{net:fig:completegraph}). La progression quadratique du
+nombre d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre
+de grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
 qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
 direct d'un nœud. Le défi consiste alors à peupler ces vues avec des liens
 logiques selon les critères souhaités.
 
 Dans ce manuscrit, nous nous intéressons aux protocoles d'échantillonnage
-aléatoire de pairs dont l'objectif est de fournir à chaque machine une vue
-partielle peuplée d'adresses logiques réparties selon une loi uniforme. La
-topologie en résultant est proche de celle des graphes aléatoires. Ces réseaux
-possèdent d'interessantes propriétés tels que la tolérence aux pannes (lorsqu'un
-nœud disparait soudainement le graphe reste connecté avec une forte
-probabilité), ou un faible diamêtre.
+aléatoire de pairs~\cite{jelasity2007gossip} dont l'objectif est de fournir à
+chaque machine une vue partielle peuplée d'adresses logiques réparties selon une
+loi uniforme. La topologie en résultant est proche de celle des graphes
+aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
+propriétés tels que la tolérance aux pannes (lorsqu'un nœud disparaît
+soudainement le graphe reste connecté avec une forte probabilité), ou un faible
+diamètres (les messages se propagent rapidement à tous les membres du réseau).
 
 % Puisque les protocoles de dissémination de messages font un usage soutenu de ces
 % vues partielles, améliorer le protocole d'échantillonnage revient à améliorer la
 % dissémination. Le problème scientifique consiste à 
 
-L'état de l'art est divisé en deux catégories selon les vues partielles fournies :
-\begin{inparaenum}
-\item les approches fournissant des vues partielles de taille constante qui
-  doivent être configurées \emph{a priori}. Dans ce cas le développeur doit
-  prévoir les dimensions des réseaux gérés par son application. Cela entraine un
-  surdimensionnement des vues partielles.
+Dans ce domaine, l'état de l'art se divise en deux catégories selon les vues
+partielles fournies :
+\begin{inparaenum}[(i)]
+\item les approches fournissant des vues partielles de taille
+  constante~\cite{eugster2003lightweight, leitao2007dependable,
+    tolgyeski2009adaptive, voulgaris2005cyclon} qui doivent être configurées
+  \emph{a priori}. Dans ce cas le développeur doit prévoir les dimensions des
+  réseaux gérés par son application;
+  %%Cela entraîne un  surdimensionnement des vues partielles.
 \item les approches fournissant des vues partielles s'auto-ajustant pendant la
-  vie du réseau. Malheureusement, ces approches ne sont pas adaptées aux réseaux
-  dynamiques.
+  vie du réseau~\cite{ganesh2001scamp, ganesh2003peer}. Malheureusement, ces
+  approches ne sont pas adaptées aux réseaux dynamiques.
 \end{inparaenum}
 
-Pour rappel, la question de recherche est : \textbf{Comment disséminer les
-  messages de telle façon que le trafic s’adapte automatiquement aux
-  fluctuations des réseaux ?}  Sachant que la dissémination fait un usage
-intensif des vues partielles, aucunes des approches de l'état de l'art ne permet
-une telle adaptation.
+Les protocoles d'échantillonnages aléatoire de pairs sont au cœur de nombreuses
+autres approches~\cite{folz2016cyclades, jelasity2009tman,
+  krasikova2016distributed, voulgaris2013vicinity}. Entre autres, la propagation
+de messages~\cite{birman1999bimodal, kermarrec2003probabilistic} d'un pair à
+tous les autres (\emph{broadcast}) fait un usage intensif des vues
+partielles. Un pair souhaitant propager un message choisit un ensemble de
+voisins auquel il communique le message. A son tour, chaque pair recevant un tel
+message en fait de même. Les messages parviennent à tous les pairs par
+transitivité à la manière d'une épidémie.
 
-Ce chapitre présente \SPRAY, un protocole dont les pairs voient leur vue
-partielle s'ajuster gracieusement à la taille du réseau. Le cycle de vie d'un
-pair, divisé entre son entrée, sa vie, et son départ, est conçu pour conserver
-un nombre d'arcs dans le système consistant avec la taille de ce dernier. Les
-protocoles construits au dessus de \SPRAY peuvent bénéficier de cette
-auto-ajustement. Par exemple, le trafic généré par un protocole de dissémination
-de messages peut évoluer selon les dimensions du réseau.
+\textbf{Afin d'adapter le trafic généré par la transmission de messages, comment
+  ajuster la taille des vues partielles aux fluctuations des réseaux?}
+
+Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
+voient leur vue partielle s'ajuster gracieusement à la taille du réseau, sans
+l'usage d'aucune connaissance globale. Le cycle de vie d'un pair, divisé entre
+son entrée, sa vie, et son départ, est conçu pour conserver un nombre d'arcs
+dans le système consistant avec la taille de ce dernier. Les protocoles
+construits au dessus de \SPRAY peuvent bénéficier de cette auto-ajustement. Par
+exemple, le trafic généré par un protocole de dissémination de messages peut
+évoluer selon les dimensions du réseau.
 
 Ce chapitre commence par introduire vocabulaire et notations. La
 section~\ref{net:sec:stateoftheart} présente l'état de l'art des protocoles
@@ -74,7 +90,9 @@ d'échantillonnage de pairs en les divisant en deux catégories : Ceux dont les
 vues partielles sont fixes, et ceux dont les vues partielles s'adaptent au
 réseau. La section~\ref{net:sec:spray} présente \SPRAY, un protocole appartenant
 à la seconde catégorie. La section~\ref{net:sec:properties} présente et compare
-les propriétés des protocoles d'échantillonages. Le chapitre se conclut à la
+les propriétés des protocoles d'échantillonnages. La
+section~\ref{net:sec:broadcast} présente l'effet de \SPRAY sur un protocole de
+dissémination épidémique de messages. Le chapitre se conclut à la
 section~\ref{net:sec:conclusion}.
 
 %%% Local Variables:
