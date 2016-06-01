@@ -1,71 +1,6 @@
 
 \section{Questions de recherche}
 
-Un éditeur collaboratif de textes permet à plusieurs utilisateurs d'éditer un
-même document~\cite{ellis1989concurrency}. Pour se faire, un utilisateur crée le
-document et le partage avec ses collaborateurs. Ces derniers sont alors en
-mesure de visionner et de modifier le document. L'édition
-\emph{asynchrone}~\cite{johansen1988groupware} divise la tâche entre l'édition
-et la synchronisation des modifications. L'échange de documents par courriels ou
-les gestionnaires de versions \emph{Git}~\cite{git} ou
-\emph{Subversion}~\cite{svn} font parties de cette catégorie. L'édition
-\emph{temps réel}~\cite{ellis1991groupware, johansen1988groupware} permet de
-visionner et partager les changements immédiatement. Ainsi, l'ajout d'une lettre
-dans le document par un participant se répercute directement chez tous le monde
-(modulo la latence sur les canaux permettant de transmettre les
-changements). L'éditeur web \emph{Google Docs}~\cite{googledocs} appartient à
-cette catégorie.  Dans ce manuscrit, nous nous intéressons à ces deux modes
-d'édition représentant respectivement les modes d'édition ``hors ligne'' et ``en
-ligne''.
-
-En dépit des indéniables améliorations apportées par l'édition
-collaborative~\cite{noel2004empirical}, son adoption massive par le public
-demeure récente~\cite{perkel2014scientific}. L'intervention du web participe
-pour beaucoup à la popularité des éditeurs
-collaboratifs~\cite{mogan2010impact}. Les utilisateurs accèdent facilement à
-leurs documents via le navigateur web de leur ordinateur ou portable.  Les
-utilisateurs partagent leurs documents aisément grâce à de simple URL
-(\emph{Uniform Resource Locator}). Hélas, l'utilisation du web comme support à
-la collaboration apporte aussi de nombreux défauts. En effet, son organisation
-éminemment centralisée pose les problèmes suivants :
-
-\paragraph{Confidentialité :} Chaque lettre tappée transite par un serveur
-appartenant à un fournisseur de services. Ce dernier est en mesure de lire le
-document et d'en vendre ou d'en concéder le contenu à des tiers tels que des
-entreprises publicitaires ou des entités du gouvernement~\cite{gellman2013us};
-
-\paragraph{Censure :} Bien souvent, la propriété du document doit être concédée
-au fournisseur de service. À tout moment, celui-ci peut se voir supprimé, au bon
-vouloir du fournisseur, si son contenu est jugé contradictoire aux termes du
-service;
-
-\paragraph{Passage à l'échelle :} Un serveur est en charge du document. Si le
-nombre d'utilisateurs grimpe, le serveur risque de ne pouvoir le supporter. Les
-utilisateurs souffrent alors de baisses en qualité de service. Par exemple, leur
-document peut devenir temporairement inaccessible;
-
-\paragraph{Point individuel de défaillance :} Puisqu'un seul serveur est en
-charge du document, si celui-ci tombe en panne, l'accès aux documents qu'il
-héberge est compromis.
-  
-La décentralisation permet de résoudres les problèmes liés à la confidentialité,
-à la censure, et aux défaillances. Un document appartient réellement à ceux qui
-l'éditent. Toutefois, les problèmes de passage à l'échelle demeurent auxquels
-s'ajoutent les difficultés d'utilisations autrefois résolues grâce au web et au
-Nuage~\cite{mell2011national}. Heureusement, la récente technologie
-WebRTC~\cite{webrtc} permet d'établir des canaux de communication d'un
-navigateur web à l'autre. Cette technologie offre la possibilité de développer
-des applications aussi faciles d'accès qu'un service web tout en se passant de
-leur fournisseur. Grâce à cela, un nouvel écosystème d'applications
-décentralisées directement intégrées au web est en train de
-fleurir~\cite{webtorrent}.
-
-\begin{itemize}
-\item [\textbf{QR.}] \textbf{L'édition collaborative temps réel est-elle
-    possible sur le web, sans l'intervention de tiers et sans limites quant aux
-    dimensions du système?}
-%%\end{itemize}
-
 \begin{figure}
   \begin{center}
     \input{input/introduction/architecture.tex}
@@ -149,17 +84,16 @@ celle d'un rapport de projet écrit par des étudiants.
   % document qu'ils partagent. Chacune de ces modifications doit être envoyées aux
   % autres auteurs afin qu'ils voient le même document. \TODO{Moar?} Cela
   % introduit donc la sous-question suivante:
-  \begin{itemize}
   % \item [\textbf{QR A.}] \textbf{Quel protocole de dissémination de messages
   %     utiliser dont les performances passent à l'échelle, dont le bon
   %     fonctionnement soit résistant aux connexions et déconnexions fréquentes
   %     (\emph{churn}) possibles dans ce contexte?}    
   % \item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
   %    que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
-  \item [\textbf{QR A.}] \textbf{Afin d'ajuster le trafic à la session
-      d'édition, comment adapter efficacement le voisinage de chaque éditeur
-      aux fluctuations des réseaux?}
-  \end{itemize}
+
+\paragraph{QR A.} \textbf{Afin d'ajuster le trafic à la session d'édition,
+  comment adapter efficacement le voisinage de chaque éditeur aux fluctuations
+  des réseaux?}
 
   Supposons qu'un tel protocole de communication existe. Les messages
   transportés par celui-ci se doivent d'être léger, et pourtant suffisamment
@@ -212,11 +146,9 @@ celle d'un rapport de projet écrit par des étudiants.
     élevé~\cite{mostefaoui2015signature}.
   \end{inparaenum}
 
-  \begin{itemize}
-  \item [\textbf{QR B.}] \textbf{Afin d'éviter tout protocole additionnel de
-      relocalisation des identifiants, comment allouer ces identifiants pour que
-      leur taille soit directement sous-linéaire?}
-  \end{itemize}
+  \paragraph{QR B.} \textbf{Afin d'éviter tout protocole additionnel de
+    relocalisation des identifiants, comment allouer ces identifiants pour que
+    leur taille soit directement sous-linéaire?}
 
   % En effet, les auteurs étant distants les uns des autres, les modifications ne
   % sont pas reçues et traitées instantanéments par tous. De ce fait, l'ordre
@@ -228,7 +160,6 @@ celle d'un rapport de projet écrit par des étudiants.
   % les structures doivent toujours converger vers un état équivalent. Contraindre
   % l'ordre d'application des opérations s'avère hélas extrêmement coûteux.
 
-\end{itemize}
 
 %%% Local Variables:
 %%% mode: latex
