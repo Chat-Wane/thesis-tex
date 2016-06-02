@@ -18,137 +18,97 @@ L'architecture d'un éditeur collaboratif est constituée de quatres parties
 \item la structure de données représentant le document partagé,
 \item la structure de causalité qui permet d'ordonner les changements effectués
   sur le document,
-\item la couche réseau qui permet d'envoyer et recevoir les changements
-  effectués sur le document.
+\item la couche réseau qui permet de disséminer les changements effectués sur le
+  document.
 \end{inparaenum}
 
 Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
-Cela concerne aussi bien le nombre d'utilisateurs, que la taille des documents,
-que la fréquence des changements ainsi que la durée avant laquelle ils sont
-intégrés.
+Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
+fréquence des changements et la durée avant laquelle ils sont intégrés.
 
-% \begin{itemize}
-% \item [\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la
-%     construction d'un éditeur collaboratif temps réel dont les performances
-%     passent à l'échelle et dont le déploiement soit aussi simple que sur le
-%     Nuage?}
-  
-  % Malheureusement, la couche réseau et la couche structure font actuellement
-  % obstacle au passage à l'échelle. En effet, les solutions
-  % centralisées~\cite{nichols1995high}, où un serveur fait office d'intermédiaire
-  % entre les clients, posent des problèmes
-  % \begin{inparaenum}[(i)]
-  % \item de confidentialité
-  % \item de censure,
-  % \item de passage à l'échelle,
-  % \item de point unique de défaillance.
-  % \end{inparaenum}
-  %%Seule la décentralisation permet résoudre ces problèmes. Un client est aussi
-
-Pour un éditeur décentralisé, chaque client est aussi un serveur et participe
-activement au bon fonctionnement du système. Ainsi, il contribue à la
-disséminations des changements effectués sur le document. Pour ce faire, chaque
-éditeur possède un ensemble d'éditeurs avec lequel communiquer. Lorsqu'un
-éditeur reçoit un changement, il le propage à son propre ensemble d'éditeurs
-connus. Les changements atteignent tous les éditeurs par
-transitivité~\cite{birman1999bimodal}. La taille de cet ensemble est
+Pour un éditeur collaboratif décentralisé, chaque client est aussi un serveur et
+participe activement au bon fonctionnement du système. Ainsi, il contribue à la
+dissémination des changements effectués sur le document. Pour ce faire, chaque
+éditeur possède un ensemble d'éditeurs -- ses voisins -- avec lequel
+communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à son propre
+ensemble d'éditeurs connus. Les changements parviennent à tous les éditeurs par
+transitivité~\cite{birman1999bimodal}.  La taille de cet ensemble est
 déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
-risque de dépasser les capacités de l'appareil émetteur; lorsqu'elle diminue, le
-réseau risque de se fragmenter en îlots, auquel cas les changements ne
-parviennent plus à tous les éditeurs.
+risque de dépasser les capacités d'émission des éditeurs; lorsqu'elle diminue,
+les changements risquent de ne plus parvenir à tous les éditeurs.
 
 Afin de configurer la taille de cet ensemble idéalement~\cite{erdos1959random},
-le développeur doit connaître la taille des réseaux qu'il souhaite
-supporter. Malheureusement, celle-ci varie, que ce soit pendant la durée de vie
-du réseau, e.g., une cours de formation en ligne
+le développeur doit connaître le nombre de collaborateurs que l'éditeur doit
+supporter. Malheureusement, celui-ci varie, que ce soit pendant la durée de la
+collaboration, e.g., un cours de formation en ligne
 (\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
-l'interêt qu'il suscite; ou entre les réseaux d'une même application, e.g., un
-document créé pour un événement de grande ampleur n'a pas la même audience que
-celle d'un rapport de projet écrit par des étudiants.
+l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pour un
+événement de grande ampleur n'a pas la même audience que celle d'un rapport de
+projet écrit par des étudiants.
 
-  % La première partie de cette question met en lumière la force du Nuage à
-  % fournir des services dont l'utilisation et la configuration sont
-  % aisées. L'accès à ces services inclut bien souvent une interface web
-  % accessible grâce aux navigateurs Internet. Le fait que ces derniers soient
-  % présents dans quasiment tous les appareils communiquants modernes participe à
-  % l'hégémonie actuelle du Nuage : malgré l'hétérogénéité des appareils utilisés,
-  % une simple URL (\emph{Uniform Resource Locator}) permet d'accèder aux services
-  % quel que soit la localisation. L'expérience utilisateur ne dépend plus alors
-  % que de la conception d'un site web adaptatif (\emph{responsive}) aux
-  % appareils.
+Cela pose la première question de recherche : \textbf{Comment adapter
+  efficacement le voisinage de chaque éditeur au nombre fluctuant de
+  collaborateurs?}
 
-  % Ce n'est que grâce à la récente introduction de WebRTC~\cite{webrtc} comme
-  % protocole de communication de navigateur-à-navigateur que les applications web
-  % réparties et décentralisées sont possibles. Dans le contexte de l'édition
-  % collaborative, chaque auteur est en mesure d'apporter des modifications au
-  % document qu'ils partagent. Chacune de ces modifications doit être envoyées aux
-  % autres auteurs afin qu'ils voient le même document. \TODO{Moar?} Cela
-  % introduit donc la sous-question suivante:
-  % \item [\textbf{QR A.}] \textbf{Quel protocole de dissémination de messages
-  %     utiliser dont les performances passent à l'échelle, dont le bon
-  %     fonctionnement soit résistant aux connexions et déconnexions fréquentes
-  %     (\emph{churn}) possibles dans ce contexte?}    
-  % \item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
-  %    que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
+%%\paragraph{QR A.} \textbf{Afin d'ajuster le trafic à la session d'édition,
+%%  comment adapter efficacement le voisinage de chaque éditeur aux fluctuations
+%%  des réseaux?}
 
-\paragraph{QR A.} \textbf{Afin d'ajuster le trafic à la session d'édition,
-  comment adapter efficacement le voisinage de chaque éditeur aux fluctuations
-  des réseaux?}
+Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
+collaboratifs actuels copient les documents chez chaque
+client~\cite{saito2005optimistic}, et, lorsqu'une modification est effectuée,
+elle est directement appliquée sur leur copie avant d'être envoyée au reste des
+éditeurs où elle est intégrée. Un système est correct si, lorsque les même
+changements ont été intégrés, les utilisateurs lisent le même
+document~\cite{burckhardt2014replicated, shapiro2011conflict}.
 
-  Supposons qu'un tel protocole de communication existe. Les messages
-  transportés par celui-ci se doivent d'être léger, et pourtant suffisamment
-  descriptifs pour reconstruire un document identique indépendemment de l'auteur
-  recevant le message.
+L'utilisation des structures de données ``classiques'' telles que les listes
+n'est pas directement possible du fait de la latence entre les
+collaborateurs. Par exemple, si un auteur insère un caractère en début de
+document pendant qu'un autre supprime un caractère au même endroit, le premier
+auteur risque, à tort, de voir supprimé le caractère qu'il vient d'insérer. Afin
+d'éviter de telles situations, de nouvelles structures et de nouveaux
+algorithmes doivent être employés.
 
-  Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
-  actuels copient les documents chez chaque client~\cite{saito2005optimistic},
-  et, lorsqu'une modification est effectuée, elle est directement appliquée sur
-  leur copie avant d'être envoyée au reste des éditeurs où elle est intégrée. Un
-  système est correct si, et seulement si, lorsque les même changements ont été
-  intégrés, les utilisateurs lisent le même
-  document~\cite{burckhardt2014replicated, shapiro2011conflict}.
+Une première famille d'approches consiste à transformer les arguments de
+l'opération afin qu'elle considère les opérations intégrées
+concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
+l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
+compte qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier
+les arguments de l'opération reçue afin que le second caractère soit supprimé,
+et non plus le premier. Malheureusement, la détection de ces cas nécessite de
+transporter des données avec chaque opération dont le coût est
+prohibitif~\cite{sun2009contextbased}.
 
-  L'utilisation des structures de données ``classiques'' telles que les listes
-  n'est pas directement possible du fait de la latence entre les
-  participants. Par exemple, si un auteur insère un caractère en début de
-  document pendant qu'un autre supprime un caractère au même endroit, le premier
-  auteur risque, à tort, de voir supprimé le caractère qu'il vient
-  d'insérer. Afin d'éviter de telles situations, de nouvelles structures et de
-  nouveaux algorithmes doivent être employés.
+Une seconde famille d'approches consiste à utiliser des structures de données
+dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
+opérations commutent, ces approches associent à chaque caractère un identifiant
+unique et immuable.
 
-  Une première famille d'approches consiste à transformer les arguments de
-  l'opérations afin qu'elle considère les opérations intégrées
-  concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
-  l'intégration de la suppression par le premier auteur, l'opération, se rendant
-  compte qu'un caractère a été ajouté en tête, aurait modifié ses arguments afin
-  que le second caractère soit supprimé, et non plus le
-  premier. Malheureusement, la détection de ces cas nécessite de transporter des
-  données avec chaque opération dont le coût est prohibitivement
-  élevé~\cite{sun2009contextbased}.
+\paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
+de suppression se contente de cacher le caractère à l'utilisateur. Afin de
+purger la structure des identifiants cachés et ainsi conserver de bonnes
+performances, un protocole de ramasse-miettes
+réparti~\cite{abdullahi1998garbage} doit être exécuté
+régulièrement. Malheureusement, ceux-ci s'avère extrêmement coûteux.
 
-  Une seconde famille d'approches consiste à utiliser des structures de données
-  dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
-  opérations commutent, ces approches associent à chaque caractère un
-  identifiant unique et immuable. Toutefois, ces identifiants sont
-  \begin{inparaenum}[(i)]
-  \item soit indestructibles~\cite{oster2006data}. L'opération de suppression se
-    contente alors de cacher le caractère à l'utilisateur. Afin de supprimer ces
-    caractères cachés et conserver de bonnes performances, un protocole de
-    ramasse-miète~\cite{abdullahi1998garbage} réparti doit être exécuté
-    régulièrement. Malheureusement, ce genre de protocoles s'avère extrêmement
-    coûteux;
-  \item soit des listes dont la taille, définie à la génération, peut grandir
-    très vite~\cite{weiss2009logoot}. Cette croissance impacte négativement les
-    performances du système. Pour y remédier, un protocole de relocalisation des
-    identifiants doit être exécuté régulièrement. Malheureusement, ces
-    protocoles s'apparentent à l'obtention d'un consensus dans un contexte
-    réparti dont le coût s'avère également très
-    élevé~\cite{mostefaoui2015signature}.
-  \end{inparaenum}
+\paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
+identifiants sont des listes dont la taille, définie à la génération, peut
+grandir très rapidement~\cite{weiss2009logoot}. Cette croissance impacte
+négativement les performances du système. Pour y remédier, un protocole de
+relocalisation des identifiants doit être exécuté
+régulièrement~\cite{zawirskiasynchronous}. Malheureusement, ces protocoles
+s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le coût
+s'avère également très élevé~\cite{mostefaoui2015signature}.
 
-  \paragraph{QR B.} \textbf{Afin d'éviter tout protocole additionnel de
-    relocalisation des identifiants, comment allouer ces identifiants pour que
-    leur taille soit directement sous-linéaire?}
+% Le méchanisme de dissémination des messages fait un usage intensif de ces
+% voisinages. Les messages transportés par celui-ci se doivent d'être légers, et
+% pourtant porteur de suffisamment d'informations afin de reconstruire des
+% documents identiques.
+
+Cela pose la seconde question de recherche : \textbf{Afin d'éviter tout
+  protocole additionnel de relocalisation des identifiants, comment allouer ces
+  identifiants pour que leur taille soit directement sous-linéaire?}
 
   % En effet, les auteurs étant distants les uns des autres, les modifications ne
   % sont pas reçues et traitées instantanéments par tous. De ce fait, l'ordre

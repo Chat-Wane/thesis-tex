@@ -2,7 +2,7 @@
 \section{Contributions}
 
 
-Afin de répondre à la question de recherche \textbf{QR A.}, nous nous sommes
+Afin de répondre à la première question de recherche, nous nous sommes
 interessés dans un premier temps aux protocoles d'appartenance
 (\emph{membership}) aux réseaux. Plus particulièrement à ceux dont la topologie
 résultante possède des propriétés similaires à celles des graphes
@@ -19,16 +19,15 @@ s'adapte à la taille du réseau automatiquement en suivant une progression
 logarithmique comparativement à la taille globale du réseau. Nous mettons cela
 en évidence grâce à des simulations.  Les protocoles de diffusion
 épidémique~\cite{birman1999bimodal} de messages (\emph{gossip}) qui en dépendent
-bénéficient à leur tour de cette adaptation. Entre autres, Le trafic généré peut
-s'adapter à la taille réelle du réseau.
+bénéficient à leur tour de cette capacité à s'adapter. Entre autres, le trafic
+généré peut s'adapter à la taille réelle du réseau.
 
-Afin de répondre à la question de recherche \textbf{QR B.}, nous nous sommes
-interessés aux approches appartenant à la réplication
-optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e., un schéma de
-réplication où le document partagé est copié chez chaque utilisateur afin de
-fournir réactivité et disponibilité. Nous nous intéressons particulièrement à un
-type de données pour séquences dont les opérations commutent par
-nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
+Afin de répondre à la seconde question de recherche, nous nous sommes interessés
+à la réplication optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e.,
+un schéma de réplication où le document partagé est copié chez chaque
+utilisateur afin de fournir réactivité et disponibilité. Nous nous intéressons
+particulièrement à un type de données pour séquences dont les opérations
+commutent par nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
   shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
 supporter efficacement les opérations concurrentes~\cite{ahmed2015evaluation,
   ahmed2011evaluating}. Ces approches associent un identifiant unique et
@@ -37,20 +36,20 @@ immuable à chacun de leurs éléments. Nous proposons
 identifiants est bornée polylogarithmiquement par rapport au nombre d'insertions
 effectuées dans le document. Nous définissons les conditions sous lesquelles
 s'appliquent cette borne et en fournissons la preuve. Au travers de simulations,
-nous validons \LSEQ et ses complexités.
+nous validons \LSEQ et sa complexité.
 
-Afin de répondre à la question de recherche \textbf{QR.} dans son ensemble, nous
-avons réuni les deux approches susmentionnées dans un éditeur collaboratif
-décentralisé nommé \CRATE~\cite{nedelec2016crate}. Ce dernier fonctionne
-directement dans les navigateurs web. Il permet l'édition de documents n'importe
-quand, n'importe où, quel que soit le nombre d'auteurs, sans fournisseurs
-tiers. Comparé à l'état de l'art~\cite{etherpad, googledocs, hivejs,
-  lautamaki2012cored, nicolaescu2015yjs}, \CRATE résoud les problèmes de
-confidentialité et de passage à l'échelle tout en conservant une facilité
-d'accès. Nous validons \CRATE aux travers d'expériences réunissant jusqu'à 600
-éditeurs sur le banc d'essai Grid'5000. Les résultats confirment le facteur
-multiplicatif logarithmique de \SPRAY et les messages de taille
-polylogarithmique de \LSEQ.
+Afin de répondre à la problématique générale de ce manuscrit, nous avons réuni
+les deux approches susmentionnées dans un éditeur collaboratif décentralisé
+nommé \CRATE~\cite{nedelec2016crate}. Ce dernier fonctionne directement dans les
+navigateurs web. Pour peu que l'utilisateur ait un accès à l'internet, \CRATE
+lui permet l'édition de documents n'importe quand, n'importe où, avec autant de
+collaborateurs qu'il le souhaite, sans fournisseurs tiers. Comparé à l'état de
+l'art~\cite{etherpad, googledocs, hivejs, lautamaki2012cored,
+  nicolaescu2015yjs}, \CRATE résout les problèmes de confidentialité et de
+passage à l'échelle tout en conservant une facilité d'accès. Nous validons
+\CRATE aux travers d'expériences réunissant jusqu'à 600 éditeurs sur le banc
+d'essai Grid'5000. Les résultats confirment le facteur logarithmique de \SPRAY
+et le facteur polylogarithmique des messages échangés par \LSEQ.
 
 
 
