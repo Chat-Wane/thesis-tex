@@ -13,10 +13,10 @@ fiabilité combarable à celle de l'\emph{Encyclopædia
 
 Les éditeurs collaboratifs de textes sont simplement des outils facilitant
 l'écriture de documents par plusieurs auteurs. Ils présentent un texte dont le
-contenu est modifiable par l'utilisateur. Les modifications sont transmises aux
-autres participants qui peuvent alors les voir et écrire en conséquence. Grâce à
+contenu est modifiable par l'utilisateur. Les modifications sont transmises à
+ses collaborateurs qui peuvent alors les voir et écrire en conséquence. Grâce à
 ces outils, la tâche d'écriture peut être répartie selon le temps, l'espace, et
-les organisations~\cite{grudin1994computersupported,
+les activités~\cite{desanctis1987foundation, grudin1994computersupported,
   johansen1988groupware}. Ainsi, il n'est plus impératif de se retrouver dans la
 même pièce ni même de se retrouver au même moment pour participer à la rédaction
 du document.
@@ -60,8 +60,9 @@ clients, pose les problèmes suivants :
 
 \paragraph{Confidentialité :} Chaque lettre tappée transite par un serveur
 appartenant à un fournisseur de services. Ce dernier est en mesure de lire le
-document et d'en vendre ou d'en concéder le contenu à des tiers tels que des
-entreprises publicitaires ou des entités du gouvernement~\cite{gellman2013us};
+document, d'en vendre ou d'en concéder le contenu à des tiers tels que des
+entreprises publicitaires ou des entités du gouvernement~\cite{gellman2013us,
+  pearson2011toward};
 
 \paragraph{Censure :} Bien souvent, la propriété du document doit être accordée
 au fournisseur de service. À tout moment, celui-ci peut se voir supprimé, au bon
@@ -69,24 +70,24 @@ vouloir du fournisseur, si son contenu est jugé contradictoire aux termes du
 service;
 
 \paragraph{Passage à l'échelle :} Un serveur est en charge du document. Si le
-nombre d'utilisateurs grimpe, le serveur risque de ne pouvoir le supporter. Les
-utilisateurs souffrent alors de baisses en qualité de service. Par exemple, leur
-document peut devenir temporairement inaccessible;
+nombre d'utilisateurs augmente et que l'infrastructure mise en place n'est pas
+adaptée, le serveur risque de ne pouvoir le supporter. Les utilisateurs
+souffrent alors de baisses en qualité de service. Par exemple, leur document
+peut devenir temporairement inaccessible;
 
-\paragraph{Point individuel de défaillance :} Puisqu'un seul serveur est en
-charge du document, si celui-ci tombe en panne, l'accès aux documents qu'il
-héberge est compromis.
+\paragraph{Point unique de défaillance :} Puisqu'un seul serveur est en charge
+du document, si celui-ci tombe en panne, l'accès aux documents qu'il héberge est
+compromis~\cite{demers1987epidemic}.
   
 %% penser a parler du coût réduit en terme d'infrastructure
 
-Afin d'apporter une réponse à l'ensemble de ces problèmes, la redécentralisation
-du web a reçu beaucoup d'attentions ces derniers
+La redécentralisation du web a reçu beaucoup d'attentions ces derniers
 temps~\cite{mansour2016demonstration, wood2014ethereum}. La décentralisation
 permettrait de résoudre les problèmes liés à la confidentialité, à la censure,
 et aux défaillances. Les documents appartiendraient réellement à ceux qui les
-rédigent. La décentralisation permettrait aussi d'alléger la charge des services
-web. Chaque client deviendrait également un serveur. Le poid de l'édition s'en
-trouverait réparti parmi les participants au lieu du
+rédigent. La décentralisation permettrait aussi d'alléger l'infrastructure des
+services web. Chaque client devenant également un serveur, le poid de l'édition
+s'en trouverait réparti parmi les participants au lieu du
 Nuage~\cite{mell2011national}.
 
 
