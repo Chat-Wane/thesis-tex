@@ -27,7 +27,7 @@
 machines pouvant communiquer entre elles au dessus d'un autre réseau tels que,
 par exemple, l'internet ou un autre réseau superposé.  Toutes sortes de réseaux
 superposés existent. Si chaque machine possède un canal de communication avec
-chacunes des autres machines, alors la topologie correspond à celle d'un graphe
+chacune des autres machines, alors la topologie correspond à celle d'un graphe
 complet (cf. figure~\ref{net:fig:completegraph}). La progression quadratique du
 nombre d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre
 de grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
@@ -40,16 +40,17 @@ aléatoire de pairs~\cite{jelasity2007gossip} dont l'objectif est de fournir à
 chaque machine une vue partielle peuplée d'adresses logiques réparties selon une
 loi uniforme. La topologie en résultant est proche de celle des graphes
 aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
-propriétés tels que la tolérance aux pannes (lorsqu'un nœud disparaît
-soudainement le graphe reste connecté avec une forte probabilité), ou un faible
-diamètres (les messages se propagent rapidement à tous les membres du réseau).
+propriétés tels que la tolérance aux pannes ou un faible diamètre. Cette
+première garantie que lorsqu'un nœud disparaît soudainement le graphe reste
+connecté avec une forte probabilité, la seconde garantie que les messages se
+propagent rapidement à tous les membres du réseau.
 
 % Puisque les protocoles de dissémination de messages font un usage soutenu de ces
 % vues partielles, améliorer le protocole d'échantillonnage revient à améliorer la
 % dissémination. Le problème scientifique consiste à 
 
-Dans ce domaine, l'état de l'art se divise en deux catégories selon les vues
-partielles fournies :
+L'état de l'art des protocoles d'échantillonnage aléatoire de pairs se divise en
+deux catégories selon les vues partielles fournies :
 \begin{inparaenum}[(i)]
 \item les approches fournissant des vues partielles de taille
   constante~\cite{eugster2003lightweight, leitao2007dependable,
@@ -72,8 +73,9 @@ voisins auquel il communique le message. A son tour, chaque pair recevant un tel
 message en fait de même. Les messages parviennent à tous les pairs par
 transitivité à la manière d'une épidémie.
 
-\textbf{Afin d'adapter le trafic généré par la transmission de messages, comment
-  ajuster la taille des vues partielles aux fluctuations des réseaux?}
+Afin d'adapter le trafic généré par la transmission de messages, \textbf{comment
+  adapter efficacement le voisinage de chaque éditeur au nombre fluctuant de
+  collaborateurs ?}
 
 Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
 voient leur vue partielle s'ajuster gracieusement à la taille du réseau, sans

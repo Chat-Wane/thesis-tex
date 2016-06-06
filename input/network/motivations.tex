@@ -35,10 +35,10 @@ plusieurs voisins de distance. Ce méchanisme participe à la construction rapid
 d'une topologie proche de celle des graphes aléatoires. Toutefois, entre
 l'origine et la destination de l'annonce, toute perte de message empêche
 l'établissement de la connexion. Cela s'avère particulièrement problématique
-lorsque l'établissement d'une connexion nécéssite un aller-retour comme c'est le
-cas dans le contexte WebRTC (cf. §\ref{editor:subsec:webrtc}). En effet, non
-seulement le message ne doit pas se perdre, mais les nœuds et arcs composants le
-chemin de l'annonce doivent rester disponibles.
+lorsque l'établissement d'une connexion nécéssite plusieurs allers-retours comme
+c'est le cas dans le contexte WebRTC~\cite{webrtc}. En effet, non seulement le
+message ne doit pas se perdre, mais les nœuds et arcs composants le chemin de
+l'annonce doivent rester disponibles.
 
 \paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
 la phase d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
@@ -59,12 +59,12 @@ problème suivant :
 \begin{problem}
   \label{net:problem:properties}
   Soit $t$ une unité de temps arbitraire, soit $\mathcal{N}^t$ l'ensemble des
-  membres du réseau à un instant $t$ et soit $P_i^t$ la vue partielle du nœud
-  $n_i \in \mathcal{N}^t$. Un protocole d'échantillonnage aléatoire de pairs
-  efficace doit assurer les propriétés suivantes :
+  membres non-byzantins du réseau à un instant $t$ et soit $P_i^t$ la vue
+  partielle du nœud $n_i \in \mathcal{N}^t$. Un protocole d'échantillonnage
+  aléatoire de pairs efficace doit assurer les propriétés suivantes :
   \begin{enumerate}
   \item Taille des vues partielles : \hfill $\forall n_i \in \mathcal{N}^t$,
-    $|P_i^t| \approx \Theta(\ln |\mathcal{N}^t|)$
+    $|P_i^t| \approx \mathcal{O}(\ln |\mathcal{N}^t|)$
   \item Établissement de connexion : \hfill $\mathcal{O}(1)$
 %  \item \TODO{Convergence}
   \end{enumerate}
