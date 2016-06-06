@@ -34,7 +34,7 @@ doublons restent peu nombreux. De ce fait, ils n'ont pas d'impact notable sur la
 connexité du réseau.
 
 Cette section se décompose en trois parties représentant le cycle de vie d'un
-nœud : Le processus d'entrée (cf. §\ref{net:subsec:joining}), les mélanges à
+nœud : le processus d'entrée (cf. §\ref{net:subsec:joining}), les mélanges à
 répétition (cf. §\ref{net:subsec:shuffling}, la gestion des départs
 (cf. §\ref{net:subsec:leaving}).
 
@@ -157,13 +157,13 @@ qui ne sont pas explicitement définies sont les suivantes:
   $0$ et $1$.
 \end{inparaenum}
 
-Dans le processus actif, la fonction $loop$ est appelée tous les intervalles
-$\Delta$ de temps. Tout d'abord, la fonction incrémente l'âge de chacun des arcs
-présent dans la vue partielle $P$. Ensuite, le nœud le plus âgé $q$ est choisi
-afin d'initier un mélange. Si le nœud $q$ ne peut être joint -- car parti ou
-défaillant -- alors le nœud $p$ exécute une fonction appropriée (cf.
-§\ref{net:subsec:leaving}) jusqu'à trouver un nœud avec lequel
-communiquer. Ainsi, le vieillissement comme héritage de \CYCLON permet
+Dans le processus actif, la fonction \textsc{loop} est appelée tous les
+intervalles $\Delta$ de temps. Tout d'abord, la fonction incrémente l'âge de
+chacun des arcs présents dans la vue partielle $P$. Ensuite, le nœud le plus âgé
+$q$ est choisi afin d'initier un mélange. Si le nœud $q$ ne peut être joint --
+car parti ou défaillant -- alors le nœud $p$ exécute une fonction appropriée
+(cf.  §\ref{net:subsec:leaving}) jusqu'à trouver un nœud avec lequel
+communiquer. Ainsi, le vieillissement, héritage de \CYCLON, permet
 d'accélérer la suppression des références obsolètes. Une fois que le nœud
 initiateur $p$ a trouvé un nœud avec qui effectuer l'échange, il sélectionne un
 échantillon de sa vue partielle tout en excluant la référence à $q$ et en
@@ -207,18 +207,18 @@ nœud $n_1$ vient de rejoindre le réseau. Le nœud $n_6$ initie un échange ave
 $n_1$ qui est ici le plus vieux nœud de sa vue partielle. $n_6$ choisit
 $\left\lceil{|P_6|\div 2}\right\rceil = 1$ nœud aléatoirement parmi son
 voisinage. Dans ce cas, il choisit $n_9$ parmi $\{n_9,\,n_8,\,n_7\}$. Il envoie
-à $n_1$ cet échantillon auquel est ajoutée sa propre adresse logique. En
-réponse, le nœud $n_1$ choisit $\left\lceil{|P_1|\div 2}\right\rceil = 1$ nœud
-de sa vue partielle. L'échantillon composé du seul voisin $n_2$ est
-envoyé. Immédiatement après, $n_1$ peut supprimer l'échantillon envoyé et
-intégrer celui reçu résultant en une vue partielle composée de $\{n_6,\, n_9\}$.
-De la même façon, après réception de l'échantillon de $n_1$, $n_6$ supprime et
-intègre les échantillons adéquats, résultant en une vue partielle composée de
+à $n_1$ cet échantillon auquel est ajoutée sa propre identité. En réponse, le
+nœud $n_1$ choisit $\left\lceil{|P_1|\div 2}\right\rceil = 1$ nœud de sa vue
+partielle. L'échantillon composé du seul voisin $n_2$ est envoyé. Immédiatement
+après, $n_1$ peut supprimer l'échantillon envoyé et intégrer celui reçu
+résultant en une vue partielle composée de $\{n_6,\, n_9\}$.  De la même façon,
+après réception de l'échantillon de $n_1$, $n_6$ supprime et intègre les
+échantillons adéquats, résultant en une vue partielle composée de
 $\{n_2,\,n_7,\,n_8\}$.
 
 La procédure d'échange tend à réduire l'écart de taille des vues partielles. De
 plus, elle disperse les références des nœuds afin de supprimer les groupes trop
-denses dûs au processus d'entrée dans le réseau.
+denses dus au processus d'entrée dans le réseau.
 
 En ce qui concerne le temps de convergence de l'algorithme de mélange, il existe
 une relation proche entre \SPRAY et le protocole d'agrégation proactif
@@ -260,16 +260,15 @@ trouve remplie d'autres références. Ainsi, lorsqu'il quitte le réseau, il
 entraîne la suppression de $\ln(|\mathcal{N}|)$ arcs provenant de sa vue
 partielle, et $\ln(|\mathcal{N}|)$ arcs provenant des nœuds l'ayant dans leur
 vue partielle. Par conséquent, $2\ln(\mathcal{N}|)$ arcs sont supprimés au lieu
-des $1+\ln(|\mathcal{N}|)$. Afin d'y remédier, chaque nœud qui détecte une
+des $1+\ln(|\mathcal{N}|)$ arcs. Afin d'y remédier, chaque nœud qui détecte une
 défaillance ou un départ peut rétablir une connexion avec l'un de ces voisins en
 introduisant un doublon -- doublon qui disparaîtra rapidement après quelques
-mélanges. La probabilité de réétablir une connexion est
+mélanges. La probabilité de créer un tel doublon est
 $1-1\div{|\mathcal{P}|}$. Puisque ${|\mathcal{P}|}\approx \ln(|\mathcal{N}|)$
 nœuds avaient le nœud défaillant/parti dans leur vue partielle, il est probable
-qu'ils recréent tous la connexion perdue, à l'exception d'un nœud. De ce fait,
-lorsqu'un nœud quitte le réseau, il entraîne la suppression d'un nombre d'arcs
-correspondant approximativement au nombre d'arcs ajouté lors de la dernière
-entrée.
+qu'ils recréent tous un arc, à l'exception d'un nœud. De ce fait, lorsqu'un nœud
+quitte le réseau, il entraîne la suppression d'un nombre d'arcs correspondant
+approximativement au nombre d'arcs ajouté lors de la dernière entrée.
 
 \begin{algorithm}[h]
   \input{./input/network/algoleaving.tex}
@@ -280,8 +279,8 @@ entrée.
 L'algorithme~\ref{net:algo:leaving} montre la manière selon laquelle \SPRAY gère
 les départs et défaillances. La fonction \textsc{onPeerDown} montre la réaction
 de \SPRAY lorsque un nœud $q$ est détecté comme parti ou défaillant. Dans un
-premier temps, la fonction compte les occurrences dudit nœud dans la vue
-partielle et les supprime. Dans un second temps, une boucle ajoute de manière
+premier temps, la fonction compte les occurrences du nœud dans la vue partielle
+et en supprime les arcs. Dans un second temps, une boucle ajoute de manière
 probabiliste des doublons de références à des nœuds déjà connus. La probabilité
 dépend de la taille de la vue partielle avant suppression.
 
@@ -306,13 +305,13 @@ dépend de la taille de la vue partielle avant suppression.
 \end{figure*}
 
 La figure~\ref{net:fig:leavingexample} montre un exemple de réaction lors du
-départ d'un nœud $n_1$. Ce dernier emporte avec lui $7$ connexions rendues
+départ d'un nœud $n_1$. Ce dernier emporte avec lui $7$ arcs rendues
 inutilisables. Les nœuds $n_3$, $n_4$, et $n_5$ ont toujours une référence
 obsolète vers $n_1$ dans leur vue partielle. Le nœud $n_5$ a
-$1-{1\div{|P_5|}}={2\div{3}}$ chances de remplacer la connexion. Dans cet
+$1-{1\div{|P_5|}}={2\div{3}}$ chances de remplacer l'arc. Dans cet
 exemple, il double sa référence à $n_{13}$. De la même manière, $n_3$ et $n_4$
-ne parviennent pas à communiquer avec $n_1$ et agissent en conséquence. Seul
-$n_3$ crée un doublon remplaçant. Au total, $5$ connexions ont été supprimées.
+ne parviennent plus à communiquer avec $n_1$ et agissent en conséquence. Seul
+$n_3$ crée un doublon remplaçant. Au total, $5$ arcs ont été supprimées.
 
 Nous observons que la préservation de la connexité n'est pas garantie --
 seulement avec la forte probabilité induite par les graphes aléatoires. En
@@ -322,12 +321,11 @@ d'arcs est insuffisant.
 L'algorithme~\ref{net:algo:leaving} montre aussi que \SPRAY distingue les nœuds
 injoignables des arcs inutilisables. En effet, la fonction \textsc{onArcDown}
 gère les connexions dont la création a échoué. Ces arcs sont systématiquement
-remplacés par un doublon. De ce fait, le nombre d'arc reste bien constant. La
+remplacés par un doublon. De ce fait, le nombre d'arcs reste bien constant. La
 distinction \textsc{onPeerDown} avec \textsc{onArcDown} est nécessaire car la
-première doit supprimer une petite quantité d'arcs. Sans cette suppression, le
-nombre d'arcs augmenterait de manière incontrôlée au gré des entrées et sorties
-de nœuds.
-
+première fonction doit supprimer une petite quantité d'arcs. Sans cette
+suppression, le nombre d'arcs augmenterait de manière incontrôlée au gré des
+entrées et sorties de nœuds.
 
 %%% Local Variables:
 %%% mode: latex

@@ -8,9 +8,9 @@ série de simulations. Les métriques auxquelles nous nous intéressons sont
 communément employées dans l'étude de performances de ce type de protocoles ou
 en étude des graphes. Ceux-ci incluent le coefficient d'agglomération
 (\emph{clustering coefficient}), la taille moyenne du plus court chemin, la
-distribution des connexions entrantes, l'évolution du nombre d'arcs, les
-composantes connexes, et la robustesse. À cela nous ajoutons une analyse sur les
-doublons d'arcs, spécificité de \SPRAY.
+distribution des arcs entrants, l'évolution du nombre d'arcs, les composantes
+connexes, et la robustesse. À cela nous ajoutons une analyse sur les doublons
+d'arcs, spécificité de \SPRAY.
 
 % \TODO{Review this §.}
 % \CYCLON constitue l'approche à taille fixe avec laquelle nous comparerons les
@@ -59,8 +59,7 @@ maximal. À l'inverse, les graphes aléatoires affichent un coefficient très ba
 car la répartition des arcs ainsi que leur nombre ne favorise pas l'apparition
 de groupes.
 
-Si le comportement de cette métrique fait consensus, il existe malgré tout
-plusieurs formules pour la calculer. Dans cette simulation, nous employons le
+Plusieurs formules existent pour calculer ce coefficient. Nous employons le
 coefficient local moyen $\overline{C}$~\cite{watts1998collective} effectuant la
 moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
 \begin{center}
@@ -73,10 +72,10 @@ moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
 \paragraph{Objectif :} Montrer que \SPRAY converge rapidement vers une topologie
 ne comportant pas de groupes fortement connexes.
 
-\paragraph{Description :} Les simulations ciblent des réseaux composés
+\paragraph{Description :} Les simulations prend pour cible des réseaux composés
 respectivement de 0.1k, 1k, 10k, et 100k nœuds. Le représentant des approches à
 taille fixe est \CYCLON. Ce dernier est configuré de manière optimale pour 1k
-pairs ($\ln(1000)\approx 7$ voisins). De plus, les nœuds utilisant \CYCLON
+nœuds ($\ln(1000)\approx 7$ voisins). De plus, les nœuds utilisant \CYCLON
 échangent 3 de leurs 7 voisins à chaque mélange.
 
 \paragraph{Résultat :} La figure~\ref{net:fig:clustering} montre que \CYCLON
@@ -93,7 +92,7 @@ vues de \CYCLON sont trop grandes -- ou au dessus -- lorsque les vues de \CYCLON
 sont trop petites. Globalement, \SPRAY
 \begin{inparaenum}[(i)]
 \item converge vers un coefficient d'agglomération stable
-\item reflètant les besoins dûs à la taille du réseau.
+\item reflétant les besoins dûs à la taille du réseau.
 \end{inparaenum}
 %%  Cela a une influence sur l'équilibrage des charges et la robustesse par
 %%  rapport aux allées et venues de pairs.    
@@ -135,7 +134,7 @@ petites (10k et 100k nœuds).
 
 La moyenne des plus courts chemins permet de mesurer à quel point les nœuds sont
 proches les un des autres. Plus précisément, il s'agit de compter le nombre
-minimum de nœuds intermédiaires entre deux nœuds distincts. Ainsi, même s'il
+minimum d'arcs intermédiaires entre deux nœuds distincts. Ainsi, même s'il
 existe plusieurs chemins pour aller d'un nœud $n_i$ à un nœud $n_j$, seul nous
 importe le plus court.  Les graphes aléatoires possèdent un plus court chemin
 moyen très petit grandissant en $\ln|\mathcal{N}|\over\ln\ln|\mathcal{N}|$
@@ -143,15 +142,15 @@ lorsque le nombre d'arcs suit $|\mathcal{N}|\ln|\mathcal{N}|$.
 
 Cette métrique permet de cerner l'efficacité de la diffusion d'informations dans
 le réseau. Par exemple, si le plus court chemin d'un nœud $n_i$ à un nœud $n_j$
-est de 3, cela signifie qu'un message émanant de $n_i$ parviendra en seulement 3
-intermédiaires à $n_j$.
+est de 3, cela signifie qu'un message émanant de $n_i$ parviendra en seulement 2
+nœuds intermédiaires jusqu'à $n_j$.
 
 \paragraph{Objectif :} Montrer que le caractère adaptatif de \SPRAY permet un
 meilleur passage à l'échelle du plus court chemin moyen.
 
 \paragraph{Description :} Les mesures sont effectuées sur un sous-ensemble de
 nœuds choisis aléatoirement parmi les membres du réseau. Le procédé est répété
-100 fois afin d'éviter tout effets de bord dû à l'indéterminisme des protocoles
+100 fois afin d'éviter tout effet de bord dû à l'indéterminisme des protocoles
 d'échantillonnage. Les expérimentations concernent \CYCLON configuré de façon
 optimale pour différentes tailles de réseau. Le \CYCLON avec une taille de vue
 partielle de 7 cible environ 1.1k nœuds. Le \CYCLON avec une taille de vue
@@ -165,10 +164,10 @@ et \SPRAY ont tous deux un chemin moyen relativement petit. Ainsi, les
 informations peuvent être disséminées à tous les membres du réseau très
 rapidement. La figure~\ref{net:fig:shortestpath} montre aussi que chaque
 exécution de \CYCLON prise séparément peut être divisée en trois phases.  Tout
-d'abord, la phase où les vues partielles de \CYCLON sont trop grandes dissémine
-l'information plus rapidement que \SPRAY. Lors les vues partielles sont
-optimales, \CYCLON et \SPRAY montrent des résultats similaires. Enfin, \SPRAY
-montre une meilleure efficacité lorsque les vues partielles de \CYCLON sont trop
+d'abord, la phase où les vues partielles de \CYCLON sont trop grandes possède un
+plus petit chemin moyen que \SPRAY. Lors les vues partielles sont optimales,
+\CYCLON et \SPRAY montrent des résultats similaires. Enfin, \SPRAY montre une
+meilleure efficacité lorsque les vues partielles de \CYCLON sont trop
 petites. Malgré tout, \SPRAY passe mieux à l'échelle que \CYCLON l'inclinaison
 de cette première est inférieure à n'importe quelle configuration de cette
 dernière.
@@ -177,12 +176,12 @@ dernière.
 lorsque les réseaux possèdent une topologie proche des graphes aléatoires.  Dans
 de tels graphes, la taille du plus court chemin moyen reste petit.  La seconde
 observation concerne chacune des configurations de \CYCLON comparée à
-\SPRAY. Une taille de vue partielle surestimée pour \CYCLON est meilleure en
+\SPRAY. Une surestimation de la taille du réseau pour \CYCLON est meilleure en
 terme de connexité entre nœuds et résulte dans de plus courts chemins en
-moyenne. En revanche, dès que cette taille devient insuffisante pour le réseau,
-\SPRAY devient plus efficace car il possède de plus grandes vues
+moyenne. En revanche, dès que la taille des vues partielles devient insuffisante
+pour le réseau, \SPRAY devient plus efficace car il possède de plus grandes vues
 partielles. Puisque \SPRAY suit toujours la taille optimale de vue partielle, il
-passe mieux à l'échelle en terme de taille réseau.
+passe mieux à l'échelle en terme de taille du réseau.
 
 \subsection{Distribution des arcs entrants}
 \label{net:subsec:inview}
@@ -198,24 +197,24 @@ passe mieux à l'échelle en terme de taille réseau.
 \end{figure}
 
 La distribution des arcs entrants correspond au nombre de fois qu'un nœud est
-référencé dans une vue partielle. À cet égard, la distribution est différentes :
-Lorsque la taille des vues partielles est controllée, les vues entrantes sont
-aléatoirement remplies par d'autres nœuds au cours de l'exécution du
-protocole. Certains nœuds sont donc moins représentés que d'autres.  Au même
-titre que la distribution des vues partielles, la distribution des arcs sortants
-permet de déduire des faits sur la robustesse du réseau, l'équilibre de la
-charge etc. 
+référencé dans une vue partielle. À cet égard, la distribution entre des vues
+entrantes et sortantes est différente : la taille des vues partielles sortantes
+est contrôlée, en revanche les vues entrantes sont aléatoirement remplies par
+d'autres nœuds au cours de l'exécution du protocole. Certains nœuds sont donc
+moins représentés que d'autres.  Au même titre que la distribution des vues
+partielles, la distribution des arcs sortants permet de déduire des faits, par
+exemple, sur la robustesse du réseau ou sur l'équilibre de la charge.
 
 \paragraph{Objectif :} Montrer que la distribution des arcs entrants dans \SPRAY
 suit gracieusement l'évolution du réseau.
 
 \paragraph{Description :} Dans cette expérimentation, \CYCLON est configuré avec
-une vue partielle contenant 7 voisins (optimal pour 1.1k nœuds). Les mesures
-sont effectuées après convergence sur des réseaux comprenant : 0.1k, 1k, 100k,
-500k nœuds.
+une vue partielle contenant 7 voisins ciblant 1.1k nœuds. Les mesures sont
+effectuées après convergence sur des réseaux comprenant 0.1k, 1k, 100k et 500k
+nœuds.
 
 \paragraph{Résultat :} Le haut et le bas de la figure~\ref{net:fig:inview}
-montrent la distribution des connexions entrantes pour \CYCLON et \SPRAY,
+montrent la distribution des arcs entrants pour \CYCLON et \SPRAY,
 respectivement. Nous observons que \CYCLON possède une distribution identique
 quelle que soit la taille du réseau. La distribution d'un réseau de 0.1k nœuds
 est identique à celle de 500k nœuds, avec un fort pic sur la valeur moyenne de 7
@@ -224,9 +223,8 @@ taille du réseau. La figure~\ref{net:fig:inview} montre que les nœuds sont tr�
 concentrés autour des valeurs moyennes. Par exemple, lors de l'exécution du
 protocole \SPRAY avec 500k nœuds, la moyenne est de 13.37 avec 88\% des nœuds
 compris entre 12 et 14 voisins inclus. Entre autre, cela signifie que la charge
-est très équilibrée parmi les nœuds. Puisque chaque nœud est aussi important que
-son voisin en terme de connexité, le réseau est robuste vis-à-vis des
-défaillances.
+est équilibrée parmi les nœuds. Puisque chaque nœud est aussi important que son
+voisin en terme de connexité, le réseau est robuste aux défaillances.
 
 \paragraph{Explication :} Une fois configuré, \CYCLON doit gérer tous les
 réseaux, quelle que soit leur taille, avec une vue partielle dont la taille est
@@ -234,19 +232,18 @@ constante. Proportionnellement, le nombre de fois qu'un nœuds est référencé 
 les vues partielles ne change pas comparé à la taille réseau. En effet, le
 nombre d'arcs qu'un nœud apporte lorsqu'il se connecte au réseau constitue
 autant d'arcs le ciblant après quelques protocoles d'échanges. Puisque la taille
-de la vue partielle est constante, le degré des connexions entrantes reste
-stable. En revanche, dans \SPRAY, chaque nœuds rejoignant le réseau augmente le
-nombre d'arcs dans le réseau. Ainsi, le degré de connexions entrantes de chaque
-nœud grossit reflétant les variations du réseau. Par conséquent, la distribution
-de \SPRAY se décale lentement vers de plus hautes valeurs lorsque la taille du
-réseau augmente. \SPRAY ne possède pas de pics sur les valeurs moyennes car
-celles-ci sont des valeurs qui tombent entre deux entiers. Par exemple, si la
-taille moyenne des vues partielles est 6.5, cela signifie que la moitié de
-celle-ci ont une taille de 6, et l'autre moitié une taille de 7. De tels réseaux
-sont robustes aux défaillances car aucun nœud n'est plus important que son
-voisin en terme de connexité. Si un nœud particulier quitte ou défaillit, les
-nœuds le référençant possèdent d'autres voisins avec qui communiquer afin de
-continuer à disséminer les informations.
+de la vue partielle est constante, le nombre d'arcs entrants reste stable. En
+revanche, dans \SPRAY, chaque nœuds rejoignant le réseau augmente le nombre
+d'arcs dans le réseau. Ainsi, le nombre d'arcs entrants de chaque nœud grossit
+reflétant l'augmentation de la taille du réseau. La distribution de \SPRAY se
+décale lentement vers de plus hautes valeurs lorsque la taille du réseau
+augmente. \SPRAY ne possède pas de pics sur les valeurs moyennes car celles-ci
+tombent entre deux entiers. Par exemple, si la taille moyenne des vues
+partielles est 6.5, cela signifie que la moitié de vues ont une taille de 6, et
+l'autre moitié une taille de 7. De tels réseaux sont robustes aux défaillances
+car aucun nœud n'est plus important que son voisin en terme de connexité. Si un
+nœud particulier quitte le réseau ou tombe en panne, les nœuds le référençant
+possèdent d'autres voisins avec qui communiquer.
 
 \subsection{Évolution du nombre d'arcs}
 \label{net:subsec:churn}
@@ -288,14 +285,14 @@ temps exponentiel vers des vues partielles dont la taille est proche.
 8.1k nœuds, soit des vues partielles configurées à 9 voisins. Sachant qu'au plus
 haut la simulation comprend 1k nœuds, cela signifie que la vue partielle a été
 volontairement surestimée. Lors de la première moitié de la simulation, 4
-groupes successifs comportant 250 nœuds rejoignent le réseau. L'intervalle de
-temps entre ces entrées est de 10 cycles. Ainsi, le réseau initialement vide
-contient 1k nœuds au bout de 40 cycles. Ensuite, la moitié des membres du réseau
-le quitte, soit un départ de 500 nœuds d'un coup. Enfin, 2 groupes de 250 nœuds
-rejoignent le réseau à nouveau faisant passer la taille de celui-ci à 1k
-nœuds. Les mesures concernent
+groupes successifs comportant 250 nœuds chacun rejoignent le
+réseau. L'intervalle de temps entre ces entrées est de 10 cycles. Ainsi, le
+réseau initialement vide contient 1k nœuds au bout de 40 cycles. Ensuite, la
+moitié des membres du réseau le quitte, soit un départ de 500 nœuds. Enfin, 2
+groupes de 250 nœuds rejoignent le réseau à nouveau faisant passer la taille de
+celui-ci à 1k nœuds. Les mesures concernent
 \begin{inparaenum}[(i)]
-\item le nombre de connexions dans le réseau au cours du temps,
+\item le nombre d'arcs dans le réseau au cours du temps,
 \item la variance de la taille des vues partielles au cours du temps,
 \item la taille moyenne des vues partielles au cours du temps.
 \end{inparaenum}
@@ -305,9 +302,9 @@ cette expérimentation. La partie haute de la figure~\ref{net:fig:churnA} montre
 le nombre d'arcs créés dans le réseau sur une échelle $\times 10^3$) tandis que
 la partie basse de la figure montre la variance de taille des vues partielles de
 \SPRAY. Dans le cas des deux protocoles d'échantillonnage, nous observons qu'à
-chaque groupe rejoignant le réseau, le nombre de connexions augmente. Toutefois,
-la suréstimation de \CYCLON place son nombre d'arcs au dessus de \SPRAY (entre
-1k et 2.5k arcs supplémentaire). De plus, la figure~\ref{net:fig:churnB} montre
+chaque groupe rejoignant le réseau, le nombre d'arcs augmente. Toutefois, la
+surestimation de \CYCLON place son nombre d'arcs bien au dessus de \SPRAY (entre
+1k et 2.5k arcs supplémentaires). De plus, la figure~\ref{net:fig:churnB} montre
 que les vues partielles de \CYCLON restent de taille constante pendant toute la
 simulation excepté lors des départs du $40$\up{ème} cycle où les vues sont petit
 à petit purgées des arcs obsolètes. \SPRAY hérite de ce dernier trait. En
@@ -316,28 +313,27 @@ réseau. Cette progression est logarithmique et lorsque le réseau comprend 1k
 nœuds, les vues partielles de \SPRAY ont pour taille moyenne 6.6 voisins
 ($\ln(1000)\approx6.9$). La partie basse de la figure~\ref{net:fig:churnB}
 montre que les vues partielles s'équilibrent extrêmement rapidement. Notamment
-les premiers cycles qui réduisent considérablement l'écart entre vues
-partielles. La figure montre aussi que les départs ne déséquilibrent pas les
-vues partielles.
+les premiers cycles réduisent considérablement l'écart entre vues partielles. La
+figure montre aussi que les départs ne déséquilibrent pas les vues partielles.
 
 \paragraph{Explication :} Puisque les vues partielles de \SPRAY s'adaptent à la
-taille du réseau, le nombre de connexions augmente lorsque des membres s'ajoute
+taille du réseau, le nombre d'arcs augmente lorsque des membres s'ajoutent
 au réseau. Les pics de variance correspondent à la partie du protocole où les
-nœuds rejoignent le réseau. Les différences en hauteur des pics proviennent du
-fait que les nouveaux arrivant commencent avec une petite vue partielle. Les
-nœuds étant présent avant que le nouveau groupe rejoigne le réseau ont eu
+nœuds rejoignent le réseau. Les différences de hauteur des pics proviennent du
+fait que les nouveaux arrivants commencent avec une petite vue partielle. Les
+nœuds étant présents avant que le nouveau groupe rejoigne le réseau ont eu
 quelques cycles d'échanges afin d'équilibrer leur vues. Par conséquent, le poids
-des nouveaux arrivant est proportionnellement plus faible. Le départ des 500
+des nouveaux arrivants est proportionnellement plus faible. Le départ des 500
 nœuds au cycle 40 ne perturbe pas la variance car ils sont choisis
 aléatoirement. Ainsi, aucun nœud ne souffre particulièrement des départs comparé
 aux autres nœuds. Toutefois, nous observons une très faible décroissance du
 nombre d'arcs suite à cela. En effet, \CYCLON et \SPRAY utilisent tout deux un
 âge relatif à l'insertion d'un arc dans sa vue partielle. À chaque processus
-périodique de mélange, le plus vieux arc est examiné. S'il est obsolète, l'arc
+périodique de mélange, le plus vieil arc est examiné. S'il est obsolète, l'arc
 est retiré. Par conséquent, ce mécanisme de détection prend plusieurs cycles à
 détecter les départs et défaillances. Plus la vue partielle est petite, plus le
 processus est rapide ce qui fait de \SPRAY un processus plus réactif vis-à-vis
-des départs.
+des départs/défaillances.
 
 \subsection{Robustesse}
 \label{net:subsec:robustness}
@@ -355,22 +351,22 @@ des départs.
 La robustesse d'un réseau est sa capacité à rester connexe lorsque des
 défaillances apparaissent. Ici, nous ne prenons en compte que les défaillances
 aléatoires non-corrélés. Lorsqu'un nœud quitte le réseau, qu'il soit défaillant
-ou non, un certain nombre d'arcs deviennent obsolètes. Si ces arcs constituaient
-les seuls liens entre deux parties du réseau, alors apparaissent des partitions.
-Dans les graphes aléatoires, un grand nombre de nœuds doivent disparaître avant
-que de telles partitions apparaissent.
+ou non, des arcs deviennent obsolètes. Si ces arcs constituaient les seuls liens
+entre deux parties du réseau, alors apparaissent des partitions.  Dans les
+graphes aléatoires, un grand nombre de nœuds doivent disparaître avant que de
+telles partitions apparaissent.
 
 Compter le nombre de composantes fortement connexes dans un réseau permet
 d'estimer la surface atteignable par les protocoles de dissémination
 d'informations. Par exemple, il y a deux composantes fortement connexes dans un
 réseau dont une partie peut atteindre l'autre sans que l'inverse soit
-vrai.
+possible.
 
 Compter le nombre de composantes faiblement connexes dans une réseau permet
 d'estimer le moment où celui-ci n'est plus réparable. Un réseau est réparables
 si après quelques échanges de vues partielles, les informations peuvent être
-disséminées à tous les participants encore dans le réseau. Il suffit d'un lien
-entre deux composantes fortement connexes pour que le réseau soit
+disséminées à tous les participants encore présents dans le réseau. Il suffit
+d'un arc entre deux composantes fortement connexes pour que le réseau soit
 réparable. Sans ce lien, les composantes sont faiblement connexes.
 
 \paragraph{Objectif :} Montrer que \SPRAY est robuste face aux défaillances
@@ -379,7 +375,7 @@ aléatoires massives.
 \paragraph{Description :} \CYCLON est configuré de façon à fournir des vues
 partielles contenant 9 voisins. Le réseau compte 10k membres. Les suppressions
 sont effectuées après convergence. Les nœuds sont supprimés aléatoirement et
-d'un trait. Allant de 25\% à 95\% par paliers de 5\% cela représente 16
+d'un trait. Allant de 25\% à 95\% par paliers de 5\%, cela représente 16
 exécutions par approche. La dernière mesure est effectuée à 99\% de
 suppressions. Les mesures des composantes connexes sont effectuées immédiatement
 après suppression.
@@ -387,32 +383,34 @@ après suppression.
 \paragraph{Résultat :} La figure~\ref{net:fig:robustness} montre le ratio de
 composantes fortement et faiblement connexes du réseau après suppression massive
 de nœuds. Tout d'abord, la figure montre que les deux protocoles
-d'échantillonnage de pairs, \SPRAY et \CYCLON, ne souffrent de partionnement
+d'échantillonnage de pairs, \SPRAY et \CYCLON, ne souffrent de partitionnement
 qu'après un fort taux de suppressions, \CYCLON étant légèrement meilleur dans ce
 cas. La figure~\ref{net:fig:robustness} montre que les composantes fortement
 connexes commencent à se dégrader lentement dès 45\%, et plus rapidement à
-70\%. Dans ce cas, la dissémination d'informations est temporairement en
-danger. Heureusement, la figure~\ref{net:fig:robustness} montre aussi que ces
-approches sont capables de réparer ce partionnement. En effet, les composantes
-faiblement connexes ne commencent à augmenter qu'à partir de 70\%, ce qui
-signifie que des parties du réseau sont complètement disjointes et donc, au delà
-de toute possibilité de réparation.
+70\%. Dans ce cas, la dissémination d'informations est temporairement en danger
+: un message peut ne pas parvenir à l'ensemble des membres du
+réseau. Heureusement, la figure~\ref{net:fig:robustness} montre aussi que ces
+approches sont capables de réparer ce partitionnement. En effet, le nombre de
+composantes faiblement connexes ne commence à augmenter qu'à partir de 70\% de
+pannes, ce qui signifie que des parties du réseau sont complètement disjointes
+et donc, au delà de toute possibilité de réparation.
 
 \paragraph{Explication :} Les protocoles d'échantillonnage de pairs \CYCLON et
 \SPRAY affichent des résultats très similaires car \CYCLON est configuré pour
 une taille de réseau de 10k nœuds, tandis que \SPRAY s'ajuste automatiquement à
 cette taille de réseau. Par conséquent, leur nombre d'arcs est très proche. Ici,
-\CYCLON possède légèrement plus de connexions -- car \SPRAY possède une part
-d'aléatoire -- et aucun doublon dans les vues partielles -- \SPRAY possède un
-faible taux de doublons (cf. la figure~\ref{net:fig:duplicates}). Afin de mettre
-en dangers la dissémination d'informations, il est nécessaire de supprimer un
-fort taux de nœuds. En effet, chaque nœud revêt grossièrement la même importance
-que son voisin. Ainsi, supprimer des nœuds aléatoirement parmi ceux-ci
-n'affectent pas énormément le réseau dans son entièreté. Le réseau est capable
-de se réparer car les protocoles d'échantillonnage ne dépendent que d'arcs
-unidirectionnels pour fonctionner. Ainsi, s'il subsiste un lien entre deux
-composantes fortement connexes, les mélanges périodiques de vues partielles
-permettent de les raccommoder.
+\CYCLON possède légèrement plus d'arcs -- car \SPRAY possède une part
+d'aléatoire notamment lors du choix du contact nécessaire pour rejoindre le
+réseau -- et aucun doublon dans les vues partielles -- \SPRAY possède un faible
+taux de doublons (cf. la figure~\ref{net:fig:duplicates}). Pour mettre en danger
+la dissémination d'informations, il est nécessaire de supprimer un grand nombre
+de nœuds. En effet, chaque nœud revêt grossièrement la même importance que son
+voisin. Ainsi, supprimer des nœuds aléatoirement parmi ceux-ci n'affecte pas
+énormément le réseau dans son entièreté. Le réseau est capable de se réparer car
+les protocoles d'échantillonnage ne dépendent que d'arcs unidirectionnels pour
+fonctionner. Ainsi, s'il subsiste un arc entre deux composantes fortement
+connexes, les mélanges périodiques de vues partielles permettent de les
+raccommoder.
 
 
 \subsection{Doublons}
@@ -428,18 +426,18 @@ permettent de les raccommoder.
 \end{figure}
 
 Les arcs doublons sont une spécificité de \SPRAY. Ceux-ci permettent de ne pas
-perdre d'informations aux cours des mélanges et d'ainsi conserver un nombre
+perdre d'informations aux cours des mélanges et ainsi conserver un nombre
 d'arcs cohérent tout au long du cycle de vie du réseau. Toutefois, ils ont un
 impact négatif sur certains aspects du réseau : un arc doublon est un arc
 n'apportant aucun chemin supplémentaire au réseau. À cet égard, il est important
 que le taux de doublons reste faible.
 
-Le paradoxe des anniversaires dit que le nombre de personnes qu'il faut réunir
-pour que deux d'entre elles aient le même jour d'anniversaire est, contre toute
-attente, faible. À partir de 23 personnes, la probabilité est au dessus de 50\%
-et grimpe rapidement. Au delà des anniversaires, ce modèle permet de quantifier
-les collisions qu'il peut y avoir lorsque l'on tire des éléments dans un
-ensemble borné. Dans notre cas, il est possible d'approximer la probabilité
+Le paradoxe des anniversaires déclare que le nombre de personnes qu'il faut
+réunir pour que deux d'entre elles aient le même jour d'anniversaire est, contre
+toute attente, faible. À partir de 23 personnes, la probabilité est au dessus de
+50\% et grimpe rapidement. Au delà des anniversaires, ce modèle permet de
+quantifier les collisions qu'il peut y avoir lorsque l'on tire des éléments dans
+un ensemble borné. Dans notre cas, il est possible d'approximer la probabilité
 qu'une vue n'ait pas de doublons par :
 \begin{equation*}
   1-
@@ -465,7 +463,7 @@ anniversaires est proche des résultats obtenus par simulation confirmant
 empiriquement qu'il existe une relation entre les deux problèmes.
 
 \paragraph{Explication :} Lorsque le réseau grandit, les chances qu'un nœud
-particulier possède plusieurs références à un autre nœud particulier deviennent
+particulier possède plusieurs arcs ciblant un autre nœud particulier deviennent
 très faibles. En effet, alors que le réseau grandit linéairement, l'ensemble des
 références détenu par un nœud grandit logarithmiquement. Contrairement au
 problème des anniversaires, la diminution en proportion n'est pas
