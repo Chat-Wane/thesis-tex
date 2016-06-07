@@ -1,8 +1,23 @@
 
 \section{Contributions}
 
+Afin de répondre à la première question de recherche, nous nous sommes interessés
+à la réplication optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e.,
+un schéma de réplication où le document partagé est copié chez chaque
+utilisateur afin de fournir réactivité et disponibilité. Nous nous intéressons
+particulièrement à un type de données pour séquences dont les opérations
+commutent par nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
+  shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
+supporter efficacement les opérations concurrentes~\cite{ahmed2015evaluation,
+  ahmed2011evaluating}. Ces approches associent un identifiant unique et
+immuable à chacun de leurs éléments. Nous proposons
+\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq} dont la taille des
+identifiants est bornée polylogarithmiquement par rapport au nombre d'insertions
+effectuées dans le document. Nous définissons les conditions sous lesquelles
+s'appliquent cette borne et en fournissons la preuve. Au travers de simulations,
+nous validons \LSEQ et sa complexité.
 
-Afin de répondre à la première question de recherche, nous nous sommes
+Afin de répondre à la seconde question de recherche, nous nous sommes
 interessés dans un premier temps aux protocoles d'appartenance
 (\emph{membership}) aux réseaux. Plus particulièrement à ceux dont la topologie
 résultante possède des propriétés similaires à celles des graphes
@@ -21,22 +36,6 @@ en évidence grâce à des simulations.  Les protocoles de diffusion
 épidémique~\cite{birman1999bimodal} de messages (\emph{gossip}) qui en dépendent
 bénéficient à leur tour de cette capacité à s'adapter. Entre autres, le trafic
 généré peut s'adapter à la taille réelle du réseau.
-
-Afin de répondre à la seconde question de recherche, nous nous sommes interessés
-à la réplication optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e.,
-un schéma de réplication où le document partagé est copié chez chaque
-utilisateur afin de fournir réactivité et disponibilité. Nous nous intéressons
-particulièrement à un type de données pour séquences dont les opérations
-commutent par nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
-  shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
-supporter efficacement les opérations concurrentes~\cite{ahmed2015evaluation,
-  ahmed2011evaluating}. Ces approches associent un identifiant unique et
-immuable à chacun de leurs éléments. Nous proposons
-\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq} dont la taille des
-identifiants est bornée polylogarithmiquement par rapport au nombre d'insertions
-effectuées dans le document. Nous définissons les conditions sous lesquelles
-s'appliquent cette borne et en fournissons la preuve. Au travers de simulations,
-nous validons \LSEQ et sa complexité.
 
 Afin de répondre à la problématique générale de ce manuscrit, nous avons réuni
 les deux approches susmentionnées dans un éditeur collaboratif décentralisé

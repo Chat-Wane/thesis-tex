@@ -1,26 +1,29 @@
 
-\lettrine{G}oogle Docs a rendu l'accès à l'édition collaborative temps réel
-aisé. Des millions d'utilisateurs partagent et rédigent leurs documents
-directement dans leur navigateur web. Toutefois, Google sert d'intermédiaire
-dans ces sessions d'édition grâce à un serveur central, ce qui soulève des
+\lettrine{L}es éditeurs web tels que \emph{Google Docs}~\cite{googledocs} ou
+\emph{ShareLaTeX}\cite{sharelatex} ont fortement contribué à l'adoption de
+l'édition collaborative par le public~\cite{mogan2010impact}. Des millions
+d'utilisateurs partagent et rédigent leurs documents en temps réel directement
+dans leur navigateur web. Cependant un serveur central appartenant à un
+fournisseur de services sert d'intermédiaire à l'édition. Cela soulève des
 problèmes en termes de confidentialité, de censure, et d'intelligence
-économique. À cela s'ajoutent des problèmes de passage à l'échelle, notamment en
-ce qui concerne le nombre d'utilisateurs. Bien que les petits groupes d'auteurs
+économique~\cite{cherrueau2016composer, gellman2013us, pearson2011toward}. À
+cela s'ajoutent des problèmes de passage à l'échelle, notamment en ce qui
+concerne le nombre d'utilisateurs. Bien que les petits groupes de collaborateurs
 soient la cible principale de ce genre d'application, certains événements de
 plus ample dimension tels que les cours en ligne ouverts et massifs
-(\emph{MOOC}) nécessite le support des groupes plus larges. Google Docs
-supportent les groupes de grande taille. En revanche, seuls les 50 premiers
-utilisateurs ont le droit d'écrire ensemble, les suivants voient leurs accès
-limités à la simple lecture du document. Même si seulement un petit ensemble
-parmi les millions d'utilisateurs sont réellement en train d'écrire, n'importe
-quel participant de la session d'édition devrait pouvoir lire et écrire
-lorsqu'il le souhaite.
+(\emph{MOOC})~\cite{breslow2013studying} nécessitent de supporter de plus larges
+groupes. Google Docs gère les groupes de grande taille. En revanche, seuls les
+50 premiers collaborateurs ont le droit d'écrire ensemble, les suivants voient
+leurs accès limités à la simple lecture du document. Même si seulement un petit
+ensemble parmi les millions de collaborateurs est réellement en train d'écrire,
+n'importe quel participant de la session d'édition devrait pouvoir lire et
+écrire lorsqu'il le souhaite.
 
 Les éditeurs temps réel décentralisés n'ont pas besoin de serveurs
-intérmédiaires et par là même résolvent les problèmes liés à la
+intermédiaires et par là même résolvent les problèmes liés à la
 confidentialité. Toutefois les problèmes de passage à l'échelle
 demeurent. Résoudre ces problèmes revient à trouver un bon compromis entre les
-complexités en communication, en space et en temps. Par dessus tout, obtenir une
+complexités en communication, en espace et en temps. Par dessus tout, obtenir une
 complexité en communication sous-linéaire comparée au nombre de participants est
 crucial afin de gérer les groupes de grande taille.
 
@@ -53,13 +56,13 @@ existent :
 Les CRDTs tels que WOOT transportent un identifiant de taille constante -- ce
 qui est optimal. Toutefois, les éléments supprimés sont simplement cachés à
 l'utilisateur et impactent négativement les performances du système. Pour s'en
-débarasser, l'exécution d'un protocole de ramasse-miète réparti est
+débarrasser, l'exécution d'un protocole de ramasse-miettes réparti est
 nécessaire. Malheureusement, ceux-ci ne passent pas à l'échelle.
 
 \paragraph{Identifiants de taille variable.}
 Les CRDTs tels que Logoot ne nécessitent pas de pierres tombales mais
 transportent des identifiants dont la taille varie à la génération. En fonction
-de la stratégie d'allocation, ces identifiants peuvent croitre linérairement
+de la stratégie d'allocation, ces identifiants peuvent croître linéairement
 comparé au nombre d'insertions effectuées sur le document. Équilibrer la
 structure revient à exécuter un protocole de consensus qui ne passe pas à
 l'échelle.
