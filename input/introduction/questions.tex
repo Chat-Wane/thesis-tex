@@ -42,20 +42,21 @@ Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
 fréquence des changements et la durée avant laquelle ils sont intégrés.
 
 Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
-collaboratifs actuels copient les documents chez chaque
-client~\cite{saito2005optimistic}, et, lorsqu'une modification est effectuée,
-elle est directement appliquée sur leur copie avant d'être envoyée au reste des
-éditeurs où elle est intégrée. Un système est correct si, lorsque les mêmes
-changements ont été intégrés, les utilisateurs lisent le même
+collaboratifs actuels suivent le principe de réplication
+optimiste~\cite{saito2005optimistic}. Ainsi, chaque éditeur possède une copie
+locale du document. Lorsque l'utilisateur effectue une modification, elle est
+directement appliquée sur sa copie avant d'être envoyée au reste des éditeurs où
+elle est intégrée. Un système est correct si, lorsque les mêmes changements ont
+été intégrés, les utilisateurs lisent le même
 document~\cite{burckhardt2014replicated, shapiro2011conflict}.
 
 L'utilisation des structures de données ``classiques'' telles que les listes
 n'est pas directement possible du fait de la latence entre les
 collaborateurs. Par exemple, si un auteur insère une lettre en début de document
 pendant qu'un autre supprime une lettre au même endroit, le premier auteur
-risque, à tort, de voir supprimé la lettre qu'il vient d'insérer. Afin
-d'éviter de telles situations, de nouvelles structures et de nouveaux
-algorithmes doivent être employés.
+risque, à tort, de voir supprimé la lettre qu'il vient d'insérer. Afin d'éviter
+de telles situations, de nouvelles structures et de nouveaux algorithmes doivent
+être employés.
 
 Une première famille d'approches consiste à transformer les arguments de
 l'opération afin qu'elle considère les opérations intégrées
@@ -76,7 +77,7 @@ unique et immuable.
 de suppression se contente de cacher la lettre à l'utilisateur. Afin de purger
 la structure des identifiants cachés et ainsi conserver de bonnes performances,
 un protocole de ramasse-miettes réparti~\cite{abdullahi1998garbage} doit être
-exécuté régulièrement. Malheureusement, ceux-ci s'avère extrêmement coûteux.
+exécuté régulièrement. Malheureusement, cela s'avère extrêmement coûteux.
 
 \paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
 identifiants sont des listes dont la taille, définie à la génération, peut
