@@ -4,61 +4,44 @@
 \lettrine{L}'édition collaborative concerne toutes les activités effectuées en
 groupe dans le but de produire un document~\cite{ellis1989concurrency,
   johansen1988groupware}. Grâce à un effort collectif, les rédacteurs
-bénificient de multiples points de vues et deviennent plus impliqués dans
+bénéficient de multiples points de vues et deviennent plus impliqués dans
 l'écriture~\cite{noel2004empirical}. Les documents en résultant sont de
 meilleure qualité. Ainsi l'encyclopédie \emph{Wikipédia} compte des millions
 d'articles rédigés par des millions d'auteurs et sa version anglaise possède une
-fiabilité combarable à celle de l'\emph{Encyclopædia
+fiabilité comparable à celle de l'\emph{Encyclopædia
   Britannica}~\cite{giles2005internet}.
 
 Les éditeurs collaboratifs de textes sont simplement des outils facilitant
 l'écriture de documents par plusieurs auteurs. Ils présentent un texte dont le
-contenu est modifiable par l'utilisateur. Les modifications sont transmises à
-ses collaborateurs qui peuvent alors les voir et écrire en conséquence. Grâce à
-ces outils, la tâche d'écriture peut être répartie selon le temps, l'espace, et
-les activités~\cite{desanctis1987foundation, grudin1994computersupported,
-  johansen1988groupware}. Ainsi, il n'est plus impératif de se retrouver dans la
-même pièce ni même de se retrouver au même moment pour participer à la rédaction
-du document.
+contenu est modifiable par un groupe de collaborateurs. Chaque modification est
+transmise à tous les collaborateurs qui peuvent alors les voir et écrire en
+conséquence. Grâce à ces outils, la tâche d'écriture peut être répartie selon le
+temps, l'espace, et les activités~\cite{desanctis1987foundation,
+  grudin1994computersupported, johansen1988groupware}. Ainsi, il n'est plus
+impératif de se retrouver dans la même pièce ni même de se retrouver au même
+moment pour participer à la rédaction du document.
 
 Depuis la présentation du premier éditeur de ce type par Engelbart en
 1968~\cite{engelbart1968research}, les éditeurs collaboratifs ont
 fleuri. Toutefois, leur adoption massive par le public n'est que récente et
 provient principalement des éditeurs web~\cite{mogan2010impact,
   perkel2014scientific} tels que \emph{Google Docs}~\cite{googledocs} ou
-\emph{ShareLaTeX}~\cite{sharelatex}. Grâce au web, je peux créer, et éditer
-facilement mon document depuis mon ordinateur ou mon portable. Un simple lien me
-permet de le partager avec mes amis ou mes collègues. L'édition collaborative
-devient si aisée qu'elle est à la portée de tous. Hélas, l'utilisation du web
-comme support à la collaboration apporte aussi son lot de défauts. Son
-organisation éminemment centralisée, avec un serveur en charge de l'ensemble des
-clients, pose les problèmes suivants :
+\emph{ShareLaTeX}~\cite{sharelatex}. Grâce au web, il est possible de créer et
+d'éditer facilement un document depuis un ordinateur, un portable, ou une
+tablette. Un simple lien permet de le partager avec des amis ou des
+collègues. L'édition collaborative devient si aisée qu'elle est à la portée de
+tous. Cette facilité d'accès ouvre à de nouveaux usages. Par exemple, un
+document n'est plus cantonné aux petits groupes : le web entier peut participer
+à son élaboration, donner ses avis, participer à sa rédaction.
+%% Concrete exemple
+Par conséquent, les dimensions que doivent supporter les éditeurs collaboratifs
+ont largement augmentées.
 
-% Pour se faire, un utilisateur crée le document et le partage avec ses
-% collaborateurs. Ces derniers sont alors en mesure de visionner et de modifier le
-% document. L'édition \emph{asynchrone}~\cite{johansen1988groupware} divise la
-% tâche entre l'édition et la synchronisation des modifications. L'échange de
-% documents par courriels ou les gestionnaires de versions \emph{Git}~\cite{git}
-% ou \emph{Subversion}~\cite{svn} font parties de cette catégorie. L'édition
-% \emph{temps réel}~\cite{ellis1991groupware, johansen1988groupware} permet de
-% visionner et partager les changements immédiatement. Ainsi, l'ajout d'une lettre
-% dans le document par un participant se répercute directement chez tous le monde
-% (modulo la latence sur les canaux permettant de transmettre les
-% changements). L'éditeur web \emph{Google Docs}~\cite{googledocs} appartient à
-% cette catégorie.  Dans ce manuscrit, nous nous intéressons à ces deux modes
-% d'édition représentant respectivement les modes d'édition ``hors ligne'' et ``en
-% ligne''.
+Cependant, l'utilisation du web comme support à la collaboration apporte aussi
+son lot de défauts. Son organisation éminemment centralisée, avec un serveur en
+charge de l'ensemble des clients, pose les problèmes suivants :
 
-% En dépit des indéniables améliorations apportées par l'édition
-% collaborative~\cite{noel2004empirical}, son adoption massive par le public
-% demeure récente~\cite{perkel2014scientific}. L'intervention du web participe
-% pour beaucoup à la popularité des éditeurs
-% collaboratifs~\cite{mogan2010impact}. Les utilisateurs accèdent facilement à
-% leurs documents via le navigateur web de leur ordinateur ou portable.  Les
-% utilisateurs partagent leurs documents aisément grâce à de simple URL
-% (\emph{Uniform Resource Locator}).
-
-\paragraph{Confidentialité :} Chaque lettre tappée transite par un serveur
+\paragraph{Confidentialité :} Chaque lettre tapée transite par un serveur
 appartenant à un fournisseur de services. Ce dernier est en mesure de lire le
 document, d'en vendre ou d'en concéder le contenu à des tiers tels que des
 entreprises publicitaires ou des entités du gouvernement~\cite{gellman2013us,
@@ -79,68 +62,18 @@ peut devenir temporairement inaccessible;
 du document, si celui-ci tombe en panne, l'accès aux documents qu'il héberge est
 compromis~\cite{demers1987epidemic}.
   
-%% penser a parler du coût réduit en terme d'infrastructure
-
 La redécentralisation du web a reçu beaucoup d'attentions ces derniers
 temps~\cite{mansour2016demonstration, wood2014ethereum}. La décentralisation
 permettrait de résoudre les problèmes liés à la confidentialité, à la censure,
 et aux défaillances. Les documents appartiendraient réellement à ceux qui les
 rédigent. La décentralisation permettrait aussi d'alléger l'infrastructure des
-services web. Chaque client devenant également un serveur, le poid de l'édition
+services web. Chaque client devenant également un serveur, le poids de l'édition
 s'en trouverait réparti parmi les participants au lieu du
 Nuage~\cite{mell2011national}.
 
 
-% Toutefois, les problèmes de passage à l'échelle demeurent auxquels s'ajoutent
-% les difficultés d'utilisations autrefois résolues grâce au web et au
-% Nuage~\cite{mell2011national}. Heureusement, la récente technologie
-% WebRTC~\cite{webrtc} permet d'établir des canaux de communication d'un
-% navigateur web à l'autre. Cette technologie offre la possibilité de développer
-% des applications aussi faciles d'accès qu'un service web tout en se passant de
-% leur fournisseur. Grâce à cela, un nouvel écosystème d'applications
-% décentralisées directement intégrées au web est en train de
-% fleurir~\cite{webtorrent}.
-
 \textbf{L'édition collaborative temps réel est-elle possible sur le web, sans
   l'intervention d'un tiers et sans limites quant aux dimensions du système?}
-
-
-% \lettrine{L}'émergence de l'outil textuel comme relai de la parole a permis de
-% nombreuses avancées sur le plan scientifique, juridique, culturel
-% etc. Récemment, l'informatique a étendu l'édition textuelle à plusieurs auteurs
-% en facilitant les interactions distantes. Si l'objectif de collaboration est
-% demeuré inchangé depuis les premiers éditeurs~\cite{engelbart1968research}, les
-% dimensions du système, quant à elles, ont crû.
-
-
-% En effet, l'adoption des éditeurs collaboratifs de
-% textes~\cite{ellis1991groupware} n'a eu de cesse d'augmenter ces dernières
-% décénies.
-% % Tout le monde écrit, et tout le monde souhaite partager ses écrits.
-% Quelle que soit l'heure, quel que soit le lieu, un auteur peut rédiger son
-% document numérique avec ses collaborateurs dont les expertises combinées en
-% amélioreront la qualité. Ainsi, l'encyclopédie \emph{Wikipédia} compte des
-% millions d'articles rédigés par des millions d'auteurs et sa version anglaise
-% possède une fiabilité combarable à celle de l'\emph{Encyclopædia
-%   Britannica}~\cite{giles2005internet}.
-
-% Améliorant à la fois efficacité et implication des
-% utilisateurs~\cite{noel2004empirical}, les éditeurs collaboratifs sont d'une
-% indéniable utilité. Toutefois, les outils proposés actuellement ne sont pas sans
-% défaut. Les éditeurs basés sur serveur central, tel que \emph{Google
-%   Docs}~\cite{googledocs}, posent des problèmes de
-% confidentialité~\cite{gellman2013us}, de passage à l'échelle, et de tolérence
-% aux pannes.
-% % L'inquiètude du public vis-à-vis des fournisseurs de services s'est par
-% %ailleurs avérée légitime lors des fuites sur
-% %\emph{PRISM}~\cite{gellman2013us}.
-% Afin de se réconcilier avec le principe de l'internet sans autorité centrale
-% opérant de manière complètement répartie, les éditeurs doivent se débarasser de
-% ces serveurs. Grâce à cela, les problèmes de confidentialité s'en trouvent
-% résolus. Toutefois, les problèmes de passage à l'échelle subsitent auxquels
-% s'ajoutent les difficultés d'utilisation autrefois résolues par le
-% Nuage~\cite{mell2011national}.
-
 
 %%% Local Variables:
 %%% mode: latex
