@@ -1,6 +1,22 @@
 
 \section{Questions de recherche}
 
+Un éditeur de textes tel que \emph{Microsoft Word}~\cite{word} ou
+\emph{Emacs}~\cite{emacs} permet à un utilisateur de créer et d'éditer un
+document. Un éditeur de texte collaboratif en temps
+réel~\cite{ellis1991groupware} étend la rédaction d'un document à un groupe
+d'utilisateurs. Chacun possède son éditeur, voit les modifications effectuées
+par ses collaborateurs sur le document, effectue ses propres changements en
+insérant ou en supprimant des lettres. La mise en place de ces fonctionnalités
+requière
+\begin{inparaenum}[(i)]
+\item un moyen de communication entre les éditeurs tournant sur des machines
+  potentiellement distantes;
+\item un moyen de représenter les documents en mémoire de telle sorte que tous
+  les éditeurs affichent un même document lorsqu'ils ont reçu les mêmes
+  modifications.
+\end{inparaenum}
+
 \begin{figure}
   \begin{center}
     \input{input/introduction/architecture.tex}
@@ -10,8 +26,8 @@
   \end{center}
 \end{figure}
 
-L'architecture d'un éditeur collaboratif est constituée de quatre parties
-(cf. la figure~\ref{intro:fig:architecture}) :
+La figure~\ref{intro:fig:architecture} montre l'architecture d'un éditeur
+collaboratif constituée de quatre parties :
 \begin{inparaenum}[(i)]
 \item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
   document, 
@@ -21,13 +37,65 @@ L'architecture d'un éditeur collaboratif est constituée de quatre parties
 \item la couche réseau qui permet de disséminer les changements effectués sur le
   document.
 \end{inparaenum}
-
 Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
 Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
 fréquence des changements et la durée avant laquelle ils sont intégrés.
 
-Pour un éditeur collaboratif décentralisé, chaque client est aussi un serveur et
-participe activement au bon fonctionnement du système. Ainsi, il contribue à la
+Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
+collaboratifs actuels copient les documents chez chaque
+client~\cite{saito2005optimistic}, et, lorsqu'une modification est effectuée,
+elle est directement appliquée sur leur copie avant d'être envoyée au reste des
+éditeurs où elle est intégrée. Un système est correct si, lorsque les mêmes
+changements ont été intégrés, les utilisateurs lisent le même
+document~\cite{burckhardt2014replicated, shapiro2011conflict}.
+
+L'utilisation des structures de données ``classiques'' telles que les listes
+n'est pas directement possible du fait de la latence entre les
+collaborateurs. Par exemple, si un auteur insère une lettre en début de document
+pendant qu'un autre supprime une lettre au même endroit, le premier auteur
+risque, à tort, de voir supprimé la lettre qu'il vient d'insérer. Afin
+d'éviter de telles situations, de nouvelles structures et de nouveaux
+algorithmes doivent être employés.
+
+Une première famille d'approches consiste à transformer les arguments de
+l'opération afin qu'elle considère les opérations intégrées
+concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
+l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
+compte qu'une lettre a été ajoutée en tête concurremment. Il doit donc modifier
+les arguments de l'opération reçue afin que la seconde lettre soit supprimée, et
+non plus la première. Malheureusement, la détection de ces cas nécessite de
+transporter des données avec chaque opération dont le coût est
+prohibitif~\cite{sun2009contextbased}.
+
+Une seconde famille d'approches consiste à utiliser des structures de données
+dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
+opérations commutent, ces approches associent à chaque lettre un identifiant
+unique et immuable.
+
+\paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
+de suppression se contente de cacher la lettre à l'utilisateur. Afin de purger
+la structure des identifiants cachés et ainsi conserver de bonnes performances,
+un protocole de ramasse-miettes réparti~\cite{abdullahi1998garbage} doit être
+exécuté régulièrement. Malheureusement, ceux-ci s'avère extrêmement coûteux.
+
+\paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
+identifiants sont des listes dont la taille, définie à la génération, peut
+grandir très rapidement~\cite{weiss2009logoot}. Cette croissance impacte
+négativement les performances du système. Pour y remédier, un protocole de
+relocalisation des identifiants doit être exécuté
+régulièrement~\cite{zawirskiasynchronous}. Malheureusement, ces protocoles
+s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le coût
+s'avère également très élevé~\cite{mostefaoui2015signature}.
+
+Cela pose la première question de recherche : \textbf{Afin d'éviter tout
+  protocole additionnel de relocalisation des identifiants, comment allouer ces
+  identifiants pour que leur taille soit directement sous-linéaire?}
+
+Pour converger vers des documents identiques, tous les changements doivent
+parvenir à tous les éditeurs. Par conséquent, un réseau superposé doit être mis
+en place afin de permettre une communication fiable d'un éditeur à l'autre.
+Dans le contexte décentralisé, chaque client est aussi un serveur et participe
+activement au bon fonctionnement du système. Ainsi, il contribue à la
 dissémination des changements effectués sur le document. Pour ce faire, chaque
 éditeur possède un ensemble d'éditeurs -- ses voisins -- avec lequel
 communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à son propre
@@ -46,7 +114,7 @@ l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pou
 événement de grande ampleur n'a pas la même audience que celle d'un rapport de
 projet écrit par des étudiants.
 
-Cela pose la première question de recherche : \textbf{Comment adapter
+Cela pose la seconde question de recherche : \textbf{Comment adapter
   efficacement le voisinage de chaque éditeur au nombre fluctuant de
   collaborateurs?}
 
@@ -54,71 +122,6 @@ Cela pose la première question de recherche : \textbf{Comment adapter
 %%  comment adapter efficacement le voisinage de chaque éditeur aux fluctuations
 %%  des réseaux?}
 
-Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
-collaboratifs actuels copient les documents chez chaque
-client~\cite{saito2005optimistic}, et, lorsqu'une modification est effectuée,
-elle est directement appliquée sur leur copie avant d'être envoyée au reste des
-éditeurs où elle est intégrée. Un système est correct si, lorsque les même
-changements ont été intégrés, les utilisateurs lisent le même
-document~\cite{burckhardt2014replicated, shapiro2011conflict}.
-
-L'utilisation des structures de données ``classiques'' telles que les listes
-n'est pas directement possible du fait de la latence entre les
-collaborateurs. Par exemple, si un auteur insère un caractère en début de
-document pendant qu'un autre supprime un caractère au même endroit, le premier
-auteur risque, à tort, de voir supprimé le caractère qu'il vient d'insérer. Afin
-d'éviter de telles situations, de nouvelles structures et de nouveaux
-algorithmes doivent être employés.
-
-Une première famille d'approches consiste à transformer les arguments de
-l'opération afin qu'elle considère les opérations intégrées
-concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
-l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
-compte qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier
-les arguments de l'opération reçue afin que le second caractère soit supprimé,
-et non plus le premier. Malheureusement, la détection de ces cas nécessite de
-transporter des données avec chaque opération dont le coût est
-prohibitif~\cite{sun2009contextbased}.
-
-Une seconde famille d'approches consiste à utiliser des structures de données
-dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
-opérations commutent, ces approches associent à chaque caractère un identifiant
-unique et immuable.
-
-\paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
-de suppression se contente de cacher le caractère à l'utilisateur. Afin de
-purger la structure des identifiants cachés et ainsi conserver de bonnes
-performances, un protocole de ramasse-miettes
-réparti~\cite{abdullahi1998garbage} doit être exécuté
-régulièrement. Malheureusement, ceux-ci s'avère extrêmement coûteux.
-
-\paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
-identifiants sont des listes dont la taille, définie à la génération, peut
-grandir très rapidement~\cite{weiss2009logoot}. Cette croissance impacte
-négativement les performances du système. Pour y remédier, un protocole de
-relocalisation des identifiants doit être exécuté
-régulièrement~\cite{zawirskiasynchronous}. Malheureusement, ces protocoles
-s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le coût
-s'avère également très élevé~\cite{mostefaoui2015signature}.
-
-% Le méchanisme de dissémination des messages fait un usage intensif de ces
-% voisinages. Les messages transportés par celui-ci se doivent d'être légers, et
-% pourtant porteur de suffisamment d'informations afin de reconstruire des
-% documents identiques.
-
-Cela pose la seconde question de recherche : \textbf{Afin d'éviter tout
-  protocole additionnel de relocalisation des identifiants, comment allouer ces
-  identifiants pour que leur taille soit directement sous-linéaire?}
-
-  % En effet, les auteurs étant distants les uns des autres, les modifications ne
-  % sont pas reçues et traitées instantanéments par tous. De ce fait, l'ordre
-  % d'application des modifications peut différer parmis les participants. En
-  % particulier les modifications concurrentes doivent être soigneusement
-  % étudiées. Elles apparaissent lorsque deux auteurs effectuent une modification
-  % sans avoir connaissance de celle de leur homologue. Puisqu'aucune ne précède
-  % l'autre, elles peuvent être appliquées dans n'importe quel ordre. Toutefois,
-  % les structures doivent toujours converger vers un état équivalent. Contraindre
-  % l'ordre d'application des opérations s'avère hélas extrêmement coûteux.
 
 
 %%% Local Variables:
