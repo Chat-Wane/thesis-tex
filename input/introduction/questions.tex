@@ -19,36 +19,45 @@ requière
 
 \begin{figure}
   \begin{center}
-    \input{input/introduction/architecture.tex}
-    \caption[Architecture des éditeurs collaboratifs]
-    {\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
-      collaboratifs.}
+    \includegraphics[width=0.85\textwidth]{img/world.png}
+    \caption[Édition collaborative décentralisée]{\label{intro:img:world}Édition
+      collaborative décentralisée.}
   \end{center}
 \end{figure}
 
-La figure~\ref{intro:fig:architecture} montre l'architecture d'un éditeur
-collaboratif constituée de quatre parties :
-\begin{inparaenum}[(i)]
-\item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
-  document, 
-\item la structure de données représentant le document partagé,
-\item la structure de causalité qui permet d'ordonner les changements effectués
-  sur le document,
-\item la couche réseau qui permet de disséminer les changements effectués sur le
-  document.
-\end{inparaenum}
-Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
-Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
-fréquence des changements et la durée avant laquelle ils sont intégrés.
-
-Afin d'augmenter la disponibilité et la réactivité des documents, les éditeurs
-collaboratifs actuels suivent le principe de réplication
-optimiste~\cite{saito2005optimistic}. Ainsi, chaque éditeur possède une copie
-locale du document. Lorsque l'utilisateur effectue une modification, elle est
-directement appliquée sur sa copie avant d'être envoyée au reste des éditeurs où
-elle est intégrée. Un système est correct si, lorsque les mêmes changements ont
-été intégrés, les utilisateurs lisent le même
+La figure~\ref{intro:img:world} présente une session d'édition comprenant 6
+auteurs répartis à travers le monde. Afin d'augmenter la disponibilité et la
+réactivité des documents, les éditeurs collaboratifs actuels suivent le principe
+de réplication optimiste~\cite{saito2005optimistic}. Chaque éditeur collaboratif
+possède une copie locale du document.  Lorsque l'utilisateur effectue une
+modification, elle est directement appliquée sur sa copie avant d'être envoyée
+au reste des éditeurs où elle est intégrée. Un système est correct si, lorsque
+les mêmes changements ont été intégrés, les utilisateurs lisent le même
 document~\cite{burckhardt2014replicated, shapiro2011conflict}.
+
+% \begin{figure}
+%   \begin{center}
+%     \input{input/introduction/architecture.tex}
+%     \caption[Architecture des éditeurs collaboratifs]
+%     {\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
+%       collaboratifs.}
+%   \end{center}
+% \end{figure}
+
+% La figure~\ref{intro:fig:architecture} montre l'architecture d'un éditeur
+% collaboratif constituée de quatre parties :
+% \begin{inparaenum}[(i)]
+% \item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
+%   document, 
+% \item la structure de données représentant le document partagé,
+% \item la structure de causalité qui permet d'ordonner les changements effectués
+%   sur le document,
+% \item la couche réseau qui permet de disséminer les changements effectués sur le
+%   document.
+% \end{inparaenum}
+% Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
+% Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
+% fréquence des changements et la durée avant laquelle ils sont intégrés.
 
 L'utilisation des structures de données ``classiques'' telles que les listes
 n'est pas directement possible du fait de la latence entre les
@@ -92,16 +101,22 @@ Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces
   identifiants pour que leur taille soit directement sous-linéaire?}
 
+%%et des canaux de communication avec des
+%%éditeurs distants. Une opération effectuée par l'auteur localisé aux États-Unis
+%%peut transiter par Madagascar avant de parvenir à l'éditeur Japonais. Une
+%%latence entre emission
+
 Pour converger vers des documents identiques, tous les changements doivent
 parvenir à tous les éditeurs. Par conséquent, un réseau superposé doit être mis
-en place afin de permettre une communication fiable d'un éditeur à l'autre.
-Dans le contexte décentralisé, chaque client est aussi un serveur et participe
-activement au bon fonctionnement du système. Ainsi, il contribue à la
-dissémination des changements effectués sur le document. Pour ce faire, chaque
-éditeur possède un ensemble d'éditeurs -- ses voisins -- avec lequel
-communiquer. Lorsqu'un éditeur reçoit un changement, il le propage à son propre
-ensemble d'éditeurs connus. Les changements parviennent à tous les éditeurs par
-transitivité~\cite{birman1999bimodal}.  La taille de cet ensemble est
+en place afin de permettre une communication fiable d'un éditeur à l'autre.  La
+figure~\ref{intro:img:world} montre que chaque éditeur possède des canaux de
+communication avec d'autres éditeurs -- ses voisins -- possédant une réplique du
+document. Ici, l'éditeur localisé aux États-Unis communique avec les éditeurs
+Canadien, Français et Malgache. Chaque éditeur participe activement au bon
+fonctionnement du système. Une opération émise par ce premier peut transiter par
+l'éditeur localisé au Madagascar avant de parvenir à l'éditeur Japonais.  Les
+changements parviennent à tous les éditeurs par
+transitivité~\cite{birman1999bimodal}.  La taille des voisinnages est
 déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
 risque de dépasser les capacités d'émission des éditeurs; lorsqu'elle diminue,
 les changements risquent de ne plus parvenir à tous les éditeurs.
