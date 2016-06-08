@@ -13,67 +13,75 @@ soient la cible principale de ce genre d'application, certains événements de
 plus ample dimension tels que les cours en ligne ouverts et massifs
 (\emph{MOOC})~\cite{breslow2013studying} nécessitent de supporter de plus larges
 groupes. Google Docs gère les groupes de grande taille. En revanche, seuls les
-50 premiers collaborateurs ont le droit d'écrire ensemble, les suivants voient
-leurs accès limités à la simple lecture du document. Même si seulement un petit
-ensemble parmi les millions de collaborateurs est réellement en train d'écrire,
-n'importe quel participant de la session d'édition devrait pouvoir lire et
-écrire lorsqu'il le souhaite.
+$50$ premiers collaborateurs ont le droit d'écrire ensemble, les suivants voient
+leurs accès limités à la simple lecture du document. Selon nous, même si
+seulement un petit ensemble parmi les millions de collaborateurs est réellement
+en train d'écrire, n'importe quel participant de la session d'édition devrait
+pouvoir lire et écrire lorsqu'il le souhaite.
 
-Les éditeurs temps réel décentralisés n'ont pas besoin de serveurs
-intermédiaires et par là même résolvent les problèmes liés à la
-confidentialité. Toutefois les problèmes de passage à l'échelle
+Les éditeurs décentralisés autorisant l'édition en temps réel n'ont pas besoin
+de serveurs intermédiaires. Par conséquent, ils résolvent les problèmes liés à
+la confidentialité. Toutefois les problèmes de passage à l'échelle
 demeurent. Résoudre ces problèmes revient à trouver un bon compromis entre les
-complexités en communication, en espace et en temps. Par dessus tout, obtenir une
-complexité en communication sous-linéaire comparée au nombre de participants est
-crucial afin de gérer les groupes de grande taille.
+complexités en communication, en espace et en temps. Par dessus tout, obtenir
+une complexité en communication sous-linéaire comparée au nombre de participants
+est crucial pour gérer les groupes de grande taille.
 
 Afin d'augmenter la réactivité aux changements et la disponibilité des
-documents, les éditeurs temps réel utilisent la réplication optimiste de
-séquences -- les documents étant simplement des séquences de caractères. En tant
-que tel, chaque utilisateur héberge une copie locale d'un document et effectue
-ses modifications directement dessus. Les changements sont propagés aux autres
-répliques où ils sont intégrés. Le système est correct si, et seulement si, les
-répliques intégrant un même ensemble d'opérations convergent vers un état
-équivalent, i.e., les utilisateurs lisent un même document.
+documents, les éditeurs temps réel utilisent la réplication
+optimiste~\cite{demers1987epidemic, ladin1992providing, saito2005optimistic,
+sun1998achieving} de séquences -- les documents étant simplement des séquences
+de caractères. En tant que tel, chaque éditeur héberge une copie locale d'un
+document et effectue ses modifications directement dessus. Les changements sont
+propagés aux autres répliques où ils sont intégrés. Le système est correct si,
+et seulement si, les répliques intégrant un même ensemble d'opérations
+convergent vers un état équivalent, i.e., les utilisateurs lisent un même
+document~\cite{bailis2013eventual, shapiro2011conflict}.
 
-Les algorithmes décentralisés appartenant aux transformés opérationnels (OT)
-transportent un vecteur d'état ou de contexte dans le but de détecter les
-opérations concurrentes. Malheureusement, ces vecteurs croissent linéairement en
+Les algorithmes décentralisés appartenant aux transformés opérationnels
+(OT)~\cite{sun1998operational, sun2009contextbased} transportent un vecteur
+d'état ou de contexte dans le but de détecter les opérations
+concurrentes. Malheureusement, ces vecteurs croissent linéairement en
 comparaison du nombre de membres ayant jamais participé à l'édition du
 document. Ainsi, ces approches sont efficaces pour les petits groupes
 d'utilisateurs mais ne sont pas adaptées aux groupes de plus large dimension,
 plus dynamiques, et sujet aux aléas du réseau -- notamment sur la latence.
 
-Les structures de données répliqués sans résolution de conflits (\emph{CRDTs}),
-contrairement aux approches OT, ne payent pas le prix de la detection de
-concurrence entre les opérations. Toutefois, ils transportent des identifiants
-uniques et immuables pour chaque opération propagée sur le réseau. La taille de
-ces identifiants impacte directement le trafic généré, et donc le passage à
-l'échelle de l'approche. Deux classes de CRDTs conçues pour les séquences
-existent :
+Les structures de données répliqués sans résolution de conflits
+(\emph{CRDTs})~\cite{shapiro2011comprehensive, shapiro2011conflict,
+burckhardt2014replicated}, contrairement aux approches OT, ne payent pas le prix
+de la détection de concurrence entre les opérations. Toutefois, ils transportent
+des identifiants uniques et immuables pour chaque opération propagée sur le
+réseau. La taille de ces identifiants a un impact direct sur le trafic généré.
+Deux classes de CRDTs conçues pour les séquences existent :
 
-\paragraph{Pierre tombales.}
-Les CRDTs tels que WOOT transportent un identifiant de taille constante -- ce
+\paragraph{Pierre tombales~\cite{ahmed2011evaluating, attiya2016specification,
+conway2014language, grishchenko2010deep, oster2006data, roh2011replicated,
+weiss2007wooki, wu2010partial, yu2012stringwise}.} Les CRDTs tels que
+WOOT~\cite{oster2006data} transportent un identifiant de taille constante -- ce
 qui est optimal. Toutefois, les éléments supprimés sont simplement cachés à
 l'utilisateur et impactent négativement les performances du système. Pour s'en
-débarrasser, l'exécution d'un protocole de ramasse-miettes réparti est
-nécessaire. Malheureusement, ceux-ci ne passent pas à l'échelle.
+débarrasser, l'exécution d'un protocole de ramasse-miettes
+réparti~\cite{abdullahi1998garbage} est nécessaire. Malheureusement, ceux-ci ne
+passent pas à l'échelle.
 
-\paragraph{Identifiants de taille variable.}
-Les CRDTs tels que Logoot ne nécessitent pas de pierres tombales mais
+\paragraph{Identifiants de taille variable~\cite{andre2013supporting,
+ preguica2009commutative, weiss2009logoot}.} Les CRDTs tels que
+Logoot~\cite{weiss2009logoot} ne nécessitent pas de pierres tombales mais
 transportent des identifiants dont la taille varie à la génération. En fonction
 de la stratégie d'allocation, ces identifiants peuvent croître linéairement
 comparé au nombre d'insertions effectuées sur le document. Équilibrer la
 structure revient à exécuter un protocole de consensus qui ne passe pas à
-l'échelle.
+l'échelle~\cite{mostefaoui2015signature}.
 
-Le problème est le suivant : \textbf{Afin d'éviter tout protocole additionnel de
-relocalisation des identifiants, comment allouer ces identifiants pour que leur
-taille soit directement sous-linéaire?} Ce chapitre présente \LSEQ, une fonction
-d'allocation d'identifiants dont la taille croît de manière polylogarithmique
-par rapport au nombre d'insertions dans la séquence. À ce titre, elle permet
-d'éviter l'utilisation de protocole de relocalisation. Par conséquent, cette
-structure passe à l'échelle. 
+\textbf{Afin d'éviter tout protocole additionnel de relocalisation des
+identifiants, comment allouer ces identifiants pour que leur taille soit
+directement sous-linéaire?} Ce chapitre présente
+\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une fonction d'allocation
+d'identifiants dont la taille croît de manière polylogarithmique par rapport au
+nombre d'insertions dans la séquence. À ce titre, elle permet d'éviter
+l'utilisation de protocole de relocalisation. Par conséquent, cette structure
+passe à l'échelle.
 
 La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
 le schéma de réplication pessimiste avant de détailler le schéma qui lui est

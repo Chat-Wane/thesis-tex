@@ -11,14 +11,14 @@ apparition~\cite{johnson1975maintenance} afin de résoudre
   serveur alternatif connu pour posséder les mêmes données afin de satisfaire sa
   requête;
 \item les problèmes de rapidité d'accès, i.e., le client peut contacter un
-  serveur dont la latence est la plus faible afin de satisfaire plus rapidement
+  serveur avec lequel la latence est faible afin de satisfaire plus rapidement
   sa requête.
 \end{inparaenum}
 
-Hélas, avec la réplication, la synchronisation de répliques devient le coeur du
-problème. Puisque la communication entre serveurs n'est pas instantanée, les
-modifications effectuées sur les données prennent du temps à parvenir aux
-répliques. Cela implique des problèmes de
+Cependant la réplication introduit un nouveau type de problèmes : la
+synchronisation des répliques. En effet, puisque la communication entre serveurs
+n'est pas instantanée, les modifications effectuées sur les données prennent du
+temps à parvenir aux répliques. Cela implique des problèmes de
 \begin{inparaenum}[(i)]
 \item fraîcheur de données -- \emph{est-ce que la donnée que j'obtiens est la
     plus à jour?} -- et de
@@ -29,129 +29,124 @@ répliques. Cela implique des problèmes de
 \end{inparaenum}
 
 
-D'après le théorème CAP~\cite{gilbert2002brewer} il est impossible de répliquer
-sur un grand nombre de serveurs tout en garantissant à la fois :
+D'après le théorème CAP~\cite{brewer2012cap, gilbert2002brewer} il est
+impossible de répliquer sur un grand nombre de serveurs tout en garantissant la
+cohérence forte~\cite{herlihy1990linearizability}, la disponibilité, et la
+tolérances aux partitionnements. Dans ce manuscrit, nous nous intéressons aux
+applications garantissant ces deux dernières propriétés. Ainsi, une opération
+est toujours acceptée par le système. De plus, le système, constitué de
+plusieurs serveurs distants, autorise la fragmentation temporairement en
+ilôts. Par conséquent, le critère de cohérence doit être
+affaiblit~\cite{bailis2013eventual, shapiro2011conflict}.
 
-\paragraph{Cohérence :} Un contrat entre le développeur et la structure qui
-spécifie comment cette dernière se comporte suivant les opérations effectuées et
-leur ordonancement.
+Le reste de cette section décrit le schéma garantissant les deux propriétés
+recherchées, à savoir la réplication optimiste (cf. §\ref{repl:subsec:optimistic}).
+Ensuite, elle passe en revue deux familles d'approches appartenant à la
+réplication optimiste : les tranformées opérationnelles et les structures de
+données répliquées sans résolution de conflits
+(cf. §\ref{repl:subsec:otorcrdts}). Enfin, nous nous intéresserons plus
+particulièrement aux types de données représentant les séquences -- la séquence
+de caractères étant proche d'un document (cf. §\ref{repl:subsec:sequences}). 
 
-\paragraph{Disponibilité :} Le ratio entre le temps effectif durant lequel
-l'utilisateur accède à un service et le temps durant lequel il souhaite y
-accèder.
+% \subsection{Pessimisme ou optimisme?}
+% \label{repl:subsec:schemas}
 
-\paragraph{Tolérance aux pannes :} Les défaillances de serveurs n'entrainent pas
-une panne générale du système.
+% De multiples serveurs, possiblement distants les uns des autres, hébergent une
+% réplique d'une donnée. Lorsqu'une réplique est modifiée, sa modification est
+% répercutée sur les autres répliques. Les deux schémas de réplication définissent
+% la manière dont une modification est acceptée. Cela influe sur les propriétés du
+% système. En particulier, les dimensions que peuvent atteindre les systèmes, en
+% nombre de répliques, s'en trouve impactées.
 
-Face à ce constat, deux grandes familles de réplication : la réplication
-pessimiste cherche à donner l'illusion d'une donnée unique lorsque la
-réplication optimiste autorise à ses répliques de légères divergences
-temporaires (cf. §\ref{repl:subsec:schemas}). Cette dernière passant plus
-volontier à l'échelle, nous nous intéresserons à deux familles d'approches y
-appartenant, à savoir les transformés opérationnels dont les opérations sont
-modifiées à l'intégration afin d'adapter l'opération au contexte d'exécution, et
-les structures de données sans résolution de conflits dont les opérations
-commutent (cf. §\ref{repl:subsec:otorcrdts}). Finalement, la
-section~\ref{repl:subsec:sequences} s'intéresse plus particulièrement au type
-séquence, le plus proche d'un document.
+% \subsubsection{Réplication pessimiste}
+% \label{repl:subsubsec:pessimistic}
 
+% L'objectif de la réplication pessimiste est simple. Il consiste à donner
+% l'illusion que la donnée manipulée est unique, indépendemment du nombre de
+% répliques réel. Ainsi, il devient facile de raisonner sur les données puisque
+% leurs spécifications sont proches de celles proposées dans un contexte sans
+% réplications.  Toutefois, avant qu'une modification ne soit réellement
+% effectuée, il est nécessaire qu'elle soit validée. L'autorité décisionnelle
+% diffère en fonction des approches :
 
-\subsection{Pessimisme ou optimisme?}
-\label{repl:subsec:schemas}
+% \paragraph{Autorité centrale~\cite{alsberg1976principle} :} Un serveur est
+% désigné responsable. Ceux qui souhaitent modifier la donnée sont alors dans
+% l'obligation de demander l'accès exclusif pendant la mise en place de cette
+% modification. Dans l'intervalle, les autres répliques ne peuvent soumettre de
+% modifications. Enfin, lorsque la modification est achevée, la main est rendue au
+% serveur qui peut autoriser d'autres modifications. On parle de verrou
+% (\emph{lock}).
 
-De multiples serveurs, possiblement distants les uns des autres, hébergent une
-réplique d'une donnée. Lorsqu'une réplique est modifiée, sa modification est
-répercutée sur les autres répliques. Les deux schémas de réplication définissent
-la manière dont une modification est acceptée. Cela influe sur les propriétés du
-système. En particulier, les dimensions que peuvent atteindre les systèmes, en
-nombre de répliques, s'en trouve impactées.
-
-\subsubsection{Réplication pessimiste}
-\label{repl:subsubsec:pessimistic}
-
-L'objectif de la réplication pessimiste est simple. Il consiste à donner
-l'illusion que la donnée manipulée est unique, indépendemment du nombre de
-répliques réel. Ainsi, il devient facile de raisonner sur les données puisque
-leurs spécifications sont proches de celles proposées dans un contexte
-non-réparti -- sans réplications.  Toutefois, avant qu'une modification ne soit
-réellement effectuée, il est nécessaire qu'elle soit validée. L'autorité
-décisionnelle diffère en fonction des approches :
-
-\paragraph{Autorité centrale~\cite{alsberg1976principle} :} Un serveur est
-désigné responsable. Ceux qui souhaitent modifier la donnée sont alors dans
-l'obligation de demander l'accès exclusif pendant la mise en place de cette
-modification. Dans l'intervalle, les autres répliques ne peuvent soumettre de
-modifications. Enfin, lorsque la modification est achevée, la main est rendue au
-serveur qui peut autoriser d'autres modifications. On parle de verrou
-(\emph{lock}).
-
-\paragraph{Quorum~\cite{gifford1979weighted} :} Un ensemble de serveurs est
-désigné responsable. Chacune des modifications est soumise à un vote quant à son
-acceptation. Au dessus d'un certain seuil de vote positif ou négatif, la
-modification est autorisée ou non.
+% \paragraph{Quorum~\cite{gifford1979weighted} :} Un ensemble de serveurs est
+% désigné responsable. Chacune des modifications est soumise à un vote quant à son
+% acceptation. Au dessus d'un certain seuil de vote positif ou négatif, la
+% modification est autorisée ou non.
 
 
 
-\begin{figure*}
-  \centering
-  \subfloat[Une demande de modification est effectuée]
-  [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
-  {\input{./input/replication/figpessimisticexampleA.tex}}
-  \hspace{40pt}
-  \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
-  la première demande]
-  [Le serveur $n_4$ demande également si sa modification est acceptée pendant
-  que le cœur est occupé avec la modification de $n_5$.]
-  {\input{./input/replication/figpessimisticexampleB.tex}}
-  \hspace{10pt}
-  \subfloat[Une modification est acceptée pendant que l'autre est refusée]
-  [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
-  est refusée.]
-  {\input{./input/replication/figpessimisticexampleC.tex}}
-  \caption[Quorum en réplication pessimiste]
-  {\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
-    pessimiste. La modification de $n_5$ est propagée.}
-\end{figure*}
+% \begin{figure*}
+%   \centering
+%   \subfloat[Une demande de modification est effectuée]
+%   [Le serveur $n_5$ demande au cœur décisionnel si sa modification est acceptée.]
+%   {\input{./input/replication/figpessimisticexampleA.tex}}
+%   \hspace{40pt}
+%   \subfloat[Une autre demande est faite pendant que le cœur s'occupe de 
+%   la première demande]
+%   [Le serveur $n_4$ demande également si sa modification est acceptée pendant
+%   que le cœur est occupé avec la modification de $n_5$.]
+%   {\input{./input/replication/figpessimisticexampleB.tex}}
+%   \hspace{10pt}
+%   \subfloat[Une modification est acceptée pendant que l'autre est refusée]
+%   [La modification de $n_5$ est acceptée tandis que celle de $n_4$ 
+%   est refusée.]
+%   {\input{./input/replication/figpessimisticexampleC.tex}}
+%   \caption[Quorum en réplication pessimiste]
+%   {\label{repl:fig:pessimisticexample} Exemple de quorum en réplication
+%     pessimiste. La modification de $n_5$ est propagée.}
+% \end{figure*}
 
-La figure~\ref{repl:fig:pessimisticexample} montre un exemple de réplication
-pessimiste où le cœur décisionnel est composé de 3 serveurs
-$\{n_1,\, n_2,\, n_3\}$ devant unanimement approuver une modification avant
-qu'elle soit propagée. Ainsi, le serveur $n_5$ propose une modification des
-répliques au cœur décisionnel via $n_1$. Ce dernier l'accepte et transmet la
-demande à $n_2$, qui l'accepte et la transmet à son tour à $n_3$, qui l'accepte
-et termine la boucle en transmettant à $n_1$.  Dans l'intervalle, $n_4$ propose
-une autre modification. La proposition de $n_5$ est acceptée et propagée tandis
-que celle de $n_4$ est refusée. Une fois que $n_4$ a reçu les modifications de
-$n_5$, il peut retenter de transmettre sa modification s'il la juge toujours
-d'actualité. Cet exemple illustre le caractère chronophage du processus : le
-vote prend du temps et peut échouer. De plus, si l'un des serveurs du cœur
-défaillit, le vote peut échouer alors même que la modification est valide.
+% La figure~\ref{repl:fig:pessimisticexample} montre un exemple de réplication
+% pessimiste où le cœur décisionnel est composé de 3 serveurs
+% $\{n_1,\, n_2,\, n_3\}$ devant unanimement approuver une modification avant
+% qu'elle soit propagée. Ainsi, le serveur $n_5$ propose une modification des
+% répliques au cœur décisionnel via $n_1$. Ce dernier l'accepte et transmet la
+% demande à $n_2$, qui l'accepte et la transmet à son tour à $n_3$, qui l'accepte
+% et termine la boucle en transmettant à $n_1$.  Dans l'intervalle, $n_4$ propose
+% une autre modification. La proposition de $n_5$ est acceptée et propagée tandis
+% que celle de $n_4$ est refusée. Une fois que $n_4$ a reçu les modifications de
+% $n_5$, il peut retenter de transmettre sa modification s'il la juge toujours
+% d'actualité. Cet exemple illustre le caractère chronophage du processus : le
+% vote prend du temps et peut échouer. De plus, si l'un des serveurs du cœur
+% défaillit, le vote peut échouer alors même que la modification est valide.
 
-La réplication pessimiste est possible lorsque le nombre de répliques est connu,
-plutôt petit, et souvent accessible. Ces contraintes sont notamment
-satisfaisable dans le Nuage~\cite{mell2011national}. Les répliques proposent
-d'avantage de garanties quant aux résultats de la manipulation des
-données. Toutefois, de telles guaranties ne sont pas toujours nécéssaires et
-leur coût élévé n'est plus justifié. La réplication optimiste constitue alors
-une alternative possible.
+% La réplication pessimiste est possible lorsque le nombre de répliques est connu,
+% plutôt petit, et souvent accessible. Ces contraintes sont notamment
+% satisfaisable dans le Nuage~\cite{mell2011national}. Les répliques proposent
+% d'avantage de garanties quant aux résultats de la manipulation des
+% données. Toutefois, de telles garanties ne sont pas toujours nécessaires et
+% leur coût élevé n'est plus justifié. La réplication optimiste constitue alors
+% une alternative possible.
 
-\subsubsection{Réplication optimiste}
-\label{repl:subsubsec:optimistic}
+\subsection{La réplication optimiste}
+\label{repl:subsec:optimistic}
 
 En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
-centaines de machines pouvant communiquer entre elles au travers de materiels
+centaines de machines pouvant communiquer entre elles au travers de matériels
 aux capacités hétérogènes~\cite{demers1987epidemic}. Du fait de ces dimensions,
-la réplication pessimiste semble impossible.
+la réplication pessimiste~\cite{alsberg1976principle, gifford1979weighted}, où
+les opérations doivent être approuvées avant d'être appliquées, semble
+impossible.
 
-La réplication optimiste~\cite{johnson1975maintenance, saito2005optimistic} est
-un paradigme de réplication consistant à appliquer les modifications directement
-sur la réplique locale.  Ainsi, les données sont toujours disponibles et
-réactives aux changements effectués. Ensuite, les modifications sont disséminées
-aux autres serveurs hébergeant une réplique où elles sont appliquées. Au
-contraire des approches pessimistes, les approches optimistes ne vérouillent pas
-les données lors des changements. En revanche, le critère de cohérence assuré
-est plus faible. En particulier, les répliques ont l'autorisation d'avoir des
-états temporairement divergeant entre eux :
+La réplication optimiste~\cite{demers1987epidemic, johnson1975maintenance,
+  ladin1992providing, saito2005optimistic} est un paradigme de réplication
+consistant à appliquer les modifications directement sur une réplique locale.
+Ainsi, les données sont toujours disponibles et réactives aux changements
+effectués. Ensuite, les modifications sont disséminées aux autres serveurs
+hébergeant une réplique où elles sont appliquées. Au contraire des approches
+pessimistes, les approches optimistes ne verrouillent pas les données lors des
+changements. En revanche, le critère de cohérence assuré est plus faible. En
+particulier, les répliques peuvent être temporairement dans des états
+divergeants entre eux :
 
 
 \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
@@ -181,49 +176,53 @@ ayant reçu et intégré les mêmes modifications possèdent un état équivalen
 \end{figure*}
 
 
-Ces critères de cohérence posent de nombreux problèmes par leur manque
-d'expressivité. En particulier, l'état équivalent vers lequel les répliques
-convergent n'est pas spécifié. Celui-ci peut n'avoir aucun lien avec l'exécution
-souhaitée par l'utilisateur. Ainsi, la figure~\ref{repl:fig:optimisticexample}
+Ces critères de cohérence posent de nombreux problèmes par leur trop grande
+expressivité. En particulier, l'état équivalent vers lequel les répliques
+convergent n'est pas spécifié. Le type de données répliqué doit respecter autant
+que possible la spécification de sa version
+séquentielle~\cite{bieniusa2012brief}. Cependant, résoudre les cas concurrents
+reste à la charge des développeurs. La figure~\ref{repl:fig:optimisticexample}
 montre un exemple où les répliques concernent une couleur. Le serveur $n_1$
 souhaite une couleur bleu tandis que $n_3$ souhaite une couleur blanche. Après
 échange, une infinité d'états convergeants sont possibles. Par exemple, l'état
 (i) et (ii) privilégient une seule des modifications. L'état (iii) tente de
 réconcilier les deux modifications en mélangeant les couleurs pour obtenir un
-bleu plus clair. L'état (iv) est un état arbitraire sans signification réelle
-mais respectant la cohérence forte à terme.
+bleu plus clair. L'état (iv) est un état arbitraire sans signification
+réelle. Tous ces choix respectent la cohérence forte à terme, même celui de
+l'état arbitraire.
 
-Ce type de cohérence charge le développeur d'un poid énorme quant au bien fondé
+Ce type de cohérence charge le développeur d'un poids énorme quant au bien fondé
 de l'état convergeant.  Récemment, de nombreux efforts ont été fournis afin de
-proposer des bases de données avec cohérence à terme (\REF), ainsi que des
-langages sur lesquels raisonner (\REF). La section~\ref{repl:subsec:otorcrdts}
-décrit les approches permettant de construire ces bases et langages.
+proposer des bases de données avec cohérence à terme~\cite{dynamo, riak,
+  cassandra, mongodb}, ainsi que des langages sur lesquels
+raisonner~\cite{conway2012logic, meiklejohn2015lasp}. La
+section~\ref{repl:subsec:otorcrdts} décrit les approches permettant de
+construire ces bases et langages.
 
 
-\subsection{OT ou CRDTs?}
+\subsection{Transformations ou commutativité?}
 \label{repl:subsec:otorcrdts}
 
-La réplication optimiste permet de répliquer les données et d'effectuer des
-modifications sur celles-ci directement, sans accord préalable d'un cœur
-décisionnel. Les données deviennent à la fois plus disponibles et plus
-réactives. Toutefois, les approches qui appartiennent à ce schéma de réplication
-ont devoir de fournir des opérations de modification respectant la cohérence
-forte à terme -- convergeant si possible vers un état
-non-arbitraire. Malheureusement, cela peut s'avérer plus honéreux qu'il n'y
-parait. Cette section décrit deux familles d'approches, respectivement les
-approches à transformés opérationnels (OT -- cf. §\ref{repl:subsubsec:ot}) et
-les approches à structure de données sans résolution de conflits (CRDTs --
-cf. §\ref{repl:subsubsec:crdts}), ainsi que leurs limitations.
+La réplication optimiste consiste à maintenir une copie locale des
+données. Chaque modification locale est immédiatement appliquée et disséminée
+aux autres serveurs possédant la réplique. Grâce à cela, les données sont
+toujours disponibles et réactives aux changements. Toutefois, les approches
+appartenant à ce schéma de réplication doivent fournir des opérations respectant
+la cohérence à terme. Cette section décrit deux familles d'approches : les
+approches à transformées opérationnelles (cf. §\ref{repl:subsubsec:ot}) et les
+approches à structure de données répliquées sans résolution de conflits
+(cf. §\ref{repl:subsubsec:crdts}) ainsi que le coût qui leur est associé.
 
-\subsubsection{Transformés opérationnels}
+\subsubsection{Transformées opérationnelles}
 \label{repl:subsubsec:ot}
 
-Les approches basées sur les transformés opérationnels~\cite{sun1998operational,
-  sun2009contextbased} (OT) sont les plus anciennes et s'appliquent à un large
-champs d'applications telles que l'édition de texte, ou l'édition
-d'images. L'intuition est simple : Lors de la réception d'opérations modifiant
-notre réplique, les arguments en sont ajustés afin qu'ils s'appliquent à l'état
-actuel de la réplique, indépendemment des opérations effectuées entre temps.
+Les approches basées sur les transformées
+opérationnelles~\cite{sun1998operational, sun2009contextbased} (OT) sont les
+plus anciennes et s'appliquent à un large champs d'applications telles que
+l'édition de texte, ou l'édition d'images. L'intuition est simple : lors de la
+réception d'opérations modifiant une réplique, ses arguments sont ajustés afin
+qu'ils s'appliquent à l'état actuel de la réplique, indépendemment des
+opérations effectuées en concurrence et déjà intégrées.
 
 \begin{figure}
   \centering
@@ -235,22 +234,22 @@ actuel de la réplique, indépendemment des opérations effectuées entre temps.
 \end{figure}
 
 La figure~\ref{repl:fig:otexample} illustre le principe de fonctionnement des
-approches basées sur les transformés opérationnels sur un scenario impliquant
+approches basées sur les transformés opérationnels sur un scénario impliquant
 une séquence répliquée. Dans cet exemple, les répliques sont toutes initialisées
-avec la séquence \texttt{RTY}. Ensuite, tandis que sur la réplique 1 trois
-caractères supplémentaires sont insérés en tête pour obtenir \texttt{QWERTY},
-sur la réplique 3 sont supprimés les trois caractères pour obtenir la séquence
-vide. Lors de la réception de cette dernière opération de suppression au niveau
-de la réplique 1, elle est interprétée comme une opération dont le contexte
-d'exécution n'avait pas encore intégré les insertions -- et donc pas décalé les
-indices des caractères. À ce titre, l'argument de l'opération se voit reattribué
-sa cible aux trois caractères à partir du troisième caractère
-non-inclu. Réciproquement, la réplique 3 intègre les insertions faites sur la
-réplique 1. Toutefois aucun changement n'est nécessaire. À terme, les répliques
-convergent vers la séquence \texttt{QWE}.
+avec la séquence \texttt{RTY}. Ensuite, tandis que sur la première réplique
+trois caractères supplémentaires sont insérés en tête pour obtenir
+\texttt{QWERTY}, sur la troisième réplique sont supprimés les trois caractères
+pour obtenir la séquence vide. Lors de la réception de cette dernière opération
+de suppression au niveau de la réplique 1, elle est interprétée comme une
+opération dont le contexte d'exécution n'avait pas encore intégré les insertions
+-- et donc pas décalé les indices des caractères. À ce titre, l'argument de
+l'opération voit sa cible changée aux trois caractères à partir du troisième
+caractère exclu. Réciproquement, la réplique 3 intègre les insertions faites sur
+la réplique 1. Toutefois aucun changement n'est nécessaire. À terme, les
+répliques convergent vers la séquence \texttt{QWE}.
 
 Dans le cadre de l'édition de texte, en plus des usuelles opérations d'insertion
-et de suppression, OT founit des opérations ciblant les chaînes de caractères
+et de suppression, OT fournit des opérations ciblant les chaînes de caractères
 telles que le déplacement, ou le couper -- coller. Toutefois, l'analyse de
 correction nécessite d'examiner chaque couple d'opérations ainsi que leurs
 paramètres. En conséquence, lors de l'écriture du
@@ -260,8 +259,8 @@ Les approches OT peuvent être divisées en deux classes :
 \paragraph{Les approches décentralisées~\cite{sun2009contextbased} :}
 Chaque client est aussi un serveur hébergeant une réplique
 (cf. figure~\ref{repl:fig:otexample}). Chacune de ces entités doit être en
-mesure d'effectuer les transformations d'elle-même. Parmi les prérequis à cette
-tâche figure le méchanisme de détection de concurrence. En effet, retrouver le
+mesure d'effectuer les transformations d'elle-même. Parmi les pré-requis à cette
+tâche figure le mécanisme de détection de concurrence. En effet, retrouver le
 contexte d'exécution revient à transformer l'opération reçu contre toutes celles
 qui ont été intégrées sans avoir connaissance de celle-ci. Malheureusement, cela
 requière le transport d'un vecteur d'horloges~\cite{lamport1978time} -- ou
@@ -271,7 +270,7 @@ terme de nombre d'opérations, ces approches passent difficilement à
 l'échelle. Le temps d'exécution d'une opération locale est insignifiant, mais
 tout le reste des participants souffrent de quelques opérations concurrentes.
 
-\noindent Du reste, dans un environnement bien maitrisé, où les opérations
+\noindent Du reste, dans un environnement bien maîtrisé, où les opérations
 arrivent très rapidement à un groupe raisonnable de participants, alors ces
 approches décentralisées deviennent inconcurrençables~\cite{mehdi2014merging}.
 
@@ -304,13 +303,13 @@ Les structures de données sans résolution de
 conflits~\cite{shapiro2011comprehensive} (CRDTs) appartiennent au schéma de
 réplication optimiste. Comme leur dénomination l'indique, ces approches sont
 basées sur des structures de données abstraites fournissant des opérations dont
-les résultats commutent, et donc, ne générent pas de conflits, même en cas de
+les résultats commutent, et donc, ne génèrent pas de conflits, même en cas de
 concurrence.  Il en existe deux familles équivalentes mais proposant un
 compromis différent :
 
 \paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
 envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
-état propre. L'envoi d'un état est honéreux et doit être effectué avec
+état propre. L'envoi d'un état est onéreux et doit être effectué avec
 parcimonie. En revanche, puisqu'il est autonome (\emph{self-contained}), il ne
 nécessite aucune garantie particulière quant aux moyens de diffusion.
 
@@ -328,7 +327,7 @@ idempotentes ($o_1 \times o_1 \Leftrightarrow o_1$).
 
 \paragraph{Basée sur les différences~\cite{vanderlinde2016delta} :} Lors d'une
 opération, l'état de la réplique locale change. Un vecteur d'horloges permet
-d'identifier chacune des opérations effectuées. Une autre replique envoie alors
+d'identifier chacune des opérations effectuées. Une autre réplique envoie alors
 son vecteur à cette première. Les différences entre les vecteurs permettent
 d'identifier les opérations manquantes avant de les envoyer. Comparé aux
 approches basées sur l'état, l'ensemble de la réplique n'a pas besoin d'être
@@ -366,7 +365,7 @@ unique -- composé de l'identité unique du serveur et d'un compteur local -- à
 chaque opération d'incrémentation. Dans le cas du compteur n'autorisant que les
 incrémentations, ces identifiants seuls permettent de garantir l'idempotence
 pour peu qu'ils soient enregistrés. Ainsi, un ensemble enregistre les
-identifiants des opérations. En cas de double réception dûe aux aléas du réseau,
+identifiants des opérations. En cas de double réception due aux aléas du réseau,
 la seconde intégration est sans effets. L'ordre de réception des opérations est
 sans importance puisque l'effet de l'unique opération possible est toujours le
 même. Lire la valeur courante de ce compteur revient à effectuer le cardinal de
@@ -458,7 +457,7 @@ D'où les suppressions réelles impossibles.
 
 \noindent La figure~\ref{repl:fig:wootexample} illustre la nécessité de
 conserver les pierres tombales. Elle montre le diagramme de Hasse généré lors du
-scenario suivant : Tout d'abord, un utilisateur écrit \texttt{AZERTY}. Ensuite,
+scénario suivant : Tout d'abord, un utilisateur écrit \texttt{AZERTY}. Ensuite,
 les deux premiers caractères sont supprimés afin d'être remplacés par les
 caractères \texttt{QW}. La séquence finale est \texttt{QWERTY}. Toutefois, les
 identifiants ne sont pas modifiables, et l'identifiant du caractère \texttt{E}
@@ -468,7 +467,7 @@ référence l'identifiant de \texttt{Z}, lui-même référençant l'identifiant 
 positionnable, et tout ceux qui en dépendent par transitivité.
 
 \paragraph{Causal tree~\cite{grishchenko2010deep} :} Cette approche caractérise
-explicitement les relations causales grâce à une réprésentation sous forme
+explicitement les relations causales grâce à une représentation sous forme
 d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la dernière
 opération observée. En parcourant l'arbre et en appliquant les opérations, la
 séquence peut être retrouvée. Toutefois, les identifiants sont des horloges
@@ -476,8 +475,8 @@ vectorielles (\emph{vector clock}) dont la taille est prohibitive. De plus, il
 est nécessaire de conserver tous les noeuds de cet arbre causal au cas où une
 opération y ferait référence.
 
-\paragraph{Partial persistent sequence~\cite{wu2010partial} :} Cette approche
-definit les identifiants dans l'ensemble des nombres rationnels auxquels est
+\paragraph{Partial persistent séquence~\cite{wu2010partial} :} Cette approche
+définit les identifiants dans l'ensemble des nombres rationnels auxquels est
 ajoutée une limite quant à leur précision. Hélas, cette limite contraint la
 taille du document maximale. Sans cette troncature, l'approche serait
 susceptible d'appartenir à l'autre famille de CRDTs pour séquence.
@@ -486,15 +485,15 @@ susceptible d'appartenir à l'autre famille de CRDTs pour séquence.
 représente la séquence sous forme de liste supportant les opérations
 concurrentes. Une table de hachage apporte un accès rapide aux éléments grâce à
 leurs identifiants. Les éléments incluent une référence au voisin qu'ils
-précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaine
+précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaîne
 ainsi construite, les éléments supprimés restent présents indéfinitivement mais
 cachés de l'utilisateur.
 
 \paragraph{String-wise~\cite{yu2012stringwise} :} Cette approche cible
-principalement les chaines de caractères pouvant être subdivisées lors
+principalement les chaînes de caractères pouvant être subdivisées lors
 d'opérations jusqu'à devenir une série de caractères. Les identifiants
-référencent alors les chaines adjacentes à l'insertion ainsi que les autres
-éléments de la chaines si subdivision il y a. De la même manière que pour les
+référencent alors les chaînes adjacentes à l'insertion ainsi que les autres
+éléments de la chaînes si subdivision il y a. De la même manière que pour les
 approches précédentes, les références rendent les suppressions réelles
 impossibles.
 
@@ -516,14 +515,14 @@ structures grandissent au moins linéairement comparativement au nombre
 d'opérations faites sur la séquence. Paradoxalement, cela devient problématique
 lors de vandalisme où même le contenu indésirable est conservé
 indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
-fichier dont le poid ne reflète pas le contenu visible. De plus, les éléments
+fichier dont le poids ne reflète pas le contenu visible. De plus, les éléments
 cachés s'accumulent et dégradent à jamais les performances du système.
 
 Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés est une solution potentielle aux
 dégradations de performances :
 
-\paragraph{ramasse-miètes~\cite{abdullahi1998garbage} :} permet de nettoyer une
+\paragraph{ramasse-miettes~\cite{abdullahi1998garbage} :} permet de nettoyer une
 structure de données en vidant de la mémoire les objets qui ne sont plus
 accessibles par le programme. Le contexte réparti étend le cadre du programme en
 considérant le local et le distant. Ainsi, supprimer réellement un élément de la
@@ -605,7 +604,7 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
 \end{figure}
 
 La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
-représentant la séquence. Un auteur insert les caractères \texttt{QWTY} les uns
+représentant la séquence. Un auteur insère les caractères \texttt{QWTY} les uns
 à la suite des autres résultant dans les chemins [1], [2], [4], et [8]
 respectivement. L'insertion du caractère \texttt{E} entre les paires
 $\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
@@ -640,25 +639,25 @@ des désambiguateurs $(\mathcal{D},\, <_\mathcal{D})$ permet d'ordonner les
 
 La figure~\ref{repl:fig:disexample} montre l'arbre contenant 6 éléments mais
 seulement 5 chemins distincts. Tout d'abord, le premier collaborateur $c_1$
-insert \texttt{QW}. Ensuite, les collaborateurs $c_1$ et $c_2$ insèrent en
+insère \texttt{QW}. Ensuite, les collaborateurs $c_1$ et $c_2$ insèrent en
 concurrence les caractères \texttt{E} et \texttt{T}, respectivement. Dans les
 deux cas, le chemin en résultant est $[3]$. Pour résoudre cette ambiguïté, le
 désambiguateur $\langle c_1,\, 3 \rangle$ est associé au caractère \texttt{E};
 le désambiguateur $\langle c_2,\, 1 \rangle$ est associé au caractère
 \texttt{T}. Recouvrer l'ordre des éléments consiste simplement à comparer, à
 chaque niveau de l'arbre, le chemin du niveau, puis l'identifiant de la
-replique, puis l'horloge. Dans cet exemple, le caractère \texttt{E} précède le
-caractère \texttt{T} car $c_1< c_2$. Ensuite, le collaborateur $c_1$ insert
-\texttt{Y} à la fin de la séquence. Enfin, il insert \texttt{R} entre \texttt{E}
+réplique, puis l'horloge. Dans cet exemple, le caractère \texttt{E} précède le
+caractère \texttt{T} car $c_1< c_2$. Ensuite, le collaborateur $c_1$ insère
+\texttt{Y} à la fin de la séquence. Enfin, il insère \texttt{R} entre \texttt{E}
 et \texttt{T}. Puisque ces derniers ont un chemin identique, l'espace est
 insuffisant entre ces deux chemins pour insérer un nouveau caractère. La
 profondeur de l'arbre doit augmenter. La fonction d'allocation doit choisir un
 chemin $[3.X]$ tel que $0<X<10$. En copiant le désambiguateur de \texttt{E} au
 premier niveau, cela assure que le nouvel identifiant suivra celui du caractère
-\texttt{E} et précedera celui du caractère \texttt{T}. Il est important de noter
+\texttt{E} et précédera celui du caractère \texttt{T}. Il est important de noter
 que les collaborateurs ne choisissent pas les désambiguateurs. Ainsi, la
 séquence de cet exemple aurait pu être \texttt{QWTREY} auquel cas une correction
-aurait été nécessaire. De plus, la compléxité spatiale de ces désambiguateurs
+aurait été nécessaire. De plus, la complexité spatiale de ces désambiguateurs
 est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
 concentre sur ces identifiants.
 
@@ -683,7 +682,7 @@ instructions générales de telles approches. Il divise les opérations --
 insertion et suppression -- entre la partie locale et distante du schéma de
 réplication optimiste. Le cœur de l'algorithme est situé dans la partie locale
 de l'opération d'insertion où le chemin et le désambiguateur doivent être
-créés. La fonction \textsc{convert2Path} se débarasse de la partie
+créés. La fonction \textsc{convert2Path} se débarrasse de la partie
 désambiguateur des identifiants en argument pour n'en garder que les chemins --
 transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
 concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
@@ -741,7 +740,7 @@ position 0 décale toutes lettres de droite etc.
 Dans le premier cas, l'opération d'insertion (\texttt{Q}, 0) est transformée en
 \textsc{insert}($\vdash$, \texttt{Q}, $\dashv$). Par conséquent, le chemin doit
 être alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie
-d'allocation consiste à reserver la branche la plus à gauche et de plus petite
+d'allocation consiste à réserver la branche la plus à gauche et de plus petite
 taille, le chemin résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est
 transformée en \textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le
 chemin [2] etc.  Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet
@@ -759,13 +758,13 @@ entre les deux. Considérons un ordre lexicographique, le chemin résultant est
 [0.$X$] où $X$ est choisi entre 0 et 10. Suivant la stratégie, le chemin est
 [0.1] pour la lettre \texttt{T}. Puis [0.0.1] pour la lettre \texttt{R} etc. La
 taille des chemins alloués augmente très rapidement.  La stratégie d'allocation
-s'avère inéfficace dans ce cas.
+s'avère inefficace dans ce cas.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
 taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
 d'une séquence classique à des identifiants non-mutable de taille variable d'une
-séquence répliquée a un coût qu'il est nécéssaire d'analyser afin de proposer
+séquence répliquée a un coût qu'il est nécessaire d'analyser afin de proposer
 une fonction d'allocation efficace.
 
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
@@ -788,13 +787,14 @@ la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
 identifiant est linéaire, en résulte une complexité quadratique par rapport à la
 taille du document.
 
-\paragraph{Logoot split~\cite{mehdi2014merging} :} Cette approche étend Logoot
-lui offrant la possibilité d'adapter la granularité de l'élément ciblé. Bien que
-tous les exemples précédent fassent mention de caractères comme éléments de la
-séquence, Logoot peut fixer la granularité à la ligne, ou au paragraphe, ou à la
-section etc. Cette extension prend pour granularité la chaine de caractère avec
-la liberté de la séparer si besoin est. Le nombre d'identifiants à allouer s'en
-trouve diminué, et par conséquent, le traffic généré aussi.
+\paragraph{Logoot split~\cite{andre2013supporting} :} Cette approche étend
+Logoot lui offrant la possibilité d'adapter la granularité de l'élément
+ciblé. Bien que tous les exemples précédent fassent mention de caractères comme
+éléments de la séquence, Logoot peut fixer la granularité à la ligne, ou au
+paragraphe, ou à la section etc. Cette extension prend pour granularité la
+chaîne de caractère avec la liberté de la séparer si besoin est. Le nombre
+d'identifiants à allouer s'en trouve diminué, et par conséquent, le trafic
+généré aussi.
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
@@ -810,7 +810,7 @@ approche représente le document sous forme d'arbre binaire avec parcours infixe
     % {\input{input/replication/treedocexampleB.tex}}      
     \input{input/replication/figtreedocexample.tex}
     \caption[Chemins alloués par Treedoc]
-    {\label{repl:fig:treedocexample}Example de séquence dont les chemins sont
+    {\label{repl:fig:treedocexample}Exemple de séquence dont les chemins sont
       alloués grâce à Treedoc.}
   \end{center}
 \end{figure*}
@@ -821,7 +821,7 @@ un élément \texttt{Q} dont le chemin est [0] précède \texttt{W}, et un élé
 \texttt{E} dont le chemin est [1] succède \texttt{W}. En d'autres termes,
 suffixer le chemin d'un 0 signifie \emph{à gauche de}, et suffixer le chemin
 d'un 1 signifie \emph{à droite de}. Pour la séquence \texttt{QWERTY} de cet
-example, le caractère \texttt{Y} obtient le chemin [1.1.1.1].
+exemple, le caractère \texttt{Y} obtient le chemin [1.1.1.1].
   
 \noindent Tout comme l'approche Logoot, les observations effectuées sur un
 corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
