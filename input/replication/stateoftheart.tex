@@ -21,11 +21,11 @@ n'est pas instantanée, les modifications effectuées sur les données prennent 
 temps à parvenir aux répliques. Cela implique des problèmes de
 \begin{inparaenum}[(i)]
 \item fraîcheur de données -- \emph{est-ce que la donnée que j'obtiens est la
-    plus à jour?} -- et de
+    plus à jour ?} -- et de
 \item modifications concurrentes -- \emph{avec des modifications effectuées sur
     une même données, au même moment, par deux serveurs distants dont les
     résultats sont différents. Dois-je conserver les deux modifications, ou
-    dois-je en privilégier une, ou dois-je employer une autre stratégie?}
+    dois-je en privilégier une, ou dois-je employer une autre stratégie ?}
 \end{inparaenum}
 
 
@@ -42,13 +42,13 @@ affaiblit~\cite{bailis2013eventual, shapiro2011conflict}.
 Le reste de cette section décrit le schéma garantissant les deux propriétés
 recherchées, à savoir la réplication optimiste (cf. §\ref{repl:subsec:optimistic}).
 Ensuite, elle passe en revue deux familles d'approches appartenant à la
-réplication optimiste : les tranformées opérationnelles et les structures de
+réplication optimiste : les transformées opérationnelles et les structures de
 données répliquées sans résolution de conflits
 (cf. §\ref{repl:subsec:otorcrdts}). Enfin, nous nous intéresserons plus
 particulièrement aux types de données représentant les séquences -- la séquence
 de caractères étant proche d'un document (cf. §\ref{repl:subsec:sequences}). 
 
-% \subsection{Pessimisme ou optimisme?}
+% \subsection{Pessimisme ou optimisme ?}
 % \label{repl:subsec:schemas}
 
 % De multiples serveurs, possiblement distants les uns des autres, hébergent une
@@ -146,7 +146,7 @@ hébergeant une réplique où elles sont appliquées. Au contraire des approches
 pessimistes, les approches optimistes ne verrouillent pas les données lors des
 changements. En revanche, le critère de cohérence assuré est plus faible. En
 particulier, les répliques peuvent être temporairement dans des états
-divergeants entre eux :
+divergeant entre eux :
 
 
 \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
@@ -200,7 +200,7 @@ raisonner~\cite{conway2012logic, meiklejohn2015lasp}.
 % construire ces bases et langages.
 
 
-\subsection{Transformations ou commutativité?}
+\subsection{Transformations ou commutativité ?}
 \label{repl:subsec:otorcrdts}
 
 La réplication optimiste consiste à maintenir une copie locale des
@@ -306,13 +306,13 @@ connaissance de ce conflit peuvent s'arranger afin de ne garder que l'une des
 valeurs. Dans tous les cas, la résolution de conflits prend du temps, est
 susceptible d'engendrer des erreurs, ou d'autres conflits en cascade.
 
-Les structures de données répliquées sans résolution de
-conflits~\cite{shapiro2011comprehensive, shapiro2011conflict} (CRDTs)
-appartiennent au schéma de réplication optimiste. Comme leur dénomination
-l'indique, ces approches sont basées sur des structures de données abstraites
-fournissant des opérations dont les résultats commutent, et donc, ne génèrent
-pas de conflits, même en cas de concurrence.  Il en existe trois familles
-équivalentes mais proposant un compromis différent :
+Les structures de données répliquées sans résolution de conflits
+(CRDTs)~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent au
+schéma de réplication optimiste. Comme leur dénomination l'indique, ces
+approches sont basées sur des structures de données abstraites fournissant des
+opérations dont les résultats commutent, et donc, ne génèrent pas de conflits,
+même en cas de concurrence.  Il en existe trois familles équivalentes mais
+proposant un compromis différent :
 
 \paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
 envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
@@ -360,7 +360,7 @@ réseau n'a pas de propriétés particulières à assurer.
     {\label{repl:algo:counterB} Compteur utilisant un vecteur.}
   \end{algorithm}
 \end{minipage}
-}
+} \\
 
 Des CRDTs existent pour différent types de structures tels que les compteurs,
 les ensembles, ou les graphes. Les algorithmes~\ref{repl:algo:counterA}
@@ -408,33 +408,31 @@ des compteurs.
 \subsection{Séquences répliquées}
 \label{repl:subsec:sequences}
 
-Une séquence, ou liste, ou tableau, est une série d'éléments ordonnés les uns à
-la suite des autres. Une séquence répliquée doit donc ordonner de la même
-manière ses éléments indépendamment du serveur l'hébergeant. Les approches à
-base de transformés opérationnels adaptent les arguments des opérations afin de
-recouvrer un contexte d'exécution valide (cf. §\ref{repl:subsubsec:ot}). Les
-CRDTs pour séquences, eux, choisissent de surcharger les éléments de métadonnées
-de telle sorte que les métadonnées permettent de recouvrer un ordre identique
-partout. Une différence fondamentale entre les deux types d'approches concerne
-la signature des opérations. Lorsque OT conserve une signature d'opération
-classique (``insérer l'élément $e$ à l'indice $i$''), les CRDTs positionnent
-leurs éléments relativement aux éléments adjacents à l'indice ciblé (``insérer
-l'élément $e$ entre l'élément $a$ et l'élément $b$''). Avec ce procédé, des
-métadonnées uniques et non-mutables -- nommées identifiants -- seront générées
-garantissant, grâce à un ordre total sur ceux-ci, que le nouvel élément sera bel
-et bien placé entre ces deux bornes. La suppression est également différente
-puisque sa signature devient l'élément ciblé et non un indice (``supprimer
-l'élément $e$'').
+Une séquence\footnote{ou liste, ou tableau, ou série} est une série d'éléments
+ordonnés les uns à la suite des autres. Une séquence répliquée doit donc
+ordonner de la même manière ses éléments quel que soit le serveur
+l'hébergeant. Les approches à base de transformées opérationnelles adaptent les
+arguments des opérations afin de recouvrer un contexte d'exécution valide
+(cf. §\ref{repl:subsubsec:ot}). Les CRDTs pour séquences, eux, choisissent de
+surcharger les éléments avec des métadonnées de telle sorte que les métadonnées
+permettent de recouvrer un ordre identique partout. Une différence fondamentale
+entre les deux types d'approches concerne la signature des opérations. Lorsque
+OT conserve une signature d'opération classique (``insérer l'élément $e$ à
+l'indice $i$''), les CRDTs positionnent leurs éléments relativement aux éléments
+adjacents à l'indice ciblé (``insérer l'élément $e$ entre l'élément $a$ et
+l'élément $b$''). Avec ce procédé, des métadonnées uniques et non-mutables --
+nommées identifiants -- sont générées garantissant, grâce à un ordre total sur
+ceux-ci, que le nouvel élément est bel et bien placé entre ces deux bornes. La
+suppression est également différente puisque sa signature devient l'élément
+ciblé et non plus un indice (``supprimer l'élément $e$'').
 
-Nous identifions deux familles d'approches générant des identifiants. La
-première génère des identifiants de petite taille mais utilise des pierres
-tombales pour indiquer la suppression d'un élément
-(cf. §\ref{repl:subsubsec:tombstone}). La seconde se passe de pierres tombales mais
-ses identifiants sont de taille variable lors de la génération
-(cf. §\ref{repl:subsubsec:variable}).
+Nous identifions deux familles d'approches appartenant aux CRDTs conçues pour
+les séquences. La première génère des identifiants de taille constante mais
+utilise des pierres tombales pour indiquer la suppression d'un élément. La
+seconde se passe de pierres tombales mais ses identifiants sont de taille
+variable lors de la génération
 
 \subsubsection{Pierres tombales}
-\label{repl:subsubsec:tombstone}
 
 Une pierre tombale est une marque laissée après la suppression d'un élément
 indiquant qu'un jour, celui-ci a existé, et qu'il était positionné là. Bien
@@ -467,7 +465,7 @@ D'où les suppressions réelles impossibles.
 
 \noindent La figure~\ref{repl:fig:wootexample} illustre la nécessité de
 conserver les pierres tombales. Elle montre le diagramme de Hasse généré lors du
-scénario suivant : Tout d'abord, un utilisateur écrit \texttt{AZERTY}. Ensuite,
+scénario suivant. Tout d'abord, un utilisateur écrit \texttt{AZERTY}. Ensuite,
 les deux premiers caractères sont supprimés afin d'être remplacés par les
 caractères \texttt{QW}. La séquence finale est \texttt{QWERTY}. Toutefois, les
 identifiants ne sont pas modifiables, et l'identifiant du caractère \texttt{E}
@@ -496,8 +494,9 @@ représente la séquence sous forme de liste supportant les opérations
 concurrentes. Une table de hachage apporte un accès rapide aux éléments grâce à
 leurs identifiants. Les éléments incluent une référence au voisin qu'ils
 précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaîne
-ainsi construite, les éléments supprimés restent présents indéfinitivement mais
-cachés de l'utilisateur.
+ainsi construite, les éléments supprimés restent présents à tout jamais
+quoique cachés de l'utilisateur. Une variante sous forme d'arbre a récemment été
+proposée~\cite{attiya2016specification}.
 
 \paragraph{String-wise~\cite{yu2012stringwise} :} Cette approche cible
 principalement les chaînes de caractères pouvant être subdivisées lors
@@ -515,16 +514,16 @@ positionnement relatif, et de causalité.
 
 
 Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
-éléments de séquences répliquées, toutes ces approches s'avèrent pratiques
-lorsque l'historique des opérations doit être conservé. Par exemple, dans le
-cadre de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia}, conserver toutes les
+éléments de séquences répliquées, toutes ces approches restent utiles lorsque
+l'historique des opérations doit être conservé. Par exemple, dans le cadre de
+l'encyclopédie \emph{Wikipédia}~\cite{wikipedia}, conserver toutes les
 modifications effectuées permet de recouvrer une version vierge de vandalisme;
 dans le cadre du gestionnaire de versions \emph{Git}~\cite{git}, il permet de
-recouvrer une version du code potentiellement sans erreurs. Malheureusement, ces
+recouvrer une version du code potentiellement sans erreurs. Cependant, ces
 structures grandissent au moins linéairement comparativement au nombre
 d'opérations faites sur la séquence. Paradoxalement, cela devient problématique
 lors de vandalisme où même le contenu indésirable est conservé
-indéfinitivement. Survient alors le frustrant constat d'avoir à stocker un
+à tout jamais. Survient alors le frustrant constat d'avoir à stocker un
 fichier dont le poids ne reflète pas le contenu visible. De plus, les éléments
 cachés s'accumulent et dégradent à jamais les performances du système.
 
@@ -539,28 +538,29 @@ considérant le local et le distant. Ainsi, supprimer réellement un élément d
 séquence revient à s'interroger : \emph{Est-ce que
   \begin{inparaenum}[(i)]
   \item toutes les répliques ont supprimé l'élément et
-  \item est-ce que tous les éléments référençant l'élément supprimé ont été
-    intégré localement?
+  \item tous les éléments référençant l'élément supprimé ont été intégrés
+    localement ?
   \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une réponse
 à ces deux questions. D'autant plus lorsque les possesseurs de réplique ne sont
-pas perpétuellement joignables. Des problématiques appartenant jusqu'alors à la
-réplication pessimiste apparaissent (cf. §\ref{repl:subsubsec:pessimistic}).
-% \item [\textbf{core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
-%   topologie réseau afin de rendre les \TODO{consensus} possibles. Ainsi, un
-%   coeur décisionnel prend en charge les choix de suppression réelle des objets.
-%   Ce coeur décisionnel étant restraint à un sous-ensemble des membres du réseaux
-%   étant toujours accessibles, les décisions peuvent alors être prises de manière
-%   fiable. Le reste des participants se conforme alors aux décisions prises par
-%   le coeur \TODO{au risque de perdre certaines de leurs modifications}.
+pas perpétuellement joignables.
 
-Comme alternative, il existe une famille de CRDTs conçue pour le type séquence
-et dont le bon fonctionnement ne nécessite pas de référencer directement
-d'autres identifiants. En cela, ils évitent l'usage des pierres tombales mais
-font face à des problèmes concernant la complexité spatiale de leurs
-identifiants.
+\paragraph{Core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
+topologie réseau afin de rendre la prise de décisions possible. Ainsi, un cœur
+décisionnel prend en charge les choix de suppression réelle des objets.  Ce cœur
+décisionnel est restreint à un sous-ensemble des membres du réseaux étant
+toujours accessibles, les décisions peuvent alors être prises de manière
+fiable. Le reste des participants se conforme à ces décisions au risque de
+perdre certaines de leurs modifications.
+ 
+Si l'espace consommé par les pierres tombales est trop important pour être
+envisagé, et si ni le ramasse-miettes réparti, ni les contraintes sur la
+topologie du réseau ne sont possibles, il existe une alternative : une famille
+de CRDTs conçue pour le type séquence et dont le bon fonctionnement ne nécessite
+pas de référencer directement d'autres identifiants. En cela, ils évitent
+l'usage des pierres tombales mais font face à des problèmes concernant la
+complexité spatiale de leurs identifiants.
 
 \subsubsection{Identifiants de taille variable}
-\label{repl:subsubsec:variable}
 
 Certaines structures de données sans résolution de conflits pour séquences
 utilisent des identifiants dont la taille est variable à la
@@ -615,16 +615,16 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
 
 La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
 représentant la séquence. Un auteur insère les caractères \texttt{QWTY} les uns
-à la suite des autres résultant dans les chemins [1], [2], [4], et [8]
+à la suite des autres résultant sur les chemins [1], [2], [4], et [8]
 respectivement. L'insertion du caractère \texttt{E} entre les paires
 $\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
-résulte dans la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour
-insérer le caractère \texttt{R}, l'arbre doit être agrandi afin d'accueillir le
-nouveau chemin entre \texttt{E} et \texttt{T}. Le chemin en résultant est
-[3.1]. Insérer un nouveau caractère entre \texttt{E} et \texttt{R} résulterait
-en une autre augmentation de la profondeur de l'arbre. Le chemin serait
-[3.0.$X$] où $0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$ permet de
-retrouver la séquence \texttt{QWERTY}.
+engendre la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour insérer
+le caractère \texttt{R}, l'arbre doit être agrandi afin d'accueillir le nouveau
+chemin entre \texttt{E} et \texttt{T}. Le chemin en résultant est [3.1]. Insérer
+un nouveau caractère entre \texttt{E} et \texttt{R} résulterait en une autre
+augmentation de la profondeur de l'arbre. Le chemin serait [3.0.$X$] où
+$0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$ permet de retrouver la
+séquence \texttt{QWERTY}.
 
 
 \paragraph{Désambiguation des cas concurrents.}
@@ -689,11 +689,11 @@ concentre sur ces identifiants.
 pour les séquences où les identifiants sont de taille variable consiste à
 choisir les chemins. L'algorithme~\ref{repl:algo:general} montre les
 instructions générales de telles approches. Il divise les opérations --
-insertion et suppression -- entre la partie locale et distante du schéma de
-réplication optimiste. Le cœur de l'algorithme est situé dans la partie locale
-de l'opération d'insertion où le chemin et le désambiguateur doivent être
-créés. La fonction \textsc{convert2Path} se débarrasse de la partie
-désambiguateur des identifiants en argument pour n'en garder que les chemins --
+insertion et suppression -- entre la partie locale et la partie distante du
+schéma de réplication optimiste. Le cœur de l'algorithme est situé dans la
+partie locale de l'opération d'insertion où le chemin et le désambiguateur
+doivent être créés. La fonction \textsc{convert2Path} se débarrasse de la partie
+désambiguateur des identifiants en argument pour n'en garder que les chemins,
 transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
 concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
 contraire, cette fonction convertit les identifiants en chemins préservant
@@ -747,28 +747,29 @@ l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
 séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
 position 0 décale toutes lettres de droite etc.
 
-Dans le premier cas, l'opération d'insertion (\texttt{Q}, 0) est transformée en
-\textsc{insert}($\vdash$, \texttt{Q}, $\dashv$). Par conséquent, le chemin doit
-être alloué entre les bornes virtuelles [0] et [9]. Puisque la stratégie
-d'allocation consiste à réserver la branche la plus à gauche et de plus petite
-taille, le chemin résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est
-transformée en \textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le
-chemin [2] etc.  Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet
-égard, la stratégie employée est très efficace. Cependant, elle n'est pas
-totalement optimale puisque l'arbre est prévu pour accueillir 8 identifiants
-lorsque seulement 6 sont alloués.
+Dans le premier cas (cf. figure~\ref{repl:fig:allocpathexampleA}), l'opération
+d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
+\texttt{Q}, $\dashv$). Par conséquent, le chemin doit être alloué entre les
+bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
+réserver la branche la plus à gauche et de plus petite taille, le chemin
+résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est transformée en
+\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2] etc.
+Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la
+stratégie employée est très efficace. Cependant, elle n'est pas totalement
+optimale puisque l'arbre est prévu pour accueillir 8 identifiants lorsque
+seulement 6 sont alloués.
 
-Dans le second cas, l'opération d'insertion (\texttt{Y}, 0) est transformée en
-\textsc{insert}($\vdash$, \texttt{Y}, $\dashv$) dont le résultat est le chemin
-[1]. Lors de l'insertion (\texttt{T}, 0), un chemin est requis entre la borne
-virtuelle du début de séquence [0] et la borne du caractère \texttt{Y} :
-[1]. Ainsi, la profondeur du chemin doit augmenter de telle sorte que le nouvel
-identifiant muni de l'ordre total $(\mathcal{I},\,<_\mathcal{I})$ soit placé
-entre les deux. Considérons un ordre lexicographique, le chemin résultant est
-[0.$X$] où $X$ est choisi entre 0 et 10. Suivant la stratégie, le chemin est
-[0.1] pour la lettre \texttt{T}. Puis [0.0.1] pour la lettre \texttt{R} etc. La
-taille des chemins alloués augmente très rapidement.  La stratégie d'allocation
-s'avère inefficace dans ce cas.
+Dans le second cas (cf. figure~\ref{repl:fig:allocpathexampleB}), l'opération
+d'insertion (\texttt{Y}, 0) est transformée en \textsc{insert}($\vdash$,
+\texttt{Y}, $\dashv$) dont le résultat est le chemin [1]. Lors de l'insertion
+(\texttt{T}, 0), un chemin est requis entre la borne virtuelle du début de
+séquence [0] et la borne du caractère \texttt{Y} : [1]. Ainsi, la profondeur du
+chemin doit augmenter de telle sorte que le nouvel identifiant muni de l'ordre
+total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les deux. Considérons un
+ordre lexicographique, le chemin résultant est [0.$X$] où $X$ est choisi entre 0
+et 10. Suivant la stratégie, le chemin est [0.1] pour la lettre \texttt{T}. Puis
+[0.0.1] pour la lettre \texttt{R} etc. La taille des chemins alloués augmente
+très rapidement.  La stratégie d'allocation s'avère inefficace dans ce cas.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
@@ -781,8 +782,8 @@ une fonction d'allocation efficace.
     weiss2010logootundo} :} Ce CRDT représente originellement ses identifiants
 sous forme de liste sans les factoriser sous forme d'arbre. Cette représentation
 possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
-consommation en espace élevée. En effet, la traduction d'une opération locale
-$\textsc{insert}(element,\, index)$ à
+consommation en espace élevée. En effet, une opération locale effectuée sur la
+séquence $\textsc{insert}(element,\, index)$ se traduisant sur la réplique par
 $\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$ s'effectue
 en temps constant. D'un autre coté, les identifiants possèdent des chemins dont
 chaque élément est un entier encodé sur 64 bits correspondant à une arité de
@@ -797,14 +798,11 @@ la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
 identifiant est linéaire, en résulte une complexité quadratique par rapport à la
 taille du document.
 
-\paragraph{Logoot split~\cite{andre2013supporting} :} Cette approche étend
-Logoot lui offrant la possibilité d'adapter la granularité de l'élément
-ciblé. Bien que tous les exemples précédent fassent mention de caractères comme
-éléments de la séquence, Logoot peut fixer la granularité à la ligne, ou au
-paragraphe, ou à la section etc. Cette extension prend pour granularité la
-chaîne de caractère avec la liberté de la séparer si besoin est. Le nombre
-d'identifiants à allouer s'en trouve diminué, et par conséquent, le trafic
-généré aussi.
+\noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
+étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
+ciblé.  Cette extension prend pour granularité la chaîne de caractère avec la
+liberté de la scinder si besoin est. Le nombre d'identifiants à allouer s'en
+trouve diminué, et par conséquent, le trafic généré également.
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
@@ -838,10 +836,14 @@ corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
 l'édition de gauche à droite. Elles conduisent à proposer une heuristique selon
 laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
 éditions à venir. Toutefois, le problème demeure lorsque le comportement
-d'édition ne coopère pas. L'identifiant peut être de taille linéaire comparée à
-la taille du document.
+d'édition va à l'encontre de la stratégie créée. L'identifiant peut être de
+taille linéaire comparée à la taille du document.
 
 
+La section suivante s'attache à mettre en évidence les défaillances des
+approches n'utilisant pas de pierres tombales. À cet effet, elle se sert de
+traces extraites de Wikipédia et de documents créés artificiellement. Enfin,
+elle statue le problème scientifique auquel nous nous attaquons.
 
 %%% Local Variables:
 %%% mode: latex
