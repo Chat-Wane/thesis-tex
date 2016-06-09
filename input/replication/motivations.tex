@@ -2,6 +2,15 @@
 \section{Motivations}
 \label{repl:sec:motivations}
 
+Cette section met en évidence les dangers liés à l'utilisation des approches
+structures de données répliquées sans résolution de conflits conçues pour les
+séquences et n'utilisant pas de pierre tombales. Tout d'abord, des traces
+réelles issues de Wikipédia sont employées. Ensuite, des documents artificiels
+sont créés de manière à accentuer les comportements des stratégies d'allocation
+examinées. Enfin, le problème scientifique est exposé.
+
+\subsection{Traces réelles}
+
 \begin{figure*}
   \centering
   \subfloat[Document Wikipédia principalement édité en fin]
@@ -15,7 +24,7 @@
   {\includegraphics[width=0.8\textwidth]{img/lseq/motivationtemplatetalk.eps}}
   \caption[Taille du chemin alloué pour chaque ligne dans Wikipédia]
   {\label{repl:img:motivations} Taille du chemin alloué pour chaque ligne du
-    document. L'axe des abcisses montre le numéro de la ligne concernée. L'axe
+    document. L'axe des abscisses montre le numéro de la ligne concernée. L'axe
     des ordonnées de la partie haute de la figure montre l'âge de la
     ligne. L'axe des ordonnées de la partie basse de la figure montre la taille
     binaire du chemin alloué.}
@@ -40,17 +49,18 @@ par le processus d'édition même. D'autre part, la granularité est fixée à l
 ligne. En cela, les simulations sur corpus Wikipédia diffèrent légèrement de la
 réalité.
 
-\paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent à fournir
-des identifiants dont la taille soit satisfaisante quel que soit le document.
+\paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent pas à
+fournir des identifiants dont la taille soit satisfaisante quel que soit le
+document créé grâce à des traces réelles.
 
 \paragraph{Description :} Logoot est configuré avec une base $2^{32}$. Treedoc
 est configuré pour utiliser sa méthode originelle -- son autre heuristique
 revenant plus ou moins à la stratégie de Logoot. Les documents considérés sont
-des articles extrait de Wikipédia joués sur 200 révisions. L'un des articles
-possède à la fin plus de 10k lignes principalement ajoutées en fin
-d'article\footnote{\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
-article possède seulement 200 lignes mais est principalement édité en
-tête\footnote{\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
+des articles extraits de Wikipédia et rejoués sur 200 révisions. L'un des
+articles atteint jusqu'à 10k lignes principalement ajoutées en fin
+d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
+article atteint seulement 200 lignes mais est principalement édité en
+tête\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
 
 \paragraph{Résultat :} Les figures~\ref{repl:img:motivationsA}
 et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
@@ -58,24 +68,47 @@ chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent tr�
 vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
 est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
 des tailles prohibitives. Dans ce cas, Logoot se comporte mieux. En revanche,
-dans le cadre de l'édition en tête, Logoot alloue des chemins de taille
-dramatiquement haute et en perpétuelle hausse.
+dans le cadre de l'édition en tête, Logoot alloue des chemins dont la taille
+augmente extrêmement rapidement.
 
 \paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
-allouent des identifiants dont la compléxité est linéaire. Ainsi, plus les
+allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
 insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du chemin
-augmente. Mais comme la granularité des chemins Treedoc est binaire
+augmente. Cependant, comme l'arité des chemins Treedoc est binaire
 ($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), cela
 lui permet de conserver des chemins plus petits que ceux de Logoot dans le cadre
 du document édité en tête. D'un autre coté, Logoot a conçu sa stratégie pour
 l'édition en fin. Dès lors, si le comportement suit cette hypothèse, les
-identifiants grossissent par palliers. Linéairement certes, mais lentement. En
-revanche, lorsque le comportement d'édition ne coopère pas, les identifiants
-grimpent très rapidement -- comme cela serait le cas avec la seconde heuristique
-de Treedoc.
+identifiants grossissent par paliers. Linéairement certes, mais lentement. Dans
+le cas contraire, les identifiants grimpent très rapidement (cela serait le cas
+avec la seconde heuristique de Treedoc).
+
+\subsection{Documents artificiels}
 
 
-\TODO{artificial document.}
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/motivationartificial.eps}
+    \caption{\label{repl:img:motivationartificial}Taille moyenne des chemins
+      allouées en fonction du nombre d'insertions successives dans le
+      document. L'axe des abscisses montre le nombre d'insertions dans le
+      documents. L'axe des ordonnées montre la taille moyenne de la
+      représentation binaire des chemins alloués.}
+  \end{center}
+\end{figure}
+
+\paragraph{Objectif :} Montrer la progressions de la taille des identifiants
+allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
+artificiels.
+
+\paragraph{Description :}
+
+\paragraph{Résultat :}
+
+\paragraph{Explication :}
+
+\subsection{Définition du problème}
+
 
 %% Conclusion
 Le problème est donc de créer une stratégie d'allocation d'identifiants qui soit
