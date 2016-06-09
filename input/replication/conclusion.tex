@@ -3,25 +3,31 @@
 \label{repl:sec:conclusion}
 
 Dans ce chapitre, nous avons présenté \LSEQ, un fonction d'allocation
-d'identifiants pour les structures de données sans résolution de conflits
-conçues pour les séquences. 
+d'identifiants pour les structures de données répliquées sans résolution de
+conflits conçues pour les séquences et n'utilisant pas de pierres tombales.
 
-\begin{itemize}
-\item [\textbf{QR B.}] \textbf{Afin d'éviter tout protocole additionnel de
-    relocalisation des identifiants, comment allouer ces identifiants pour que
-    leur taille soit directement sous-linéaire.}
-\end{itemize}
+% \begin{itemize}
+% \item [\textbf{QR B.}] \textbf{Afin d'éviter tout protocole additionnel de
+%     relocalisation des identifiants, comment allouer ces identifiants pour que
+%     leur taille soit directement sous-linéaire.}
+% \end{itemize}
 
 L'utilisation d'un arbre exponentiel en tant que structure permet d'améliorer
 l'allocation sur des comportements d'édition au prix d'un pire cas plus
-honéreux. Ce pire cas est rendu difficile à atteindre grâce à l'utilisation de
+onéreux. Ce pire cas est rendu difficile à atteindre grâce à l'utilisation de
 deux sous-fonctions d'allocation conçues pour les comportement d'édition
 monotone. Si malgré tout un utilisateur malintentionné tente d'obtenir de tels
 identifiants, la différence entre les identifiants attendus et les identifiants
 incriminés est telle qu'il est facile de confondre le coupable, et de prendre
 les mesures correspondantes. La complexité des identifiants \LSEQ est bornée par
 un polylogarithme comparativement au nombre d'insertions effectuées sur la
-séquence.
+séquence. À ce titre, elle constitue un candidat idéal pour l'édition
+collaborative en temps réel.
+
+Tout comme les approches appartenant à la réplication optimiste, \LSEQ a besoin
+d'un moyen de communiquer les identifiants qu'il génère aux autres copies.
+\TODO{Write.}
+
 
 Le chapitre~\ref{editor:chap:crate} décrit un éditeur de texte collaboratif
 temps réel. Dans ce contexte, chaque identifiant généré doit être envoyé au

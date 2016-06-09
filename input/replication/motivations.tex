@@ -97,11 +97,16 @@ avec la seconde heuristique de Treedoc).
   \end{center}
 \end{figure}
 
-\paragraph{Objectif :} Montrer la progressions de la taille des identifiants
+\paragraph{Objectif :} Montrer la progression de la taille des identifiants
 allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
 artificiels.
 
-\paragraph{Description :}
+\paragraph{Description :} Deux types de documents artificiels sont créés. Tout
+d'abord, un premier document est créé grâce à des insertions à des positions
+aléatoires dans la séquence. Le second document est créé grâce à des insertions
+successives en fin de document. La taille moyenne des chemins composant les
+identifiants est mesurée à chaque nouvelle insertion. Le document atteint 500k
+caractères.
 
 \paragraph{Résultat :}
 

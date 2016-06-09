@@ -1,26 +1,29 @@
 
 \section{Contributions}
 
-Afin de répondre à la première question de recherche, nous nous sommes interessés
-à la réplication optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e.,
-un schéma de réplication où le document partagé est copié chez chaque
-utilisateur afin de fournir réactivité et disponibilité. Nous nous intéressons
-particulièrement à un type de données pour séquences dont les opérations
-commutent par nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
+Afin de répondre à la première question de recherche, nous nous sommes
+interessés à la réplication optimiste~\cite{demers1987epidemic,
+  saito2005optimistic}, i.e., un schéma de réplication où le document partagé
+est copié chez chaque utilisateur afin de fournir réactivité et
+disponibilité. La structure de séquence constitue une abstraction proche du
+document. Par conséquent, nous nous intéressons particulièrement à un type de
+données pour séquences dont les opérations commutent par
+nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
   shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
 supporter efficacement les opérations concurrentes~\cite{ahmed2015evaluation,
   ahmed2011evaluating}. Ces approches associent un identifiant unique et
 immuable à chacun de leurs éléments. Nous proposons
-\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq} dont la taille des
-identifiants est bornée polylogarithmiquement par rapport au nombre d'insertions
-effectuées dans le document. Nous définissons les conditions sous lesquelles
-s'appliquent cette borne et en fournissons la preuve. Au travers de simulations,
-nous validons \LSEQ et sa complexité.
+\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une fonction d'allocation
+d'identifiants. Les identifiants générés ont une taille bornée
+polylogarithmiquement par rapport au nombre d'insertions effectuées dans la
+séquence. Nous définissons les conditions sous lesquelles s'appliquent cette
+borne et en fournissons la preuve. Au travers de simulations, nous validons
+\LSEQ et sa complexité.
 
-Afin de répondre à la seconde question de recherche, nous nous sommes
-interessés dans un premier temps aux protocoles d'appartenance
-(\emph{membership}) aux réseaux. Plus particulièrement à ceux dont la topologie
-résultante possède des propriétés similaires à celles des graphes
+Afin de répondre à la seconde question de recherche, nous nous sommes interessés
+dans un premier temps aux protocoles d'appartenance aux réseaux
+(\emph{membership}). Plus particulièrement à ceux dont la topologie résultante
+possède des propriétés similaires à celles des graphes
 aléatoires~\cite{erdos1959random}. Parmi ces propriétés se trouve la capacité à
 gérer les connexions et déconnexions fréquentes. Ces protocoles sont regroupés
 sous l'appellation de ``protocoles d'échantillonnage aléatoire de
@@ -48,7 +51,7 @@ l'art~\cite{etherpad, googledocs, hivejs, lautamaki2012cored,
 passage à l'échelle tout en conservant une facilité d'accès. Nous validons
 \CRATE aux travers d'expériences réunissant jusqu'à 600 éditeurs sur le banc
 d'essai Grid'5000. Les résultats confirment le facteur logarithmique de \SPRAY
-et le facteur polylogarithmique des messages échangés par \LSEQ.
+et le facteur polylogarithmique des identifiants générés par \LSEQ.
 
 
 

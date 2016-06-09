@@ -3,18 +3,17 @@
 
 Un éditeur de textes tel que \emph{Microsoft Word}~\cite{word} ou
 \emph{Emacs}~\cite{emacs} permet à un utilisateur de créer et d'éditer un
-document. Un éditeur de texte collaboratif en temps
-réel~\cite{ellis1991groupware} étend la rédaction d'un document à un groupe
-d'utilisateurs. Chacun possède son éditeur, voit les modifications effectuées
-par ses collaborateurs sur le document, effectue ses propres changements en
-insérant ou en supprimant des lettres. La mise en place de ces fonctionnalités
-requière
+document. Un éditeur de texte collaboratif temps réel~\cite{ellis1991groupware}
+étend la rédaction d'un document à un groupe d'utilisateurs. Chacun possède son
+éditeur, voit les modifications effectuées par ses collaborateurs sur le
+document, effectue ses propres changements en insérant ou en supprimant du
+contenu. La mise en place de ces fonctionnalités requière
 \begin{inparaenum}[(i)]
-\item un moyen de communication entre les éditeurs tournant sur des machines
+\item un moyen de communication entre les éditeurs fonctionnant sur des machines
   potentiellement distantes;
 \item un moyen de représenter les documents en mémoire de telle sorte que tous
   les éditeurs affichent un même document lorsqu'ils ont reçu les mêmes
-  modifications.
+  modifications~\cite{burckhardt2014replicated, shapiro2011conflict}.
 \end{inparaenum}
 
 \begin{figure}
@@ -26,14 +25,13 @@ requière
 \end{figure}
 
 La figure~\ref{intro:img:world} présente une session d'édition comprenant 6
-auteurs répartis à travers le monde. Afin d'augmenter la disponibilité et la
-réactivité des documents, les éditeurs collaboratifs actuels suivent le principe
-de réplication optimiste~\cite{saito2005optimistic}. Chaque éditeur collaboratif
-possède une copie locale du document.  Lorsque l'utilisateur effectue une
-modification, elle est directement appliquée sur sa copie avant d'être envoyée
-au reste des éditeurs où elle est intégrée. Un système est correct si, lorsque
-les mêmes changements ont été intégrés, les utilisateurs lisent le même
-document~\cite{burckhardt2014replicated, shapiro2011conflict}.
+auteurs répartis à travers le monde. Afin d'augmenter la disponibilité du
+document et le temps de réponse lors d'une modification, les éditeurs
+collaboratifs actuels suivent le principe de la réplication
+optimiste~\cite{saito2005optimistic}. Chaque éditeur collaboratif possède une
+copie locale du document.  Lorsque l'utilisateur effectue une modification, elle
+est directement répercutée sur sa copie avant d'être envoyée au reste des
+éditeurs où elle est intégrée.
 
 % \begin{figure}
 %   \begin{center}
@@ -73,9 +71,8 @@ concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
 l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
 compte qu'une lettre a été ajoutée en tête concurremment. Il doit donc modifier
 les arguments de l'opération reçue afin que la seconde lettre soit supprimée, et
-non plus la première. Malheureusement, la détection de ces cas nécessite de
-transporter des données avec chaque opération dont le coût est
-prohibitif~\cite{sun2009contextbased}.
+non plus la première. Détecter ces cas nécessite de transporter, avec chaque
+opération, des données dont le coût est prohibitif~\cite{sun2009contextbased}.
 
 Une seconde famille d'approches consiste à utiliser des structures de données
 dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
@@ -83,10 +80,12 @@ opérations commutent, ces approches associent à chaque lettre un identifiant
 unique et immuable.
 
 \paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
-de suppression se contente de cacher la lettre à l'utilisateur. Afin de purger
-la structure des identifiants cachés et ainsi conserver de bonnes performances,
-un protocole de ramasse-miettes réparti~\cite{abdullahi1998garbage} doit être
-exécuté régulièrement. Malheureusement, cela s'avère extrêmement coûteux.
+de suppression de lettres se contente de cacher la lettre ciblée à
+l'utilisateur. Afin de purger la structure des identifiants cachés et ainsi
+conserver de bonnes performances, un protocole de ramasse-miettes
+réparti~\cite{abdullahi1998garbage} doit être exécuté
+régulièrement. Malheureusement, cela s'avère extrêmement
+coûteux~\cite{abdullahi1998garbage}.
 
 \paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
 identifiants sont des listes dont la taille, définie à la génération, peut
@@ -99,7 +98,7 @@ s'avère également très élevé~\cite{mostefaoui2015signature}.
 
 Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces
-  identifiants pour que leur taille soit directement sous-linéaire?}
+  identifiants de sorte que leur taille soit directement sous-linéaire?}
 
 %%et des canaux de communication avec des
 %%éditeurs distants. Une opération effectuée par l'auteur localisé aux États-Unis
@@ -109,22 +108,22 @@ Cela pose la première question de recherche : \textbf{Afin d'éviter tout
 Pour converger vers des documents identiques, tous les changements doivent
 parvenir à tous les éditeurs. Par conséquent, un réseau superposé doit être mis
 en place afin de permettre une communication fiable d'un éditeur à l'autre.  La
-figure~\ref{intro:img:world} montre que chaque éditeur possède des canaux de
-communication avec d'autres éditeurs -- ses voisins -- possédant une réplique du
-document. Ici, l'éditeur localisé aux États-Unis communique avec les éditeurs
-Canadien, Français et Malgache. Chaque éditeur participe activement au bon
-fonctionnement du système. Une opération émise par ce premier peut transiter par
-l'éditeur localisé au Madagascar avant de parvenir à l'éditeur Japonais.  Les
-changements parviennent à tous les éditeurs par
-transitivité~\cite{birman1999bimodal}.  La taille des voisinnages est
-déterminante. En effet, lorsqu'elle augmente, le trafic généré augmente au
-risque de dépasser les capacités d'émission des éditeurs; lorsqu'elle diminue,
-les changements risquent de ne plus parvenir à tous les éditeurs.
+figure~\ref{intro:img:world} montre que chaque éditeur est connecté à d'autres
+éditeurs -- ses voisins -- possédant une réplique du document. Ici, l'éditeur
+localisé aux États-Unis communique avec les éditeurs canadien, français et
+malgache. Chaque éditeur participe activement au bon fonctionnement du
+système. Une opération émise par ce premier peut transiter par l'éditeur
+localisé à Madagascar avant de parvenir à l'éditeur japonais.  Les changements
+parviennent à tous les éditeurs par transitivité~\cite{birman1999bimodal}.  La
+taille des voisinnages est déterminante. En effet, lorsqu'elle augmente, le
+trafic généré augmente au risque de dépasser les capacités d'émission des
+éditeurs; lorsqu'elle diminue, les changements risquent de ne plus parvenir à
+tous les éditeurs.
 
 Afin de configurer la taille de cet ensemble idéalement~\cite{erdos1959random},
-le développeur doit connaître le nombre de collaborateurs que l'éditeur doit
-supporter. Malheureusement, celui-ci varie, que ce soit pendant la durée de la
-collaboration, e.g., un cours de formation en ligne
+le développeur doit connaître le nombre de collaborateurs que l'éditeur
+collaboratif doit supporter. Malheureusement, celui-ci varie, que ce soit
+pendant la durée de la collaboration, e.g., un cours de formation en ligne
 (\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
 l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pour un
 événement de grande ampleur n'a pas la même audience que celle d'un rapport de
