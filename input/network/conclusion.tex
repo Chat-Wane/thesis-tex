@@ -3,40 +3,25 @@
 \label{net:sec:conclusion}
 
 Dans ce chapitre, nous avons présenté \SPRAY, un protocole d'échantillonnage
-aléatoire de pairs s'auto-ajustant par rapport aux variations de la taille du
+aléatoire de pairs s'ajustant automatiquement aux fluctuations de la taille du
 réseau. Chaque nœud d'un réseau de taille $|\mathcal{N}|$ se voit attribuer une
 vue partielle du réseau de taille $\ln |\mathcal{N}|$ avec laquelle il peut
-communiquer. La topologie résultant des mélanges de voisinnages possède des
-propriétés proches des graphes aléatoires. Entre autres, le réseau est tolérent
-aux pannes et l'information se propage très rapidement. Bien que les connexions
-ne s'établissent que de voisin à voisin, le réseau converge vers une topologie
-dont les propriétés sont stables en très peu de temps.
-
-\begin{itemize}
-\item [\textbf{QR A.}] \textbf{Comment disséminer les messages de telle façon
-    que le trafic s'adapte automatiquement aux fluctuations des réseaux?}
-\end{itemize}
-
-
-% \begin{algorithm}[h]
-%   \input{input/network/broadcastalgo.tex}
-%   \caption{\label{net:algo:broadcast} Dissémination de messages.}
-% \end{algorithm}
-
-Comme le montre l'algorithme~\ref{net:algo:broadcast}, la propagation d'un
-message à tout le réseau se base essentiellement sur les vues partielles
-maintenues par chaque nœud. La fonction \textsc{alreadyReceived} s'assure de la
-terminaison de la dissémination, i.e., un message ne voyage pas indéfiniement
-dans le réseau. Avec au minimum une transmission par nœud, le coût en
-communication à chaque nœud se voit attribuer un facteur multiplicatif de
-l'ordre de la taille de sa vue partielle. Grâce à \SPRAY, cette dernière évolue
-automatiquement vers le logarithme de la taille globale du réseau. Le trafic
-généré hérite de cet ajustement automatique.
+communiquer. Périodiquement, les nœuds échangent une partie de leur vue
+partielle avec leur voisin le plus âgé. Bien que l'identité des nœuds ne se
+propagent que de voisin à voisin, le réseau converge vers une topologie dont les
+propriétés sont stables en très peu de temps. La topologie résultant de ces
+mélanges de voisinages possède des propriétés proches des graphes
+aléatoires. Par exemple, le réseau est tolérant aux pannes et les messages se
+propagent efficacement.
 
 Un développeur peut utiliser \SPRAY afin que le trafic généré suive les
 variations du réseau, et ce, sans configuration préalable de sa part. Le
 chapitre~\ref{editor:chap:crate} montre un exemple d'utilisation de \SPRAY dans
-le contexte de l'édition collaborative temps réel. Dans ce cadre, les sessions
-d'édition peuvent être de taille très différentes en fonction de la popularité
-du document et au cours du temps. 
+le contexte de l'édition collaborative temps réel dans les navigateurs web.  Ce
+contexte est propice à son utilisation car l'établissement de connexions d'un
+navigateur à l'autre s'avère coûteuse. Par conséquent, conserver un nombre
+logarithmique de connexions s'établissant précautionneusement de proche en
+proche constitue un avantage. De plus, le web favorisant les échanges et la
+propagation d'idées, un éditeur web doit être capable de faire face aux piques
+soudains de popularité. 
 
