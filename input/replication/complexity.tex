@@ -4,20 +4,20 @@
 
 Dans l'édition de texte, la plupart des comportements d'édition peuvent
 empiriquement être résumés à la composition de deux comportements basiques.
-\begin{inparaenum}
-\item Le comportement d'édition aléatoire où l'auteur insert de nouveaux
-  éléments à ce qui semble être des positions aléatoires dans la séquence. Par
-  exemple, ce comportement peut apparaitre lors de corrections orthographiques,
-  e.g. l'auteur écrit \texttt{QWETY} et réalise qu'il lui manque le
-  \texttt{R}. Il l'ajoute donc dans un second temps;
-\item Le comportement d'édition monotone où l'auteur insert de nouveaux éléments
-  les uns à la suite des autres (avant ou après l'élément le plus récemment
-  inséré). Par exemple, lorsqu'un auteur écrit \texttt{QWERTY}, il commence
-  généralement par le caractère \texttt{Q} jusqu'à arriver au caractère
-  \texttt{Y}. À l'opposé, les insertions dans un historique se font en tête pour
-  des raisons pratiques. Ces comportements sont respectivements notés l'édition
-  de droite à gauche, et l'édition de gauche à droite.
-\end{inparaenum}
+
+\paragraph{Le comportement d'édition aléatoire.} L'auteur insère de nouveaux
+éléments à ce qui semble être des positions aléatoires dans la séquence. Par
+exemple, ce comportement peut apparaître lors de corrections orthographiques,
+e.g. l'auteur écrit \texttt{QWETY} et réalise qu'il lui manque le \texttt{R}. Il
+l'ajoute donc dans un second temps;
+
+\paragraph{Le comportement d'édition monotone} L'auteur insère de nouveaux
+éléments les uns à la suite des autres (avant ou après l'élément le plus
+récemment inséré). Par exemple, lorsqu'un auteur écrit \texttt{QWERTY}, il
+commence généralement par le caractère \texttt{Q} jusqu'à arriver au caractère
+\texttt{Y}. À l'opposé, les insertions dans un historique se font en tête pour
+des raisons pratiques. Ces comportements sont respectivement notés l'édition de
+droite à gauche, et l'édition de gauche à droite.
 
 Cette section concentre l'analyse en complexité de \LSEQ sur les comportements
 d'édition susmentionnés auxquels est ajouté une analyse en pire cas. Il est
@@ -37,7 +37,8 @@ La complexité spatiale d'un seul identifiant est différenciée de la complexit
 spatiale de l'arbre stockant la séquence. La première est importante puisqu'elle
 influence directement la complexité en communication. En effet, chaque
 identifiant est propagé à tous les possesseurs de réplique; La seconde est
-importante puisqu'elle représente le mémoire allouée par chaque participant.
+importante puisqu'elle représente le mémoire allouée localement par chaque
+éditeur collaboratif.
 
 La section~\ref{repl:sec:proposal} spécifie que chaque nouvelle concaténation
 dans le chemin de l'identifiant requière un bit additionnel pour l'encoder. Cela
@@ -178,39 +179,20 @@ profonde.
 
 
 \paragraph{Interface arbre -- séquence.} La structure de données répliquée est
-un arbre mais l'objet manipulé par l'utilisateur est une séquence. Il est donc
-nécessaire de fournir les fonctionnalités d'accès élémentaires afin de faire le
-lien entre l'arbre et la séquence.  La fonction \textsc{get} permet d'obtenir
-l'identifiant à une position donnée dans la séquence.
+un arbre mais l'objet manipulé par l'éditeur collaboratif est une séquence. Il
+est donc nécessaire de fournir les fonctionnalités d'accès élémentaires afin de
+faire le lien entre l'arbre et la séquence. Un fonction additionnelle de
+\textsc{lookup} est requise. Son but est de récupérer l'élément à l'indice
+spécifié dans la séquence, et inversement. Puisque la structure sous-jacente est
+un arbre, l'accès n'est pas direct.
 
-% \subsubsection{get}
-% \label{repl:subsec:get}
-
-% \begin{wrapfigure}{r}{0.6\textwidth}
-%   \vspace{-35pt} %% (ugly)
-%   \begin{minipage}[t]{0.6\textwidth}
-%     \begin{algorithm}[H]
-%       \input{input/replication/algoget.tex}
-%       \caption{\label{repl:algo:get} Get.}
-%     \end{algorithm}
-%   \end{minipage}
-%   \vspace{-15pt}
-% \end{wrapfigure}
-
-% L'algorithme~\ref{repl:algo:get} présente les instructions de la fonction
-% \textsc{get} permettant d'obtenir l'identifiant présent à une position donnée
-% dans la séquence. Celle-ci est nécéssaire lorsque un élément est localement
-% inséré ou supprimé. En particulier, elle permet de retrouver les identifiants
-% des éléments adjacents à la position d'insertion. Ces derniers seront ensuite
-% utilisés afin d'allouer un nouvel identifiant unique.
-
-Afin de retrouver l'identifiant à la position $index$ de la séquence, l'arbre
-est parcouru en largeur, de gauche à droite ou de droite à gauche selon la borne
-la plus proche à chaque niveau.  Puisque chacun des noeuds sauvegarde le nombre
-total de fils qu'il possède, il n'est pas nécessaire de parcourir l'ensemble des
-feuilles de l'arbre précédant/suivant la position recherchée. Toutefois, selon
-la fonction de parcours utilisée pour retrouver la position et la séquence
-d'édition ayant rempli la structure, les performances peuvent varier.
+\noindent Chaque nœud de l'arbre possède un compteur désignant la quantité
+d'éléments présents dans ses sous-arbres. Chaque opération d'insertion ou de
+suppression met à jour ces compteurs lorsqu'elle explore le chemin. Ensuite,
+calculer l'indice d'un identifiant revient à compter le nombre d'éléments chez
+les voisins des nœuds explorés, en commençant par l'élément de l'une des
+extrémités de l'arbre. Hélas, selon le comportement d'édition, les performances
+de cette fonction peuvent se dégrader très rapidement.
 
 \begin{figure}
   \centering
@@ -220,44 +202,48 @@ d'édition ayant rempli la structure, les performances peuvent varier.
     position 5 correspondant au caractère \texttt{Y}.}
 \end{figure}
 
-\TODO{Rework.}
-La figure~\ref{repl:fig:getexample} montre un exemple de recherche d'identifiant
-dans un arbre représentant la séquence \texttt{QWERTY}. La recherche concerne la
-position $5$ correspondant au caractère \texttt{Y}. L'arbre est parcouru en
-partant du fils gauche de la racine. Ce fils sait que ses sous-branches
-contiennent 3 caractères. L'algorithme en déduit que le prochain fils de la
-racine est à la position 4. En examinant ce second fils, l'algorithme déduit que
-l'identifiant recherché est inclue dans l'un de ses fils. Ainsi, il continue
-l'exploration dans ce sous-arbre. Lorsqu'il examine le noeud contenant
-\texttt{Y}, il sait que celui-ci est en position $5$. Par conséquent, il
-retourne le chemin qu'il a empreinté pour y parvenir, à savoir [5.4]. Nous
-pouvons observer dans cet exemple que si la recherche était parti de la droite,
-elle n'aurait eu à parcourir qu'un seul élément intermédiaire (contenant le
-caractère \texttt{T}), et aurait donc été plus efficace.
+\noindent La figure~\ref{repl:fig:getexample} montre un exemple de recherche
+d'un identifiant dans un arbre représentant la séquence \texttt{QWERTY}. La
+recherche concerne la position $5$ correspondant au caractère \texttt{Y}. Ici,
+l'arbre est parcouru en partant du fils gauche de la racine. Ce fils sait que
+ses sous-branches contiennent 3 caractères. L'algorithme en déduit que le
+prochain fils de la racine est à la position 4. En examinant ce second fils,
+l'algorithme déduit que l'identifiant recherché est inclue dans l'un de ses
+fils. Ainsi, il continue l'exploration dans ce sous-arbre. Lorsqu'il examine le
+nœud contenant \texttt{Y}, il sait que celui-ci est en position $5$. Par
+conséquent, il retourne le chemin qu'il a empreinté pour y parvenir, à savoir
+[5.4]. Nous pouvons observer dans cet exemple que si la recherche était parti de
+la droite, elle n'aurait eu à parcourir qu'un seul élément intermédiaire
+(contenant le caractère \texttt{T}), et aurait donc été plus efficace.
 
 \begin{table}
   \begin{center}
-    \caption[Bornes supérieures de la complexité temporelle de l'opération
-    \textsc{get} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures de
-      la complexité temporelle de l'opération \textsc{get} de \LSEQ. Où $I$ est
-      le nombre d'insertions effectuées sur la séquence.}
+    \caption[Bornes supérieures de la complexité temporelle de la fonction
+    \textsc{lookup} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures
+      de la complexité temporelle de la fonction \textsc{lookup} de \LSEQ. Où
+      $I$ est le nombre d'insertions effectuées sur la séquence.}
     \input{input/replication/tablelseqlookup.tex}
   \end{center}
 \end{table}
 
-La complexité temporelle de cet algorithme dépend de la séquence d'édition ayant
-permit de remplir l'arbre. Ainsi, lorsque l'arbre est rempli aléatoirement, sa
-profondeur est faible et un grand nombre d'éléments peuvent être passés. En
-revanche, lorsque le comportement d'édition ayant rempli l'arbre est monotone,
-une branche de l'arbre seulement est fortement remplie. L'algorithme doit la
-parcourir afin de trouver l'identifiant à la position désirée. La complexité est
-alors linéaire et correspond au pire cas. Cela s'avère problématique puisque
-celle-ci est appelée deux fois par insertion locale. Heureusement, lorsque le
-comportement d'édition est monotone, il est facile de se souvenir des bornes
-d'insertion : l'une ne change jamais, et l'autre correspond à l'identifiant
-nouvellement inséré. Si le comportement d'édition change, l'arbre commence à se
-rééquilibrer et les performances se rapprochent de celles de l'édition
-aléatoire.
+\noindent Le comportement d'édition aléatoire conduit à un arbre dont la
+profondeur est bornée par $\mathcal{O}(\sqrt{\log I})$. Dans pareil cas, une
+très faible portion de l'arbre est explorée. Pour obtenir la borne supérieure,
+il faut que le nœud à rechercher se trouve en plein milieu de la séquence, ce
+qui force à examiner la moitié des voisins du nœud exploré à chaque niveau de
+l'arbre. Puisque chaque nœud peut posséder jusqu'à deux fois plus de fils que
+son parent, le nombre de voisins à examiner double également. Au total, la somme
+de ces voisins est égale au nombre de nœuds présents dans une branche du plus
+profond niveau, c'est-à-dire $\mathcal{O}(2^{\sqrt{\log I}}$ éléments.
+
+\noident Grâce à un raisonnement identique, la fonction de \textsc{lookup} après
+un comportement d'édition monotone -- ce qui constitue le pire cas -- est bornée
+par $\mathcal{O}(I)$. En effet, seulement une branche est remplie et
+explorée. Ici, le compteur maintenus par chaque nœud devient inutile puisque les
+nœuds ne possèdent qu'un seul et unique élément. L'exploration s'achève au plus
+profond des niveaux contenant $\mathcal{O}(2^{\log_2 I})$ éléments dont la
+moitié doit être examiné. La complexité temporelle dans ce cas est :
+$\mathcal{O}(I)$.
 
 \paragraph{Résumé.} Les tableaux~\ref{repl:table:lseqtime}
 et~\ref{repl:table:lseqlookup} synthétisent la complexité temporelle des
@@ -292,7 +278,7 @@ linéairement par rapport au nombre d'insertions dans la séquence.  En outre, l
 complexité spatiale de la structure ainsi que la complexité temporelle de ses
 opérations montre que le choix d'un arbre pour représenter la séquence est
 efficace. Néanmoins, selon les préférences, le choix d'un vecteur -- en tant que
-version applatie de l'arbre -- est possible afin d'améliorer les performances
+version aplatie de l'arbre -- est possible afin d'améliorer les performances
 des opérations au prix d'un usage mémoire plus
 important~\cite{weiss2009logoot}. La section suivante s'attache à valider ces
 analyses en complexité au travers d'expérimentations.
@@ -322,7 +308,7 @@ analyses en complexité au travers d'expérimentations.
 %   logarithmique comparée à la taille du tableau trié parcouru.
 % \item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
 %   séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
-%   branches, les noeuds sauvegardent le nombre de sous-branches qu'ils possèdent
+%   branches, les nœuds sauvegardent le nombre de sous-branches qu'ils possèdent
 %   (similairement à l'algorithme~\ref{repl:algo:get}).  La
 %   ligne~\ref{repl:line:optimization} définit la façon dont l'arbre est
 %   parcouru. Un optimisation consiste à parcourir l'arbre à partir de la borne la

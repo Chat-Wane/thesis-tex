@@ -1,13 +1,14 @@
 
 \section{Cas d'utilisation : Dissémination de messages}
+\label{net:sec:usecase}
 
 La diffusion de messages d'un nœud à tous les autres est une fonctionnalité
-courrante des réseaux (\emph{broadcast}). La propagation épidémique
+courante des réseaux (\emph{broadcast}). La propagation épidémique
 (\emph{gossip})~\cite{birman1999bimodal} constitue un moyen efficace de la
 mettre en place. Sa dénomination provient de son fonctionnement : un nœud
 choisit un sous-ensemble des membres du réseau et les ``contamine'' en leur
 envoyant le message; les nœuds ``infectés'' en font de même; un nœud ayant déjà
-envoyé le message ne le réenvoit pas. Plus la taille du sous-ensemble choisi est
+envoyé le message ne le renvoie pas. Plus la taille du sous-ensemble choisi est
 élevée, plus la probabilité selon laquelle le message parvient à tous les
 membres du réseau
 augmente~\cite{erdos1959random}. 
@@ -22,7 +23,7 @@ augmente~\cite{erdos1959random}.
 L'algorithme~\ref{net:algo:broadcast} montre les quelques instructions composant
 la dissémination épidémique de messages. L'épanouissement (\emph{fanout})
 désigne le nombre de voisins auxquels le message va être envoyé. La fonction
-\textsc{getPeers} renvoit autant de nœuds distincts. Dans le cadre d'approches
+\textsc{getPeers} renvoie autant de nœuds distincts. Dans le cadre d'approches
 fournissant une vue partielle de taille constante, cette variable
 d'épanouissement est elle aussi constante, et configurée à l'avance. Pour que
 les chemins employés lors de la dissémination soient eux aussi aléatoires malgré
@@ -42,7 +43,7 @@ $\ln(|\mathcal{N}|)+x$, où $x$ est un entier positif.
 La suite met en évidence l'avantage apporté par une variable d'épanouissement
 s'ajustant à la taille du réseau. En particulier, nous mesurerons le taux de
 réception totale des messages par les membres du réseau. Si au moins un membre
-ne reçoit pas le message, alors la reception totale à échouée. Le taux mesuré
+ne reçoit pas le message, alors la réception totale à échouée. Le taux mesuré
 est le nombre de messages ayant été reçus par tout les membres sur le nombre de
 messages ayant été envoyés.
 
@@ -60,7 +61,7 @@ dissémination par un protocole adaptatif d'échantillonnage.
 nœuds. Les vues partielles fournies par \CYCLON sont configurées pour contenir
 30 voisins ($6.\ln(100) \approx 6.5 = 30$). Nous considérons 2 configurations
 pour l'épanouissement : $\ln(100)+1 \approx 6$ et $\ln(100)+3 \approx 8$. Ces
-configurations garantissent une forte probabilité de reception des messages
+configurations garantissent une forte probabilité de réception des messages
 lorsque le réseau contient 100 nœuds ou moins. De même, nous configurons \SPRAY
 pour qu'il fournisse des vues partielles 6 fois plus peuplés qu'à la normale. La
 variable d'épanouissement est configurée pour choisir 1 sixième de la vue, soit
