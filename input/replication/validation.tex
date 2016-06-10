@@ -3,13 +3,13 @@
 \label{repl:sec:validation}
 
 \LSEQ est une fonction d'allocation d'identifiants pour les structures de
-données sans resolution de conflits conçue pour les séquences.  Cette section a
+données sans résolution de conflits conçues pour les séquences.  Cette section a
 deux objectifs. Tout d'abord, elle examine la contribution de chacun des
 composants internes à \LSEQ décrits en §\ref{repl:sec:proposal}.  Ensuite, elle
 valide expérimentalement les analyses en complexité de \LSEQ faites en
 §\ref{repl:sec:complexity}. Enfin, elle montre l'influence de la concurrence sur
 l'allocation d'identifiants. Dans toutes ces expérimentations, nous sommes plus
-interessés par l'allure des résultats que par leurs valeurs absolues.
+intéressés par l'allure des résultats que par leurs valeurs absolues.
 
 \subsection{Référence}
 
@@ -46,7 +46,7 @@ reste bien plus efficace que l'édition de droite à gauche.
 
 \paragraph{Explication :} Le comportement d'édition aléatoire conduit à une
 structure d'arbre équilibrée. Les identifiants alloués restent petits. Le
-comportement d'édition montone de gauche à droite conduit à une croissance
+comportement d'édition monotone de gauche à droite conduit à une croissance
 linéaire mais relativement faible. En effet, la stratégie d'allocation employée
 est conçue pour ce comportement : Des branches sont laissées disponibles en vue
 des prochaines insertions. La taille des identifiants grandit donc
@@ -82,7 +82,7 @@ différent est simulé :
 \begin{inparaenum}[(i)]
 \item aléatoire,
 \item monotone de gauche à droite,
-\item montone de droite à gauche.
+\item monotone de droite à gauche.
 \end{inparaenum}
 La fonction d'allocation est conçue pour l'édition de gauche à droite et utilise
 un arbre exponentiel.  La moyenne de la taille des identifiants est mesurée à
@@ -99,9 +99,9 @@ l'édition de droite à gauche entraîne une augmentation quadratique de la tail
 des identifiants.
 
 \paragraph{Explication :} L'édition à des positions aléatoires place les
-éléments au hazard dans la séquence. L'arbre est équilibré car nulle branche
+éléments au hasard dans la séquence. L'arbre est équilibré car nulle branche
 n'est favorisée. À terme, les branches proches de la racine sont remplies
-entièrement. Dans ce cas, les chemins sont de taille logarithmiques ce qui
+entièrement. Dans ce cas, les chemins sont de taille logarithmique ce qui
 constitue la borne minimale. Lors du comportement d'édition monotone de gauche à
 droite, les chemins les plus à gauche sont alloués réservant de l'espace aux
 insertions futures. De plus, puisque l'arité de l'arbre double à chaque niveau,
@@ -200,10 +200,10 @@ différences entre les deux courbes résultant des comportements d'édition mono
 \paragraph{Explication :} Le comportement d'édition aléatoire conduit à un arbre
 exponentiel équilibré, d'où la croissance logarithmique des identifiants. Les
 autres cas d'édition sont très similaires car les sous-fonctions d'allocations
-ont la même probabilité d'apparaitre. Les différences s'expliquent par les
+ont la même probabilité d'apparaître. Les différences s'expliquent par les
 différents choix lors des exécutions. La progression sous-linéaire s'explique
 grâce à l'augmentation d'arité de l'arbre lorsqu'il gagne en profondeur, i.e.,
-chaque nœud de l'arbre peut possèder jusqu'à deux fois plus de fils que son
+chaque nœud de l'arbre peut posséder jusqu'à deux fois plus de fils que son
 parent ne le peut. Lorsque la sous-fonction d'allocation employée ne s'accorde
 pas avec le comportement d'édition, la profondeur de l'arbre est incrémentée
 rapidement. Lorsque finalement la bonne sous-fonction d'allocation est trouvée,
@@ -220,12 +220,12 @@ les pertes de niveaux dans l'arbre.
       de la énième opération. L'axe des ordonnées montre le temps d'exécution de
       l'opération en microsecondes. La figure du haut considère une structure
       remplie par des insertions aléatoires. La figure du bas considère une
-      structure remplies par insertions montones.}
+      structure remplies par insertions monotones.}
   \end{center}
 \end{figure}
 
 \paragraph{Objectif :} Confirmer l'analyse en complexité temporelle de
-\LSEQ. Des performances passant à l'echelle sont attendues.
+\LSEQ. Des performances passant à l'échelle sont attendues.
 
 \paragraph{Description :} Cette expérience implique un utilisateur artificiel
 unique effectuant des opérations sur sa réplique du document. Le banc d'essai
@@ -241,7 +241,7 @@ plusieurs reprises sur deux types de documents. Tout d'abord, un document géné
 par un comportement d'édition aléatoire, i.e., l'arbre \LSEQ est
 équilibré. Ensuite, un document généré par un comportement d'édition monotone,
 i.e., une seule branche de l'arbre \LSEQ est remplie. Nous nous intéressons aux
-tendences plutôt qu'aux valeurs absolues. En effet, le langage \emph{Javascript}
+tendances plutôt qu'aux valeurs absolues. En effet, le langage \emph{Javascript}
 opère de nombreuses optimisations à la volée. Afin de montrer la contribution
 réelle de chacune des opérations, ces optimisations ont été limité au
 maximum. Les performances réelles des opérations sont donc nettement meilleures
@@ -258,7 +258,7 @@ pour les parties distantes des opérations d'insertion et de suppression.
 \paragraph{Explication :} Après un comportement d'édition aléatoire, l'arbre de
 \LSEQ est équilibré. Par conséquent l'influence d'une opération se limite à un
 petit sous ensemble d'éléments composant le document. Par exemple, la fonction
-\textsc{lookup} n'a pas besoin d'explorer chaque élément de l'arbre. Elle rejète
+\textsc{lookup} n'a pas besoin d'explorer chaque élément de l'arbre. Elle rejette
 rapidement de nombreuses branches sans importances à chaque niveau de l'arbre
 car l'indice recherché ne tombe pas dans leur intervalle. Toutefois, cette
 remarque n'est pas vraie en ce qui concerne un arbre rempli par un comportement

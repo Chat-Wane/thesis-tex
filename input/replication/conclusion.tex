@@ -6,33 +6,36 @@ Dans ce chapitre, nous avons présenté \LSEQ, un fonction d'allocation
 d'identifiants pour les structures de données répliquées sans résolution de
 conflits conçues pour les séquences et n'utilisant pas de pierres tombales.
 
-% \begin{itemize}
-% \item [\textbf{QR B.}] \textbf{Afin d'éviter tout protocole additionnel de
-%     relocalisation des identifiants, comment allouer ces identifiants pour que
-%     leur taille soit directement sous-linéaire.}
-% \end{itemize}
-
 L'utilisation d'un arbre exponentiel en tant que structure permet d'améliorer
 l'allocation sur des comportements d'édition au prix d'un pire cas plus
 onéreux. Ce pire cas est rendu difficile à atteindre grâce à l'utilisation de
-deux sous-fonctions d'allocation conçues pour les comportement d'édition
+deux sous-fonctions d'allocation conçues pour les comportements d'édition
 monotone. Si malgré tout un utilisateur malintentionné tente d'obtenir de tels
 identifiants, la différence entre les identifiants attendus et les identifiants
-incriminés est telle qu'il est facile de confondre le coupable, et de prendre
-les mesures correspondantes. La complexité des identifiants \LSEQ est bornée par
-un polylogarithme comparativement au nombre d'insertions effectuées sur la
-séquence. À ce titre, elle constitue un candidat idéal pour l'édition
+incriminés est telle qu'il est facile de confondre le coupable, et donc, de
+prendre des mesures à son encontre. La complexité des identifiants \LSEQ est
+bornée par un polylogarithme comparativement au nombre d'insertions effectuées
+sur la séquence. À ce titre, elle constitue un candidat idéal pour l'édition
 collaborative en temps réel.
 
-Tout comme les approches appartenant à la réplication optimiste, \LSEQ a besoin
-d'un moyen de communiquer les identifiants qu'il génère aux autres copies.
-\TODO{Write.}
+Tout comme les approches basées sur le maintient de répliques distantes, \LSEQ a
+besoin d'un moyen de communication entre les répliques. En effet, les
+identifiants générés et supprimés par \LSEQ doivent parvenir à toutes les
+répliques pour que celles-ci convergent vers un état équivalent.  Le chapitre
+suivant présente un protocole construisant un réseau superposé : chaque serveur
+détenant une réplique connaît un ensemble de serveurs détenant également une
+telle réplique et peut communiquer avec ceux-ci. La spécificité du protocole
+présenté est qu'il maintient ces ensembles de telle sorte que le cardinal de
+chaque ensemble croît et décroît logarithmiquement par rapport à la taille du
+réseau, et ce, sans connaissance globale. Grâce à ce protocole, un éditeur
+collaboratif est en mesure de disséminer efficacement les changements effectués
+sur le document à tous les autres éditeurs collaboratifs impliqués dans la
+rédaction (cf. §\ref{editor:chap:crate}).
 
-
-Le chapitre~\ref{editor:chap:crate} décrit un éditeur de texte collaboratif
-temps réel. Dans ce contexte, chaque identifiant généré doit être envoyé au
-reste des participants à la session d'édition. Maintenir une croissance des
-identifiants sous-linéaire permet de passer à l'échelle. Par conséquent, la
-structure ne nécessite pas de relocalisation d'identifiants s'avérant hors de
-prix.
+% Le chapitre~\ref{editor:chap:crate} décrit un éditeur de texte collaboratif
+% temps réel. Dans ce contexte, chaque identifiant généré doit être envoyé au
+% reste des participants à la session d'édition. Maintenir une croissance des
+% identifiants sous-linéaire permet de passer à l'échelle. Par conséquent, la
+% structure ne nécessite pas de relocalisation d'identifiants s'avérant hors de
+% prix.
 
