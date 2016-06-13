@@ -12,36 +12,49 @@
 \end{figure}
 
 
-Il est coutume de dire que les éditeurs collaboratifs répartis distribuent
-l'écriture selon trois dimensions : Le temps, les lieux, et les
-organisations~\cite{johansen1988groupware}.  La
-figure~\ref{editor:fig:groupware} résume la distribution sur les deux premières
-dimensions.  Nous nous intéressons particulièrement 
-\begin{inparaenum}[(i)]
-\item aux participants connectés en même temps en des lieux différents, ce qui
-  correspond à la problématique du temps réel. Dans ce contexte, \emph{temps
-    réel} signifie que les modifications doivent être perçues au plus
-  tôt~\cite{ellis1989concurrency}. La tolérance d'un utilisateur varie selon les
-  outils collaboratifs à sa disposition. Une modification locale doit être
-  observée immédiatemment; une modification distante peut prendre plus de temps.
-  Nous nous intéressons aussi
-\item aux participants connectés à différents moments en des lieux différents,
-  ce qui correspond au travail en mode hors ligne. Les documents sont
-  synchronisés lorsqu'ils en ont l'occasion.
-\end{inparaenum}
+Il est coutume de dire que l'édition collaborative répartit l'écriture selon
+trois dimensions : le temps, les lieux, et les
+activités~\cite{desanctis1987foundation, grudin1994computersupported,
+  johansen1988groupware}.  La figure~\ref{editor:fig:groupware} résume cette
+répartition sur les deux premières dimensions. Dans ce chapitre, nous nous
+intéressons particulièrement : 
+\begin{itemize}
+\item aux collaborateurs connectés en \textbf{même temps} en des \textbf{lieux
+    différents}, ce qui correspond à la problématique du temps réel. Dans ce
+  contexte, \emph{temps réel} signifie que les modifications doivent être
+  perçues au plus tôt~\cite{ellis1989concurrency}. La tolérance d'un utilisateur
+  varie selon les outils collaboratifs à sa disposition. Une modification locale
+  doit être observée immédiatement; une modification distante peut prendre plus
+  de temps;
+\item aux collaborateurs connectés à \textbf{différents moments} en des
+  \textbf{lieux différents}, ce qui correspond au travail en mode hors
+  ligne. Les documents sont synchronisés lorsqu'ils en ont l'occasion.
+\end{itemize}
 
 Depuis la première démonstration d'éditeur collaboratif temps réel en
 1968~\cite{engelbart1968research}, les technologies ont bien changé. Entre
 autres, le web est devenu un terrain fertile pour les nouvelles
 applications~\cite{lautamaki2013development}. Elles sont bien souvent préférées
 par les utilisateurs aux applications natives ou aux
-extensions~\cite{mogan2010impact}. Elles sont bien souvent préférées par les
+extensions~\cite{mogan2010impact}; elles sont bien souvent préférées par les
 entreprises qui s'évitent le développement d'applications spécifiques aux
-systèmes d'exploitation et aux matériels informatiques.  Les éditeurs
-collaboratifs répartis autorisant l'édition temps réel dans les navigateurs web
-sont centralisés. Entre autres, les éditeurs tels que Google
-Docs~\cite{googledocs} ou Etherpad~\cite{etherpad} ont rendu l'édition
-collaborative aisée pour les millions d'utilisateurs à travers le monde.
+systèmes d'exploitation et aux matériels informatiques~\cite{mogan2010impact}.
+
+Entre autres, les éditeurs web tels que \emph{Google Docs}~\cite{googledocs} ou
+\emph{Etherpad}~\cite{etherpad} ont rendu l'édition collaborative aisée pour les
+millions d'utilisateurs à travers le monde. Un simple lien permet à plusieurs
+collaborateurs d'accéder, puis lire et modifier en temps réel un document. La
+finalité des éditeurs est variée. Par exemple, certains éditeurs permettent la
+rédaction de documents génériques~\cite{etherpad, googledocs, googlewave,
+  hivejs}, tandis que d'autres se concentrent sur la rédaction de documents
+scientifiques~\cite{authorea, overleaf, sharelatex, fidus}, ou sur l'écriture de
+code~\cite{lautamaki2012cored, hyperdev}.  Cependant, les éditeurs collaboratifs
+répartis dans les navigateurs web se reposent sur une topologie centralisée où
+quelques serveurs prennent en charge un nombre important de clients. En résulte
+des problèmes de confidentialité, de censure, de passage à l'échelle et de point
+unique de défaillance.
+
+
 
 \begin{figure}
   \begin{center}
@@ -60,41 +73,42 @@ $e_5$, $e_6$, $e_7$) mis à disposition de manière élastique afin d'alléger l
 charge de diffusion des messages du premier. Lorsque le collaborateur $e_1$
 effectue une action telle que l'insertion d'un caractère, l'opération est émise
 au serveur possédant le document. Celui-ci, fonctionnant avec une approche de
-transformés opérationnels, transforme l'opération reçue vis-à-vis de toutes
-celles que l'utilisateur n'avait pas encore reçu lors de la création de son
-opération. La transformation s'avère toutefois moins coûteuse puisque seul le
-serveur doit l'effectuer. En particulier, le vecteur de contexte transporté dans
-les messages des approches OT décentralisées n'existe pas dans les versions
-centralisée puisque seule importe la paire de versions de l'utilisateur et du
-serveur. En revanche, le serveur est en charge de toutes les transformations. De
-plus, il doit diffuser l'ensemble des changements aux participants. Le
-fournisseur de service prend en charge la presque intégralité du coût de la
-session d'édition. Pour les utilisateurs, se posent toujours les problèmes de
-confidentialité : Le fournisseur de service voit les documents et peut en
-utiliser le contenu à ses propres fins. Pire encore, la propriété du document
-doit bien souvent être accordée au fournisseur de service. À cela s'ajoute le
-problème du point individuel de défaillance : Lorsque le serveur hébergeant le
-document tombe en panne, le document n'est plus accessible.
+transformées opérationnelles~\cite{nichols1995high}, transforme l'opération
+reçue vis-à-vis de toutes celles que l'utilisateur n'avait pas encore reçu lors
+de la création de son opération. La transformation s'avère toutefois moins
+coûteuse puisque seul le serveur doit l'effectuer. En particulier, le vecteur
+d'horloges ou de contexte transporté dans les messages des approches OT
+décentralisées n'existe pas dans les versions centralisée puisque seule importe
+la paire de versions de l'utilisateur et du serveur. En revanche, le serveur est
+en charge de toutes les transformations. De plus, il doit diffuser l'ensemble
+des changements aux participants. Le fournisseur de service prend en charge la
+presque intégralité du coût de la session d'édition. Pour les utilisateurs, se
+posent toujours les problèmes de confidentialité : le fournisseur de service
+voit les documents et peut en utiliser le contenu à ses propres fins. Pire
+encore, la propriété du document doit bien souvent être accordée au fournisseur
+de service. À cela s'ajoute le problème du point individuel de défaillance : si
+le serveur hébergeant le document tombe en panne, le document n'est plus
+accessible.
 
 Malgré tous ces défauts, ces approches centralisées sont les plus populaires.
 Jusqu'à présent, aucun éditeur décentralisé dans le navigateur web n'avait été
-déployé. La récente technologie WebRTC permet d'établir des canaux de
-communication d'un navigateur à l'autre. En d'autres termes, les applications
-réellement décentralisée aussi facile d'accès que les applications web du Nuage
-deviennent possibles.
+déployé. La récente technologie WebRTC~\cite{webrtc} permet d'établir des canaux
+de communication d'un navigateur à l'autre. En d'autres termes, les applications
+réellement décentralisée aussi facile d'accès que les applications web hébergées
+sur le Nuage deviennent possibles.
 
 \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
   Communication}.  Cette technologie permet l'établissement de canaux de
 communication d'un navigateur web à l'autre, et ce, même en présence de
-configurations réseaux complexes impliquant firewall, proxy, ou NAT (Network
-Address Translation). Toutefois, WebRTC ne gère ni l'adressage, ni le routage.
-Établir une connexion WebRTC requière une négociation où le nœud d'origine et le
-nœud de réception s'envoient mutuellement des moyens d'accès distants dans
-l'ordre définit du plus aisé au plus ardu. Par exemple, les échanges vont
-d'abord concerner la boucle locale (\emph{localhost}), puis le réseau local
-(e.g. $192.168.255.255$), puis l'internet\ldots Aussitôt que la négociation
-s'achève avec succès, un canal de communication bidirectionnel est établi. Les
-nœuds peuvent alors communiquer entre eux.
+configurations réseaux complexes impliquant pare-feu, proxy, ou NAT
+(\emph{Network Address Translation}). Toutefois, WebRTC ne gère ni l'adressage,
+ni le routage.  Établir une connexion WebRTC requière une négociation où le nœud
+d'origine et le nœud de réception s'envoient mutuellement des moyens d'accès
+distants dans l'ordre définit du plus aisé au plus ardu. Par exemple, les
+échanges vont d'abord concerner la boucle locale (\emph{localhost}), puis le
+réseau local (e.g. $192.168.255.255$), puis l'internet\ldots Aussitôt que la
+négociation s'achève avec succès, un canal de communication bidirectionnel est
+établi. Les nœuds peuvent alors communiquer entre eux.
 
 \begin{figure*}
   \begin{center}

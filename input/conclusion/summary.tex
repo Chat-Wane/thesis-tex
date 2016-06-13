@@ -8,24 +8,24 @@ collaboratifs temps réel. Nos contributions s'étalent sur les trois points
 suivants :
 
 \paragraph{Structure de données répliquée.} La réplication optimiste permet
-d'améliorer l'accessiblité, la réactivité, et la tolérence aux pannes de la
+d'améliorer l'accessiblité, la réactivité, et la tolérance aux pannes de la
 donnée partagée. Pour la séquence, l'état de l'art fait tout d'abord mention des
-approches à transformés opérationnels. Hélas, ces approches se voient
+approches à transformées opérationnelles. Cependant, ces approches se voient
 restreintes aux contextes avec peu de répliques et peu de latences. Plus
 récemment, les structures dont les opérations commutent ont fait leur
 apparition. Hélas, soit celles-ci croissent continuellement, même en cas de
 suppressions d'éléments; soit celles-ci utilisent des identifiants dont la
-taille croît linéairement. Ces approches requièrent toutes un méchanisme
+taille croît linéairement. Ces approches requièrent toutes un mécanisme
 additionnel afin recouvrer de bonnes performances. Malheureusement, ces
-méchanismes sont inutilisables à large dimensions. Nous proposons \LSEQ, une
+mécanismes sont inutilisables à large dimensions. Nous proposons \LSEQ, une
 stratégie d'allocation d'identifiants dont les identifiants croissent de manière
 polylogarithmique comparé au nombre d'insertions effectuées sur la séquence. De
 plus, les éléments supprimés sont réellement détruit. Ainsi, cette approche
-reste performante à large échelle et ne nécessite aucun méchanisme additionnel.
+reste performante à large échelle et ne nécessite aucun mécanisme additionnel.
 Nous fournissons l'analyse en complexité -- temporelle et spatiale -- et en
-validons les résultats grâce à des expérimentations. Là encore, \LSEQ fait
-l'objet d'une implémentation JavaScript qui est utilisée dans un éditeur
-collaboratif temps réel décentralisé accessible dans les navigateurs web.
+validons les résultats grâce à des expérimentations. \LSEQ fait l'objet d'une
+implémentation JavaScript qui est utilisée dans un éditeur collaboratif temps
+réel décentralisé accessible dans les navigateurs web.
 
 \paragraph{Communication.} Les réseaux dont la topologie possède des similitudes
 avec les graphes aléatoires sont au cœur de nombreuses approches
@@ -40,7 +40,7 @@ les vues partielles qu'elles fournissent :
 \item Les approches dont les vues partielles sont de taille variable ne
   supportent pas bien les réseaux dynamiques.
 \end{inparaenum}
-Nous proposons une approche, nommée \SPRAY, débarassant le développeur de ces
+Nous proposons une approche, nommée \SPRAY, débarrassant le développeur de ces
 considérations. La taille des vues partielles suit gracieusement la taille du
 réseau. Grâce à elle, les vues partielles sont toujours de taille logarithmique
 par rapport à la taille du réseau actuel. L'établissement des connexions d'un
@@ -54,7 +54,7 @@ dans les navigateurs web.
 \paragraph{Éditeur décentralisé dans le navigateur.} Google Docs et Etherpad ont
 rendu l'accès à l'édition collaborative aisée pour des millions
 d'utilisateurs. Toutefois, la centralisation de ces services pose des problèmes
-de confidentialité, de passage à l'échelle, et de tolérence aux pannes. Nous
+de confidentialité, de passage à l'échelle, et de tolérance aux pannes. Nous
 proposons \CRATE, un éditeur collaboratif temps réel décentralisé tournant
 directement dans les navigateurs web. Étant décentralisé, un document appartient
 seulement à ceux qui l'éditent, ce qui règle les problèmes de

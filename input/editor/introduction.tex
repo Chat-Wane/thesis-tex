@@ -1,58 +1,55 @@
 
-\lettrine{L}es éditeurs collaboratifs ont été largement popularisés par les
-services tels que Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}. Ces
+\lettrine{L}'édition collaborative~\cite{ellis1989concurrency,
+  johansen1988groupware} permet de répartir la rédaction d'un document au cours
+du temps, au travers de l'espace, et sur les
+activités~\cite{desanctis1987foundation, grudin1994computersupported,
+  johansen1988groupware}. Elle améliore l'implication des participants, et la
+qualité des documents produits~\cite{giles2005internet, noel2004empirical}. Son
+instrument principal est l'éditeur collaboratif permettant à un utilisateur de
+visualiser, modifier, et partager un document. Le partage du document avec un ou
+plusieurs collaborateurs permet à ces derniers d'avoir à leur tour accès à la
+lecture et la rédaction du document.
+
+Bien que le premier éditeur collaboratif remonte à
+1968~\cite{engelbart1968research}, leur adoption demeure récente. En effet, les
+éditeurs collaboratifs ont été largement popularisés grâce aux services web tels
+que \emph{Google Docs}~\cite{googledocs} ou \emph{Etherpad}~\cite{etherpad}. Ces
 services, directement accessibles via les navigateurs web, rendent aisée la
-participation aux sessions d'édition temps réel. Grâce à une simple URL
-(\emph{Uniform Resource Locator}), le navigateur est en mesure de charger le
-document partagé. Chaque modification apportée au document est visible des
-collaborateurs ayant ouvert le document.
+participation aux sessions d'édition temps réel~\cite{mogan2010impact}. L'accès
+au document partagé s'effectue grâce à un simple lien. Chaque modification
+apportée au document est visible des collaborateurs ayant ouvert le document.
 
-La facilité d'accès au document est possible grâce à un serveur centralisé mis à
-disposition par un fournisseur de service. Malheureusement, cela pose des
-problèmes de confidentialité, de passage à l'échelle, et de tolérence aux
-pannes. La décentralisation permet de résourdre ces problèmes, hélas, au prix de
-l'aisance d'accès.
+Cette facilité d'accès est rendue possible par le biais d'un serveur centralisé
+appartenant à un fournisseur de service hébergé sur le
+Nuage~\cite{mell2011national}. Cette organisation, où quelques serveurs sont en
+charge d'un nombre titanesque de clients, pose des problèmes de confidentialité,
+de censure, de passage à l'échelle, et de point unique de défaillance. Seule la
+décentralisation permet de résoudre ces problèmes. Toutefois, sa possibilité
+d'intégration dans les navigateurs web via WebRTC~\cite{webrtc} n'est que
+récente.
 
-Un éditeur collaboratif fonctionne grâce à quatre couches :
-\begin{inparaenum}[(i)]
-\item Une couche réseau afin de propager les opérations;
-\item Une couche de détection de causalité afin que les opérations soient
-  délivrées dans un certain ordre;
-\item Une couche de structure de données afin d'obtenir un document identique
-  partout;
-\item Une couche d'interface graphique afin de fournir la possibilité à
-  l'utilisateur de lire et modifier le document.
-\end{inparaenum}
-À cet égard, le problème est le suivant :
+%%% L'édition collaborative temps réel est-elle possible sur le web, sans
+%%%  l'intervention d'un tier et sans limites quant aux dimensions du système
 
-\begin{itemize}
-\item[\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la
-    construction d'un éditeur collaboratif temps réel dont les performances
-    passent à l'échelle et dont le déploiement soit aussi simple que sur le
-    Nuage?}
-\end{itemize}
+Ce chapitre présente \CRATE, le premier\footnote{à notre connaissance} éditeur
+collaboratif temp réel qui soit complètement décentralisé et fonctionnant dans
+les navigateurs web. À ce titre, un document n'appartient qu'aux membres de la
+session d'édition. Les collaborateurs, par leur présence, participent au bon
+fonctionnement de la session d'édition. Pour passager à l'échelle, \CRATE
+utilise à la fois \SPRAY (cf. §\ref{net:chap:spray}) pour que chaque
+modification soit propagée efficacement à l'ensemble des éditeurs impliqués dans
+la rédaction; et \LSEQ (cf. §\ref{repl:chap:lseq}) pour que les répliques du
+document hébergé par chaque éditeur soient identiques. Le trafic généré par
+l'application est logarithmique comparé à la taille de la session d'édition, et
+polylogarithmique comparé au nombre d'insertions effectuées dans le document.
 
-La récente possibilité d'établir des canaux de communication d'un navigateur à
-l'autre -- grâce à WebRTC -- ouvre la voie aux applications décentralisées
-directement accessibles dans le navigateur web.
-
-Ce chapitre présente \CRATE, un éditeur collaboratif décentralisé dans le
-navigateur. À ce titre, un document n'appartient qu'aux membres de la session
-d'édition. Au lieu d'avoir à déployer un serveur, les même membres participent
-activement au bon fonctionnement de la session d'édition. \CRATE utilise \SPRAY
-(cf. §\ref{net:chap:spray}) et \LSEQ (cf. §\ref{repl:chap:lseq}). Grâce à cela,
-le trafic généré par l'application est logarithmique comparé à la taille de la
-session d'édition, et polylogarithmique comparé au nombre d'insertions
-effectuées dans le document. À ce titre, l'application passe à l'échelle.
-
-Le reste de ce chapitre s'organise de la façon suivante : Tout d'abord, la
+Le reste de ce chapitre s'organise de la façon suivante : tout d'abord, la
 section~\ref{editor:sec:stateoftheart} présente l'état de l'art en de plus
 amples détails. La section~\ref{editor:sec:crate} introduit \CRATE, son
 architecture et ses composants internes, ainsi que son fonctionnement. La
 section~\ref{editor:sec:experimentation} décrit les résultats obtenus lors d'une
 expérimentation à large échelle impliquant jusqu'à 600 navigateurs. La
 section~\ref{editor:sec:conclusion} conclut ce chapitre.
-
 
 
 %%% Local Variables:

@@ -19,10 +19,10 @@ passe à l'échelle en termes de nombre d'utilisateurs et de taille de
 documents.
 
 \paragraph{Description :} Cette expérimentation construit des réseaux de 101 à
-601 participants. Pour cela, des machines sont reservées sur le banc d'essai
+601 participants. Pour cela, des machines sont réservées sur le banc d'essai
 Grid'5000. Sur chacune d'elle sont lancées un à plusieurs navigateurs web
 observant le processus d'intégration au réseau. Par exemple, 100 machines avec 6
-navigateurs chacunes permettent de créer le réseau à 601 participants -- le
+navigateurs chacune permettent de créer le réseau à 601 participants -- le
 participant supplémentaire étant le créateur du document hébergeant aussi le
 serveur de signalisation.  Chaque session d'édition est en charge d'écrire un
 document artificiel de plusieurs millions de caractères en insérant ceux-ci à la
@@ -38,10 +38,10 @@ résultat de cette expérimentation.
   effectuées sur le document est important, plus la croissance des identifiants
   diminue.
 \item À cela s'ajoute un facteur multiplicatif logarithmique comparé au nombre
-  de partipants : Plus la session d'édition comporte de membres, plus le trafic
+  de participants : Plus la session d'édition comporte de membres, plus le trafic
   généré est important. Toutefois, l'écart entre les mesures diminues tandis que
   le nombre de participants est incrémenté linéairement. On note toutefois des
-  exceptions à ces observations. Par exemple, les mesures sur 501 editeurs
+  exceptions à ces observations. Par exemple, les mesures sur 501 éditeurs
   dominent les mesures sur 601 éditeurs.
 \end{inparaenum}
 
@@ -61,7 +61,7 @@ parvienne à tous les éditeurs. Pour chaque opération locale effectuée, chaqu
 membre retransmet le message aux membres sa vue partielle exactement une
 fois. D'où la progression logarithmique du trafic généré entre les sessions
 d'édition. L'exception perçue entre certaines configurations de
-l'expérimentation est dûe au coté aléatoire du protocole. Sur un grand nombre
+l'expérimentation est due au coté aléatoire du protocole. Sur un grand nombre
 d'exécution, cet aléatoire serait gommé.
 
 
