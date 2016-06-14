@@ -15,7 +15,7 @@
 \newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
 
 \begin{algorithmic}[1]
-  \Function{broadcast}{$m$} \comment{$m$: \emph{message to send}}
+  \Function{broadcast}{$m$} \comment{$m$: \emph{message à envoyer}}
   \State \textbf{let} $chosen \leftarrow getPeers(P,\, \DARKBLUE{fanout})$;
   \For{(\DARKBLUE{$n \in chosen$})}
   \State \textsc{sendTo}($n$, 'broadcast', $m$);
@@ -24,7 +24,7 @@
 
   \Statex
 
-  \Function{onBroadcast}{$m$} \comment{$m$: \emph{received message}}
+  \Function{onBroadcast}{$m$} \comment{$m$: \emph{message reçu}}
   \If {($\DARKBLUE{\neg\textsc{alreadyReceived}(m)}$)}
   \State \textsc{broadcast}($m$);
   \EndIf
