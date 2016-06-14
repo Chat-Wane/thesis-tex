@@ -428,6 +428,68 @@ Level1 {Level1PatternFill} {Level2PatternFill} ifelse
 dup length dict begin {1 index /FID eq {pop pop} {def} ifelse} forall
 currentdict end definefont pop
 %
+%
+%
+% Base ISO8859-1 character encoding plus support macros for UTF-8 encoding
+% via the glyphshow operator
+%
+/reencodeISO {
+    dup dup findfont dup length dict begin
+    { 1 index /FID ne { def }{ pop pop } ifelse } forall
+    currentdict /CharStrings known {
+          CharStrings /Idieresis known {
+                  /Encoding ISOLatin1Encoding def } if
+    } if
+    currentdict end definefont
+} def
+/ISOLatin1Encoding [
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quoteright
+    /parenleft/parenright/asterisk/plus/comma/minus/period/slash
+    /zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon
+    /less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N
+    /O/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright
+    /asciicircum/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m
+    /n/o/p/q/r/s/t/u/v/w/x/y/z/braceleft/bar/braceright/asciitilde
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+    /.notdef/dotlessi/grave/acute/circumflex/tilde/macron/breve
+    /dotaccent/dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut
+    /ogonek/caron/space/exclamdown/cent/sterling/currency/yen/brokenbar
+    /section/dieresis/copyright/ordfeminine/guillemotleft/logicalnot
+    /hyphen/registered/macron/degree/plusminus/twosuperior/threesuperior
+    /acute/mu/paragraph/periodcentered/cedilla/onesuperior/ordmasculine
+    /guillemotright/onequarter/onehalf/threequarters/questiondown
+    /Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+    /Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex
+    /Idieresis/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis
+    /multiply/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute
+    /Thorn/germandbls/agrave/aacute/acircumflex/atilde/adieresis
+    /aring/ae/ccedilla/egrave/eacute/ecircumflex/edieresis/igrave
+    /iacute/icircumflex/idieresis/eth/ntilde/ograve/oacute/ocircumflex
+    /otilde/odieresis/divide/oslash/ugrave/uacute/ucircumflex/udieresis
+    /yacute/thorn/ydieresis
+] def
+
+/Gshow { dup type /stringtype eq { show } { glyphshow } ifelse } def
+
+/Gsall { {Gshow} forall } def
+/Gwidth {
+      dup currentpoint pop exch
+        gsave 6 array currentmatrix nulldevice setmatrix Gsall currentpoint pop grestore sub
+} def
+/GLshow {currentpoint stroke M 0 vshift R
+  Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
+  /GRshow {currentpoint stroke M dup Gwidth vshift R
+    Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
+    /GCshow {currentpoint stroke M dup Gwidth 2 div vshift R
+      Blacktext {gsave 0 setgray Gsall grestore} {Gsall} ifelse} def
+      %
+      
+
 /MFshow {
    { dup 5 get 3 ge
      { 5 get 3 eq {gsave} {grestore} ifelse }
@@ -456,6 +518,7 @@ currentdict end definefont pop
   Blacktext {gsave 0 setgray MFshow grestore} {MFshow} ifelse } bind def
 /XYsave    { [( ) 1 2 true false 3 ()] } bind def
 /XYrestore { [( ) 1 2 true false 4 ()] } bind def
+/Helvetica reencodeISO def
 Level1 SuppressPDFMark or 
 {} {
 /SDict 10 dict def
@@ -727,7 +790,7 @@ Z stroke
 1.250 UP
 LCb setrgbcolor
 885 4681 M
-[ [(Helvetica) 180.0 0.0 true true 0 (After random editing)]
+[ [(Helvetica) 180.0 0.0 true true 0 (Après édition aléatoire)]
 ] -60.0 MLshow
 1.000 UL
 LTb
@@ -735,7 +798,7 @@ LCb setrgbcolor
 LCb setrgbcolor
 144 3829 M
 currentpoint gsave translate -270 rotate 0 0 moveto
-[ [(Helvetica) 180.0 0.0 true true 0 (time \(in )]
+[ [(Helvetica) 180.0 0.0 true true 0 (temps \(en )]
 [(Symbol) 180.0 0.0 true true 0 (m)]
 [(Helvetica) 180.0 0.0 true true 0 (s\))]
 ] -60.0 MCshow
@@ -814,7 +877,7 @@ LT1
 LCb setrgbcolor
 LCb setrgbcolor
 3911 4504 M
-[ [(Helvetica) 180.0 0.0 true true 0 (local insert)]
+[ [(Helvetica) 180.0 0.0 true true 0 (insert local)]
 ] -60.0 MRshow
 1.250 UP
 1.000 UL
@@ -879,7 +942,7 @@ LT1
 LCb setrgbcolor
 LCb setrgbcolor
 6041 4684 M
-[ [(Helvetica) 180.0 0.0 true true 0 (remote insert)]
+[ [(Helvetica) 180.0 0.0 true true 0 (insert distant)]
 ] -60.0 MRshow
 1.250 UP
 1.000 UL
@@ -944,7 +1007,7 @@ LT1
 LCb setrgbcolor
 LCb setrgbcolor
 6041 4504 M
-[ [(Helvetica) 180.0 0.0 true true 0 (remote delete)]
+[ [(Helvetica) 180.0 0.0 true true 0 (delete distant)]
 ] -60.0 MRshow
 1.250 UP
 1.000 UL
@@ -1259,7 +1322,7 @@ Z stroke
 1.250 UP
 LCb setrgbcolor
 885 2464 M
-[ [(Helvetica) 180.0 0.0 true true 0 (After monotonic editing)]
+[ [(Helvetica) 180.0 0.0 true true 0 (Après édition monotone)]
 ] -60.0 MLshow
 1.000 UL
 LTb
@@ -1267,7 +1330,7 @@ LCb setrgbcolor
 LCb setrgbcolor
 144 1612 M
 currentpoint gsave translate -270 rotate 0 0 moveto
-[ [(Helvetica) 180.0 0.0 true true 0 (time \(in )]
+[ [(Helvetica) 180.0 0.0 true true 0 (temps \(en )]
 [(Symbol) 180.0 0.0 true true 0 (m)]
 [(Helvetica) 180.0 0.0 true true 0 (s\))]
 ] -60.0 MCshow
@@ -1275,7 +1338,7 @@ grestore
 LTb
 LCb setrgbcolor
 3770 208 M
-[ [(Helvetica) 180.0 0.0 true true 0 (umptieth operation)]
+[ [(Helvetica) 180.0 0.0 true true 0 (énième operation)]
 ] -60.0 MCshow
 LTb
 % Begin plot #1
