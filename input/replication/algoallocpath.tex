@@ -5,28 +5,27 @@
 \algrenewcommand{\algorithmiccomment}[1]{\hskip2em$\rhd$ #1}
 \newcommand*{\comment}[1]{$\rhd$ #1}
 
-  \State \textbf{let} $boundary \leftarrow 10$; \hfill \comment{Any constant} 
+  \State \textbf{let} $boundary \leftarrow 10$; \hfill \comment{Une constante arbitraire}
   \State \textbf{let} $h:\mathbb{N} \rightarrow (\mathcal{P}\times
-  \mathcal{P}\rightarrow \mathcal{P})$; \hfill \comment{Get sub-allocation
-    function}
+  \mathcal{P}\rightarrow \mathcal{P})$; \hfill \comment{Obtient la sous-fonction d'allocation}
   \Statex
     \Function{allocPath}{$p,\, q \in \mathcal{P}$}
     $\rightarrow \mathcal{P}$
     \State \textbf{let} $\langle depth,\,\_ \rangle 
     \leftarrow \textsc{getDepthInterval}(p,\,q)$;
     \State \textbf{return} $h(depth)(p,\,q)$; 
-    \hfill \comment{Defers the call to a sub-allocation function}
+    \hfill \comment{Défère l'appel à une sous-fonction d'allocation}
     \EndFunction
     \Statex
     \Function{left-to-right}{$p,\,q \in \mathcal{P}$}\label{line:lefttoright}
     $\rightarrow \mathcal{P}$
     \State \textbf{let} 
     $\langle depth,\,interval \rangle \leftarrow \textsc{getDepthInterval}(p,\,q);$
-    \hfill \comment{\#1 Get the depth of the new path}
+    \hfill \comment{\#1 niveau du nouveau chemin}
     \State \textbf{let} $step \leftarrow min(boundary,\,interval)$;
-    \hfill \comment{\#2 Maximal space between two identifiers}
+    \hfill \comment{\#2 espace maximum entre deux chemins}
     \State \textbf{return} $\textsc{subPath}(p,\,depth) + rand(0,\,step)$;
-    \hfill \comment{\#3 Create the new path}
+    \hfill \comment{\#3 crée le nouveau chemin}
     \EndFunction
     \Statex
     \Function{right-to-left}{$p,\,q \in \mathcal{P}$}\label{line:righttoleft}
@@ -40,7 +39,8 @@
     \hfill \comment{\#3}
     \EndFunction
     \Statex 
-    \Function{getDepthInterval}{$p,\,q \in \mathcal{P}$} $\rightarrow \mathbb{N} \times \mathbb{N}$ \hfill \comment{Enough space for 1 path?}
+    \Function{getDepthInterval}{$p,\,q \in \mathcal{P}$} $\rightarrow \mathbb{N} \times \mathbb{N}$
+    \Statex \comment{Où y a-t-il suffisamment d'espace pour 1 chemin ?}
       \State \textbf{let} $depth \leftarrow 0$; $interval \leftarrow 0$;
       \While{$(interval < 2)$}
         \State $depth \leftarrow depth + 1$;
