@@ -1,4 +1,4 @@
-\begin{tikzpicture}[scale=1.3]
+\begin{tikzpicture}[scale=1.4]
 
 \newcommand\X{25pt}
 \newcommand\Y{20pt}
@@ -12,21 +12,21 @@
 \draw(4*\X, \Y)node[anchor=north east]{\textbf{communication}};
 
 \draw[fill=white](-2*\X, -0.25*\Y)
-node{broadcast}+(-0.75*\X,-0.5*\Y)rectangle+(0.75*\X,0.5*\Y);
+node{dissémination}+(-0.85*\X,-0.5*\Y)rectangle+(0.85*\X,0.5*\Y);
 \draw[fill=white, very thick, draw=darkblue]( 0*\X, 0.25*\Y)
-node[align=center]{\DARKBLUE{membership}}+(-0.85*\X,-0.5*\Y)rectangle+(0.85*\X,0.5*\Y);
+node[align=center]{\DARKBLUE{appartenance}}+(-0.85*\X,-0.5*\Y)rectangle+(0.85*\X,0.5*\Y);
 \draw[fill=white]( 2*\X, -0.25*\Y)
-node{unicast}+(-0.75*\X,-0.5*\Y)rectangle+(0.75*\X,0.5*\Y);
+node{monodiffusion}+(-0.85*\X,-0.5*\Y)rectangle+(0.85*\X,0.5*\Y);
 
-\draw[<-](-0.85*\X, 0.25*\Y)--(-1.25*\X, -0.25*\Y);
-\draw[<-](0.85*\X, 0.25*\Y)--(1.25*\X, -0.25*\Y);
+\draw[<-](-0.85*\X, 0.25*\Y)--(-1.15*\X, -0.25*\Y);
+\draw[<-](0.85*\X, 0.25*\Y)--(1.15*\X, -0.25*\Y);
 
 %% causality
 \draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=\LIGHTGRAY](0pt, -2*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
-\draw(4*\X, -\Y)node[anchor=north east]{\textbf{causality}};
+\draw(4*\X, -\Y)node[anchor=north east]{\textbf{causalité}};
 
 \draw[fill=\LIGHTGRAY](-2*\X, -2*\Y)
-node[align=center]{semantic\\[-1mm]causality\\[-1mm]tracker}
+node[align=center]{détection\\[-1mm]des relations\\[-1mm]causales}
 +(-1.0*\X,-0.6*\Y)rectangle+(1.0*\X,0.6*\Y);
 \scriptsize
 \draw[->, thick](-1.5*\X, -0.75*\Y) -- node[anchor=west]{receive}
@@ -39,12 +39,12 @@ node[align=center]{semantic\\[-1mm]causality\\[-1mm]tracker}
 %% sequence structure
 \draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=white](0pt, -4*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
 \draw(4*\X, -3*\Y)node[anchor=north east, align=right]
-{\textbf{sequence}\\\textbf{structure}};
+{\textbf{structure}\\\textbf{pour}\\\textbf{séquences}};
 
 \draw[fill=white, shading=axis,top color=\LIGHTGRAY, bottom color=white, shading angle=0](1*\X, -3*\Y)
-node{anti-entropy}+(-0.95*\X,-0.5*\Y) rectangle +(0.95 *\X, 0.5*\Y);
+node{anti-entropie}+(-0.95*\X,-0.5*\Y) rectangle +(0.95 *\X, 0.5*\Y);
 \draw[fill=white, very thick, draw=darkblue](-2*\X, -4*\Y)
-node{\DARKBLUE{replica}}+(-0.75*\X,-0.5*\Y) rectangle +(0.75 *\X, 0.5*\Y);
+node{\DARKBLUE{réplique}}+(-0.75*\X,-0.5*\Y) rectangle +(0.75 *\X, 0.5*\Y);
 
 \draw[->] (0.05*\X, -2.75*\Y)--(-1*\X,-2*\Y);
 \draw[->] (0.05*\X, -3.25*\Y)--(-1.25*\X,-4*\Y);
@@ -55,9 +55,9 @@ node{\DARKBLUE{replica}}+(-0.75*\X,-0.5*\Y) rectangle +(0.75 *\X, 0.5*\Y);
 %% gui
 \draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=\LIGHTGRAY](0pt, -6*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
 \draw(4*\X, -5*\Y)node[anchor=north east, align=right]
-{\textbf{graphical}\\\textbf{user}\\\textbf{interface}};
+{\textbf{interface}\\\textbf{utilisateur}};
 \draw[fill=\LIGHTGRAY](0pt,-6*\Y)
-node{web editor}+(-0.85*\X,-0.5*\Y) rectangle +(0.85 *\X, 0.5*\Y);
+node{éditeur web}+(-0.85*\X,-0.5*\Y) rectangle +(0.85 *\X, 0.5*\Y);
 
 %%\draw[<->] (-2*\X, -4.5*\Y) -- (0*\X, -5.5*\Y);
 \scriptsize

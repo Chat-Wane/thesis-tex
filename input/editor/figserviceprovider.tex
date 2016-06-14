@@ -1,4 +1,4 @@
-\begin{tikzpicture}[scale=1.2]
+\begin{tikzpicture}[scale=1.3]
   
   \newcommand\X{40pt}
   \newcommand\Y{-50pt}
@@ -16,8 +16,9 @@
   \draw[<-, very thick, color=darkblue](2.5+1*\X, 10+1*\Y)--(2.5+0.5*\X, -10pt);
 
 
-  \draw[fill=white](-0.5*\X, 0*\Y) node{Service provider's document server}
-  +(-70pt,-10pt )rectangle+(70pt,10pt);
+  \draw[fill=white](-0.5*\X, 0*\Y) 
+  node[align=center]{\small serveur appartenant au fournisseur de services\\\small et hébergeant le document}
+  +(-90pt,-10pt )rectangle+(90pt,10pt);
 
   \draw[fill=white](-2*\X, 1*\Y) node{$e_1$}
   +(5pt, 5pt) rectangle +(-5pt, -5pt) rectangle +(5pt, 5pt);
@@ -40,8 +41,9 @@
   \draw[->,dashed](-2.5+4.5*\X, 5+2*\Y)--(-2.5+4.5*\X, -10+1*\Y);
   \draw[<-,very thick, color=darkblue]( 2.5+4.5*\X, 5+2*\Y)--( 2.5+4.5*\X, -10+1*\Y);
 
-  \draw[fill=white](3*\X, 1*\Y) node{Service provider's transmission server}
-  +(-100pt,-10pt )rectangle+(100pt,10pt);
+  \draw[fill=white](3*\X, 1*\Y) 
+  node[align=center]{\small serveur appartenant au fournisseur de services\\\small et aidant à la transmission}
+  +(-90pt,-10pt )rectangle+(90pt,10pt);
 
   \draw[fill=white]( 1.5*\X, 2*\Y) node{$e_4$}
   +(5pt, 5pt) rectangle +(-5pt, -5pt) rectangle +(5pt, 5pt);
