@@ -28,18 +28,18 @@
 \begin{algorithmic}[1]
   \Statex
   \initially
-    \State $I \leftarrow \varnothing$; \hfill \comment{counter CRDT}
-    \State $n$; \hfill \comment{server identity}
-    \State $c \leftarrow 0$; \hfill \comment{local growing counter}
+  \State $I \leftarrow \varnothing$; \hfill \comment{CRDT pour compteurs}
+    \State $n$; \hfill \comment{identité du serveur}
+    \State $c \leftarrow 0$; \hfill \comment{compteur local}
   \endInitially
   
   \local
-    \Function{inc}{\ } \hfill \comment{update}
+    \Function{inc}{\ } \hfill \comment{incrémentation}
     \State $c \leftarrow c+1$;
     \State $I \leftarrow I \cup \langle n,\, c \rangle$;
     \State \textsc{broadcast}('inc', \DARKBLUE{$\langle n,\, c \rangle$});
     \EndFunction
-    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{read}
+    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{lecture}
     \State \Return $|I|$
     \EndFunction
   \endLocal

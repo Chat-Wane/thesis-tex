@@ -22,10 +22,10 @@
 
 \algsetblockdefx[onRemote]{onRemote}{endOnRemote}
   {65535}{}
-  [0] {\textbf{on} insert ($i\in\mathcal{I}$):\hfill\comment{\textbf{once} per 
-  distinct triple in $\mathcal{I}$}}
-  [0] {\textbf{on} delete ($i\in\mathcal{I}$):\hfill\comment{\textbf{after} the 
-  remote $insert(i)$ is done}} 
+  [0] {\textbf{on} insert ($i\in\mathcal{I}$):
+    \hfill\comment{\textbf{une fois} par identifiant}}
+  [0] {\textbf{on} delete ($i\in\mathcal{I}$):
+    \hfill\comment{\textbf{après} l'exécution de \textsc{insert}($i$)}} 
 
 \newcommand{\LINEFOR}[2]{%
   \algorithmicfor\ {#1}\ \algorithmicdo\ {#2} %
@@ -40,8 +40,8 @@
 \begin{algorithmic}[1]
   \Statex
   \initially
-    \State $T \leftarrow \varnothing$; \hfill \comment{structure of
-     the CRDT for sequences}
+    \State $T \leftarrow \varnothing$;
+    \hfill \comment{CRDT conçue pour les séquences}
   \endInitially
   
   \local

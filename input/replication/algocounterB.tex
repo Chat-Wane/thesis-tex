@@ -28,17 +28,17 @@
 \begin{algorithmic}[1]
   \Statex
   \initially
-    \State $V \leftarrow [\ ]$; \hfill \comment{counter CRDT}
-    \State $n$; \hfill \comment{server identity}
-    \State $V[n] \leftarrow 0$; \hfill \comment{local growing counter}
+    \State $V \leftarrow [\ ]$; \hfill \comment{CRDT pour compteurs}
+    \State $n$; \hfill \comment{identité du serveur}
+    \State $V[n] \leftarrow 0$; \hfill \comment{vecteur de compteurs local}
   \endInitially
   
   \local
-    \Function{inc}{\ } \hfill \comment{update}
+    \Function{inc}{\ } \hfill \comment{incrémentation}
     \State $V[n] \leftarrow V[n]+1$;
     \State \textsc{broadcast}('inc', $\langle n,\, V[n] \rangle$);
     \EndFunction
-    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{read}
+    \Function{query}{\ }{$\,\rightarrow \mathbb{N}$} \hfill \comment{lecture}
     \State \textbf{let} $sum\leftarrow 0$;
     \For{\textbf{each} $site \in V$}
       \State $sum \leftarrow sum + V[site]$;
