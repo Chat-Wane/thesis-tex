@@ -26,21 +26,21 @@
   \Statex
   \initially
     \State $P \leftarrow \varnothing$;
-    \hfill \comment{the partial view is a multiset}
-    \State $p$ ; \hfill \comment{identity of the local peer}
+    \hfill \comment{la vue partielle est un multiensemble}
+    \State $p$ ; \hfill \comment{identité du nœud local}
   \endInitially
   
   \pas
-  \Function{onSubs}{$o$} \comment{$o: origin$}
+  \Function{onSubs}{$o$} \comment{$o: origine$}
     \If {($|P| = 0$)}
-      \State \textsc{onFwdSub}($o$); \comment{special case: 2-nodes network.}
+      \State \textsc{onFwdSub}($o$); \comment{cas particulier : réseau de 2 nœuds.}
     \Else
       \State \DARKBLUE{\LINEFOR{\textbf{each} $\langle q,\,\_\, \rangle \in P$}
       {$\textsc{sendTo}(q$, 'fwdSubs', $o)$;}}
     \EndIf
     \EndFunction
     \Statex
-    \Function{onFwdSubs}{$o$} \comment{$o: origin$}
+    \Function{onFwdSubs}{$o$} \comment{$o: origine$}
     \State $P \leftarrow P \,\DARKBLUE{\uplus} \left\{\langle o,\, 0 \rangle\right\}$;
     \EndFunction
 %%  \endPas

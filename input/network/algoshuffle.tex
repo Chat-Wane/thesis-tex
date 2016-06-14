@@ -25,7 +25,7 @@
 \begin{algorithmic}[1]
   \Statex
   \act
-    \Function{loop}{ } \hfill \comment{Every $\Delta\,t$}
+    \Function{loop}{ } \hfill \comment{Tous les $\Delta\,t$}
     \State $P \leftarrow \textsc{incrementAge}(P)$;
     \State \textbf{let} $ \langle q,\, age \rangle \leftarrow \textsc{getOldest}(P)$;
 
@@ -44,7 +44,7 @@
   \endAct
   
   \pas
-    \Function{onExchange}{$o,\, sample$} \hfill \comment{$o: origin$}
+    \Function{onExchange}{$o,\, sample$} \hfill \comment{$o: origine$}
     \State \textbf{let}
     $sample' \leftarrow \textsc{getSample}(P ,\, \DARKBLUE{\left\lceil |P|\over{2}
     \right\rceil} )$;

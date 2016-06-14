@@ -15,11 +15,11 @@
 \newcommand{\INDSTATE}[1][1]{\State\hspace{\algorithmicindent}}
 
 \begin{algorithmic}[1]
-  \Function{onPeerDown}{$q$} \hfill \comment{$q$: crashed/departed peer}  
+  \Function{onPeerDown}{$q$} \hfill \comment{$q$: nœud parti ou défaillant}  
   \State \textbf{let} $occ \leftarrow 0$;
 
   \For{\textbf{each} $\langle n,\,age\rangle \in P$}
-  \hfill \comment{remove and count}
+  \hfill \comment{supprime et compte}
   \If {($n=q$)}
   \State $P \leftarrow P\setminus \{\langle n,\,age\rangle \}$;
   \State $occ \leftarrow occ + 1$;
@@ -27,7 +27,7 @@
   \EndFor
 
   \For{$i\leftarrow 0$ \textbf{to} $occ$} 
-  \hfill \comment{probabilistically duplicates}
+  \hfill \comment{Duplique de manière probabiliste}
   \If{($rand()>\DARKBLUE{{1\over{|P|+occ}}}$)}
     \State \textbf{let} $\langle n,\,\_ \,\rangle \leftarrow
     P[\left\lfloor rand()*|P|\right\rfloor]$;
@@ -44,7 +44,7 @@
   P[\left\lfloor rand()*|P|\right\rfloor]$;
   \State $P \leftarrow P \uplus
   \left\{\langle n,\, 0\rangle\right\}$;
-  \hfill \comment{systematically duplicates}
+  \hfill \comment{Duplique systématiquement}
   \EndFunction
 
 \end{algorithmic}
