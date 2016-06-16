@@ -3,19 +3,27 @@
 \label{editor:sec:conclusion}
 
 Ce chapitre a présenté \CRATE, un éditeur collaboratif décentralisé fonctionnant
-directement dans les navigateurs web.
+directement dans les navigateurs web. Un utilisateur peut créer, modifier en
+temps réel, et partager son document. À l'instar des éditeurs centralisés tel
+que \emph{Google Docs}, le partage s'effectue très facilement grâce à un simple
+lien. Lorsqu'un utilisateur clique sur celui-ci, il rejoint la session d'édition
+et peut à son tour voir, modifier en temps réel, et partager le document. 
 
-\begin{itemize}
-\item [\textbf{QR.}] \textbf{Quelle combinaison d'éléments permettent la construction
-  d'un éditeur collaboratif temps réel dont les performances passent à l'échelle
-  et dont le deploiement soit aussi simple que sur le Nuage?}
-\end{itemize}
+Ce que \CRATE ne gère pas : la persistance des données. De nos jours, avec
+l'hégémonie du Nuage, il devient plus difficile de supprimer des données que de
+les sauvegarder. À l'opposé, un document dans \CRATE n'appartient qu'à ses
+rédacteurs. Le document cesse d'exister lorsque tous les collaborateurs ferment
+l'éditeur. Si ceux-ci souhaite le sauvegarder, ils peuvent le faire
+localement. Dans le future, ils pourraient demander au Nuage d'héberger un
+éditeur collaboratif. Ainsi, le document deviendrait persistant, et le poids de
+l'édition resterait réparti entre les collaborateurs de l'édition. Par
+conséquent, le Nuage serait soulagé d'une partie de sa charge.
 
 Afin de passer à l'échelle, \CRATE utilise \SPRAY, un protocole
 d'échantillonnage aléatoire de pairs permettant d'adapter les vues partielles de
-chaque éditeur à la taille de la session d'édition. De plus, \CRATE contraint au
-minimum l'ordre d'intégration des opérations. Cela lui permet de ne pas ajouter
-de surcoût sur les messages. Enfin, \CRATE utilise \LSEQ, une fonction
+chaque éditeur collaboratif à la taille de la session d'édition. De plus, pour
+ne pas surcharger les messages, \CRATE contraint au minimum l'ordre
+d'intégration des opérations. Enfin, \CRATE utilise \LSEQ, une fonction
 d'allocation d'identifiants dont les identifiants ont une borne supérieures
 sous-linéaire par rapport au nombre d'insertions effectuées dans le
 document. Grâce à ces composants internes, \CRATE ajuste son trafic généré
@@ -23,12 +31,7 @@ logarithmiquement par rapport à la taille de la session d'édition, et
 polylogarithmiquement par rapport au nombre d'insertions effectuées sur le
 document. Par conséquent, \CRATE passe à l'échelle. Ces affirmations ont été
 validées au travers d'expérimentations impliquant jusqu'à 601 navigateurs
-écrivant en temps réel. Le trafic mesurée suit les attentes susmentionnées.
-
-\CRATE est accessible via un navigateur web. Lorsqu'un utilisateur partage son
-document, il autorise l'accès par son intermédiaire à la session d'édition. À
-l'instar des solutions centralisée (e.g. Google Docs), le partage s'effectue
-simplement avec une URL.
+écrivant en temps réel.
 
 Le chapitre~\ref{conclu:chap:conclusion} revient sur les précédentes
 contributions et présente les perspectives scientifiques ouvertes par celles-ci.
