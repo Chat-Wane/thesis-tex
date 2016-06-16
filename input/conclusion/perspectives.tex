@@ -10,8 +10,8 @@ intégration, non en opposition, mais en complément des approches actuellement
 centralisés. Enfin, l'architecture ouvre aussi la voie à un plus large champs
 d'applications décentralisées directement accessibles via les navigateurs web.
 
-Cette section fournit une liste non-exhaustive de perspectives scientifiques
-concernant ces travaux de thèse.
+Cette section fournit une liste de perspectives scientifiques concernant ces
+travaux de thèse.
 
 \subsection{Fusion de réseaux}
 
@@ -73,19 +73,20 @@ nombre d'arcs requis (à droite)?
 \subsection{Table de hachage répartie}
 
 Une table de hachage répartie (DHT) est un système permettant de retrouver une
-information rapidement dans un réseau de machines. Pour ce faire, l'information
-recherchée possède une clé dans laquelle figure des données suffisantes à
-l'exploration efficace du réseau. Le réseau est généralement organisé selon un
-critère de proximité de clé et constitue un réseau superposé. 
+ressource rapidement dans un réseau superposé de nœuds. La ressource recherchée
+possède une clé permettant l'exploration efficace du réseau.
 
-Parmi les représentants des DHT on nomme Chord~\cite{stoica2001chord},
+Parmi les représentants des DHT on trouve Chord~\cite{stoica2001chord},
 CAN~\cite{ratnasamy2001scalable}, Pastry~\cite{rowstron2001pastry},
 Tapestry~\cite{zhao2006tapestry}, Kademlia~\cite{maymounkov2002kademlia}, ou
-Kelips~\cite{gupta2003kelips}.  \TODO{Toutes ces approches fournissent un vue
-  partielle dont la taille est logarithmique.} Toutefois, tout comme pour les
-protocoles d'échantillonnage aléatoire de pairs dont la vue partielle est fixe,
-tel que \CYCLON, la taille de leur vue est configurée \emph{a priori} afin que
-le système puisse accueillir un ensemble suffisamment large de clés.
+Kelips~\cite{gupta2003kelips}.  Ces approches font souvent état d'une vue
+partielle logarithmique.  Toutefois, tout comme pour les protocoles
+d'échantillonnage aléatoire de pairs dont la vue partielle est fixe, tel que
+\CYCLON, la taille de leur vue est configurée par avance. Lorsque le système
+fait face à de fréquentes entrées et sorties de nœuds, les vues peuvent être
+ajustées grâce à des mécanismes d'estimation de la taille du
+réseau~\cite{camarillo2014self, ghinita2006adaptive}. Cependant, ces mécanismes
+présentent un coût additionnel~\cite{ghinita2006adaptive}.
 
 \begin{figure}
   \begin{center}
@@ -96,18 +97,21 @@ le système puisse accueillir un ensemble suffisamment large de clés.
   \end{center}
 \end{figure}
 
-Comme le montre la figure~\ref{conclu:fig:dhtexample}, l'idée est alors de
-placer les systèmes classiques de DHT -- ici Chord -- afin qu'ils s'accordent
-avec la vue partielle fournie par \SPRAY. Par exemple, si un nœud \SPRAY possède
-3 voisins, le réseau superposé en charge de la DHT possède lui aussi 3
-voisins. Toutefois, ces derniers sont choisis selon la distance à laquelle ils
-se trouvent. Un premier voisin serait celui qui est le plus proche, le second
-voisin celui qui se trouve à la moitié de la distance maximum, et le troisième
-se trouve à un tiers de la distance maximum. Un tel système permet de diriger les
-messages ciblant un nœud particulier très efficacement : de l'ordre de
-$\log\log N$ redirections, où $N$ est le nombre de membres du réseau. Grâce à
-\SPRAY, cette propriété pourrait rester vraie quelle que soit la taille du
-réseau.
+Construire une DHT au dessus d'un protocole d'échantillonnage aléatoire de pairs
+apporte le double avantage d'une convergence rapide vers une topologie optimale,
+et d'une résilience aux fréquentes entrées et sorties de
+nœuds~\cite{krasikova2016distributed, montresor2005chord,
+  voulgaris2013vicinity}.  Comme le montre la
+figure~\ref{conclu:fig:dhtexample}, l'idée est de placer les systèmes classiques
+de DHT -- ici Chord -- afin qu'ils s'accordent avec la vue partielle fournie par
+\SPRAY. Par exemple, si un nœud \SPRAY possède 3 voisins, le réseau superposé en
+charge de la DHT possède lui aussi 3 voisins. Toutefois, ces derniers sont
+choisis selon la distance à laquelle ils se trouvent. Un premier voisin serait
+celui qui est le plus proche, le second voisin celui qui se trouve à la moitié
+de la distance maximum, et le troisième se trouverait à un tiers de la distance
+maximum. Un tel système permet de diriger les messages ciblant un nœud
+particulier très efficacement : de l'ordre de $\log\log |\mathcal{N}|$ sauts en
+moyenne, où $\mathcal{N}$ est l'ensemble des membres appartenant au réseau.
 
 % \subsection{Sécurité}
 
@@ -117,56 +121,61 @@ réseau.
 \subsection{Compromis causalité et concurrence}
 
 \CRATE comprend une couche dédiée à la détection de relations causales. La
-structure utilisée est celle d'un vecteur d'horloges avec des
-exceptions. Celle-ci, similairement aux vecteurs d'horloges, stockent un entier
-par participants. Pour les dispositifs informatiques aux configurations plus
-modestes tels que les téléphones portables, la progression linéaire de ces
-vecteurs peut poser problème. 
+structure utilisée est celle d'un vecteur d'horloges incluant des
+exceptions~\cite{malkhi2007concise}. Celle-ci, identiquement aux vecteurs
+d'horloges, stockent localement au moins un entier par collaborateur ayant
+jamais participé dans l'édition. Pour les dispositifs informatiques aux
+configurations plus modestes comme les téléphones portables, la progression
+linéaire de ces vecteurs constitue un problème.
 
 Une perspective possible serait de remplacer ce vecteur d'horloges de taille
-$N$, où $N$ est le nombre de membres ayant jamais participé à la session
+$W$, où $W$ est le nombre de membres ayant jamais participé à la session
 d'édition, par un vecteur d'horloges de taille $K$, où $K$ est un entier
-nettement inférieur à $N$. L'intuition derrière cette structure provient du
-fait que lorsqu'il n'y a pas de concurrence, une seule horloge de Lamport suffit
-pour caractériser la causalité. Si la concurrence augmente, alors des doublons
-peuvent apparaître. L'intégration, en présence de doublons, peut conduire à des
+nettement inférieur à $W$. L'intuition derrière cette structure provient du fait
+que lorsqu'il n'y a pas de concurrence, une seule horloge de
+Lamport~\cite{lamport1978time} suffit pour caractériser les relations
+causales. Si la concurrence augmente, alors des doublons peuvent
+apparaître. L'intégration, en présence de doublons, peut conduire à des
 incohérences.
 
-L'idée serait alors d'avoir un vecteur s'ajustant à la concurrence du système
-afin de borner la fréquence des erreurs. À cela s'ajouterait un mécanisme de
-recouvrement sur erreur afin d'intégrer l'opération arrivée en retard (similaire
-aux transformées opérationnelles mais étendu aux opérations non-concurrentes).
-Enfin, rendre le système fiable -- tous les messages parviennent à tous les
-participants -- nécessiterait un mécanisme d'anti-entropie sur cette structure.
+L'idée serait alors d'allier
+\begin{inparaenum}[(i)]
+\item une structure utilisant un vecteur dont la taille s'ajuste à la
+  concurrence du système afin de borner la fréquence des erreurs;
+\item un mécanisme de recouvrement sur erreur afin d'intégrer l'opération
+  arrivée en retard;
+\item un mécanisme d'anti-entropie afin que le système soit fiable : toutes les
+  opérations parviennent à tous les participants.
+\end{inparaenum}
 
 \subsection{Wiki réparti temps réel}
 
-Les Wiki sont des espaces de collaborations permettant à plusieurs participants
+Les wikis sont des espaces de collaborations permettant à plusieurs participants
 d'éditer des pages à tour de rôle, i.e., l'édition n'est pas effectuée en temps
-réel. Le succès de l'encyclopédie Wikipédia n'est plus à démontrer. Hélas, le
-modèle même d'édition provoque l'apparition de conflits. Ces conflits ne
-concernent pas seulement des points de vue divergents, mais aussi des éditions
-placées aux même endroit dans le document au même moment. Les conflits doivent
-être résolus manuellement ce qui constitue une tâche compliquée, à tel point que
-les discussions quant à l'organisation de l'écriture ont énormément augmenté au
-cours du temps.
+réel. Le succès de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia} n'est plus à
+démontrer~\cite{giles2005internet}. Cependant, le modèle même d'édition provoque
+l'apparition de conflits. Ces conflits ne concernent pas seulement des points de
+vue divergents, mais aussi des éditions placées aux même endroit dans le
+document au même moment. Les conflits doivent être résolus manuellement ce qui
+constitue une tâche complexe à tel point que les discussions quant à
+l'organisation de la rédation ont énormément augmenté au cours du
+temps~\cite{kittur2007he}.
 
-Autoriser l'édition temps réel des pages de Wiki permettrait à différent
-utilisateurs de voir les modifications effectués par d'autres collaborateurs
-afin d'agir en conséquence. Dans ce cas, les seuls conflits restants sont ceux
-d'ordre sémantique.
+Autoriser l'édition temps réel des pages de \emph{Wikipédia} permettrait à
+différent utilisateurs de voir les modifications effectués par d'autres
+collaborateurs afin d'agir en conséquence. Dans ce cas, les seuls conflits
+restants seraient ceux d'ordre sémantique.  De plus, décentraliser ces sessions
+d'édition temps réel permettrait de soulager le fournisseur du service des coûts
+liés à l'édition. Les membres d'une session d'édition participeraient seuls au
+bon fonctionnement de la session. Une fois le travail accompli, le document est
+sauvegardé sur le serveur et versionné normalement. Seul la sauvegarde finale
+reste de sa responsabilité.
 
-De plus, décentraliser ces sessions d'édition temps réel permet de soulager le
-fournisseur du service des coûts liés à l'édition. Les membres d'une session
-d'édition participent seuls au bon fonctionnement de la session. Une fois le
-travail accompli, le document est sauvegardé sur le serveur et versionné
-normalement. Globalement, seul le stockage final reste de sa responsabilité.
-
-Enfin, \CRATE permet de placer des liens à d'autres sessions d'édition dans le
-document. Ce simple mécanisme permet de naviguer d'un document à l'autre, d'une
-session d'édition à l'autre, et plus généralement d'un réseau à un autre. Il est
-alors possible de naviguer très simplement parmi ces réseaux, pour peu qu'ils
-soient encore vivants et accessibles.
+% Enfin, \CRATE permet de placer des liens à d'autres sessions d'édition dans le
+% document. Ce simple mécanisme permet de naviguer d'un document à l'autre, d'une
+% session d'édition à l'autre, et plus généralement d'un réseau à un autre. Il est
+% alors possible de naviguer très simplement parmi ces réseaux, pour peu qu'ils
+% soient encore vivants et accessibles.
 
 % Certains projets, comme \emph{The Fold}
 % bénéficient d'une foule de gens volontaires qui mettent leur machine à
