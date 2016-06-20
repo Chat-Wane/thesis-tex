@@ -35,7 +35,7 @@ cohérence forte~\cite{herlihy1990linearizability}, la disponibilité, et la
 tolérances aux partitionnements. Dans ce manuscrit, nous nous intéressons aux
 applications garantissant ces deux dernières propriétés. Ainsi, une opération
 est toujours acceptée par le système. De plus, le système, constitué de
-plusieurs serveurs distants, autorise la fragmentation temporairement en
+plusieurs serveurs distants, autorise la fragmentation temporaire en
 ilôts. Par conséquent, le critère de cohérence doit être
 affaiblit~\cite{bailis2013eventual, shapiro2011conflict}.
 
@@ -127,15 +127,15 @@ de caractères étant proche d'un document (cf. §\ref{repl:subsec:sequences}).
 % leur coût élevé n'est plus justifié. La réplication optimiste constitue alors
 % une alternative possible.
 
-\subsection{La réplication optimiste}
+\subsection{La réplication optimiste de séquences}
 \label{repl:subsec:optimistic}
 
-En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
-centaines de machines pouvant communiquer entre elles au travers de matériels
-aux capacités hétérogènes~\cite{demers1987epidemic}. Du fait de ces dimensions,
-la réplication pessimiste~\cite{alsberg1976principle, gifford1979weighted}, où
-les opérations doivent être approuvées avant d'être appliquées, semble
-impossible.
+% En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
+% centaines de machines pouvant communiquer entre elles au travers de matériels
+% aux capacités hétérogènes~\cite{demers1987epidemic}. Du fait de ces dimensions,
+% la réplication pessimiste~\cite{alsberg1976principle, gifford1979weighted}, où
+% les opérations doivent être approuvées avant d'être appliquées, semble
+% impossible.
 
 La réplication optimiste~\cite{demers1987epidemic, johnson1975maintenance,
   ladin1992providing, saito2005optimistic} est un paradigme de réplication
@@ -143,10 +143,10 @@ consistant à appliquer les modifications directement sur une réplique locale.
 Ainsi, les données sont toujours disponibles et réactives aux changements
 effectués. Ensuite, les modifications sont disséminées aux autres serveurs
 hébergeant une réplique où elles sont appliquées. Au contraire des approches
-pessimistes, les approches optimistes ne verrouillent pas les données lors des
-changements. En revanche, le critère de cohérence assuré est plus faible. En
-particulier, les répliques peuvent être temporairement dans des états
-divergeant entre eux :
+pessimistes~\cite{alsberg1976principle, gifford1979weighted}, les approches
+optimistes ne verrouillent pas les données lors des changements. En revanche, le
+critère de cohérence assuré est plus faible. En particulier, les répliques
+peuvent être temporairement dans des états divergeant entre eux :
 
 
 \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
@@ -254,15 +254,15 @@ telles que le déplacement, ou le couper -- coller. Toutefois, l'analyse de
 correction nécessite d'examiner chaque couple d'opérations ainsi que leurs
 paramètres. En conséquence, lors de l'écriture du
 papier~\cite{imine2003proving}, peu d'approches étaient réellement correctes.
-De plus, Joseph Gentle, l'un des ingénieurs ayant participé au développement de
-\emph{Google Wave}~\cite{googlewave, kaewkitipong2012diffusion} a déclaré que la
-complexité de OT avait conduit à 2 ans de développement, et que 2 ans seraient à
-nouveau nécessaire s'il fallait recommencer son développement.
+% De plus, Joseph Gentle, l'un des ingénieurs ayant participé au développement de
+% \emph{Google Wave}~\cite{googlewave, kaewkitipong2012diffusion} a déclaré que la
+% complexité de OT avait conduit à 2 ans de développement, et que 2 ans seraient à
+% nouveau nécessaire s'il fallait recommencer son développement.
 
-\noindent Les approches OT peuvent être divisées en deux classes :
+%\noindent Les approches OT peuvent être divisées en deux classes :
 
-\paragraph{Les approches décentralisées~\cite{sun2009contextbased} :}
-Chaque client est aussi un serveur hébergeant une réplique
+Avec les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
+est aussi un serveur hébergeant une réplique
 (cf. figure~\ref{repl:fig:otexample}). Chacune de ces entités doit être en
 mesure d'effectuer les transformations d'elle-même. Parmi les pré-requis à cette
 tâche figure le mécanisme de détection de concurrence. En effet, retrouver le
@@ -281,19 +281,19 @@ arrivent très rapidement à un groupe raisonnable de participants, alors ces
 approches décentralisées deviennent extrêmement
 efficaces~\cite{mehdi2014merging}.
 
-\paragraph{Les approches centralisées~\cite{nichols1995high} :} Elles utilisent
-un serveur central afin de réarranger et diffuser les opérations de tous les
-participants à tous les participants. La transformation s'en trouve beaucoup
-moins coûteuse dès lors qu'un serveur participe au processus. Toutefois, la
-topologie elle-même implique plusieurs défauts, à savoir, des problèmes
-concernant la confidentialité (celui à qui appartient le serveur possède les
-données), des problèmes concernant le passage à l'échelle (le serveur supporte
-la charge de tous les participants) et des problèmes de tolérance aux pannes (le
-serveur constitue un point unique de défaillance).
+% \paragraph{Les approches centralisées~\cite{nichols1995high} :} Elles utilisent
+% un serveur central afin de réarranger et diffuser les opérations de tous les
+% participants à tous les participants. La transformation s'en trouve beaucoup
+% moins coûteuse dès lors qu'un serveur participe au processus. Toutefois, la
+% topologie elle-même implique plusieurs défauts, à savoir, des problèmes
+% concernant la confidentialité (celui à qui appartient le serveur possède les
+% données), des problèmes concernant le passage à l'échelle (le serveur supporte
+% la charge de tous les participants) et des problèmes de tolérance aux pannes (le
+% serveur constitue un point unique de défaillance).
 
-\noindent Malgré tous ces défauts, les approches centralisées sont les plus
-courantes aujourd'hui avec, notamment, les éditeurs web bien connus tels que
-Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}.
+% \noindent Malgré tous ces défauts, les approches centralisées sont les plus
+% courantes aujourd'hui avec, notamment, les éditeurs web bien connus tels que
+% Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}.
 
 
 \subsubsection{Structure de données répliquée sans résolutions de conflits}
@@ -479,8 +479,8 @@ explicitement les relations causales grâce à une représentation sous forme
 d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la dernière
 opération observée. En parcourant l'arbre et en appliquant les opérations, la
 séquence peut être retrouvée. Toutefois, les identifiants sont des horloges
-vectorielles (\emph{vector clock}) dont la taille est prohibitive. De plus, il
-est nécessaire de conserver tous les noeuds de cet arbre causal au cas où une
+vectorielles (\emph{vector clock}) dont la taille devient élevée. De plus, il
+est nécessaire de conserver tous les nœuds de cet arbre causal au cas où une
 opération y ferait référence.
 
 \paragraph{Partial persistent séquence~\cite{wu2010partial} :} Cette approche
@@ -531,11 +531,11 @@ Lorsque conserver l'historique ne constitue pas une contrainte, purger la
 structure de données des éléments cachés est une solution potentielle aux
 dégradations de performances :
 
-\paragraph{ramasse-miettes~\cite{abdullahi1998garbage} :} permet de nettoyer une
-structure de données en vidant de la mémoire les objets qui ne sont plus
-accessibles par le programme. Le contexte réparti étend le cadre du programme en
-considérant le local et le distant. Ainsi, supprimer réellement un élément de la
-séquence revient à s'interroger : \emph{Est-ce que
+\paragraph{ramasse-miettes réparti~\cite{abdullahi1998garbage} :} permet de
+nettoyer une structure de données en vidant de la mémoire les objets qui ne sont
+plus accessibles par le programme, que ce soit localement ou à distance. Ainsi,
+supprimer réellement un élément de la séquence revient à s'interroger :
+\emph{Est-ce que
   \begin{inparaenum}[(i)]
   \item toutes les répliques ont supprimé l'élément et
   \item tous les éléments référençant l'élément supprimé ont été intégrés
@@ -544,7 +544,7 @@ séquence revient à s'interroger : \emph{Est-ce que
 à ces deux questions. D'autant plus lorsque les possesseurs de réplique ne sont
 pas perpétuellement joignables.
 
-\paragraph{Core-nebula~\cite{letia2009crdts} :}] propose de contraindre la
+\paragraph{Core-nebula~\cite{letia2009crdts} :} propose de contraindre la
 topologie réseau afin de rendre la prise de décisions possible. Ainsi, un cœur
 décisionnel prend en charge les choix de suppression réelle des objets.  Ce cœur
 décisionnel est restreint à un sous-ensemble des membres du réseaux étant
@@ -573,210 +573,6 @@ afin d'être intégrés. À ce titre, les suppressions ne se contentent pas de
 masquer les éléments, mais les retirent entièrement de la structure. En
 revanche, la liste d'éléments constituant les identifiants est susceptible de
 grandir, et par là même, de diminuer les performances du systèmes.
-
-
-\paragraph{Chemins.}
-
-Les identifiants de taille variable peuvent être représentés comme la
-concaténation d'éléments basiques (e.g. des entiers). La séquence en résultant
-peut être représentée grâce à une structure d'arbre où les éléments de la
-séquence sont stockés sur les nœuds et où les arrêtes sont étiquetées de telle
-sorte qu'un chemin de la racine jusqu'au nœud forme l'identifiant de
-l'élément. Par exemple, un caractère dont l'identifiant serait [3.1] serait
-accessible en suivant l'arrête étiquetée 3, puis l'arrête étiquetée 1. Plus
-formellement, la séquence est un arbre où chaque nœud peut contenir une valeur,
-i.e., un élément (dans l'alphabet $\mathcal{A}$) de la séquence. L'arbre est un
-ensemble de paires $\langle \mathcal{P}\subset \{N\}^*,\, \mathcal{A} \rangle$,
-i.e., chaque élément est associé à un chemin. De plus, un ordre total
-$(\mathcal{P},\, <_\mathcal{P})$ permet d'ordonner les chemins et de retrouver
-l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arrêtes
-étiquetées $\ell_1,\,\ell_2,\ldots,\ell_e$ est noté
-$[\ell_1.\ell_2\ldots\ell_e]$.
-
-\begin{figure}
-  \centering
-  \subfloat[Un arbre est l'union de ses identifiants]
-  [\label{repl:fig:treeexample}L'arbre représentant la séquence est
-  construit grâce à l'union des identifiants et utilise principalement les
-  chemins pour ordonner ses caractères.]
-  {\input{input/replication/figtreeexample.tex}}
-  \hspace{20pt}
-  \subfloat[Les désambiguateurs interviennent lorsqu'un chemin identique a été
-  alloué]
-  [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
-  maintenir un état équivalent, même en présence d'insertions concurrentes ayant
-  résulté en des chemins identiques. Par soucis de simplicité, seuls les
-  désambiguateurs des caractères \texttt{E}, \texttt{R}, et \texttt{T}
-  sont affichés.]
-  {\input{input/replication/figdisexample.tex}}
-  \caption[Arbres contenant une séquence répliquée]
-  {Arbres contenant la séquence \texttt{QWERTY}.}
-\end{figure}
-
-La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
-représentant la séquence. Un auteur insère les caractères \texttt{QWTY} les uns
-à la suite des autres résultant sur les chemins [1], [2], [4], et [8]
-respectivement. L'insertion du caractère \texttt{E} entre les paires
-$\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
-engendre la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour insérer
-le caractère \texttt{R}, l'arbre doit être agrandi afin d'accueillir le nouveau
-chemin entre \texttt{E} et \texttt{T}. Le chemin en résultant est [3.1]. Insérer
-un nouveau caractère entre \texttt{E} et \texttt{R} résulterait en une autre
-augmentation de la profondeur de l'arbre. Le chemin serait [3.0.$X$] où
-$0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$ permet de retrouver la
-séquence \texttt{QWERTY}.
-
-
-\paragraph{Désambiguation des cas concurrents.}
-
-L'ordre des chemins $(\mathcal{P},\, <_\mathcal{P})$ est un ordre total
-lorsqu'un seul auteur écrit. Toutefois, cela devient un ordre partiel lorsque
-plusieurs auteurs sont impliqués dans l'édition. Par exemple, si deux auteurs
-insèrent un caractère au même endroit dans le document, au même moment, le même
-chemin pour les deux caractères risque d'être alloué. Dans ce cas, l'ordre des
-caractères n'est pas strictement défini et peut rompre la propriété de
-convergence des répliques. Les désambiguateurs utilisent des marqueurs unique de
-manière globale pour fournir un ordre total même en présence d'éditions
-concurrentes. Ces marqueurs comprennent couramment un identifiant de site unique
-associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
-$\langle element,\, path\rangle$ est associée à un désambiguateur.
-
-Soit l'ensemble des identifiants $\mathcal{I}$ composés tels que
-$\mathcal{I} : \mathcal{P} \times \mathcal{A} \times \mathcal{D}$. La
-composition de l'ordre partiel $(\mathcal{P},\,<_\mathcal{P})$ et l'ordre total
-des désambiguateurs $(\mathcal{D},\, <_\mathcal{D})$ permet d'ordonner les
-éléments de la séquence de manière identique quelle que soit la réplique.
-
-La figure~\ref{repl:fig:disexample} montre l'arbre contenant 6 éléments mais
-seulement 5 chemins distincts. Tout d'abord, le premier collaborateur $c_1$
-insère \texttt{QW}. Ensuite, les collaborateurs $c_1$ et $c_2$ insèrent en
-concurrence les caractères \texttt{E} et \texttt{T}, respectivement. Dans les
-deux cas, le chemin en résultant est $[3]$. Pour résoudre cette ambiguïté, le
-désambiguateur $\langle c_1,\, 3 \rangle$ est associé au caractère \texttt{E};
-le désambiguateur $\langle c_2,\, 1 \rangle$ est associé au caractère
-\texttt{T}. Recouvrer l'ordre des éléments consiste simplement à comparer, à
-chaque niveau de l'arbre, le chemin du niveau, puis l'identifiant de la
-réplique, puis l'horloge. Dans cet exemple, le caractère \texttt{E} précède le
-caractère \texttt{T} car $c_1< c_2$. Ensuite, le collaborateur $c_1$ insère
-\texttt{Y} à la fin de la séquence. Enfin, il insère \texttt{R} entre \texttt{E}
-et \texttt{T}. Puisque ces derniers ont un chemin identique, l'espace est
-insuffisant entre ces deux chemins pour insérer un nouveau caractère. La
-profondeur de l'arbre doit augmenter. La fonction d'allocation doit choisir un
-chemin $[3.X]$ tel que $0<X<10$. En copiant le désambiguateur de \texttt{E} au
-premier niveau, cela assure que le nouvel identifiant suivra celui du caractère
-\texttt{E} et précédera celui du caractère \texttt{T}. Il est important de noter
-que les collaborateurs ne choisissent pas les désambiguateurs. Ainsi, la
-séquence de cet exemple aurait pu être \texttt{QWTREY} auquel cas une correction
-aurait été nécessaire. De plus, la complexité spatiale de ces désambiguateurs
-est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
-concentre sur ces identifiants.
-
-% Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
-% équippé des opérations d'insertion $\textsc{insert}$ et de suppression
-% $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
-% $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
-% l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
-% $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
-% $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
-
-% Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
-% une liste constituée de paires avec l'identifiant unique du serveur hébergeant
-% la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
-% compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
-% essentiellement de l'allocation du chemin dans l'arbre.
-
-\paragraph{Choisir le bon chemin.} La composante la plus critique des approches
-pour les séquences où les identifiants sont de taille variable consiste à
-choisir les chemins. L'algorithme~\ref{repl:algo:general} montre les
-instructions générales de telles approches. Il divise les opérations --
-insertion et suppression -- entre la partie locale et la partie distante du
-schéma de réplication optimiste. Le cœur de l'algorithme est situé dans la
-partie locale de l'opération d'insertion où le chemin et le désambiguateur
-doivent être créés. La fonction \textsc{convert2Path} se débarrasse de la partie
-désambiguateur des identifiants en argument pour n'en garder que les chemins,
-transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
-concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
-contraire, cette fonction convertit les identifiants en chemins préservant
-l'ordre $(\mathcal{P}, <_\mathcal{P})$. Par exemple, dans la
-figure~\ref{repl:fig:disexample}, le résultat de l'appel à la fonction
-\textsc{convert2Path} avec les identifiants du caractère \texttt{E} et du
-caractère \texttt{T} est la paire $\langle [3.0],\, [3.9] \rangle$. La fonction
-\textsc{allocPath} alloue un nouveau chemin entre ces bornes. \textsc{allocDis}
-décore le chemin pour garantir que l'identifiant -- en tant que composition d'un
-chemin, d'un élément, et d'un désambiguateur -- est bien positionné entre les
-identifiants qui ont servi à le créer selon la relation d'ordre
-$(\mathcal{I},\, <_\mathcal{I})$.
-
-\begin{algorithm}[h]
-  \input{input/replication/algogeneral.tex}
-  \caption[Séquences avec identifiants de taille variable]
-  {\label{repl:algo:general}Séquences avec identifiants de taille variable.}
-\end{algorithm}
-
-La fonction \textsc{allocPath} choisit le chemin dans l'arbre entre deux autres
-chemins $p$ et $q$ tels que $p$ précède $q$ ($p <_\mathcal{P} q$). Le nouveau
-chemin $n$ est positionné entre ces bornes
-($p <_\mathcal{P} n <_\mathcal{P} q$). La fonction \textsc{allocPath} doit
-choisir parmi les plus petits chemins disponibles afin de conserver de bonnes
-performances.
-
-\begin{figure}
-  \begin{center}
-  \subfloat[Allocation quasi-optimale]
-  [\label{repl:fig:allocpathexampleA}Allocation presque optimale]
-  {\input{input/replication/figallocpathexampleA.tex}}
-  \hspace{30pt}
-  \subfloat[Allocation pire-cas]
-  [\label{repl:fig:allocpathexampleB}Allocation pire cas]
-  {\input{input/replication/figallocpathexampleB.tex}}
-  \end{center}
-  \caption[Une stratégie d'allocation contre les comportements d'édition] {Une
-    même stratégie d'allocation face à des comportements d'édition différents.}
-\end{figure}
-
-Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
-illustrent les difficultés rencontrées lors de l'allocation des chemins
-composant les identifiants. Dans les deux cas, la fonction d'allocation utilise
-la stratégie suivante : la branche la plus à gauche avec la plus petite
-profondeur possible. Dans les deux cas, la séquence finale est
-\texttt{QWERTY}. Toutefois, les lettres ne sont pas insérées dans un ordre
-identique. Dans le premier cas, \texttt{Q} est insérée à l'indice 0, suivie de
-\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2 etc.  Dans le second
-cas, la lettre \texttt{Y} est insérée à l'indice 0, suivie de \texttt{T} à
-l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
-séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
-position 0 décale toutes lettres de droite etc.
-
-Dans le premier cas (cf. figure~\ref{repl:fig:allocpathexampleA}), l'opération
-d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
-\texttt{Q}, $\dashv$). Par conséquent, le chemin doit être alloué entre les
-bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
-réserver la branche la plus à gauche et de plus petite taille, le chemin
-résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est transformée en
-\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2] etc.
-Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la
-stratégie employée est très efficace. Cependant, elle n'est pas totalement
-optimale puisque l'arbre est prévu pour accueillir 8 identifiants lorsque
-seulement 6 sont alloués.
-
-Dans le second cas (cf. figure~\ref{repl:fig:allocpathexampleB}), l'opération
-d'insertion (\texttt{Y}, 0) est transformée en \textsc{insert}($\vdash$,
-\texttt{Y}, $\dashv$) dont le résultat est le chemin [1]. Lors de l'insertion
-(\texttt{T}, 0), un chemin est requis entre la borne virtuelle du début de
-séquence [0] et la borne du caractère \texttt{Y} : [1]. Ainsi, la profondeur du
-chemin doit augmenter de telle sorte que le nouvel identifiant muni de l'ordre
-total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les deux. Considérons un
-ordre lexicographique, le chemin résultant est [0.$X$] où $X$ est choisi entre 0
-et 10. Suivant la stratégie, le chemin est [0.1] pour la lettre \texttt{T}. Puis
-[0.0.1] pour la lettre \texttt{R} etc. La taille des chemins alloués augmente
-très rapidement.  La stratégie d'allocation s'avère inefficace dans ce cas.
-
-Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
-longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
-taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
-d'une séquence classique à des identifiants non-mutable de taille variable d'une
-séquence répliquée a un coût qu'il est nécessaire d'analyser afin de proposer
-une fonction d'allocation efficace.
 
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
     weiss2010logootundo} :} Ce CRDT représente originellement ses identifiants
@@ -840,10 +636,149 @@ d'édition va à l'encontre de la stratégie créée. L'identifiant peut être d
 taille linéaire comparée à la taille du document.
 
 
-La section suivante s'attache à mettre en évidence les défaillances des
-approches n'utilisant pas de pierres tombales. À cet effet, elle se sert de
-traces extraites de Wikipédia et de documents créés artificiellement. Enfin,
-elle statue le problème scientifique auquel nous nous attaquons.
+% La section suivante s'attache à mettre en évidence les défaillances des
+% approches n'utilisant pas de pierres tombales. À cet effet, elle se sert de
+% traces extraites de Wikipédia et de documents créés artificiellement. Enfin,
+% elle statue le problème scientifique auquel nous nous attaquons.
+
+% Cette section met en évidence les dangers liés à l'utilisation des approches
+% structures de données répliquées sans résolution de conflits conçues pour les
+% séquences et n'utilisant pas de pierre tombales. Tout d'abord, des traces
+% réelles issues de Wikipédia sont employées. Ensuite, des documents artificiels
+% sont créés de manière à accentuer les comportements des stratégies d'allocation
+% examinées. Enfin, le problème scientifique est exposé.
+
+\subsubsection{Traces réelles}
+
+\begin{figure*}
+  \centering
+  \subfloat[Document Wikipédia principalement édité en fin]
+  [\label{repl:img:motivationsA}Document Wikipédia de très grande
+  taille principalement édité en fin.]
+  {\includegraphics[width=0.8\textwidth]{img/lseq/motivationposte.eps}}
+  \hspace{10pt}
+  \subfloat[Document Wikipédia principalement édité au début]
+  [\label{repl:img:motivationsB}Document Wikipédia de petite taille
+  principalement édité au début.]
+  {\includegraphics[width=0.8\textwidth]{img/lseq/motivationtemplatetalk.eps}}
+  \caption[Taille du chemin alloué pour chaque ligne dans Wikipédia]
+  {\label{repl:img:motivations} Taille du chemin alloué pour chaque ligne du
+    document. L'axe des abscisses montre le numéro de la ligne concernée. L'axe
+    des ordonnées de la partie haute de la figure montre l'âge de la
+    ligne. L'axe des ordonnées de la partie basse de la figure montre la taille
+    binaire du chemin alloué.}
+\end{figure*}
+
+L'encyclopédie Wikipédia~\cite{wikipedia} répertorie des millions d'articles
+écrits collaborativement par sa communauté. Un utilisateur, enregistré ou non,
+peut lire un article, et s'il le souhaite, en modifier le contenu. Lorsque ses
+modifications sont achevées, il les soumet à Wikipédia. Deux issues possibles :
+\begin{inparaenum}[(i)]
+\item La contribution est acceptée et sera visible de tous ou
+\item la contribution est rejetée car un autre utilisateur a effectué une
+  modification en concurrence et l'a soumise en premier. Il faut alors réviser
+  la version rejetée afin de l'adapter à la version la plus à jour avant de la
+  soumettre à nouveau, si nécessaire.
+\end{inparaenum}
+Wikipédia garde l'historique des modifications apportées à tous les articles
+depuis leur création. Nous sommes alors à même de rejouer les éditions --
+nommées révision -- dans l'ordre où elles ont été effectuées. Toutefois, la
+concurrence qui pourrait exister dans une édition en temps réelle est effacée
+par le processus d'édition même. D'autre part, la granularité est fixée à la
+ligne. En cela, les simulations sur corpus Wikipédia diffèrent légèrement de la
+réalité.
+
+\paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent pas à
+fournir des identifiants dont la taille soit satisfaisante quel que soit le
+document créé grâce à des traces réelles.
+
+\paragraph{Description :} Logoot est configuré avec une base $2^{32}$. Treedoc
+est configuré pour utiliser sa méthode originelle -- son autre heuristique
+revenant plus ou moins à la stratégie de Logoot. Les documents considérés sont
+des articles extraits de Wikipédia et rejoués sur 200 révisions. L'un des
+articles atteint jusqu'à 10k lignes principalement ajoutées en fin
+d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
+article atteint seulement 200 lignes mais est principalement édité en
+tête\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
+
+\paragraph{Résultat :} Les figures~\ref{repl:img:motivationsA}
+et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
+chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent très
+vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
+est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
+des tailles très élevée dépassant les 1k bits par chemin. Dans ce cas, Logoot se
+comporte mieux. En revanche, dans le cadre de l'édition en tête, Logoot alloue
+des chemins dont la taille augmente extrêmement rapidement. Pour recouvrer de
+bonnes performances, l'exécution d'un protocole de relocalisation des chemins
+devient nécessaire.
+
+\paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
+allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
+insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du chemin
+augmente. Cependant, comme l'arité des chemins Treedoc est binaire
+($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), cela
+lui permet de conserver des chemins plus petits que ceux de Logoot dans le cadre
+du document édité en tête. D'un autre coté, Logoot a conçu sa stratégie pour
+l'édition en fin. Dès lors, si le comportement suit cette hypothèse, les
+identifiants grossissent par paliers. Linéairement certes, mais lentement. Dans
+le cas contraire, les identifiants grimpent très rapidement (cela serait le cas
+avec la seconde heuristique de Treedoc).
+
+\subsubsection{Documents artificiels}
+
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/motivationartificial.eps}
+    \caption[Taille moyenne des chemins sur des documents artificiels]
+    {\label{repl:img:motivationartificial}Taille moyenne des chemins
+      allouées en fonction du nombre d'insertions successives dans le
+      document. L'axe des abscisses montre le nombre d'insertions dans le
+      documents. L'axe des ordonnées montre la taille moyenne de la
+      représentation binaire des chemins alloués.}
+  \end{center}
+\end{figure}
+
+\paragraph{Objectif :} Montrer la progression de la taille des identifiants
+allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
+artificiels.
+
+\paragraph{Description :} Deux types de documents artificiels sont créés. Tout
+d'abord, un premier document est créé grâce à des insertions à des positions
+aléatoires dans la séquence. Le second document est créé grâce à des insertions
+successives en fin de document. La fonction d'allocation des chemins de Logoot
+est spécifiquement conçue pour gérer ce dernier type d'édition. La taille
+moyenne des chemins composant les identifiants est mesurée à chaque nouvelle
+insertion. Le document atteint 500k caractères.
+
+\paragraph{Résultat :} La figure~\ref{repl:img:motivationartificial} montre les
+résultats de cette simulation. La partie du haut montre les résultats du
+document édité à des positions aléatoires. La partie du bas montre les résultats
+du document édité à la fin. Nous observons que l'édition à des positions
+aléatoires entraîne une génération de chemins dont la taille est logarithmique,
+que ce soit pour Logoot ou pour Treedoc. Treedoc est meilleur que Logoot dans ce
+cas. Nous observons aussi que l'édition en fin est catastrophique pour Treedoc
+(la courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
+chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
+reste linéaire. À terme, l'exécution d'un protocole de relocalisation des
+chemins devient nécessaire pour recouvrir de bonnes performances.
+
+\paragraph{Explication :} Les fonctions d'allocations Logoot et Treedoc
+utilisent une structure d'arbres pour allouer le chemin associé à chaque
+caractère. Dans le cadre de l'édition aléatoire, l'arbre reste équilibré au
+cours des insertions. Les branches les plus basses se remplissent au maximum de
+leur capacité. Par conséquent, les identifiants alloués par Treedoc et Logoot
+croissent logarithmiquement par rapport au nombre d'insertion. L'arité de
+l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot, Treedoc
+propose de meilleures performances. Dans le cadre de l'édition en fin, chaque
+nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La croissance
+est linéaire comparée au nombre d'insertions dans la séquence et extrêmement
+rapide. La fonction d'allocation de Logoot est conçue pour gérer ce type
+d'édition. Une branche par niveau de l'arbre se trouve bien remplie
+d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
+constant, d'où la croissance linéaire de la taille des chemins générés.
+
+
 
 %%% Local Variables:
 %%% mode: latex

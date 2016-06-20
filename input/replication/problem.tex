@@ -1,0 +1,211 @@
+
+\section{Définition du problème}
+
+%\paragraph{Chemins.}
+
+Les identifiants de taille variable peuvent être représentés comme la
+concaténation d'éléments basiques (e.g. des entiers). La séquence en résultant
+peut être représentée grâce à une structure d'arbre où les éléments de la
+séquence sont stockés sur les nœuds et où les arrêtes sont étiquetées de telle
+sorte qu'un chemin de la racine jusqu'au nœud forme l'identifiant de
+l'élément. Par exemple, un caractère dont l'identifiant serait [3.1] serait
+accessible en suivant l'arrête étiquetée 3, puis l'arrête étiquetée 1. Plus
+formellement, la séquence est un arbre où chaque nœud peut contenir une valeur,
+i.e., un élément (dans l'alphabet $\mathcal{A}$) de la séquence. L'arbre est un
+ensemble de paires $\langle \mathcal{P}\subset \{N\}^*,\, \mathcal{A} \rangle$,
+i.e., chaque élément est associé à un chemin. De plus, un ordre total
+$(\mathcal{P},\, <_\mathcal{P})$ permet d'ordonner les chemins et de retrouver
+l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arrêtes
+étiquetées $\ell_1,\,\ell_2,\ldots,\ell_e$ est noté
+$[\ell_1.\ell_2\ldots\ell_e]$.
+
+\begin{figure}
+  \centering
+  \subfloat[Un arbre est l'union de ses identifiants]
+  [\label{repl:fig:treeexample}L'arbre représentant la séquence est
+  construit grâce à l'union des identifiants et utilise principalement les
+  chemins pour ordonner ses caractères.]
+  {\input{input/replication/figtreeexample.tex}}
+  \hspace{20pt}
+  \subfloat[Les désambiguateurs interviennent lorsqu'un chemin identique a été
+  alloué]
+  [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
+  maintenir un état équivalent, même en présence d'insertions concurrentes ayant
+  résulté en des chemins identiques. Par soucis de simplicité, seuls les
+  désambiguateurs des caractères \texttt{E}, \texttt{R}, et \texttt{T}
+  sont affichés.]
+  {\input{input/replication/figdisexample.tex}}
+  \caption[Arbres contenant une séquence répliquée]
+  {Arbres contenant la séquence \texttt{QWERTY}.}
+\end{figure}
+
+La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
+représentant la séquence. Un auteur insère les caractères \texttt{QWTY} les uns
+à la suite des autres résultant sur les chemins [1], [2], [4], et [8]
+respectivement. L'insertion du caractère \texttt{E} entre les paires
+$\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
+engendre la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour insérer
+le caractère \texttt{R}, l'arbre doit être agrandi afin d'accueillir le nouveau
+chemin entre \texttt{E} et \texttt{T}. Le chemin en résultant est [3.1]. Insérer
+un nouveau caractère entre \texttt{E} et \texttt{R} résulterait en une autre
+augmentation de la profondeur de l'arbre. Le chemin serait [3.0.$X$] où
+$0<X<10$. L'ordre total $(\mathcal{P},\, <_\mathcal{P})$ permet de retrouver la
+séquence \texttt{QWERTY}.
+
+
+\paragraph{Désambiguation des cas concurrents.}
+
+L'ordre des chemins $(\mathcal{P},\, <_\mathcal{P})$ est un ordre total
+lorsqu'un seul auteur écrit. Toutefois, cela devient un ordre partiel lorsque
+plusieurs auteurs sont impliqués dans l'édition. Par exemple, si deux auteurs
+insèrent un caractère au même endroit dans le document, au même moment, le même
+chemin pour les deux caractères risque d'être alloué. Dans ce cas, l'ordre des
+caractères n'est pas strictement défini et peut rompre la propriété de
+convergence des répliques. Les désambiguateurs utilisent des marqueurs unique de
+manière globale pour fournir un ordre total même en présence d'éditions
+concurrentes. Ces marqueurs comprennent couramment un identifiant de site unique
+associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
+$\langle element,\, path\rangle$ est associée à un désambiguateur.
+
+Soit l'ensemble des identifiants $\mathcal{I}$ composés tels que
+$\mathcal{I} : \mathcal{P} \times \mathcal{A} \times \mathcal{D}$. La
+composition de l'ordre partiel $(\mathcal{P},\,<_\mathcal{P})$ et l'ordre total
+des désambiguateurs $(\mathcal{D},\, <_\mathcal{D})$ permet d'ordonner les
+éléments de la séquence de manière identique quelle que soit la réplique.
+
+La figure~\ref{repl:fig:disexample} montre l'arbre contenant 6 éléments mais
+seulement 5 chemins distincts. Tout d'abord, le premier collaborateur $c_1$
+insère \texttt{QW}. Ensuite, les collaborateurs $c_1$ et $c_2$ insèrent en
+concurrence les caractères \texttt{E} et \texttt{T}, respectivement. Dans les
+deux cas, le chemin en résultant est $[3]$. Pour résoudre cette ambiguïté, le
+désambiguateur $\langle c_1,\, 3 \rangle$ est associé au caractère \texttt{E};
+le désambiguateur $\langle c_2,\, 1 \rangle$ est associé au caractère
+\texttt{T}. Recouvrer l'ordre des éléments consiste simplement à comparer, à
+chaque niveau de l'arbre, le chemin du niveau, puis l'identifiant de la
+réplique, puis l'horloge. Dans cet exemple, le caractère \texttt{E} précède le
+caractère \texttt{T} car $c_1< c_2$. Ensuite, le collaborateur $c_1$ insère
+\texttt{Y} à la fin de la séquence. Enfin, il insère \texttt{R} entre \texttt{E}
+et \texttt{T}. Puisque ces derniers ont un chemin identique, l'espace est
+insuffisant entre ces deux chemins pour insérer un nouveau caractère. La
+profondeur de l'arbre doit augmenter. La fonction d'allocation doit choisir un
+chemin $[3.X]$ tel que $0<X<10$. En copiant le désambiguateur de \texttt{E} au
+premier niveau, cela assure que le nouvel identifiant suivra celui du caractère
+\texttt{E} et précédera celui du caractère \texttt{T}. Il est important de noter
+que les collaborateurs ne choisissent pas les désambiguateurs. Ainsi, la
+séquence de cet exemple aurait pu être \texttt{QWTREY} auquel cas une correction
+aurait été nécessaire. De plus, la complexité spatiale de ces désambiguateurs
+est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
+concentre sur ces identifiants.
+
+% Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
+% équippé des opérations d'insertion $\textsc{insert}$ et de suppression
+% $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
+% $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
+% l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
+% $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
+% $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
+
+% Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
+% une liste constituée de paires avec l'identifiant unique du serveur hébergeant
+% la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
+% compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
+% essentiellement de l'allocation du chemin dans l'arbre.
+
+\paragraph{Choisir le bon chemin.} La composante la plus critique des approches
+pour les séquences où les identifiants sont de taille variable consiste à
+choisir les chemins. L'algorithme~\ref{repl:algo:general} montre les
+instructions générales de telles approches. Il divise les opérations --
+insertion et suppression -- entre la partie locale et la partie distante du
+schéma de réplication optimiste. Le cœur de l'algorithme est situé dans la
+partie locale de l'opération d'insertion où le chemin et le désambiguateur
+doivent être créés. La fonction \textsc{convert2Path} se débarrasse de la partie
+désambiguateur des identifiants en argument pour n'en garder que les chemins,
+transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
+concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
+contraire, cette fonction convertit les identifiants en chemins préservant
+l'ordre $(\mathcal{P}, <_\mathcal{P})$. Par exemple, dans la
+figure~\ref{repl:fig:disexample}, le résultat de l'appel à la fonction
+\textsc{convert2Path} avec les identifiants du caractère \texttt{E} et du
+caractère \texttt{T} est la paire $\langle [3.0],\, [3.9] \rangle$. La fonction
+\textsc{allocPath} alloue un nouveau chemin entre ces bornes. \textsc{allocDis}
+décore le chemin pour garantir que l'identifiant -- en tant que composition d'un
+chemin, d'un élément, et d'un désambiguateur -- est bien positionné entre les
+identifiants qui ont servi à le créer selon la relation d'ordre
+$(\mathcal{I},\, <_\mathcal{I})$.
+
+\begin{algorithm}[h]
+  \input{input/replication/algogeneral.tex}
+  \caption[Séquences avec identifiants de taille variable]
+  {\label{repl:algo:general}Séquences avec identifiants de taille variable.}
+\end{algorithm}
+
+La fonction \textsc{allocPath} choisit le chemin dans l'arbre entre deux autres
+chemins $p$ et $q$ tels que $p$ précède $q$ ($p <_\mathcal{P} q$). Le nouveau
+chemin $n$ est positionné entre ces bornes
+($p <_\mathcal{P} n <_\mathcal{P} q$). La fonction \textsc{allocPath} doit
+choisir parmi les plus petits chemins disponibles afin de conserver de bonnes
+performances.
+
+\begin{figure}
+  \begin{center}
+  \subfloat[Allocation quasi-optimale]
+  [\label{repl:fig:allocpathexampleA}Allocation presque optimale]
+  {\input{input/replication/figallocpathexampleA.tex}}
+  \hspace{30pt}
+  \subfloat[Allocation pire-cas]
+  [\label{repl:fig:allocpathexampleB}Allocation pire cas]
+  {\input{input/replication/figallocpathexampleB.tex}}
+  \end{center}
+  \caption[Une stratégie d'allocation contre les comportements d'édition] {Une
+    même stratégie d'allocation face à des comportements d'édition différents.}
+\end{figure}
+
+Les figures~\ref{repl:fig:allocpathexampleA} et~\ref{repl:fig:allocpathexampleB}
+illustrent les difficultés rencontrées lors de l'allocation des chemins
+composant les identifiants. Dans les deux cas, la fonction d'allocation utilise
+la stratégie suivante : la branche la plus à gauche avec la plus petite
+profondeur possible. Dans les deux cas, la séquence finale est
+\texttt{QWERTY}. Toutefois, les lettres ne sont pas insérées dans un ordre
+identique. Dans le premier cas, \texttt{Q} est insérée à l'indice 0, suivie de
+\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2 etc.  Dans le second
+cas, la lettre \texttt{Y} est insérée à l'indice 0, suivie de \texttt{T} à
+l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
+séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
+position 0 décale toutes lettres de droite etc.
+
+Dans le premier cas (cf. figure~\ref{repl:fig:allocpathexampleA}), l'opération
+d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
+\texttt{Q}, $\dashv$). Par conséquent, le chemin doit être alloué entre les
+bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
+réserver la branche la plus à gauche et de plus petite taille, le chemin
+résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est transformée en
+\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2] etc.
+Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la
+stratégie employée est très efficace. Cependant, elle n'est pas totalement
+optimale puisque l'arbre est prévu pour accueillir 8 identifiants lorsque
+seulement 6 sont alloués.
+
+Dans le second cas (cf. figure~\ref{repl:fig:allocpathexampleB}), l'opération
+d'insertion (\texttt{Y}, 0) est transformée en \textsc{insert}($\vdash$,
+\texttt{Y}, $\dashv$) dont le résultat est le chemin [1]. Lors de l'insertion
+(\texttt{T}, 0), un chemin est requis entre la borne virtuelle du début de
+séquence [0] et la borne du caractère \texttt{Y} : [1]. Ainsi, la profondeur du
+chemin doit augmenter de telle sorte que le nouvel identifiant muni de l'ordre
+total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les deux. Considérons un
+ordre lexicographique, le chemin résultant est [0.$X$] où $X$ est choisi entre 0
+et 10. Suivant la stratégie, le chemin est [0.1] pour la lettre \texttt{T}. Puis
+[0.0.1] pour la lettre \texttt{R} etc. La taille des chemins alloués augmente
+très rapidement.  La stratégie d'allocation s'avère inefficace dans ce cas.
+
+Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
+longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
+taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
+d'une séquence classique à des identifiants non-mutable de taille variable d'une
+séquence répliquée a un coût qu'il est nécessaire d'analyser afin de proposer
+une fonction d'allocation efficace.
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../../paper"
+%%% End:
