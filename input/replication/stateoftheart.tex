@@ -127,7 +127,7 @@ de caractères étant proche d'un document (cf. §\ref{repl:subsec:sequences}).
 % leur coût élevé n'est plus justifié. La réplication optimiste constitue alors
 % une alternative possible.
 
-\subsection{La réplication optimiste de séquences}
+\subsection{Réplication optimiste de séquences}
 \label{repl:subsec:optimistic}
 
 % En 1987, Demers et al. décrivent une base de données répliquée sur plusieurs
@@ -145,8 +145,8 @@ effectués. Ensuite, les modifications sont disséminées aux autres serveurs
 hébergeant une réplique où elles sont appliquées. Au contraire des approches
 pessimistes~\cite{alsberg1976principle, gifford1979weighted}, les approches
 optimistes ne verrouillent pas les données lors des changements. En revanche, le
-critère de cohérence assuré est plus faible. En particulier, les répliques
-peuvent être temporairement dans des états divergeant entre eux :
+critère de cohérence assuré est plus faible. En particulier, l'état des
+répliques peut être temporairement différent :
 
 
 \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
@@ -200,21 +200,21 @@ raisonner~\cite{conway2012logic, meiklejohn2015lasp}.
 % construire ces bases et langages.
 
 
-\subsection{Transformations ou commutativité ?}
-\label{repl:subsec:otorcrdts}
+% \subsection{Transformations ou commutativité ?}
+% \label{repl:subsec:otorcrdts}
 
-La réplication optimiste consiste à maintenir une copie locale des
-données. Chaque modification locale est immédiatement appliquée et disséminée
-aux autres serveurs possédant la réplique. Grâce à cela, les données sont
-toujours disponibles et réactives aux changements. Toutefois, les approches
-appartenant à ce schéma de réplication doivent fournir des opérations respectant
-la cohérence à terme. Cette section décrit deux familles d'approches : les
-approches à transformées opérationnelles (cf. §\ref{repl:subsubsec:ot}) et les
-approches à structure de données répliquées sans résolution de conflits
-(cf. §\ref{repl:subsubsec:crdts}) ainsi que le coût qui leur est associé.
+% La réplication optimiste consiste à maintenir une copie locale des
+% données. Chaque modification locale est immédiatement appliquée et disséminée
+% aux autres serveurs possédant la réplique. Grâce à cela, les données sont
+% toujours disponibles et réactives aux changements. Toutefois, les approches
+% appartenant à ce schéma de réplication doivent fournir des opérations respectant
+% la cohérence à terme. Cette section décrit deux familles d'approches : les
+% approches à transformées opérationnelles (cf. §\ref{repl:subsubsec:ot}) et les
+% approches à structure de données répliquées sans résolution de conflits
+% (cf. §\ref{repl:subsubsec:crdts}) ainsi que le coût qui leur est associé.
 
-\subsubsection{Transformées opérationnelles}
-\label{repl:subsubsec:ot}
+\subsection{Transformées opérationnelles}
+\label{repl:subsec:ot}
 
 Les approches basées sur les transformées
 opérationnelles~\cite{sun1998operational, sun2009contextbased} (OT) sont les
@@ -296,23 +296,23 @@ efficaces~\cite{mehdi2014merging}.
 % Google Docs~\cite{googledocs} ou Etherpad~\cite{etherpad}.
 
 
-\subsubsection{Structure de données répliquée sans résolutions de conflits}
-\label{repl:subsubsec:crdts}
+\subsection{Structure de données répliquée sans résolution de conflits}
+\label{repl:subsec:crdts}
 
-Un conflit peut apparaître lorsqu'une valeur particulière est modifiée en
-concurrence. Par exemple, la figure~\ref{repl:fig:optimisticexample} montre un
-conflit sur le choix de la couleur. Les auteurs des modifications ayant pris
-connaissance de ce conflit peuvent s'arranger afin de ne garder que l'une des
-valeurs. Dans tous les cas, la résolution de conflits prend du temps, est
-susceptible d'engendrer des erreurs, ou d'autres conflits en cascade.
+% Un conflit peut apparaître lorsqu'une valeur particulière est modifiée en
+% concurrence. Par exemple, la figure~\ref{repl:fig:optimisticexample} montre un
+% conflit sur le choix de la couleur. Les auteurs des modifications ayant pris
+% connaissance de ce conflit peuvent s'arranger afin de ne garder que l'une des
+% valeurs. Dans tous les cas, la résolution de conflits prend du temps, est
+% susceptible d'engendrer des erreurs, ou d'autres conflits en cascade.
 
 Les structures de données répliquées sans résolution de conflits
 (CRDTs)~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent au
 schéma de réplication optimiste. Comme leur dénomination l'indique, ces
 approches sont basées sur des structures de données abstraites fournissant des
-opérations dont les résultats commutent, et donc, ne génèrent pas de conflits,
-même en cas de concurrence.  Il en existe trois familles équivalentes mais
-proposant un compromis différent :
+opérations dont les résultats commutent, et donc convergent vers un état
+équivalent même en cas de concurrence.  Il en existe trois familles proposant un
+compromis différent :
 
 \paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
 envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
@@ -328,9 +328,8 @@ idempotente ($o_1 \times o_1 \Leftrightarrow o_1$).
 \paragraph{Basée sur les opérations :} Lors d'une opération, son résultat seul
 est envoyé aux autres répliques où il est intégré. Les résultats sont envoyés
 les uns après les autres ce qui s'avère beaucoup moins coûteux que l'état
-complet. En revanche, cela requière une diffusion fiable, i.e., toutes les
-opérations doivent être inéluctablement reçues par tous les serveurs hébergeant
-une réplique.
+complet. En revanche, cela requière une diffusion fiable, i.e., tous les
+messages doivent être inéluctablement reçues par tous les serveurs.
 
 \noindent Les opérations doivent également être commutatives, associatives et
 idempotentes.
@@ -344,69 +343,69 @@ approches basées sur l'état, l'ensemble de la réplique n'a pas besoin d'être
 systématiquement envoyé. Comparé aux approches basées sur les opérations, le
 réseau n'a pas de propriétés particulières à assurer.
 
-{\noindent%
-\begin{minipage}[t]{0.48\textwidth}
-  \begin{algorithm}[H]
-    \input{input/replication/algocounterA.tex}
-    \caption[Compteur utilisant un ensemble]
-    {\label{repl:algo:counterA} Compteur utilisant un ensemble.}
-  \end{algorithm}
-\end{minipage}%
-\hfill%
-\begin{minipage}[t]{0.48\textwidth}
-  \begin{algorithm}[H]
-    \input{input/replication/algocounterB.tex}
-    \caption[Compteur utilisant un vecteur]
-    {\label{repl:algo:counterB} Compteur utilisant un vecteur.}
-  \end{algorithm}
-\end{minipage}
-} \\
+% {\noindent%
+% \begin{minipage}[t]{0.48\textwidth}
+%   \begin{algorithm}[H]
+%     \input{input/replication/algocounterA.tex}
+%     \caption[Compteur utilisant un ensemble]
+%     {\label{repl:algo:counterA} Compteur utilisant un ensemble.}
+%   \end{algorithm}
+% \end{minipage}%
+% \hfill%
+% \begin{minipage}[t]{0.48\textwidth}
+%   \begin{algorithm}[H]
+%     \input{input/replication/algocounterB.tex}
+%     \caption[Compteur utilisant un vecteur]
+%     {\label{repl:algo:counterB} Compteur utilisant un vecteur.}
+%   \end{algorithm}
+% \end{minipage}
+% } \\
 
-Des CRDTs existent pour différent types de structures tels que les compteurs,
-les ensembles, ou les graphes. Les algorithmes~\ref{repl:algo:counterA}
-et~\ref{repl:algo:counterB} décrivent le squelette des algorithmes CRDTs divisé
-selon le schéma de réplication optimiste, et selon le principe des CRDTs basés
-sur les opérations. Ils prennent l'exemple simple des compteurs.
+% Des CRDTs existent pour différent types de structures tels que les compteurs,
+% les ensembles, ou les graphes. Les algorithmes~\ref{repl:algo:counterA}
+% et~\ref{repl:algo:counterB} décrivent le squelette des algorithmes CRDTs divisé
+% selon le schéma de réplication optimiste, et selon le principe des CRDTs basés
+% sur les opérations. Ils prennent l'exemple simple des compteurs.
 
-L'algorithme~\ref{repl:algo:counterA} présente une première façon d'implémenter
-un CRDT pour compteur basé sur les opérations. Celle-ci associe un identifiant
-unique à chaque opération d'incrémentation. Cet identifiant est composé de
-l'identité unique du serveur et d'un compteur local. À chaque opération
-d'incrémentation. Dans le cas du compteur n'autorisant que les incrémentations,
-ces identifiants seuls permettent de garantir l'idempotence pour peu qu'ils
-soient enregistrés. Ainsi, un ensemble enregistre les identifiants des
-opérations. En cas de double réception due aux aléas du réseau, la seconde
-intégration est sans effets. L'ordre de réception des opérations est sans
-importance puisque l'effet de l'unique opération possible est toujours le
-même. Lire la valeur courante de ce compteur revient à effectuer le cardinal de
-l'ensemble des identifiants.
+% L'algorithme~\ref{repl:algo:counterA} présente une première façon d'implémenter
+% un CRDT pour compteur basé sur les opérations. Celle-ci associe un identifiant
+% unique à chaque opération d'incrémentation. Cet identifiant est composé de
+% l'identité unique du serveur et d'un compteur local. À chaque opération
+% d'incrémentation. Dans le cas du compteur n'autorisant que les incrémentations,
+% ces identifiants seuls permettent de garantir l'idempotence pour peu qu'ils
+% soient enregistrés. Ainsi, un ensemble enregistre les identifiants des
+% opérations. En cas de double réception due aux aléas du réseau, la seconde
+% intégration est sans effets. L'ordre de réception des opérations est sans
+% importance puisque l'effet de l'unique opération possible est toujours le
+% même. Lire la valeur courante de ce compteur revient à effectuer le cardinal de
+% l'ensemble des identifiants.
 
-Cette approche est simple mais ne tire pas profit de la redondance
-d'informations contenue dans les identifiants. En particulier, si un serveur
-génère un identifiant $\langle n,\, c\rangle$ c'est qu'il fût incrémenté $c-1$
-fois par le passé. Ainsi, seule la plus haute valeur
-compte. L'algorithme~\ref{repl:algo:counterB} montre les instructions d'un tel
-compteur. À la différence du premier algorithme, la structure utilisée est un
-vecteur d'entrées où chaque site se voit attribué son compteur connu. La valeur
-du compteur est alors la somme des compteurs de ce vecteur.
+% Cette approche est simple mais ne tire pas profit de la redondance
+% d'informations contenue dans les identifiants. En particulier, si un serveur
+% génère un identifiant $\langle n,\, c\rangle$ c'est qu'il fût incrémenté $c-1$
+% fois par le passé. Ainsi, seule la plus haute valeur
+% compte. L'algorithme~\ref{repl:algo:counterB} montre les instructions d'un tel
+% compteur. À la différence du premier algorithme, la structure utilisée est un
+% vecteur d'entrées où chaque site se voit attribué son compteur connu. La valeur
+% du compteur est alors la somme des compteurs de ce vecteur.
 
-La complexité en communication des deux algorithmes est identique : elle est
-constante. La complexité en temps est identique sauf pour la fonction
-\textsc{query} où le second algorithme itère sur les identifiants du vecteur
-afin de retourner la valeur du compteur. Toutefois, au prix d'un entier
-supplémentaire pour sauvegarder la taille totale, les complexités temporelles
-sont équivalentes. Enfin, lorsque le premier algorithme possède une complexité
-spatiale bornée linéairement au nombre d'incrémentations, le second algorithme
-possède une complexité spatiale bornée linéairement au nombre de sites. Par
-conséquent, l'algorithme~\ref{repl:algo:counterB} domine
-l'algorithme~\ref{repl:algo:counterA}. La section~\ref{repl:subsec:sequences}
-décrit les approches CRDTs destinées aux séquences. Hélas, l'analyse en
-complexité s'avère plus difficile et souvent moins tranchée que dans l'exemple
-des compteurs.
+% La complexité en communication des deux algorithmes est identique : elle est
+% constante. La complexité en temps est identique sauf pour la fonction
+% \textsc{query} où le second algorithme itère sur les identifiants du vecteur
+% afin de retourner la valeur du compteur. Toutefois, au prix d'un entier
+% supplémentaire pour sauvegarder la taille totale, les complexités temporelles
+% sont équivalentes. Enfin, lorsque le premier algorithme possède une complexité
+% spatiale bornée linéairement au nombre d'incrémentations, le second algorithme
+% possède une complexité spatiale bornée linéairement au nombre de sites. Par
+% conséquent, l'algorithme~\ref{repl:algo:counterB} domine
+% l'algorithme~\ref{repl:algo:counterA}. La section~\ref{repl:subsec:sequences}
+% décrit les approches CRDTs destinées aux séquences. Hélas, l'analyse en
+% complexité s'avère plus difficile et souvent moins tranchée que dans l'exemple
+% des compteurs.
 
 
-\subsection{Séquences répliquées}
-\label{repl:subsec:sequences}
+% \subsection{Séquences répliquées}
+% \label{repl:subsec:sequences}
 
 Une séquence\footnote{ou liste, ou tableau, ou série} est une série d'éléments
 ordonnés les uns à la suite des autres. Une séquence répliquée doit donc
@@ -432,7 +431,7 @@ utilise des pierres tombales pour indiquer la suppression d'un élément. La
 seconde se passe de pierres tombales mais ses identifiants sont de taille
 variable lors de la génération
 
-\subsubsection{Pierres tombales}
+\subsection{Pierres tombales}
 
 Une pierre tombale est une marque laissée après la suppression d'un élément
 indiquant qu'un jour, celui-ci a existé, et qu'il était positionné là. Bien
@@ -560,7 +559,7 @@ pas de référencer directement d'autres identifiants. En cela, ils évitent
 l'usage des pierres tombales mais font face à des problèmes concernant la
 complexité spatiale de leurs identifiants.
 
-\subsubsection{Identifiants de taille variable}
+\subsection{Identifiants de taille variable}
 
 Certaines structures de données sans résolution de conflits pour séquences
 utilisent des identifiants dont la taille est variable à la
