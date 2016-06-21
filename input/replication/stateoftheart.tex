@@ -244,8 +244,7 @@ Les structures de données répliquées sans résolution de conflits
 schéma de réplication optimiste. Comme leur dénomination l'indique, ces
 approches sont basées sur des structures de données abstraites fournissant des
 opérations dont les résultats commutent, et donc convergent vers un état
-équivalent même en cas de concurrence.  Il en existe trois familles proposant un
-compromis différent :
+identique même en cas de concurrence.  Il en existe trois familles :
 
 \paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
 envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
@@ -348,16 +347,16 @@ réseau n'a pas de propriétés particulières à assurer.
 plus propices au problématique du temps réel, où chaque modification doit
 atteindre le plus rapidement possible chacune des répliques.
 
-Les CRDTs pour séquences surchargent chaque élément de métadonnées. Les
-métadonnées permettent d'ordonner de façon identique les éléments tout en
-respectant un ordre dense établi lors de l'exécution locale. Ces métadonnées,
-nommées identifiants, sont uniques et immuables. Pour préserver l'ordre,
-l'opération d'insertion se sert des identifiants adjacents à la position
-d'insertion. Par exemple, \emph{insérer l'élément $e$ à la position $i$} devient
-\emph{insérer l'élément $e$ entre l'identifiant de l'élément en position $i-1$
-  et l'identifiant de l'élément en position $i$}. En ce qui concerne l'opération
-de suppression, elle retourne simplement l'identifiant de l'élément présent à la
-position désirée.
+Pour fonctionner , les CRDTs pour séquences surchargent chaque élément de
+métadonnées. Les métadonnées permettent d'ordonner de façon identique les
+éléments tout en respectant un ordre dense établi lors de l'exécution
+locale. Ces métadonnées, nommées identifiants, sont uniques et immuables. Pour
+préserver l'ordre, l'opération d'insertion se sert des identifiants adjacents à
+la position d'insertion. Par exemple, \emph{insérer l'élément $e$ à la position
+  $i$} devient \emph{insérer l'élément $e$ entre l'identifiant de l'élément en
+  position $i-1$ et l'identifiant de l'élément en position $i$}. En ce qui
+concerne l'opération de suppression, elle retourne simplement l'identifiant de
+l'élément présent à la position désirée.
 
 
 % Une différence fondamentale entre les deux types d'approches concerne la
@@ -528,37 +527,68 @@ grandir, et par là même, de diminuer les performances du systèmes.
 liste de triples notée $id = [t_1,\,t_2,\,\ldots,\,t_k]$ où
 $t_k=\langle p_k,\,s_k,\,c_k \rangle$ où $p_k$ est un entier positif, $s_k$ est
 un identifiant unique de site, et $c_k$ est un compteur local au site $s_k$. Un
-ordre lexicographique est utilisé pour préserver un ordre total parmi les
+ordre lexicographique est utilisé pour préserver un ordre total  parmi les
 éléments : 
 \begin{align*}
   t_i < t_j \iff & (p_i < p_j) \vee \\
                  & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
                  & ((p_i = p_j) \wedge (s_i = s_j) \wedge (c_i < c_j)) \\
   t_i = t_j \iff & \neg (t_i < t_j) \wedge \neg (t_j < t_i) \\
-  id_i < id_j \iff & \exists (m > 0)(\forall n < m),\, (t^i_n = t^j_n) \wedge (t^i_m < t^j_m) \\
-  id_i = id_j \iff & \forall m,\, t^i_m = t^j_m
+  id_i <_\mathcal{I} id_j \iff & \exists (m > 0)(\forall n < m),\, (t^i_n = t^j_n) \wedge (t^i_m < t^j_m) \\
+  id_i =_\mathcal{I} id_j \iff & \forall m,\, t^i_m = t^j_m
 \end{align*}
+L'identifiant unique de site est obtenu lors de la création de la réplique. Le
+compteur est incrémenté à chaque insertion locale dans la séquence. Ne reste
+comme seul facteur de choix à disposition de Logoot : l' entier $p$ présent dans
+chaque triple. Lors d'une insertion locale, les identifiants adjacents à la
+position d'insertion sont récupérés. Ainsi l'identifiant $id$ du nouvel élément
+inséré en position $i$ doit respecter
+$id_{i-1}<_\mathcal{I} id <_\mathcal{I} id_i$. Par transitivité
+$\ldots id_{i-2} <_\mathcal{I} id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
+<_\mathcal{I} id_{i+2} \ldots$.
+Prenons pour exemple, $id_{i-1}=[\langle 12,\,s_1,\,c_1\rangle]$ et
+$id_{i}=[\langle 12,\, s_1,\,c_1\rangle.\langle 1337,\, s_2, c_2\rangle]$. Pour
+choisir les valeurs successives de $p$ du nouvel identifiant, Logoot commence
+par examiner chaque niveau des identifiants adjacents afin de connaitre la
+taille du nouvel identifiant. Ici, les identifiants commencent tous les deux
+avec l'entier $12$.  Puisqu'entre $12$ et $12$ aucune valeur entière n'est
+disponible, Logoot doit chercher plus loin dans les identifiants. L'un d'eux ne
+possède pas de second triplet ce qui correspond implicitement à
+$\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre $0$ et $1337$ de nombreuses
+valeurs sont disponibles.  Logoot doit choisir parmi toutes ces valeurs laquelle
+constituera définitivement le nouvel identifiant. Ce choix impactera également
+sur l'allocation des identifiants à venir et ne doit pas être pris à la
+légère. Des observations effectuées sur un corpus de documents
+\emph{Wikipedia}~\cite{wikipedia} suggère qu'allouer un identifiant proche de
+l'identifiant précédent est une meilleure stratégie afin de conserver des
+identifiants de petite taille.  Ici, Logoot choisit donc une valeurs proche de
+$0$ et compose le nouvel identifiant en copiant une partie des données présentes
+dans les identifiants adjacents. Par exemple,
+$id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_1, c_3\rangle]$.  En
+utilisant l'ordre lexicographique définit plus haut, nous obtenons bien
+$id_{i-1} <_\mathcal{I} id <_\mathcal{i}$.
 
+\noindent Logoot favorise, par son choix d'entier proche de l'identifiant
+précédent la position d'insertion, les comportements d'édition où les éléments
+sont insérés de gauche à droite. Toutefois, lorsque le comportement d'édition va
+à l'encontre de cette stratégie, la taille des identifiants peut grimper
+extrêmement rapidement. La complexité spatiale de chaque identifiant est
+linéaire comparé au nombre d'insertions dans le document, et puisque chaque
+identifiant est disséminé aux autres répliques, la complexité en communication
+en hérite. De plus, les valeurs choisies par Logoot dans les identifiants sont
+toujours comprises entre $0$ et $2^{64}$. Cette constance implique que, même
+dans le cadre d'un comportement d'édition attendu, la complexité est linéaire
+(mais fortement atténuée). Là encore, le trafic généré en souffre directement.
 
-
-Cette représentation possède l'avantage de fournir un accès instantané à ses
-éléments au prix d'une consommation en espace élevée. Ainsi, la traduction de
-\emph{insérer l'élément $e$ à la position $i$} à \emph{insérer l'élément $e$
-  ente l'identifiant $id_p$ de l'élément en position $i-1$ et l'identifiant
-  $id_q$ de l'élément en position $i$} s'effectue en temps constant.
-
-en temps constant. D'un autre coté, les identifiants possèdent des chemins dont
-chaque élément est un entier encodé sur 64 bits correspondant à une arité de
-$2^{64}$ dans le modèle d'arbre. Un chemin dans $\mathcal{P}$ est donc une
-succession d'entiers compris entre 0 et $(2^{64}-1)$ :
-$\mathbb{N}_{<2^{64}}.\mathbb{N}_{<2^{64}}\ldots\mathbb{N}_{<2^{64}}$.  L'ordre
-total utilisé pour recouvrer la séquence d'éléments est un ordre
-lexicographique. Ayant fait l'assomption que les documents étaient édités de
-gauche à droite, la stratégie s'avère inefficace lorsque le comportement
-d'édition va à l'opposé de cette hypothèse. Le pire cas est déjà illustré dans
-la figure~\ref{repl:fig:allocpathexampleB}. La complexité spatiale de chaque
-identifiant est linéaire, en résulte une complexité quadratique par rapport à la
-taille du document.
+\noindent La représentation de la séquence sous forme de liste possède
+l'avantage de fournir un accès instantané à ses éléments. Ainsi, la traduction
+de \emph{insérer l'élément $e$ à la position $i$} à \emph{insérer l'élément $e$
+  ente l'identifiant $id_{i-1}$ de l'élément en position $i-1$ et l'identifiant
+  $id_i$ de l'élément en position $i$} s'effectue en temps constant.  Cependant,
+cette rapidité d'accès est possible au détriment d'une consommation en espace
+élevée : Logoot ne profite pas de la redondance d'informations sur les
+triplets. \TODO{Dans le pire cas}, la complexité spatiale de la structure est
+quadratique comparée au nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
 étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
