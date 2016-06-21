@@ -206,12 +206,13 @@ spatiale est au minimum linéaire selon les deux dimensions : nombre de répliqu
 et nombre d'opérations. Enfin, le temps d'exécution d'une opération locale est
 insignifiant. À l'opposé, le temps d'exécution d'une opération distante peut
 devenir très élevé si la concurrence est forte. Cette répartition des coûts
-d'opération \TODO{, pour 1 opération locale efficace, les $N$
-exécutions distantes souffrent de quelques opérations concurrentes}. Pour ces
-raisons, les approches OT décentralisées ne passent pas à l'échelle. Du reste,
-dans un environnement bien maîtrisé, où les opérations arrivent très rapidement
-à un groupe raisonnable de participants, alors ces approches décentralisées
-deviennent extrêmement efficaces~\cite{mehdi2014merging}.
+d'opération est malheureuse car 1 opération locale efficace correspond à $N$
+exécutions distantes potentiellement lente, où $N$ est le nombre de répliques
+recevant l'opération. Pour ces raisons, les approches OT décentralisées ne
+passent pas à l'échelle. Du reste, dans un environnement bien maîtrisé, où les
+opérations arrivent très rapidement à un groupe raisonnable de participants,
+alors ces approches décentralisées deviennent extrêmement
+efficaces~\cite{mehdi2014merging}.
 
 % \paragraph{Les approches centralisées~\cite{nichols1995high} :} Elles utilisent
 % un serveur central afin de réarranger et diffuser les opérations de tous les
@@ -339,37 +340,51 @@ réseau n'a pas de propriétés particulières à assurer.
 % \subsection{Séquences répliquées}
 % \label{repl:subsec:sequences}
 
-Une séquence\footnote{ou liste, ou tableau, ou série} est une série d'éléments
-ordonnés les uns à la suite des autres. Une séquence répliquée doit donc
-ordonner de la même manière ses éléments quel que soit le serveur
-l'hébergeant. Les approches à base de transformées opérationnelles adaptent les
-arguments des opérations afin de recouvrer un contexte d'exécution valide
-(cf. §\ref{repl:subsubsec:ot}). Les CRDTs pour séquences, eux, choisissent de
-surcharger les éléments avec des métadonnées de telle sorte que les métadonnées
-permettent de recouvrer un ordre identique partout. Une différence fondamentale
-entre les deux types d'approches concerne la signature des opérations. Lorsque
-OT conserve une signature d'opération classique (``insérer l'élément $e$ à
-l'indice $i$''), les CRDTs positionnent leurs éléments relativement aux éléments
-adjacents à l'indice ciblé (``insérer l'élément $e$ entre l'élément $a$ et
-l'élément $b$''). Avec ce procédé, des métadonnées uniques et non-mutables --
-nommées identifiants -- sont générées garantissant, grâce à un ordre total sur
-ceux-ci, que le nouvel élément est bel et bien placé entre ces deux bornes. La
-suppression est également différente puisque sa signature devient l'élément
-ciblé et non plus un indice (``supprimer l'élément $e$'').
+%% Une séquence est une série d'éléments ordonnés les uns à la suite des
+%% autres. Une séquence répliquée doit donc ordonner de la même manière ses
+%% éléments quel que soit le serveur l'hébergeant.
 
-Nous identifions deux familles d'approches appartenant aux CRDTs conçues pour
-les séquences. La première génère des identifiants de taille constante mais
-utilise des pierres tombales pour indiquer la suppression d'un élément. La
-seconde se passe de pierres tombales mais ses identifiants sont de taille
-variable lors de la génération.
+\noindent Parmi ces trois familles, seules nous intéressent les deux dernières,
+plus propices au problématique du temps réel, où chaque modification doit
+atteindre le plus rapidement possible chacune des répliques.
+
+Les CRDTs pour séquences surchargent chaque élément de métadonnées. Les
+métadonnées permettent d'ordonner de façon identique les éléments tout en
+respectant un ordre dense établi lors de l'exécution locale. Ces métadonnées,
+nommées identifiants, sont uniques et immuables. Pour préserver l'ordre,
+l'opération d'insertion se sert des identifiants adjacents à la position
+d'insertion. Par exemple, \emph{insérer l'élément $e$ à la position $i$} devient
+\emph{insérer l'élément $e$ entre l'identifiant de l'élément en position $i-1$
+  et l'identifiant de l'élément en position $i$}. En ce qui concerne l'opération
+de suppression, elle retourne simplement l'identifiant de l'élément présent à la
+position désirée.
+
+
+% Une différence fondamentale entre les deux types d'approches concerne la
+% signature des opérations. Lorsque OT conserve une signature d'opération
+% classique (``insérer l'élément $e$ à l'indice $i$''), les CRDTs positionnent
+% leurs éléments relativement aux éléments adjacents à l'indice ciblé (``insérer
+% l'élément $e$ entre l'élément $a$ et l'élément $b$''). Avec ce procédé, des
+% métadonnées uniques et non-mutables -- nommées identifiants -- sont générées
+% garantissant, grâce à un ordre total sur ceux-ci, que le nouvel élément est bel
+% et bien placé entre ces deux bornes. La suppression est également différente
+% puisque sa signature devient l'élément ciblé et non plus un indice (``supprimer
+% l'élément $e$'').
+
+Selon la manière dont les suppressions distantes sont gérées, nous identifions
+deux familles d'approches appartenant aux CRDTs conçues pour les séquences. La
+première génère des identifiants de taille constante mais utilise des pierres
+tombales pour indiquer la suppression d'un élément. La seconde se passe de
+pierres tombales mais ses identifiants sont de taille variable lors de la
+génération.
 
 \subsubsection{Pierres tombales}
 
 Une pierre tombale est une marque laissée après la suppression d'un élément
 indiquant qu'un jour, celui-ci a existé, et qu'il était positionné là. Bien
 entendu, ces marques sont cachées à l'utilisateur et n'apparaissent que dans la
-structure sous-jacente. L'impact sur les performances en reste néanmoins
-présent.
+structure sous-jacente. L'impact sur les performances des opérations en reste
+néanmoins présent.
 
 \paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
 CRDTs pour séquences suivi par deux extensions
@@ -414,19 +429,20 @@ vectorielles (\emph{vector clock}) dont la taille devient élevée. De plus, il
 est nécessaire de conserver tous les nœuds de cet arbre causal au cas où une
 opération y ferait référence.
 
-\paragraph{Partial persistent séquence~\cite{wu2010partial} :} Cette approche
+\paragraph{Partial persistent sequence~\cite{wu2010partial} :} Cette approche
 définit les identifiants dans l'ensemble des nombres rationnels auxquels est
 ajoutée une limite quant à leur précision. Hélas, cette limite contraint la
-taille du document maximale. Sans cette troncature, l'approche serait
-susceptible d'appartenir à l'autre famille de CRDTs pour séquence.
+taille maximale que peut atteindre un document. Sans cette troncature,
+l'approche serait susceptible d'appartenir à l'autre famille de CRDTs pour
+séquence.
 
 \paragraph{Replicated growable array~\cite{roh2011replicated} :} Cette structure
 représente la séquence sous forme de liste supportant les opérations
 concurrentes. Une table de hachage apporte un accès rapide aux éléments grâce à
 leurs identifiants. Les éléments incluent une référence au voisin qu'ils
 précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaîne
-ainsi construite, les éléments supprimés restent présents à tout jamais
-quoique cachés de l'utilisateur. Une variante sous forme d'arbre a récemment été
+ainsi construite, les éléments supprimés sont cachés et restent présents dans la
+structure. Une variante sous forme d'arbre a récemment été
 proposée~\cite{attiya2016specification}.
 
 \paragraph{String-wise~\cite{yu2012stringwise} :} Cette approche cible
@@ -444,44 +460,46 @@ l'insertion. L'ordre des éléments est alors fonction de ces relations de
 positionnement relatif, et de causalité.
 
 
-Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
-éléments de séquences répliquées, toutes ces approches restent utiles lorsque
-l'historique des opérations doit être conservé. Par exemple, dans le cadre de
-l'encyclopédie \emph{Wikipédia}~\cite{wikipedia}, conserver toutes les
-modifications effectuées permet de recouvrer une version vierge de vandalisme;
-dans le cadre du gestionnaire de versions \emph{Git}~\cite{git}, il permet de
-recouvrer une version du code potentiellement sans erreurs. Cependant, ces
-structures grandissent au moins linéairement comparativement au nombre
-d'opérations faites sur la séquence. Paradoxalement, cela devient problématique
-lors de vandalisme où même le contenu indésirable est conservé
-à tout jamais. Survient alors le frustrant constat d'avoir à stocker un
-fichier dont le poids ne reflète pas le contenu visible. De plus, les éléments
-cachés s'accumulent et dégradent à jamais les performances du système.
+% Bien que l'accent soit mit sur l'impossibilité de réellement supprimer les
+% éléments de séquences répliquées, toutes ces approches restent utiles lorsque
+% l'historique des opérations doit être conservé. Par exemple, dans le cadre de
+% l'encyclopédie \emph{Wikipédia}~\cite{wikipedia}, conserver toutes les
+% modifications effectuées permet de recouvrer une version vierge de vandalisme;
+% dans le cadre du gestionnaire de versions \emph{Git}~\cite{git}, il permet de
+% recouvrer une version du code potentiellement sans erreurs.
+La mémoire consommée par ces approches croît au moins linéairement comparé au
+nombre d'insertions faites sur la séquence. Plus problématique : cette
+croissance est monotone. Les éléments supprimés sont simplement cachés à
+l'utilisateur et s'accumulent. Les pierres tombales dégradent à jamais les
+performances des opérations distantes où l'ordre des éléments doit être
+retrouvé.
 
-Lorsque conserver l'historique ne constitue pas une contrainte, purger la
-structure de données des éléments cachés est une solution potentielle aux
-dégradations de performances :
+% Paradoxalement, cela devient problématique lors de vandalisme où même le contenu
+% indésirable est conservé à tout jamais. Survient alors le frustrant constat
+% d'avoir à stocker un fichier dont le poids ne reflète pas le contenu visible. De
+% plus, 
 
-\paragraph{ramasse-miettes réparti~\cite{abdullahi1998garbage} :} permet de
-nettoyer une structure de données en vidant de la mémoire les objets qui ne sont
-plus accessibles par le programme, que ce soit localement ou à distance. Ainsi,
-supprimer réellement un élément de la séquence revient à s'interroger :
-\emph{Est-ce que
+
+Purger la structure de données des éléments cachés est une solution potentielle
+aux dégradations de performances. Un mécanisme de ramasse-miettes
+réparti~\cite{abdullahi1998garbage} permet de nettoyer une structure de données
+en vidant de la mémoire les objets qui ne sont plus accessibles par le
+programme, ni localement ni à distance. Ainsi, supprimer réellement un élément
+de la séquence revient à s'interroger : \emph{Est-ce que
   \begin{inparaenum}[(i)]
   \item toutes les répliques ont supprimé l'élément et
   \item tous les éléments référençant l'élément supprimé ont été intégrés
     localement ?
   \end{inparaenum}} Cela va sans dire qu'il est difficile d'apporter une réponse
-à ces deux questions. D'autant plus lorsque les possesseurs de réplique ne sont
-pas perpétuellement joignables.
-
-\paragraph{Core-nebula~\cite{letia2009crdts} :} propose de contraindre la
-topologie réseau afin de rendre la prise de décisions possible. Ainsi, un cœur
-décisionnel prend en charge les choix de suppression réelle des objets.  Ce cœur
-décisionnel est restreint à un sous-ensemble des membres du réseaux étant
-toujours accessibles, les décisions peuvent alors être prises de manière
-fiable. Le reste des participants se conforme à ces décisions au risque de
-perdre certaines de leurs modifications.
+à ces deux questions. D'autant plus lorsque les répliques ne sont pas
+perpétuellement accessibles. L'approche de
+\emph{core-nebula}~\cite{letia2009crdts} propose de contraindre la topologie
+réseau afin de rendre la prise de décisions possible. Ainsi, un cœur décisionnel
+prend en charge les choix de suppression réelle des objets.  Ce cœur décisionnel
+est restreint à un sous-ensemble des membres du réseaux étant toujours
+accessibles. Les décisions peuvent alors être prises de manière fiable. Le reste
+des participants se conforme à ces décisions au risque de perdre certaines de
+leurs modifications.
  
 Si l'espace consommé par les pierres tombales est trop important pour être
 envisagé, et si ni le ramasse-miettes réparti, ni les contraintes sur la
@@ -506,12 +524,29 @@ revanche, la liste d'éléments constituant les identifiants est susceptible de
 grandir, et par là même, de diminuer les performances du systèmes.
 
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
-    weiss2010logootundo} :} Ce CRDT représente originellement ses identifiants
-sous forme de liste sans les factoriser sous forme d'arbre. Cette représentation
-possède l'avantage de fournir un accès instantané à ses éléments au prix d'une
-consommation en espace élevée. En effet, une opération locale effectuée sur la
-séquence $\textsc{insert}(element,\, index)$ se traduisant sur la réplique par
-$\textsc{insert}(id_{pr\acute{e}cedent},\, element,\, id_{suivant})$ s'effectue
+    weiss2010logootundo} :} Ce CRDT représente ses identifiants sous forme de
+liste de triples notée $id = [t_1,\,t_2,\,\ldots,\,t_k]$ où
+$t_k=\langle p_k,\,s_k,\,c_k \rangle$ où $p_k$ est un entier positif, $s_k$ est
+un identifiant unique de site, et $c_k$ est un compteur local au site $s_k$. Un
+ordre lexicographique est utilisé pour préserver un ordre total parmi les
+éléments : 
+\begin{align*}
+  t_i < t_j \iff & (p_i < p_j) \vee \\
+                 & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
+                 & ((p_i = p_j) \wedge (s_i = s_j) \wedge (c_i < c_j)) \\
+  t_i = t_j \iff & \neg (t_i < t_j) \wedge \neg (t_j < t_i) \\
+  id_i < id_j \iff & \exists (m > 0)(\forall n < m),\, (t^i_n = t^j_n) \wedge (t^i_m < t^j_m) \\
+  id_i = id_j \iff & \forall m,\, t^i_m = t^j_m
+\end{align*}
+
+
+
+Cette représentation possède l'avantage de fournir un accès instantané à ses
+éléments au prix d'une consommation en espace élevée. Ainsi, la traduction de
+\emph{insérer l'élément $e$ à la position $i$} à \emph{insérer l'élément $e$
+  ente l'identifiant $id_p$ de l'élément en position $i-1$ et l'identifiant
+  $id_q$ de l'élément en position $i$} s'effectue en temps constant.
+
 en temps constant. D'un autre coté, les identifiants possèdent des chemins dont
 chaque élément est un entier encodé sur 64 bits correspondant à une arité de
 $2^{64}$ dans le modèle d'arbre. Un chemin dans $\mathcal{P}$ est donc une
