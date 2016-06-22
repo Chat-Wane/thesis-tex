@@ -130,9 +130,9 @@ chemins croît de manière quadratique.
 \end{figure}
 
 \paragraph{Objectif :} Montrer que deux sous-fonctions d'allocation conçues avec
-des objectifs antagonistes mais utilisées ensemble gèrent les comportements
-d'édition triviaux. Montrer que la progression des identifiants reste linéaire
-comparé à la taille du document.
+des objectifs antagonistes et assignées à chaque profondeur de l'arbre
+permettent de gèrer les comportements d'édition triviaux. Montrer que la
+progression des identifiants reste linéaire comparé à la taille du document.
 
 \paragraph{Description :} La simulation concerne trois documents grossissant au
 rythme des opérations d'insertions effectuées respectivement de gauche à droite,
@@ -145,9 +145,10 @@ composant les identifiants à 100, 1k, 5k, 10k, 50k, 100k insertions.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:suballocation} montre les
 résultats obtenus à la suite de ces simulations. Nous observons tout d'abord que
-les chemins reste logarithmique sous un comportement d'édition aléatoire. Nous
-observons aussi que, pour les deux types d'édition monotone, la croissance est
-linéaire. De plus, les mesures sont quasiment identiques dans les deux cas.
+les chemins restent logarithmiques sous un comportement d'édition
+aléatoire. Nous observons aussi que, pour les deux types d'édition monotone, la
+croissance est linéaire. De plus, les mesures sont quasiment identiques dans les
+deux cas.
 
 \paragraph{Explication :} Tout comme pour les expériences précédentes
 (cf. figure~\ref{repl:img:logoot} et~\ref{repl:img:exponentialtree}), l'édition
@@ -213,6 +214,30 @@ rapidement. Lorsque finalement la bonne sous-fonction d'allocation est trouvée,
 celle-ci couvre les dépenses qu'il a fallut déployer pour la trouver, i.e.,
 les pertes de niveaux dans l'arbre.
 
+\subsection{Complexité spatiale}
+
+\subsubsection{Traces réelles}
+
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=0.8\textwidth]{img/lseq/templatetalk.eps}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+  \includegraphics[width=0.8\textwidth]{img/lseq/poste.eps}
+  \end{center}
+\end{figure}
+
+\subsubsection{Documents synthétiques}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/space.eps}
+  \end{center}
+\end{figure}
+
 \subsection{Complexité temporelle}
 
 \begin{figure}
@@ -243,12 +268,13 @@ de l'identifiant ciblé aux autres membres. Les mesures sont effectués à
 plusieurs reprises sur deux types de documents. Tout d'abord, un document généré
 par un comportement d'édition aléatoire, i.e., l'arbre \LSEQ est
 équilibré. Ensuite, un document généré par un comportement d'édition monotone,
-i.e., une seule branche de l'arbre \LSEQ est remplie. Nous nous intéressons aux
-tendances plutôt qu'aux valeurs absolues. En effet, le langage \emph{Javascript}
-opère de nombreuses optimisations à la volée. Afin de montrer la contribution
-réelle de chacune des opérations, ces optimisations ont été limité au
-maximum. Les performances réelles des opérations sont donc nettement meilleures
-que celles présentes dans cette expérimentation.
+i.e., une seule branche de l'arbre \LSEQ est remplie. 
+%Nous nous intéressons aux
+%tendances plutôt qu'aux valeurs absolues. En effet, 
+Le langage \emph{JavaScript} opère de nombreuses optimisations à la volée. Afin
+de montrer la contribution réelle de chacune des opérations, ces optimisations
+ont été limité au maximum. Les performances réelles des opérations sont donc
+nettement meilleures que celles présentes dans cette expérimentation.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:time} montre les résultats de
 cette expérimentation. Nous observons que les valeurs mesurées, dans le cadre
@@ -301,7 +327,7 @@ est celle de \LSEQ : un arbre exponentiel avec deux sous-fonctions
 d'allocations. 
 
 \paragraph{Résultat :} La figure~\ref{repl:img:latency} montre les résultats de
-cette expérimentation. Comme attendu, plus la latence est élevée, et donc plus
+cette expérimentation. Comme attendu, plus la latence est élevée, plus
 la concurrence est élevée, plus les messages sont de petite taille. Les
 expérimentations sans concurrence présentent donc la borne supérieure des
 fonctions d'allocation. La figure~\ref{repl:img:latency} nous montre aussi, avec
