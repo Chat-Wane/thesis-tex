@@ -469,9 +469,10 @@ positionnement relatif, et de causalité.
 La mémoire consommée par ces approches croît au moins linéairement comparé au
 nombre d'insertions faites sur la séquence. Plus problématique : cette
 croissance est monotone. Les éléments supprimés sont simplement cachés à
-l'utilisateur et s'accumulent. Les pierres tombales dégradent à jamais les
-performances des opérations distantes où l'ordre des éléments doit être
-retrouvé.
+l'utilisateur et s'accumulent. Un document peut être vide bien que la séquence
+répliquée possède des milliers d'éléments cachés.  Les pierres tombales
+dégradent à jamais les performances des opérations distantes où l'ordre des
+éléments doit être retrouvé.
 
 % Paradoxalement, cela devient problématique lors de vandalisme où même le contenu
 % indésirable est conservé à tout jamais. Survient alors le frustrant constat
@@ -523,12 +524,12 @@ revanche, la liste d'éléments constituant les identifiants est susceptible de
 grandir, et par là même, de diminuer les performances du systèmes.
 
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
-    weiss2010logootundo} :} Ce CRDT représente ses identifiants sous forme de
-liste de triples notée $id = [t_1,\,t_2,\,\ldots,\,t_k]$ où
-$t_k=\langle p_k,\,s_k,\,c_k \rangle$ où $p_k$ est un entier positif, $s_k$ est
-un identifiant unique de site, et $c_k$ est un compteur local au site $s_k$. Un
-ordre lexicographique est utilisé pour préserver un ordre total  parmi les
-éléments : 
+    weiss2010logootundo} :} Ce CRDT représente la séquence sous forme de liste
+d'identifiants. Chacun des identifiants est une liste de triples notée
+$id = [t_1,\,t_2,\,\ldots,\,t_k]$ où $t_k=\langle p_k,\,s_k,\,c_k \rangle$ où
+$p_k$ est un entier positif, $s_k$ est un identifiant unique de site, et $c_k$
+est un compteur local au site $s_k$. Un ordre lexicographique est utilisé pour
+préserver un ordre total parmi les éléments :
 \begin{align*}
   t_i < t_j \iff & (p_i < p_j) \vee \\
                  & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
@@ -540,9 +541,9 @@ ordre lexicographique est utilisé pour préserver un ordre total  parmi les
 L'identifiant unique de site est obtenu lors de la création de la réplique. Le
 compteur est incrémenté à chaque insertion locale dans la séquence. Ne reste
 comme seul facteur de choix à disposition de Logoot : l' entier $p$ présent dans
-chaque triple. Lors d'une insertion locale, les identifiants adjacents à la
-position d'insertion sont récupérés. Ainsi l'identifiant $id$ du nouvel élément
-inséré en position $i$ doit respecter
+chaque triple. Lors de la $x$\up{ème} insertion locale par le site $s_y$, les
+identifiants adjacents à la position d'insertion sont récupérés. Ainsi
+l'identifiant $id$ du nouvel élément inséré en position $i$ doit respecter
 $id_{i-1}<_\mathcal{I} id <_\mathcal{I} id_i$. Par transitivité
 $\ldots id_{i-2} <_\mathcal{I} id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
 <_\mathcal{I} id_{i+2} \ldots$.
@@ -564,9 +565,9 @@ l'identifiant précédent est une meilleure stratégie afin de conserver des
 identifiants de petite taille.  Ici, Logoot choisit donc une valeurs proche de
 $0$ et compose le nouvel identifiant en copiant une partie des données présentes
 dans les identifiants adjacents. Par exemple,
-$id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_1, c_3\rangle]$.  En
-utilisant l'ordre lexicographique définit plus haut, nous obtenons bien
-$id_{i-1} <_\mathcal{I} id <_\mathcal{i}$.
+$id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_y, x\rangle]$.  En
+utilisant l'ordre lexicographique définit auparavant, nous obtenons bien
+$id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
 
 \noindent Logoot favorise, par son choix d'entier proche de l'identifiant
 précédent la position d'insertion, les comportements d'édition où les éléments
@@ -587,8 +588,8 @@ de \emph{insérer l'élément $e$ à la position $i$} à \emph{insérer l'élém
   $id_i$ de l'élément en position $i$} s'effectue en temps constant.  Cependant,
 cette rapidité d'accès est possible au détriment d'une consommation en espace
 élevée : Logoot ne profite pas de la redondance d'informations sur les
-triplets. \TODO{Dans le pire cas}, la complexité spatiale de la structure est
-quadratique comparée au nombre d'insertions effectuées dans la séquence.
+triplets. La complexité spatiale de la structure est quadratique comparée au
+nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
 étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
@@ -598,38 +599,90 @@ trouve diminué, et par conséquent, le trafic généré également.
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
-  
-\begin{figure*}
-  \begin{center}
-    % \subfloat[Augmentation rapide de la taille des chemins alloués par Treedoc]
-    % [Augmentation rapide de la taille des chemins alloués par Treedoc]
-    % {\input{input/replication/treedocexampleA.tex}}
-    % \hspace{10pt}
-    % \subfloat[Optimisation dans Treedoc]
-    % [Optimisation pour l'édition de gauche à droite dans Treedoc]
-    % {\input{input/replication/treedocexampleB.tex}}      
-    \input{input/replication/figtreedocexample.tex}
-    \caption[Chemins alloués par Treedoc]
-    {\label{repl:fig:treedocexample}Exemple de séquence dont les chemins sont
-      alloués grâce à Treedoc.}
-  \end{center}
-\end{figure*}
+Lorsqu'il n'y a pas de concurrence, chaque nœud de l'arbre possède au plus un
+élément et au plus 2 fils. Les arêtes de l'arbre sont étiquetées par la valeur
+binaire 0 ou 1.  Si un nœud possède un élément et deux fils, tous les éléments
+du sous-arbre accessible par l'arête dont l'étiquette est 0 se trouvent à gauche
+de ce premier élément; tous les éléments du sous-arbre accessible par l'arête
+dont l'étiquette est 1 se trouve à droite de ce premier élément. Du fait de la
+concurrence, chaque nœuds peut aussi devenir un super-nœud acceuillant plusieurs
+nœuds. De plus, chaque nœuds est décoré d'un identifiant unique de site et d'un
+compteur local à ce site. Ainsi, les nœuds inclus dans chaque super-nœuds
+suivent eux aussi un ordre total. Un identifiant est donc une liste de triples
+$id = [t_1.t_2\ldots t_k]$ où $k$ est un entier, et
+$t_k = \langle b_k,\, s_k,\, c_k\rangle$ où $b_k$ est une valeur binaire, $s_k$
+est un identifiants unique de site, et $c_k$ est un compteur local au site
+$s_k$.  Prenons par exemple les éléments adjacents
+$id_{i-1}=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle]$ et
+$id_i=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle. \langle 1,\,
+s_2,\, c_3 \rangle]$.
+Lors de la $x$\up{ème} insertion locale par le site $s_y$, Treedoc examine les
+identifiants adjacents à la position d'insertion. Treedoc commence par examiner
+si un identifiant est l'ancêtre direct de l'autre, i.e., la liste de triples
+d'un identifiant est inclue dans la liste de triples de l'autre identifiant. Par
+exemple, $id_{i-1}$ est l'ancêtre de $id_i$. Dans ce cas, Treedoc copie
+l'identifiant du descendant et le suffixe par $\langle 1,\, s_y,\, x \rangle$ si
+le descendant précède la position d'insertion; $\langle 0,\, s_y,\, x \rangle$
+dans le cas contraire. Si aucun des identifiants n'est l'ancêtre de l'autre,
+Treedoc choisit de copier l'identifiant précédant la position d'insertion et lui
+suffixe le triple $\langle 1,\, s_y,\, x \rangle$.
 
-\noindent La figure~\ref{repl:fig:treedocexample} montre un exemple de
-séquence. Si l'on considère un élément \texttt{W} dont le chemin est [], alors
-un élément \texttt{Q} dont le chemin est [0] précède \texttt{W}, et un élément
-\texttt{E} dont le chemin est [1] succède \texttt{W}. En d'autres termes,
-suffixer le chemin d'un 0 signifie \emph{à gauche de}, et suffixer le chemin
-d'un 1 signifie \emph{à droite de}. Pour la séquence \texttt{QWERTY} de cet
-exemple, le caractère \texttt{Y} obtient le chemin [1.1.1.1].
-  
+% \begin{figure*}
+%   \begin{center}
+%     % \subfloat[Augmentation rapide de la taille des chemins alloués par Treedoc]
+%     % [Augmentation rapide de la taille des chemins alloués par Treedoc]
+%     % {\input{input/replication/treedocexampleA.tex}}
+%     % \hspace{10pt}
+%     % \subfloat[Optimisation dans Treedoc]
+%     % [Optimisation pour l'édition de gauche à droite dans Treedoc]
+%     % {\input{input/replication/treedocexampleB.tex}}      
+%     \input{input/replication/figtreedocexample.tex}
+%     \caption[Chemins alloués par Treedoc]
+%     {\label{repl:fig:treedocexample}Exemple de séquence dont les chemins sont
+%       alloués grâce à Treedoc.}
+%   \end{center}
+% \end{figure*}
+
+% \noindent La figure~\ref{repl:fig:treedocexample} montre un exemple de
+% séquence. Si l'on considère un élément \texttt{W} dont le chemin est [], alors
+% un élément \texttt{Q} dont le chemin est [0] précède \texttt{W}, et un élément
+% \texttt{E} dont le chemin est [1] succède \texttt{W}.
+% % En d'autres termes, suffixer le chemin d'un 0 signifie \emph{à gauche de}, et
+% % suffixer le chemin d'un 1 signifie \emph{à droite de}.
+% Pour la séquence \texttt{QWERTY} de cet exemple, le caractère \texttt{Y} obtient
+% le chemin [1.1.1.1].
+
 \noindent Tout comme l'approche Logoot, les observations effectuées sur un
-corpus Wikipédia montre l'importance d'une fonction d'allocation gérant
-l'édition de gauche à droite. Elles conduisent à proposer une heuristique selon
-laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
-éditions à venir. Toutefois, le problème demeure lorsque le comportement
-d'édition va à l'encontre de la stratégie créée. L'identifiant peut être de
-taille linéaire comparée à la taille du document.
+corpus \emph{Wikipedia} montrent l'importance d'une stratégie d'allocation
+gérant l'édition de gauche à droite. Elles conduisent à proposer une heuristique
+selon laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
+éditions à venir. Toutefois, de manière identique à Logoot, lorsque le
+comportement d'édition va à l'encontre de cette stratégie, les identifiants sont
+de taille linéaire comparée à la taille du document.
+
+\noindent La représentation de la séquence sous forme d'arbre possède l'avantage
+de factoriser les nombreux triples communs composants les identifiants
+Treedoc. Cette forme compacte de structure à le défaut de ne pas permettre
+d'accès direct aux identifiants. Retrouver les identifiants adjacents à la
+position d'insertion requière un parcours de l'arbre. De plus, cette
+représentation compacte n'a pas d'incidence sur les identifiants
+eux-même. Puisque chaque identifiant doit être disséminé individuellement aux
+autres répliques, le trafic généré demeure inchangé.
+
+
+Les CRDTs fonctionnant avec des identifiants de taille variable n'utilisent pas
+de pierre tombales lors de la suppression d'éléments. Par conséquent, la mémoire
+consommée par ces approches n'est pas strictement croissante. Un document vide
+signifie que la séquence répliquée est également vide. En revanche, les
+identifiants peuvent croître de manière linéaire par rapport au nombre
+d'insertions dans le document. Malheureusement, la complexité en communication
+hérite de cette progression. De même, les opérations d'insertions subissent des
+baisses de performances. 
+
+Une solution consiste à relocaliser les identifiants. En d'autres termes, les
+identifiants sont supprimés au profit d'identifiants plus courts et conservant
+l'ordre dense des éléments de la séquence.
+
 
 
 % La section suivante s'attache à mettre en évidence les défaillances des
@@ -773,7 +826,6 @@ rapide. La fonction d'allocation de Logoot est conçue pour gérer ce type
 d'édition. Une branche par niveau de l'arbre se trouve bien remplie
 d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
 constant, d'où la croissance linéaire de la taille des chemins générés.
-
 
 
 %%% Local Variables:
