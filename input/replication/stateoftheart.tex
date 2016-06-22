@@ -105,7 +105,7 @@ modifications apportées par les participants.
 
 Le type de données répliqué doit respecter autant que possible la spécification
 de sa version séquentielle~\cite{bieniusa2012brief}. Pour nous, une séquence est
-un type abstrait proposant 2 opérations de modification dont le résultat sera
+un type abstrait proposant deux opérations de modification dont le résultat sera
 propagé au reste des répliques:
 \begin{inparaenum}[(i)]
 \item l'insertion locale d'un élément à une certaine position dans la séquence; 
@@ -195,7 +195,7 @@ Dans les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
 est aussi un serveur hébergeant une réplique de la séquence. Chacune de ces
 entités doit être en mesure d'effectuer les transformations d'elle-même. Parmi
 les pré-requis à cette tâche figure le mécanisme de détection de concurrence. En
-effet, retrouver le contexte d'exécution revient à transformer l'opération reçu
+effet, retrouver le contexte d'exécution revient à transformer l'opération reçue
 contre toutes celles qui ont été intégrées sans avoir connaissance de cette
 première. Cependant, chaque message doit transporter un vecteur d'horloges
 (\emph{vector clock})~\cite{lamport1978time} ou de contexte pour chaque
@@ -210,9 +210,8 @@ d'opération est malheureuse car 1 opération locale efficace correspond à $N$
 exécutions distantes potentiellement lente, où $N$ est le nombre de répliques
 recevant l'opération. Pour ces raisons, les approches OT décentralisées ne
 passent pas à l'échelle. Du reste, dans un environnement bien maîtrisé, où les
-opérations arrivent très rapidement à un groupe raisonnable de participants,
-alors ces approches décentralisées deviennent extrêmement
-efficaces~\cite{mehdi2014merging}.
+opérations arrivent très rapidement à un groupe raisonnable de participants, ces
+approches décentralisées sont extrêmement efficaces~\cite{mehdi2014merging}.
 
 % \paragraph{Les approches centralisées~\cite{nichols1995high} :} Elles utilisent
 % un serveur central afin de réarranger et diffuser les opérations de tous les
@@ -241,10 +240,10 @@ efficaces~\cite{mehdi2014merging}.
 
 Les structures de données répliquées sans résolution de conflits
 (CRDTs)~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent au
-schéma de réplication optimiste. Comme leur dénomination l'indique, ces
-approches sont basées sur des structures de données abstraites fournissant des
-opérations dont les résultats commutent, et donc convergent vers un état
-identique même en cas de concurrence.  Il en existe trois familles :
+schéma de réplication optimiste. Ces approches sont basées sur des structures de
+données abstraites fournissant des opérations dont les résultats commutent, et
+donc convergent vers un état identique même en cas de concurrence.  Il en existe
+trois familles :
 
 \paragraph{Basée sur l'état :} Lors d'une opération, l'état local change et est
 envoyé en totalité aux autres répliques qui fusionnent alors l'état reçu et leur
@@ -593,7 +592,7 @@ nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
 étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
-ciblé.  Cette extension prend pour granularité la chaîne de caractère avec la
+ciblé.  Cette extension prend pour granularité la chaîne de caractères avec la
 liberté de la scinder si besoin est. Le nombre d'identifiants à allouer s'en
 trouve diminué, et par conséquent, le trafic généré également.
 
@@ -669,7 +668,6 @@ représentation compacte n'a pas d'incidence sur les identifiants
 eux-même. Puisque chaque identifiant doit être disséminé individuellement aux
 autres répliques, le trafic généré demeure inchangé.
 
-
 Les CRDTs fonctionnant avec des identifiants de taille variable n'utilisent pas
 de pierre tombales lors de la suppression d'éléments. Par conséquent, la mémoire
 consommée par ces approches n'est pas strictement croissante. Un document vide
@@ -680,9 +678,21 @@ hérite de cette progression. De même, les opérations d'insertions subissent d
 baisses de performances. 
 
 Une solution consiste à relocaliser les identifiants. En d'autres termes, les
-identifiants sont supprimés au profit d'identifiants plus courts et conservant
-l'ordre dense des éléments de la séquence.
+identifiants sont modifiés au profit d'identifiants plus courts et conservant
+l'ordre dense des éléments de la séquence. Toutefois, supprimer puis réinsérer
+l'ensemble des éléments dans un document neuf ne suffit pas : le trafic engendré
+est élevé et un tel processus effectué en concurrence est susceptible de clôner
+les éléments. Il faut donc parvenir à prendre une décision globale sur la
+relocalisation ce qui revient à obtenir un consensus en contexte réparti. Les
+consensus sont coûteux à obtenir dans les systèmes à large échelle où le nombre
+de répliques est grand, et particulièrement lorsque ces répliques ne sont pas
+accessibles en permanence.
 
+Afin d'éviter les baisses de performances ainsi que les mécanismes de
+relocalisation, une autre solution consiste à obtenir des identifiants
+suffisamment courts pour qu'ils ne nécessite pas d'être relocalisé. La section
+suivante s'attache à décrire les difficultés liées à l'allocation d'identifiants
+à taille variable.
 
 
 % La section suivante s'attache à mettre en évidence les défaillances des
@@ -697,135 +707,135 @@ l'ordre dense des éléments de la séquence.
 % sont créés de manière à accentuer les comportements des stratégies d'allocation
 % examinées. Enfin, le problème scientifique est exposé.
 
-\subsubsection{Traces réelles}
+% \subsubsection{Traces réelles}
 
-\begin{figure*}
-  \centering
-  \subfloat[Document Wikipédia principalement édité en fin]
-  [\label{repl:img:motivationsA}Document Wikipédia de très grande
-  taille principalement édité en fin.]
-  {\includegraphics[width=0.8\textwidth]{img/lseq/motivationposte.eps}}
-  \hspace{10pt}
-  \subfloat[Document Wikipédia principalement édité au début]
-  [\label{repl:img:motivationsB}Document Wikipédia de petite taille
-  principalement édité au début.]
-  {\includegraphics[width=0.8\textwidth]{img/lseq/motivationtemplatetalk.eps}}
-  \caption[Taille du chemin alloué pour chaque ligne dans Wikipédia]
-  {\label{repl:img:motivations} Taille du chemin alloué pour chaque ligne du
-    document. L'axe des abscisses montre le numéro de la ligne concernée. L'axe
-    des ordonnées de la partie haute de la figure montre l'âge de la
-    ligne. L'axe des ordonnées de la partie basse de la figure montre la taille
-    binaire du chemin alloué.}
-\end{figure*}
+% \begin{figure*}
+%   \centering
+%   \subfloat[Document Wikipédia principalement édité en fin]
+%   [\label{repl:img:motivationsA}Document Wikipédia de très grande
+%   taille principalement édité en fin.]
+%   {\includegraphics[width=0.8\textwidth]{img/lseq/motivationposte.eps}}
+%   \hspace{10pt}
+%   \subfloat[Document Wikipédia principalement édité au début]
+%   [\label{repl:img:motivationsB}Document Wikipédia de petite taille
+%   principalement édité au début.]
+%   {\includegraphics[width=0.8\textwidth]{img/lseq/motivationtemplatetalk.eps}}
+%   \caption[Taille du chemin alloué pour chaque ligne dans Wikipédia]
+%   {\label{repl:img:motivations} Taille du chemin alloué pour chaque ligne du
+%     document. L'axe des abscisses montre le numéro de la ligne concernée. L'axe
+%     des ordonnées de la partie haute de la figure montre l'âge de la
+%     ligne. L'axe des ordonnées de la partie basse de la figure montre la taille
+%     binaire du chemin alloué.}
+% \end{figure*}
 
-L'encyclopédie Wikipédia~\cite{wikipedia} répertorie des millions d'articles
-écrits collaborativement par sa communauté. Un utilisateur, enregistré ou non,
-peut lire un article, et s'il le souhaite, en modifier le contenu. Lorsque ses
-modifications sont achevées, il les soumet à Wikipédia. Deux issues possibles :
-\begin{inparaenum}[(i)]
-\item La contribution est acceptée et sera visible de tous ou
-\item la contribution est rejetée car un autre utilisateur a effectué une
-  modification en concurrence et l'a soumise en premier. Il faut alors réviser
-  la version rejetée afin de l'adapter à la version la plus à jour avant de la
-  soumettre à nouveau, si nécessaire.
-\end{inparaenum}
-Wikipédia garde l'historique des modifications apportées à tous les articles
-depuis leur création. Nous sommes alors à même de rejouer les éditions --
-nommées révision -- dans l'ordre où elles ont été effectuées. Toutefois, la
-concurrence qui pourrait exister dans une édition en temps réelle est effacée
-par le processus d'édition même. D'autre part, la granularité est fixée à la
-ligne. En cela, les simulations sur corpus Wikipédia diffèrent légèrement de la
-réalité.
+% L'encyclopédie Wikipédia~\cite{wikipedia} répertorie des millions d'articles
+% écrits collaborativement par sa communauté. Un utilisateur, enregistré ou non,
+% peut lire un article, et s'il le souhaite, en modifier le contenu. Lorsque ses
+% modifications sont achevées, il les soumet à Wikipédia. Deux issues possibles :
+% \begin{inparaenum}[(i)]
+% \item La contribution est acceptée et sera visible de tous ou
+% \item la contribution est rejetée car un autre utilisateur a effectué une
+%   modification en concurrence et l'a soumise en premier. Il faut alors réviser
+%   la version rejetée afin de l'adapter à la version la plus à jour avant de la
+%   soumettre à nouveau, si nécessaire.
+% \end{inparaenum}
+% Wikipédia garde l'historique des modifications apportées à tous les articles
+% depuis leur création. Nous sommes alors à même de rejouer les éditions --
+% nommées révision -- dans l'ordre où elles ont été effectuées. Toutefois, la
+% concurrence qui pourrait exister dans une édition en temps réelle est effacée
+% par le processus d'édition même. D'autre part, la granularité est fixée à la
+% ligne. En cela, les simulations sur corpus Wikipédia diffèrent légèrement de la
+% réalité.
 
-\paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent pas à
-fournir des identifiants dont la taille soit satisfaisante quel que soit le
-document créé grâce à des traces réelles.
+% \paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent pas à
+% fournir des identifiants dont la taille soit satisfaisante quel que soit le
+% document créé grâce à des traces réelles.
 
-\paragraph{Description :} Logoot est configuré avec une base $2^{32}$. Treedoc
-est configuré pour utiliser sa méthode originelle -- son autre heuristique
-revenant plus ou moins à la stratégie de Logoot. Les documents considérés sont
-des articles extraits de Wikipédia et rejoués sur 200 révisions. L'un des
-articles atteint jusqu'à 10k lignes principalement ajoutées en fin
-d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
-article atteint seulement 200 lignes mais est principalement édité en
-tête\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
+% \paragraph{Description :} Logoot est configuré avec une base $2^{32}$. Treedoc
+% est configuré pour utiliser sa méthode originelle -- son autre heuristique
+% revenant plus ou moins à la stratégie de Logoot. Les documents considérés sont
+% des articles extraits de Wikipédia et rejoués sur 200 révisions. L'un des
+% articles atteint jusqu'à 10k lignes principalement ajoutées en fin
+% d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
+% article atteint seulement 200 lignes mais est principalement édité en
+% tête\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
 
-\paragraph{Résultat :} Les figures~\ref{repl:img:motivationsA}
-et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
-chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent très
-vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
-est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
-des tailles très élevée dépassant les 1k bits par chemin. Dans ce cas, Logoot se
-comporte mieux. En revanche, dans le cadre de l'édition en tête, Logoot alloue
-des chemins dont la taille augmente extrêmement rapidement. Pour recouvrer de
-bonnes performances, l'exécution d'un protocole de relocalisation des chemins
-devient nécessaire.
+% \paragraph{Résultat :} Les figures~\ref{repl:img:motivationsA}
+% et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
+% chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent très
+% vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
+% est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
+% des tailles très élevée dépassant les 1k bits par chemin. Dans ce cas, Logoot se
+% comporte mieux. En revanche, dans le cadre de l'édition en tête, Logoot alloue
+% des chemins dont la taille augmente extrêmement rapidement. Pour recouvrer de
+% bonnes performances, l'exécution d'un protocole de relocalisation des chemins
+% devient nécessaire.
 
-\paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
-allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
-insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du chemin
-augmente. Cependant, comme l'arité des chemins Treedoc est binaire
-($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), cela
-lui permet de conserver des chemins plus petits que ceux de Logoot dans le cadre
-du document édité en tête. D'un autre coté, Logoot a conçu sa stratégie pour
-l'édition en fin. Dès lors, si le comportement suit cette hypothèse, les
-identifiants grossissent par paliers. Linéairement certes, mais lentement. Dans
-le cas contraire, les identifiants grimpent très rapidement (cela serait le cas
-avec la seconde heuristique de Treedoc).
+% \paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
+% allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
+% insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du chemin
+% augmente. Cependant, comme l'arité des chemins Treedoc est binaire
+% ($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), cela
+% lui permet de conserver des chemins plus petits que ceux de Logoot dans le cadre
+% du document édité en tête. D'un autre coté, Logoot a conçu sa stratégie pour
+% l'édition en fin. Dès lors, si le comportement suit cette hypothèse, les
+% identifiants grossissent par paliers. Linéairement certes, mais lentement. Dans
+% le cas contraire, les identifiants grimpent très rapidement (cela serait le cas
+% avec la seconde heuristique de Treedoc).
 
-\subsubsection{Documents artificiels}
+% \subsubsection{Documents artificiels}
 
 
-\begin{figure}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{img/lseq/motivationartificial.eps}
-    \caption[Taille moyenne des chemins sur des documents artificiels]
-    {\label{repl:img:motivationartificial}Taille moyenne des chemins
-      allouées en fonction du nombre d'insertions successives dans le
-      document. L'axe des abscisses montre le nombre d'insertions dans le
-      documents. L'axe des ordonnées montre la taille moyenne de la
-      représentation binaire des chemins alloués.}
-  \end{center}
-\end{figure}
+% \begin{figure}
+%   \begin{center}
+%     \includegraphics[width=0.8\textwidth]{img/lseq/motivationartificial.eps}
+%     \caption[Taille moyenne des chemins sur des documents artificiels]
+%     {\label{repl:img:motivationartificial}Taille moyenne des chemins
+%       allouées en fonction du nombre d'insertions successives dans le
+%       document. L'axe des abscisses montre le nombre d'insertions dans le
+%       documents. L'axe des ordonnées montre la taille moyenne de la
+%       représentation binaire des chemins alloués.}
+%   \end{center}
+% \end{figure}
 
-\paragraph{Objectif :} Montrer la progression de la taille des identifiants
-allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
-artificiels.
+% \paragraph{Objectif :} Montrer la progression de la taille des identifiants
+% allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
+% artificiels.
 
-\paragraph{Description :} Deux types de documents artificiels sont créés. Tout
-d'abord, un premier document est créé grâce à des insertions à des positions
-aléatoires dans la séquence. Le second document est créé grâce à des insertions
-successives en fin de document. La fonction d'allocation des chemins de Logoot
-est spécifiquement conçue pour gérer ce dernier type d'édition. La taille
-moyenne des chemins composant les identifiants est mesurée à chaque nouvelle
-insertion. Le document atteint 500k caractères.
+% \paragraph{Description :} Deux types de documents artificiels sont créés. Tout
+% d'abord, un premier document est créé grâce à des insertions à des positions
+% aléatoires dans la séquence. Le second document est créé grâce à des insertions
+% successives en fin de document. La fonction d'allocation des chemins de Logoot
+% est spécifiquement conçue pour gérer ce dernier type d'édition. La taille
+% moyenne des chemins composant les identifiants est mesurée à chaque nouvelle
+% insertion. Le document atteint 500k caractères.
 
-\paragraph{Résultat :} La figure~\ref{repl:img:motivationartificial} montre les
-résultats de cette simulation. La partie du haut montre les résultats du
-document édité à des positions aléatoires. La partie du bas montre les résultats
-du document édité à la fin. Nous observons que l'édition à des positions
-aléatoires entraîne une génération de chemins dont la taille est logarithmique,
-que ce soit pour Logoot ou pour Treedoc. Treedoc est meilleur que Logoot dans ce
-cas. Nous observons aussi que l'édition en fin est catastrophique pour Treedoc
-(la courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
-chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
-reste linéaire. À terme, l'exécution d'un protocole de relocalisation des
-chemins devient nécessaire pour recouvrir de bonnes performances.
+% \paragraph{Résultat :} La figure~\ref{repl:img:motivationartificial} montre les
+% résultats de cette simulation. La partie du haut montre les résultats du
+% document édité à des positions aléatoires. La partie du bas montre les résultats
+% du document édité à la fin. Nous observons que l'édition à des positions
+% aléatoires entraîne une génération de chemins dont la taille est logarithmique,
+% que ce soit pour Logoot ou pour Treedoc. Treedoc est meilleur que Logoot dans ce
+% cas. Nous observons aussi que l'édition en fin est catastrophique pour Treedoc
+% (la courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
+% chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
+% reste linéaire. À terme, l'exécution d'un protocole de relocalisation des
+% chemins devient nécessaire pour recouvrir de bonnes performances.
 
-\paragraph{Explication :} Les fonctions d'allocations Logoot et Treedoc
-utilisent une structure d'arbres pour allouer le chemin associé à chaque
-caractère. Dans le cadre de l'édition aléatoire, l'arbre reste équilibré au
-cours des insertions. Les branches les plus basses se remplissent au maximum de
-leur capacité. Par conséquent, les identifiants alloués par Treedoc et Logoot
-croissent logarithmiquement par rapport au nombre d'insertion. L'arité de
-l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot, Treedoc
-propose de meilleures performances. Dans le cadre de l'édition en fin, chaque
-nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La croissance
-est linéaire comparée au nombre d'insertions dans la séquence et extrêmement
-rapide. La fonction d'allocation de Logoot est conçue pour gérer ce type
-d'édition. Une branche par niveau de l'arbre se trouve bien remplie
-d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
-constant, d'où la croissance linéaire de la taille des chemins générés.
+% \paragraph{Explication :} Les fonctions d'allocations Logoot et Treedoc
+% utilisent une structure d'arbres pour allouer le chemin associé à chaque
+% caractère. Dans le cadre de l'édition aléatoire, l'arbre reste équilibré au
+% cours des insertions. Les branches les plus basses se remplissent au maximum de
+% leur capacité. Par conséquent, les identifiants alloués par Treedoc et Logoot
+% croissent logarithmiquement par rapport au nombre d'insertion. L'arité de
+% l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot, Treedoc
+% propose de meilleures performances. Dans le cadre de l'édition en fin, chaque
+% nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La croissance
+% est linéaire comparée au nombre d'insertions dans la séquence et extrêmement
+% rapide. La fonction d'allocation de Logoot est conçue pour gérer ce type
+% d'édition. Une branche par niveau de l'arbre se trouve bien remplie
+% d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
+% constant, d'où la croissance linéaire de la taille des chemins générés.
 
 
 %%% Local Variables:

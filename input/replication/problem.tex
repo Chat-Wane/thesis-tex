@@ -1,7 +1,8 @@
 
 \section{Définition du problème}
+\label{repl:sec:problem}
 
-%\paragraph{Chemins.}
+\paragraph{Chemins.}
 
 Les identifiants de taille variable peuvent être représentés comme la
 concaténation d'éléments basiques (e.g. des entiers). La séquence en résultant
@@ -201,8 +202,14 @@ Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
 taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
 d'une séquence classique à des identifiants non-mutable de taille variable d'une
-séquence répliquée a un coût qu'il est nécessaire d'analyser afin de proposer
-une fonction d'allocation efficace.
+séquence répliquée a un coût qu'il convient d'analyser afin de proposer une
+fonction d'allocation efficace.
+
+La section suivante présente \LSEQ, une fonction d'allocation d'identifiants
+dont la taille croît de manière sous-linéaire par rapport au nombre d'insertions
+effectuées dans la séquence. À ce titre, aucun protocole additionnel de
+relocalisation ayant pour objectif l'équilibrage de la structure n'est
+nécessaire.
 
 
 %%% Local Variables:

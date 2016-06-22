@@ -6,31 +6,62 @@
 d'identifiants de taille variable.
 % pour les structures de données sans résolution
 %de conflits dédiées aux séquences.
-\LSEQ est composée de trois éléments dont les comportements, pris
-individuellement, n'arrivent pas à pourvoir des identifiants de taille
-satisfaisante. En revanche, utilisés simultanément, les défaillances des uns
-sont comblées par les forces des autres.
+Elle est composée de trois composants. Le premier composant est un structure
+d'arbre dont l'arité maximale augmente avec sa profondeur. Le second composant
+comprend deux sous-fonctions d'allocation conçues pour gérer des comportements
+d'édition opposés. Le troisième composant est une fonction assignant à chaque
+profondeur de l'arbre une sous-fonction d'allocation parmi celles disponibles.
+
+Pris individuellement, ces composants n'arrivent pas à pourvoir des identifiants
+de taille satisfaisante. Utilisés simultanément, les défaillances des uns sont
+comblées par les forces des autres.  L'idée générale de \LSEQ consiste à
+accepter la perte de niveaux des chemins composants ses identifiants pour peu
+que les futures allocations compensent ces pertes.
+
+Cette section commence par présenter les instructions composant l'algorithme de
+\LSEQ. Ensuite, elle présente chacun des trois composants
+individuellement. Enfin, elle résume le fonctionnement de \LSEQ au travers un
+exemple.
+
 % En résulte une allocation d'identifiants dont la borne supérieure sur la
 % taille est polylogarithmique comparé au nombre d'insertions effectuées dans le
-% document.  L'idée générale de \LSEQ consiste à accepter la perte de niveaux
-% des chemins composants ses identifiants pour peu que les allocations suivantes
-% réparent les dommages.
+% document. 
 
-Le premier composant est un structure d'arbre dont l'arité augmente avec sa
-profondeur %(cf. §\ref{repl:subsec:exponentialtree}).  L'intuition étant que si la
-% profondeur de l'arbre augmente, c'est que le document à grandit suffisamment
-% pour nécessiter un plus large champs d'identifiants. Mais au lieu d'ouvrir un
-% espace aussi large qu'auparavant, l'espace est élargi afin que le document
-% puisse se satisfaire de ce champs d'identifiants plus longuement.
-Le second composant comprend deux sous-fonctions d'allocation conçues pour gérer
-des comportements d'édition opposés (cf. §\ref{repl:subsec:suballocation}). % Ainsi,
+
+% (cf. §\ref{repl:subsec:suballocation}). Ainsi,
 % l'une est appropriée lorsque l'édition est principalement faite de gauche à
 % droite tandis que l'autre cible l'édition de droite à gauche. Elles seront
 % utilisées ensemble afin de pouvoir gérer la plupart des cas d'édition.
-Le troisième composant est une fonction assignant à chaque profondeur de l'arbre
-une sous-fonction d'allocation parmi celles disponibles
-(cf. §\ref{repl:subsec:allocationchoice}). % Cette fonction de choix doit fournir des
+
+% (cf.
+% §\ref{repl:subsec:allocationchoice}). % Cette fonction de choix doit fournir des
 % réponses similaires quelle que soit la réplique.
+
+\subsection{Allocation des chemins}
+
+La fonction \textsc{allocPath} choisit le chemin associé à chaque élément afin
+d'encoder sa position relative à l'égard de ses éléments adjacents dans la
+séquence. Dans le but de conserver de bonnes performances, la structure d'arbre
+sous-jacente doit garder une petite profondeur.
+
+\begin{algorithm}
+  \input{input/replication/algoallocpath.tex}
+  \caption[Allocation des chemins selon \LSEQ]
+  {\label{repl:algo:allocpath}Allocation des chemins selon \LSEQ.}
+\end{algorithm}
+
+L'algorithme~\ref{repl:algo:allocpath} montre les instructions de \LSEQ. Tout
+d'abord, la fonction \textsc{allocPath} calcule la distance entre les deux
+chemins adjacents. L'objectif est de trouver le plus petit niveau de l'arbre
+exponentiel (cf. §\ref{repl:subsec:exponentialtree}) contenant assez d'espace
+pour accueillir le nouvel élément.  Ensuite, la fonction de hachage $h$
+(cf. §\ref{repl:subsec:allocationchoice}) défère l'allocation du chemin à une
+sous-fonction d'allocation (cf. §\ref{repl:subsec:suballocation}) selon la
+profondeur trouvée.  La sous-fonction d'allocation calcule alors l'intervalle à
+disposition et la profondeur du nouveau chemin. Si l'intervalle est plus grand
+que la limite imposée, alors ce premier est restreint. Le nouveau chemin
+commence à partir de l'un des chemin adjacent auquel est ajouté ou soustrait une
+valeur aléatoire dans le nouvel intervalle.
 
 \subsection{Arbre exponentiel}
 \label{repl:subsec:exponentialtree}
@@ -38,7 +69,14 @@ une sous-fonction d'allocation parmi celles disponibles
 Un arbre exponentiel est une structure d'arbre dont chacun des nœuds possède une
 arité maximale $k$ fois supérieure à celle de son parent. Ainsi, la progression
 du nombre de fils dans une branche est exponentielle. Un chemin dans un tel
-arbre nécessite nécessite un bit additionnel par concaténation.
+arbre nécessite un bit additionnel par concaténation.
+
+L'intuition derrière l'utilisation de cette structure d'arbre est la suivante :
+une augmentation de la profondeur de l'arbre signifie que le nombre d'insertions
+dans la séquence est suffisant pour nécessiter un plus large champs
+d'identifiants. Ainsi, au lieu d'ouvrir un espace aussi large qu'auparavant,
+l'espace est encore élargi afin que la séquence puisse se satisfaire de ce champs
+d'identifiants plus longuement.
 
 \begin{figure}
   \begin{center}
@@ -52,15 +90,13 @@ La figure~\ref{repl:fig:exponentialtree} montre un arbre exponentiel. L'arbre
 commence avec une arité maximale de 2. Puis chacun de ces fils a une arité
 maximale de 4. Puis chacun de ces fils a une arité maximale de 8. Un chemin de
 profondeur 3 tel que [1.3.7] nécessite alors 1+2+3 = 6 bits pour sa
-représentation en mémoire.
-
-Plus généralement, un chemin de profondeur $e$ requière
-$\textstyle\sum\nolimits_{i=1}^{e}i = {e^2 + e \over{2}}$ bits. Cette progression
-quadratique en fonction de la profondeur rend essentielle la prise en charge des
-comportements d'édition conduisant au pire cas
+représentation en mémoire.  Plus généralement, un chemin de profondeur $e$
+requière $\textstyle\sum\nolimits_{i=1}^{e}i = {e^2 + e \over{2}}$ bits. Cette
+progression quadratique en fonction de la profondeur rend essentielle la prise
+en charge des comportements d'édition conduisant au pire cas
 (cf. figure~\ref{repl:fig:allocpathexampleB}). En particulier, un comportement
-aussi simple que l'édition de droite à gauche doit impérativement être géré
-(cf. figure~\ref{repl:img:motivationsB}).
+aussi simple que l'édition de droite à gauche doit impérativement être géré.
+% (cf. figure~\ref{repl:img:motivationsB}).
 
 \subsection{Sous-fonctions d'allocation}
 \label{repl:subsec:suballocation}
@@ -132,30 +168,6 @@ imprévisibles.
 
 \subsection{Résumé}
 
-La fonction \textsc{allocPath} choisit le chemin associé à chaque élément afin
-d'encoder sa position relative à l'égard de ses éléments adjacents dans la
-séquence. Dans le but de conserver de bonnes performances, la structure d'arbre
-sous-jacente doit garder une petite profondeur.
-
-\begin{algorithm}
-  \input{input/replication/algoallocpath.tex}
-  \caption[Allocation des chemins selon \LSEQ]
-  {\label{repl:algo:allocpath}Allocation des chemins selon \LSEQ.}
-\end{algorithm}
-
-L'algorithme~\ref{repl:algo:allocpath} montre les instructions de \LSEQ. Tout
-d'abord, la fonction \textsc{allocPath} calcule la distance entre les deux
-chemins adjacents. L'objectif est de trouver le plus petit niveau de l'arbre
-contenant assez d'espace pour accueillir le nouvel élément.
-Ensuite, la fonction de hachage $h$ (cf. §\ref{repl:subsec:allocationchoice})
-défère l'allocation du chemin à une sous-fonction d'allocation
-(cf. §\ref{repl:subsec:suballocation}) selon la profondeur trouvée. 
-La sous-fonction d'allocation calcule alors l'intervalle à disposition et la
-profondeur du nouveau chemin. Si l'intervalle est plus grand que la limite
-imposée, alors ce premier est restreint. Le nouveau chemin commence à partir de
-l'un des chemin adjacent auquel est ajouté ou soustrait une valeur aléatoire
-dans le nouvel intervalle.
-
 \begin{figure}
   \begin{center}
     \subfloat[Édition de gauche à droite dans \LSEQ]
@@ -172,7 +184,7 @@ dans le nouvel intervalle.
 \end{figure}
 
 La figure~\ref{repl:fig:lseqtreeexample} montre le résultat de la stratégie
-d'allocation \LSEQ après deux comportements d'éditions : L'un écrit de gauche à
+d'allocation \LSEQ après deux comportements d'éditions : l'un écrit de gauche à
 droite, l'autre écrit de droite à gauche. Dans les deux cas, la séquence est
 \texttt{QWERTY}; l'arité maximale commence à $2^5$ et est doublée à chaque
 niveau; la fonction de hachage désigne comme étant les sous-fonctions conçues

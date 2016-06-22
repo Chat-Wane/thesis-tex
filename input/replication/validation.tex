@@ -7,9 +7,11 @@ données sans résolution de conflits conçues pour les séquences.  Cette secti
 deux objectifs. Tout d'abord, elle examine la contribution de chacun des
 composants internes à \LSEQ décrits en §\ref{repl:sec:proposal}.  Ensuite, elle
 valide expérimentalement les analyses en complexité de \LSEQ faites en
-§\ref{repl:sec:complexity}. Enfin, elle montre l'influence de la concurrence sur
-l'allocation d'identifiants. Dans toutes ces expérimentations, nous sommes plus
-intéressés par l'allure des résultats que par leurs valeurs absolues.
+§\ref{repl:sec:complexity}.  Enfin, elle montre l'influence de la concurrence
+sur l'allocation d'identifiants.
+
+%% Dans toutes ces expérimentations, nous sommes
+%% plus intéressés par l'allure des résultats que par leurs valeurs absolues.
 
 \subsection{Référence}
 
@@ -48,7 +50,7 @@ reste bien plus efficace que l'édition de droite à gauche.
 structure d'arbre équilibrée. Les identifiants alloués restent petits. Le
 comportement d'édition monotone de gauche à droite conduit à une croissance
 linéaire mais relativement faible. En effet, la stratégie d'allocation employée
-est conçue pour ce comportement : Des branches sont laissées disponibles en vue
+est conçue pour ce comportement : des branches sont laissées disponibles en vue
 des prochaines insertions. La taille des identifiants grandit donc
 lentement. Toutefois, comme l'arité maximale de l'arbre reste constante, la
 structure ne s'adapte pas à la taille du document, d'où la croissance
@@ -74,7 +76,8 @@ espace, i.e. la profondeur de l'arbre augmente. L'augmentation reste linéaire.
 \paragraph{Objectif :} Montrer que l'utilisation d'un arbre exponentiel permet
 d'allouer des chemins dont la taille croît de manière polylogarithmique comparé
 au nombre d'insertions. Montrer que lorsque le comportement d'édition va à
-l'encontre de celui prévu, l'allocation devient désastreuse.
+l'encontre de celui prévu, les identifiants alloués ont une croissance
+quadratique.
 
 \paragraph{Description :} Trois documents sont créés artificiellement par
 insertions successives de caractères. Pour chacun, un comportement d'édition
@@ -106,11 +109,11 @@ constitue la borne minimale. Lors du comportement d'édition monotone de gauche 
 droite, les chemins les plus à gauche sont alloués réservant de l'espace aux
 insertions futures. De plus, puisque l'arité de l'arbre double à chaque niveau,
 il peut accueillir deux fois plus de chemins à un prix minime (1 bit additionnel
-par niveau). Pour cette même raison, l'allocation est désastreuse lors de
-l'édition de droite à gauche : Quelques insertions suffisent à faire augmenter
-la profondeur de l'arbre. L'arité maximale augmente alors rapidement et le prix
-des identifiants explose. Dans ce cas, la taille des chemins croît de manière
-quadratique.
+par niveau). Pour cette même raison, la croissance des identifiants devient
+quadratique lors de l'édition de droite à gauche : quelques insertions suffisent
+à faire augmenter la profondeur de l'arbre. L'arité maximale augmente alors
+rapidement et le prix des identifiants explose. Dans ce cas, la taille des
+chemins croît de manière quadratique.
 
 
 \subsection{Sous-fonctions d'allocation}
@@ -156,7 +159,7 @@ lentement. Malgré tout, la progression reste linéaire. De plus, elle augmente
 deux fois plus rapidement que sans cette alternance avec un comportement
 d'édition favorable (cf. figure~\ref{repl:img:logoot}). En effet, dans le cas de
 ces simulations, un niveau sur deux composant un chemin est perdu car consommé
-trop vite : La sous-fonction d'allocation assignée à ce niveau n'était pas celle
+trop vite : la sous-fonction d'allocation assignée à ce niveau n'était pas celle
 conçue pour le comportement d'édition courant.
 
 
@@ -294,7 +297,7 @@ monotone écrivent de gauche à droite un même document. Grâce à
 messages créant des opérations concurrentes. Les documents atteignent 10k
 caractères. Les mesures sur la taille moyenne des messages envoyés sont
 effectuées tout au long de l'expérimentation. La fonction d'allocation employée
-est celle de \LSEQ : Un arbre exponentiel avec deux sous-fonctions
+est celle de \LSEQ : un arbre exponentiel avec deux sous-fonctions
 d'allocations. 
 
 \paragraph{Résultat :} La figure~\ref{repl:img:latency} montre les résultats de

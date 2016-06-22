@@ -28,24 +28,28 @@ endroits -- ce qui est plus proche d'un cas d'utilisation réel -- l'arbre
 commence à se rééquilibrer et les opérations deviennent plus efficaces
 proportionnellement. L'analyse ne fait pas mention de cas moyen puisqu'il
 nécessite de connaître la distribution des positions d'insertions effectuées par
-des être humains ce qui représente une tâche complexe.
+des être humains ce qui représente une tâche complexe. Enfin, l'analyse en
+complexité se concentre sur la représentation de la séquence sous forme
+d'arbre. Cette représentation, par rapport à une liste, possède l'avantage d'une
+représentation plus compacte de la séquence au prix d'accès plus lent. Il existe
+d'autres structures proposant d'autres compromis. Cependant, il est important de
+noter que la complexité spatiale d'un identifiant demeure inchangée.
 
 \subsection{Complexité spatiale}
 \label{repl:subsec:space}
 
-La complexité spatiale d'un seul identifiant est différenciée de la complexité
-spatiale de l'arbre stockant la séquence. La première est importante puisqu'elle
-influence directement la complexité en communication. En effet, chaque
-identifiant est propagé à tous les possesseurs de réplique; La seconde est
-importante puisqu'elle représente le mémoire allouée localement par chaque
-éditeur collaboratif.
+Dans cette analyse, la complexité spatiale d'un seul identifiant est
+différenciée de la complexité spatiale de l'arbre stockant la séquence. La
+première est importante puisqu'elle influence directement la complexité en
+communication. En effet, chaque identifiant est propagé à tous les possesseurs
+de réplique. La seconde est importante puisqu'elle représente le mémoire allouée
+localement par chaque éditeur collaboratif.
 
 La section~\ref{repl:sec:proposal} spécifie que chaque nouvelle concaténation
 dans le chemin de l'identifiant requière un bit additionnel pour l'encoder. Cela
 représente au total $\mathcal{O}(e^2)$ bits pour encoder le chemin, où $e$ est
 la profondeur du chemin dans l'arbre. Heureusement, cette profondeur est bornée
 selon le comportement d'édition remplissant l'arbre exponentiel. 
-
 
 \begin{figure}
   \begin{center}
@@ -66,11 +70,11 @@ selon le comportement d'édition remplissant l'arbre exponentiel.
 \end{figure}
 
 
-\paragraph{Comportement d'édition aléatoire. } Il remplit l'arbre à des
-positions aléatoires. En conséquence, l'arbre reste équilibré
+\paragraph{Comportement d'édition aléatoire. } L'édition aléatoire remplit
+l'arbre à des positions aléatoires. En conséquence, l'arbre reste équilibré
 (cf. figure~\ref{repl:fig:randomlseqtree}). Étant exponentiel, l'arbre peut
 stocker $\textstyle\sum\nolimits_{i=1}^{k}{2^{(i^2-i)/2}}$ éléments, où $k$ est
-la profondeur de l'arbre. Ainsi, la borne supérieur sur la profondeur des
+la profondeur de l'arbre. Ainsi, la borne supérieure sur la profondeur des
 chemins est $\mathcal{O}(\sqrt{\log I})$ concaténations, où $I$ est le nombre
 d'insertions. Puisque les chemins nécessitent $\mathcal{O}(e^2)$ bits pour être
 encodés, les chemins ont une complexité spatiale optimale de
@@ -80,10 +84,11 @@ des identifiants de taille variable~\cite{preguica2009commutative,
 factorisant les parties communes des identifiants, la complexité spatiale totale
 n'est pas la somme des identifiants, mais seulement $\mathcal{O}(I\log I)$.
 
-\paragraph{Comportement d'édition monotone.} Il remplit seulement une branche de
-l'arbre (cf. figure~\ref{repl:fig:monotoniclseqtree}). Pourtant, comme l'arité
-maximale d'un nœud augmente lorsque sa profondeur augmente, la croissance de
-l'arbre ralentit au cours des insertions. Dans ce cas, l'arbre stocke jusqu'à
+\paragraph{Comportement d'édition monotone.} L'édition monotone remplit
+seulement une branche de l'arbre
+(cf. figure~\ref{repl:fig:monotoniclseqtree}). Pourtant, comme l'arité maximale
+d'un nœud augmente lorsque sa profondeur augmente, la croissance de l'arbre
+ralentit au cours des insertions. Dans ce cas, l'arbre stocke jusqu'à
 $2^{e+1}-1$ éléments, où $e$ est la profondeur de l'arbre. Ainsi, le nombre de
 concaténation composant le chemin est $\mathcal{O}(\log I)$, où $I$ est le
 nombre d'insertions. La représentation binaire des chemins grandissant de façon
@@ -91,7 +96,11 @@ quadratique, la complexité spatiale des identifiants est
 $\mathcal{O}((\log I)^2)$. Globalement, la complexité spatiale de l'arbre reste
 la même, à savoir $\mathcal{O}(I \log I)$.
 
-\paragraph{Pire cas.} Chaque insertion augmente la profondeur de l'arbre
+\paragraph{Pire cas.} } Le pire cas s'obtient par l'insertions systématique
+d'éléments à l'endroit où l'espace d'allocation est le plus faible. Par exemple,
+lorsque la sous-fonction d'allocation employée est conçue pour l'édition de
+gauche à droite, peu d'espace est laissé disponible à gauche de ce niveau.  Dans
+le pire cas, chaque insertion augmente la profondeur de l'arbre
 (cf. figure~\ref{repl:fig:worstlseqtree}). Ainsi, après $I$ insertions, l'arbre
 comprend $e$ éléments, où $e$ est la profondeur de l'arbre. Chaque nouveau
 chemin possède tous les autres chemins. Ainsi, la complexité spatiale des
@@ -146,19 +155,21 @@ même complexités.
 supprimer à tous les participants. L'opération se fait donc en temps constant
 $\mathcal{O}(1)$ quel que soit le comportement d'édition.
 
-\paragraph{Insertion et suppression distante.} Ces deux opérations comportent
-les mêmes instructions pour intégrer le résultat reçu de l'opération locale. Par
-conséquent, leur complexité temporelle est identique. Encore une fois, les
-comportements d'édition aléatoire, monotone, et pire cas conduisent
-respectivement à une croissance de l'arbre exponentiel de l'ordre de
-$\mathcal{O}(\sqrt{\log I})$, $\mathcal{O}(\log I)$, et $\mathcal{O}(I)$.  Les
-fils de chaque nœud de l'arbre sont ordonnés selon leur chemin. Ainsi, une
-recherche dichotomique récursive permet d'atteindre la feuille de l'arbre
-recherchée. La suppression distante supprime les nœuds qu'elle traverse si ce
-nœud ne possède qu'un seul élément parmi ses sous-arbres. La complexité
-temporelle de la recherche dichotomique dépend du niveau $l$ à laquelle elle est
-effectuée : $\mathcal{O}(\log 2^l)$. Les recherches à répétition conduisent à
-une borne supérieure en
+\paragraph{Insertion et suppression distante.} Les opérations d'insertion et de
+suppression locales retournent toutes les deux des identifiants que la partie
+distante de l'opération correspondante est en charge d'intégrer.  Les
+instructions composant ces opérations distantes sont identiques : il s'agit
+principalement d'une exploration de l'arbre. Par conséquent, leur complexité
+temporelle est identique. Encore une fois, les comportements d'édition
+aléatoire, monotone, et pire cas conduisent respectivement à une croissance de
+l'arbre exponentiel de l'ordre de $\mathcal{O}(\sqrt{\log I})$,
+$\mathcal{O}(\log I)$, et $\mathcal{O}(I)$.  Les fils de chaque nœud de l'arbre
+sont ordonnés selon leur chemin. Ainsi, une recherche dichotomique récursive
+permet d'atteindre la feuille de l'arbre recherchée. La suppression distante
+supprime les nœuds qu'elle traverse si ce nœud ne possède qu'un seul élément
+parmi ses sous-arbres. La complexité temporelle de la recherche dichotomique
+dépend du niveau $l$ à laquelle elle est effectuée : $\mathcal{O}(\log 2^l)$.
+Les recherches à répétition conduisent à une borne supérieure en
 $\mathcal{O}(\textstyle\sum\nolimits_{i=1}^{e}(\log 2^i))$ où $e$e est la
 profondeur de l'arbre. En remplaçant la variable $e$, les bornes supérieures sur
 la complexité temporelle des opérations deviennent
@@ -265,23 +276,24 @@ opération où l'accès se fait en temps linéaire. Heureusement,
 \subsection{Résumé de l'analyse en complexité}
 
 L'analyse en complexité révèle les améliorations apportées par \LSEQ par rapport
-à l'état de l'art ainsi que leur coût. \LSEQ empire la complexité du pire cas
-afin d'améliorer ses performances sur les autres comportements d'édition
-considérés plus probables dans l'édition collaborative. Le résultat le plus
-important concerne la borne supérieure sur la complexité spatiale des
-identifiants, à savoir un polylogarithme comparé au nombre d'insertions dans la
-séquence. L'importance de ce résultat provient du fait qu'il s'étend à la
-complexité en communication de l'application qui l'utilise. En comparaison,
-l'état de l'art des fonctions d'allocation~\cite{preguica2009commutative,
-  weiss2009logoot} fournissent des identifiants dont la taille croît
-linéairement par rapport au nombre d'insertions dans la séquence.  En outre, la
-complexité spatiale de la structure ainsi que la complexité temporelle de ses
-opérations montre que le choix d'un arbre pour représenter la séquence est
-efficace. Néanmoins, selon les préférences, le choix d'un vecteur -- en tant que
-version aplatie de l'arbre -- est possible afin d'améliorer les performances
-des opérations au prix d'un usage mémoire plus
-important~\cite{weiss2009logoot}. La section suivante s'attache à valider ces
-analyses en complexité au travers d'expérimentations.
+à l'état de l'art ainsi que leur coût. Dans le pire cas, la complexité de \LSEQ
+est moins bonne que celle de l'état de l'art~\cite{preguica2009commutative,
+  weiss2009logoot}.  D'un autre coté, cette concession permet d'améliorer ses
+performances sur les autres comportements d'édition considérés plus probables
+dans l'édition collaborative. Le résultat le plus important concerne la borne
+supérieure sur la complexité spatiale des identifiants, à savoir une croissance
+polylogarithmique comparée au nombre d'insertions dans la séquence. L'importance
+de ce résultat provient du fait qu'il s'étend à la complexité en communication
+de l'application qui l'utilise. En comparaison, les représentants de l'état de
+l'art~\cite{preguica2009commutative, weiss2009logoot} fournissent des
+identifiants dont la taille croît linéairement par rapport au nombre
+d'insertions dans la séquence.  En outre, la complexité spatiale de la structure
+ainsi que la complexité temporelle de ses opérations montre que le choix d'un
+arbre pour représenter la séquence est efficace. Néanmoins, selon les
+préférences, le choix d'un vecteur -- en tant que version aplatie de l'arbre --
+est possible afin d'améliorer les performances des opérations au prix d'un usage
+mémoire plus important~\cite{weiss2009logoot}. La section suivante s'attache à
+valider ces analyses en complexité au travers d'expérimentations.
 
 
 % \subsubsection{indexOf}
