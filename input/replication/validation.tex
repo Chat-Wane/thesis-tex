@@ -254,18 +254,19 @@ depuis leur création. Nous sommes alors à même de rejouer les éditions --
 nommées révision -- dans l'ordre où elles ont été effectuées. Toutefois, la
 concurrence qui pourrait exister dans une édition en temps réelle est effacée
 par le processus d'édition même. D'autre part, la granularité est fixée à la
-ligne. En cela, les simulations sur corpus Wikipédia diffèrent légèrement de la
+ligne. En cela, les simulations sur corpus Wikipédia légèrement de la
 réalité.
 
 
 \paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent à fournir
 des identifiants dont la taille soit satisfaisante quel que soit le document
-créé grâce à des traces réelles. \TODO{Add \LSEQ in the mix.}
+créé grâce à des traces réelles. En revanche, \LSEQ y parvient.
 
-\paragraph{Description :} Logoot est configuré avec une base $2^{16}$. \LSEQ est
-configuré avec une base de départ de $2^{8}$. Treedoc est configuré pour
-utiliser sa méthode originelle -- son autre heuristique revenant plus ou moins à
-la stratégie de Logoot. Les documents considérés sont des articles extraits de
+\paragraph{Description :} Logoot est configuré avec une arité maximale de
+$2^{16}$. \LSEQ est configuré avec arité maximale de départ de $2^{8}$. Treedoc
+a une arité de $2^1$ et est configuré pour utiliser sa méthode originelle peu
+adaptée à l'édition monotone -- son autre stratégie étant équivalente à la
+stratégie de Logoot. Les documents considérés sont des articles extraits de
 Wikipédia et rejoués sur 200 révisions. L'un des articles atteint jusqu'à 10k
 lignes principalement ajoutées en fin
 d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
@@ -277,22 +278,29 @@ et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
 chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent très
 vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
 est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
-des tailles prohibitives. Dans ce cas, Logoot se comporte mieux. En revanche,
-dans le cadre de l'édition en tête, Logoot alloue des chemins dont la taille
-augmente extrêmement rapidement. Pour recouvrer de bonnes performances,
-l'exécution d'un protocole de relocalisation des chemins devient nécessaire.
+des tailles très élevées avec une claire croissance linéaire. Dans ce cas,
+Logoot se comporte mieux. Bien que \LSEQ démarre avec une base plus faible
+présente des résultats équivalent à Logoot. En revanche, dans le cadre de
+l'édition en tête (cf. figure~\ref{repl:img:motivationsB}), Logoot alloue des
+chemins dont la taille augmente extrêmement rapidement. Treedoc également, bien
+que les valeurs mesurées soient plus faibles. Les identifiants alloués par
+\LSEQ semblent se stabiliser.
+
+%% Pour retrouvrer de bonnes performances, l'exécution d'un protocole de
+%% relocalisation des chemins devient nécessaire.
 
 \paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
 allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
 insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du chemin
-augmente. Cependant, comme l'arité des chemins Treedoc est binaire
-($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), cela
-lui permet de conserver des chemins plus petits que ceux de Logoot dans le cadre
-du document édité en tête. D'un autre coté, Logoot a conçu sa stratégie pour
-l'édition en fin. Dès lors, si le comportement suit cette hypothèse, les
-identifiants grossissent par paliers. Linéairement certes, mais lentement. Dans
-le cas contraire, les identifiants grimpent très rapidement (cela serait le cas
-avec la seconde heuristique de Treedoc).
+augmente. Cependant, comme Treedoc alloues des chemins où chaque pas est binaire
+($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), les
+chemins restent plus petits que ceux de Logoot dans le cadre du document édité
+en tête. D'un autre coté, Logoot a conçu sa stratégie pour l'édition en fin. Dès
+lors, si le comportement suit cette hypothèse, les identifiants grossissent par
+paliers. Linéairement certes, mais lentement. \LSEQ ne favorise aucun
+comportement d'édition et adapte la taille de ses identifiants à la taille du
+document. Ainsi, les deux types de documents sont gérés : beaucoup d'insertions
+effectuées de gauche à droite; peu d'insertions effecutées de droite à gauche.
 
 
 \subsubsection{Documents synthétiques}
@@ -310,44 +318,54 @@ avec la seconde heuristique de Treedoc).
 \end{figure}
 
 \paragraph{Objectif :} Montrer la progression de la taille des identifiants
-allouées par les fonctions d'allocation Logoot et Treedoc sur des documents
-artificiels. \TODO{Intégrer \LSEQ.}
+alloués par les fonctions d'allocation Logoot, \LSEQ et Treedoc sur des
+documents synthétiques.
 
-\paragraph{Description :} Deux types de documents artificiels sont créés. Tout
+\paragraph{Description :} Deux types de documents synthétiques sont créés. Tout
 d'abord, un premier document est créé grâce à des insertions à des positions
 aléatoires dans la séquence. Le second document est créé grâce à des insertions
 successives en fin de document. La fonction d'allocation des chemins de Logoot
-est spécifiquement conçue pour gérer ce dernier type d'édition. La taille
-moyenne des chemins composant les identifiants est mesurée à chaque nouvelle
-insertion. Le document atteint 500k caractères.
+est spécifiquement conçue pour gérer ce dernier type d'édition. Logoot est
+configuré avec une arité maximale de $2^{16}$, \LSEQ est configuré avec une
+arité maximale de départ de $2^8$, Treedoc a une arité maximale de $2^1$.  La
+taille moyenne des chemins composant les identifiants est mesurée à chaque
+nouvelle insertion. Le document atteint 500k caractères.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:motivationartificial} montre les
 résultats de cette simulation. La partie du haut montre les résultats du
 document édité à des positions aléatoires. La partie du bas montre les résultats
 du document édité à la fin. Nous observons que l'édition à des positions
 aléatoires entraîne une génération de chemins dont la taille est logarithmique,
-que ce soit pour Logoot ou pour Treedoc. Treedoc est meilleur que Logoot dans ce
-cas. Nous observons aussi que l'édition en fin est catastrophique pour Treedoc
-(la courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
+que ce soit pour Logoot, \LSEQ ou Treedoc. Dans ce cas, Treedoc est meilleur que
+Logoot et \LSEQ. Nous observons aussi que l'édition en fin entraine une
+croissance extrêmement rapide pour les identifiants alloués par Treedoc (la
+courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
 chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
-reste linéaire. À terme, l'exécution d'un protocole de relocalisation des
-chemins devient nécessaire pour recouvrir de bonnes performances.
+reste linéaire comparée au nombre d'insertions dans la séquence. À terme,
+l'exécution d'un protocole de relocalisation des chemins devient nécessaire pour
+retrouver de bonnes performances. En revanche, \LSEQ alloue des identifiants
+dont la croissance est sous-linéaire comparé au nombre d'insertions. À terme,
+l'allocation de \LSEQ finit par surpasser celle de l'état de l'art.
 
-\paragraph{Explication :} Les fonctions d'allocations Logoot et Treedoc
+\paragraph{Explication :} Les fonctions d'allocations Logoot, \LSEQ et Treedoc
 utilisent une structure d'arbres pour allouer le chemin associé à chaque
 caractère. Dans le cadre de l'édition aléatoire, l'arbre reste équilibré au
 cours des insertions. Les branches les plus basses se remplissent au maximum de
-leur capacité. Par conséquent, les identifiants alloués par Treedoc et Logoot
-croissent logarithmiquement par rapport au nombre d'insertion. L'arité de
-l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot, Treedoc
-propose de meilleures performances. Dans le cadre de l'édition en fin, chaque
-nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La croissance
-est linéaire comparée au nombre d'insertions dans la séquence et extrêmement
-rapide. La fonction d'allocation de Logoot est conçue pour gérer ce type
-d'édition. Une branche par niveau de l'arbre se trouve bien remplie
+leur capacité. Par conséquent, les identifiants alloués par ces trois approches
+croissent logarithmiquement par rapport au nombre d'insertions. L'arité de
+l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot et \LSEQ,
+Treedoc propose de meilleurs identifiants. Dans le cadre de l'édition en fin,
+chaque nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La
+croissance est linéaire comparée au nombre d'insertions dans la séquence et
+extrêmement rapide. La fonction d'allocation de Logoot est conçue pour gérer ce
+type d'édition. Chaque niveau de l'arbre possède une branche remplie
 d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
-constant, d'où la croissance linéaire de la taille des chemins générés.
-
+constant, d'où la croissance linéaire de la taille des chemins générés. Avec
+\LSEQ, l'arbre est exponentiel : chaque nœud de l'arbre possède une arité
+maximale deux fois supérieure à son parent. Ainsi, plus elles sont profondes,
+plus les branches peuvent accueillir d'éléments. Par conséquent, la vitesse
+d'augmentation de profondeur de l'arbre exponentiel diminue lorsque le nombre
+d'insertions augmente.
 
 
 \subsection{Complexité temporelle}
