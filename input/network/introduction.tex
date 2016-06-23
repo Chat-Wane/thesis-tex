@@ -23,14 +23,34 @@
   \end{center}
 \end{figure}
 
-\lettrine{U}n réseau superposé (\emph{network overlay}) est un ensemble de
-machines pouvant communiquer entre elles au dessus d'un autre réseau tels que,
-par exemple, l'internet ou un autre réseau superposé.  Toutes sortes de réseaux
-superposés existent. Si chaque machine possède un canal de communication avec
-chacune des autres machines, alors la topologie correspond à celle d'un graphe
-complet (cf. figure~\ref{net:fig:completegraph}). La progression quadratique du
-nombre d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre
-de grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
+\lettrine{L}'édition collaborative~\cite{ellis1991groupware} permet de répartir
+le travail de rédaction d'un document selon les trois dimensions : le temps,
+l'espace, et les activités~\cite{desanctis1987foundation,
+  grudin1994computersupported, johansen1988groupware}. L'éditeur collaboratif en
+constitue l'outil principal récemment popularisé grâce aux éditeurs web tels que
+\emph{Google Docs}~\cite{googledocs} ou \emph{ShareLatex}~\cite{sharelatex}. Ces
+éditeurs proposent à leurs utilisateurs de créer et modifier un document en
+temps réel. Grâce à un simple lien, ils sont en mesure de partager ce document à
+des amis ou des collègues. Ces derniers sont à leur tour capables de lire et
+modifier le document en temps réel.
+
+Les utilisateurs impliquées dans l'édition peuvent être éloignés les uns des
+autres géographiquement. Par exemple, un japonais, un français et un brésilien
+peuvent éditer un même document en temps réel depuis leur pays d'origine. Cette
+répartition géographique necessite l'établissement de moyens de communication
+entre éditeurs.
+%% De plus, web -> masse
+Chaque modification doit parvenir efficacement au reste des participants afin
+que le même document puisse être lu partout.
+
+Un réseau superposé (\emph{network overlay}) est un ensemble de machines pouvant
+communiquer entre elles au dessus d'un autre réseau tels que, par exemple,
+l'internet ou un autre réseau superposé.  Toutes sortes de réseaux superposés
+existent. Si chaque machine possède un canal de communication avec chacune des
+autres machines, alors la topologie correspond à celle d'un graphe complet
+(cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
+d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
+grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
 qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
 direct d'un nœud. Le défi consiste alors à peupler ces vues avec des liens
 logiques selon les critères souhaités.
