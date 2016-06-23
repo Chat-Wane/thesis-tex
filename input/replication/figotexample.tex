@@ -12,12 +12,12 @@
   \draw[fill=black](0pt, -1*\Y) node[anchor=east]{réplique 2 }circle(2pt);
   \draw[fill=black](0pt, -2*\Y) node[anchor=east]{réplique 3 }circle(2pt);
 
-  \draw(\X,2pt)--node[anchor=south]{[RTY]}( \X,   -2pt);
-  \draw(\X,2 -1*\Y)--node[anchor=south]{[RTY]}(\X,-2 -1*\Y);
-  \draw(\X,2 -2*\Y)--node[anchor=south]{[RTY]}(\X,-2 -2*\Y);
+  \draw(\X,2pt)--node[anchor=south]{[WERTY]}( \X,   -2pt);
+  \draw(\X,2 -1*\Y)--node[anchor=south]{[WERTY]}(\X,-2 -1*\Y);
+  \draw(\X,2 -2*\Y)--node[anchor=south]{[WERTY]}(\X,-2 -2*\Y);
   \small
-  \draw(3* \X,2pt)--node[anchor=north]{\textsc{insert}(QWE, 0)}(3 * \X,   -2pt);
-  \draw(3* \X,2 -2*\Y)--node[anchor=north]{\textsc{delete}(\DARKBLUE{\textbf{0}}, 3)}(3 * \X,-2 -2*\Y);
+  \draw(3* \X,2pt)--node[anchor=north]{\textsc{insert}(Q, 0)}(3 * \X,   -2pt);
+  \draw(3* \X,2 -2*\Y)--node[anchor=north]{\textsc{delete}(\DARKBLUE{\textbf{0}})}(3 * \X,-2 -2*\Y);
   \normalsize
 
   \draw(3* \X,2pt)--node[anchor=south]{[QWERTY]}(3 * \X,   -2pt);
@@ -29,13 +29,13 @@
 
   \small
   \draw[->, dashed] (5*\X, -2*\Y) -- (7*\X,  0*\Y)
-  node[anchor=south]{\textsc{delete}(\DARKBLUE{\textbf{3}}, 3)};
+  node[anchor=south]{\textsc{delete}(\DARKBLUE{\textbf{1}})};
   \normalsize
   \draw[->, dashed] (5*\X, -2*\Y) -- (7*\X, -1*\Y);
 
-  \draw(9*\X, 2 -0*\Y)--node[anchor=south]{[QWE]}(9*\X,-2 -0*\Y);
-  \draw(9*\X, 2 -1*\Y)--node[anchor=south]{[QWE]}(9*\X,-2 -1*\Y);
-  \draw(9*\X, 2 -2*\Y)--node[anchor=south]{[QWE]}(9*\X,-2 -2*\Y);
+  \draw(9*\X, 2 -0*\Y)--node[anchor=south]{[QERTY]}(9*\X,-2 -0*\Y);
+  \draw(9*\X, 2 -1*\Y)--node[anchor=south]{[QERTY]}(9*\X,-2 -1*\Y);
+  \draw(9*\X, 2 -2*\Y)--node[anchor=south]{[QERTY]}(9*\X,-2 -2*\Y);
 
 
 %%  \draw(9*\X, 2 -0*\Y)--node[anchor=south]{[QWERTY]}(9*\X,-2 -0*\Y);

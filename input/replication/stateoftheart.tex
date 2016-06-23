@@ -3,45 +3,44 @@
 \section{État de l'art}
 \label{repl:sec:stateoftheart}
 
-Dès 1975, les bases de données répliquées font leur
-apparition~\cite{johnson1975maintenance} afin de résoudre
-\begin{inparaenum}[(i)]
-\item les problèmes de défaillances~\cite{alsberg1976principle}, i.e., le
-  serveur possédant les données étant inaccessible, le client peut contacter
-  serveur alternatif connu pour posséder les mêmes données afin de satisfaire sa
-  requête;
-\item les problèmes de rapidité d'accès, i.e., le client peut contacter un
-  serveur avec lequel la latence est faible afin de satisfaire plus rapidement
-  sa requête.
-\end{inparaenum}
+% Dès 1975, les bases de données répliquées font leur
+% apparition~\cite{johnson1975maintenance} afin de résoudre
+% \begin{inparaenum}[(i)]
+% \item les problèmes de défaillances~\cite{alsberg1976principle}, i.e., le
+%   serveur possédant les données étant inaccessible, le client peut contacter
+%   serveur alternatif connu pour posséder les mêmes données afin de satisfaire sa
+%   requête;
+% \item les problèmes de rapidité d'accès, i.e., le client peut contacter un
+%   serveur avec lequel la latence est faible afin de satisfaire plus rapidement
+%   sa requête.
+% \end{inparaenum}
 
-Cependant la réplication introduit un nouveau type de problèmes : la
-synchronisation des répliques. En effet, puisque la communication entre serveurs
-n'est pas instantanée, les modifications effectuées sur les données prennent du
-temps à parvenir aux répliques. Cela implique des problèmes de
-\begin{inparaenum}[(i)]
-\item fraîcheur de données -- \emph{est-ce que la donnée que j'obtiens est la
-    plus à jour ?} -- et de
-\item modifications concurrentes -- \emph{avec des modifications effectuées sur
-    une même données, au même moment, par deux serveurs distants dont les
-    résultats sont différents. Dois-je conserver les deux modifications, ou
-    dois-je en privilégier une, ou dois-je employer une autre stratégie ?}
-\end{inparaenum}
+% Cependant la réplication introduit un nouveau type de problèmes : la
+% synchronisation des répliques. En effet, puisque la communication entre serveurs
+% n'est pas instantanée, les modifications effectuées sur les données prennent du
+% temps à parvenir aux répliques. Cela implique des problèmes de
+% \begin{inparaenum}[(i)]
+% \item fraîcheur de données -- \emph{est-ce que la donnée que j'obtiens est la
+%     plus à jour ?} -- et de
+% \item modifications concurrentes -- \emph{avec des modifications effectuées sur
+%     une même données, au même moment, par deux serveurs distants dont les
+%     résultats sont différents. Dois-je conserver les deux modifications, ou
+%     dois-je en privilégier une, ou dois-je employer une autre stratégie ?}
+% \end{inparaenum}
 
 
-D'après le théorème CAP~\cite{brewer2012cap, gilbert2002brewer} il est
-impossible de répliquer sur un grand nombre de serveurs tout en garantissant à
-la fois la cohérence forte~\cite{herlihy1990linearizability}, la disponibilité,
-et la tolérances aux partitionnements. Dans ce manuscrit, nous nous intéressons
-aux applications garantissant ces deux dernières propriétés. Ainsi, une
-opération est toujours acceptée par le système. De plus, le système, constitué
-de plusieurs serveurs distants, autorise la fragmentation temporaire en
-ilôts. Par conséquent, le critère de cohérence doit être
-affaiblit~\cite{bailis2013eventual, shapiro2011conflict}.
+% D'après le théorème CAP~\cite{brewer2012cap, gilbert2002brewer} il est
+% impossible de répliquer sur un grand nombre de serveurs tout en garantissant à
+% la fois la cohérence forte~\cite{herlihy1990linearizability}, la disponibilité,
+% et la tolérances aux partitionnements. Dans ce manuscrit, nous nous intéressons
+% aux applications garantissant ces deux dernières propriétés. Ainsi, une
+% opération est toujours acceptée par le système. De plus, le système, constitué
+% de plusieurs serveurs distants, autorise la fragmentation temporaire en
+% ilôts. Par conséquent, le critère de cohérence doit être
+% affaiblit~\cite{bailis2013eventual, shapiro2011conflict}.
 
-Le reste de cette section décrit le schéma garantissant les deux propriétés
-recherchées sur les documents, à savoir la réplication optimiste de séquences --
-un document pouvant être représenté par une séquence de caractères
+Cette section commence par décrire le schéma de réplication optimiste de
+séquences -- un document pouvant être représenté par une séquence de caractères
 (cf. §\ref{repl:subsec:optimistic}).  Ensuite, cette section passe en revue deux
 familles d'approches appartenant à la réplication optimiste des séquences : les
 transformées opérationnelles (cf. §\ref{repl:subsec:ot}) et les structures de
@@ -64,29 +63,89 @@ La réplication optimiste~\cite{demers1987epidemic, johnson1975maintenance,
 réplication consistant à appliquer les modifications directement sur une
 réplique locale de la séquence.  Ainsi, un document est toujours disponible et
 réactif aux changements effectués. Ensuite, les modifications sont disséminées
-aux autres serveurs hébergeant une réplique où elles sont appliquées. Au
-contraire des approches pessimistes~\cite{alsberg1976principle,
-  gifford1979weighted}, les approches optimistes ne verrouillent pas le document
-lors des changements. En revanche, le critère de cohérence assuré est plus
-faible. En particulier, l'état des répliques peut être temporairement différent
-:
+aux autres serveurs hébergeant une réplique où elles sont intégrées. On
+distingue la complexité spatiale de la réplique, la complexité en communication
+des messages, la complexité temporelle d'une opération effectuée localement, la
+complexité temporelle de l'intégration d'une opération reçue. Parmi ces
+complexités, la complexité en communication est la plus critique et doit être
+sous-linaire pour passer à l'échelle. En ce qui concerne les complexités
+temporelles, il est plus important d'améliorer l'intégration que la génération
+car chaque opération locale effectuée conduit à $N$ intégrations, où $N$ est le
+nombre de répliques.
+
+% Au contraire des approches pessimistes~\cite{alsberg1976principle,
+%   gifford1979weighted}, les approches optimistes ne verrouillent pas le document
+% lors des changements. En revanche, le critère de cohérence assuré est plus
+% faible. En particulier, l'état des répliques peut être temporairement différent
+% :
+
+Sun et al.~\cite{sun1998achieving} déclarent que l'édition collaborative temps
+réel nécessite un système préservant les trois propriétés :
+\begin{itemize}
+\item Convergence : les répliques ayant reçues les même opérations convergent
+  vers un état identique;
+\item Causalité : si une opération précède une autre
+  opération~\cite{lamport1978time}, alors l'intégration de cette première
+  opération précède cette seconde opération;
+\item Intention : l'effet de l'intégration d'une opération reflète l'intention
+  sur l'opération locale effectuée; tout effet de bord est proscrit.
+\end{itemize}
+
+\noindent La convergence fait l'objet de critère de cohérence à part entière
+tels que la cohérence à terme~\cite{bailis2013eventual}, ou la cohérence forte à
+terme~\cite{shapiro2011conflict}. Ces critères de cohérence sont très faibles
+mais ont beaucoup de succès ces dernières années avec, par exemple, les bases de
+données réparties~\cite{dynamo, riak, cassandra, mongodb}. Malheureusement, ces
+critères sont trop expressifs : l'état de convergence n'est pas spécifié. Par
+exemple, ils permettent aux répliques de converger vers un état arbitraire
+n'ayant aucun lien avec les modifications apportées par les participants. À ce
+titre, ces critères seuls sont insuffisants pour l'édition collaborative.
+
+\noindent La causalité contraint l'ordre d'intégration des opérations. Ainsi,
+une opération dépendante d'une autre opération effectuée avant se trouve
+forcément intégrée à sa suite. C'est une manière de forcer l'exécution correcte
+cette première opération : le contexte d'exécution est le même que sur la
+réplique d'origine donc le résultat est le même.  Malheureusement, capturer
+toutes les relations causales s'avère
+coûteux~\cite{charronbost1991concerning}. Pour chaque participant ayant jamais
+effectué une modification sur le document, une valeur entière doit être
+conservée dans un vecteur. Ce vecteur indique les opérations visibles lors de
+l'exécution de cette opération.
+
+\noindent Lorsque les définitions des propriétés de convergence et de causalité
+font consensus, l'intention des opérations d'une séquence demeure plus
+flou. L'effet d'une opération doit respecter le plus possible sa spécification
+séquentielle~\cite{bieniusa2012brief}. La spécification séquentielle d'une
+séquence inclue deux opérations : l'insertion d'un élément à une position dans
+la séquence et la suppression d'un élément à une position dans la
+séquence. L'intention semble donc liée à la position des éléments dans la
+séquence. Contre cette intuition, nous soutenons qu'une séquence se définie
+simplement par un ordre dense sur ses éléments : les éléments sont ordonnés et
+il est toujours possible d'insérer un élément entre deux autres éléments.
+
+Le reste de cette section présente les approches appartenant à la réplication
+optimiste de séquences et qui s'articulent sur l'équilibre de ces
+propriétés. Les approches à transformées opérationnelles cherchent à garantir
+les trois propriétés au prix du passage à l'échelle. Les approches à structure
+de données proposant des opérations commutatives s'attachent à la convergence et
+à l'intention.
 
 
-\paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
-modifications ont été reçues et intégrées par toutes les répliques, celles-ci
-possèdent un état équivalent.
+% \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
+% modifications ont été reçues et intégrées par toutes les répliques, celles-ci
+% possèdent un état équivalent.
 
-\noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu
-réaliste pour raisonner sur une exécution réelle, une définition plus précise
-porte sur un sous-ensemble de ces modifications :
+% \noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu
+% réaliste pour raisonner sur une exécution réelle, une définition plus précise
+% porte sur un sous-ensemble de ces modifications :
 
-\paragraph{Cohérence forte à terme~\cite{shapiro2011conflict} :} Les répliques
-ayant reçu et intégré les mêmes modifications possèdent un état équivalent.
+% \paragraph{Cohérence forte à terme~\cite{shapiro2011conflict} :} Les répliques
+% ayant reçu et intégré les mêmes modifications possèdent un état équivalent.
 
-\noindent Hélas, ce critère de cohérence est trop expressif : l'état de
-convergence n'est pas spécifié. Par exemple, la cohérence forte à terme permet
-aux répliques de converger vers un état arbitraire n'ayant aucun lien avec les
-modifications apportées par les participants.
+% \noindent Hélas, ce critère de cohérence est trop expressif : l'état de
+% convergence n'est pas spécifié. Par exemple, la cohérence forte à terme permet
+% aux répliques de converger vers un état arbitraire n'ayant aucun lien avec les
+% modifications apportées par les participants.
 
 % \begin{figure*}
 %   \centering
@@ -103,23 +162,23 @@ modifications apportées par les participants.
 % \end{figure*}
 
 
-Le type de données répliqué doit respecter autant que possible la spécification
-de sa version séquentielle~\cite{bieniusa2012brief}. Pour nous, une séquence est
-un type abstrait proposant deux opérations de modification dont le résultat sera
-propagé au reste des répliques:
-\begin{inparaenum}[(i)]
-\item l'insertion locale d'un élément à une certaine position dans la séquence; 
-\item la suppression locale de l'élément présent à une certaine position dans la
-  séquence.
-\end{inparaenum}
-Concrètement, les éléments sont positionnés dans la séquence suivant un ordre
-dense, i.e., les éléments sont ordonnées et il est toujours possible d'insérer
-un élément entre deux autres éléments. Lorsqu'une réplique reçoit une opération
-d'insertion, le nouvel élément est ajouté de telle sorte que l'ordre dense entre
-les éléments ayant servi à son insertion locale est préservé. Lorsqu'une
-réplique reçoit une opération de suppression, l'élément à la position ciblé dans
-l'ordre dense est supprimé et l'ordre des éléments ayant servi à sa suppression
-locale est préservé. \TODO{Review.}
+% Le type de données répliqué doit respecter autant que possible la spécification
+% de sa version séquentielle~\cite{bieniusa2012brief}. Pour nous, une séquence est
+% un type abstrait proposant deux opérations de modification dont le résultat sera
+% propagé au reste des répliques:
+% \begin{inparaenum}[(i)]
+% \item l'insertion locale d'un élément à une certaine position dans la séquence; 
+% \item la suppression locale de l'élément présent à une certaine position dans la
+%   séquence.
+% \end{inparaenum}
+% Concrètement, les éléments sont positionnés dans la séquence suivant un ordre
+% dense, i.e., les éléments sont ordonnées et il est toujours possible d'insérer
+% un élément entre deux autres éléments. Lorsqu'une réplique reçoit une opération
+% d'insertion, le nouvel élément est ajouté de telle sorte que l'ordre dense entre
+% les éléments ayant servi à son insertion locale est préservé. Lorsqu'une
+% réplique reçoit une opération de suppression, l'élément à la position ciblé dans
+% l'ordre dense est supprimé et l'ordre des éléments ayant servi à sa suppression
+% locale est préservé. \TODO{Review.}
 
 
 % Cependant, résoudre les cas concurrents reste à la charge des développeurs. La
@@ -141,55 +200,57 @@ locale est préservé. \TODO{Review.}
 \subsection{Transformées opérationnelles}
 \label{repl:subsec:ot}
 
-Les approches basées sur les transformées
-opérationnelles~\cite{sun1998operational, sun2009contextbased} (OT) sont les
-plus anciennes et s'appliquent à un large champs d'applications telles que
-l'édition de texte, ou l'édition d'images. L'intuition est simple : lors de la
-réception d'opérations modifiant une réplique, ses arguments sont ajustés afin
-qu'ils s'appliquent à l'état actuel de la réplique, malgré des opérations qui
-furent effectuées en concurrence et qui sont déjà intégrées. En d'autres termes,
-le résultat d'une opération locale est l'opération elle-même. En revanche, son
-exécution nécessite l'examen des opérations concurrentes afin de compenser les
-changements sur l'ordre des éléments lors de son exécution locale.
+Les approches basées sur les transformées opérationnelles
+(OT)~\cite{sun1998operational, sun2009contextbased} sont les plus anciennes et
+s'appliquent à un large champs d'applications telles que l'édition de textes ou
+l'édition d'images. Pour l'édition de textes, les opérations locales d'insertion
+et de suppression proposées possèdent une signature correspondant exactement à
+la signature commune des séquences : $\textsc{insert}(element,\, position)$ et
+$\textsc{delete}(position)$. Lors de la réception d'une opération, ses arguments
+sont ajustés afin qu'ils s'appliquent à l'état courant de la réplique malgré les
+opérations effectuées et intégrées en concurrence. Cette phase d'intégration
+nécéssite l'examen des opérations concurrentes afin d'en compenser les effets
+sur la séquence.
+
+% En d'autres termes, le résultat d'une opération locale est l'opération
+% elle-même. En revanche, son intégration nécessite l'examen des opérations
+% concurrentes afin de compenser les changements sur l'ordre des éléments lors de
+% son exécution locale.
 
 \begin{figure}
   \centering
   \input{./input/replication/figotexample.tex}
   \caption[Exemple de transformées opérationnelles] {\label{repl:fig:otexample}
-    Exemple de transformées opérationnelles. L'opération de suppression des 3
-    premiers caractères sur la réplique 3 (\texttt{RTY}) est transformée afin de
-    supprimer les 3 derniers caractères sur les autres répliques.}
+    Exemple de scenario impliquant des transformées opérationnelles. L'opération
+    de suppression du premier caractère sur la réplique 3 est transformée afin
+    de supprimer le second caractère sur les autres répliques.}
 \end{figure}
 
 La figure~\ref{repl:fig:otexample} illustre le principe de fonctionnement des
-approches basées sur les transformées opérationnelles sur un scénario impliquant
-une séquence répliquée. Dans cet exemple, les répliques sont toutes initialisées
-avec la séquence \texttt{RTY}. Ensuite, tandis que sur la première réplique
-trois caractères supplémentaires sont insérés en tête pour obtenir
-\texttt{QWERTY}, sur la troisième réplique sont supprimés les trois caractères
-pour obtenir la séquence vide. Lors de la réception de cette dernière opération
-de suppression au niveau de la réplique 1, elle est interprétée comme une
-opération dont le contexte d'exécution n'avait pas encore intégré les
-insertions. Le décalage sur l'indice de chaque caractère n'avait donc pas encore
-été effectué. À ce titre, l'argument de l'opération voit sa cible changée aux
-trois caractères à partir du troisième caractère exclu. Réciproquement, la
-réplique 3 intègre les insertions faites sur la réplique 1. Toutefois aucun
-changement n'est nécessaire. À terme, les répliques convergent vers la séquence
-\texttt{QWE}. Sans transformation, la réplique 1 aurait obtenu la séquence
-\texttt{RTY}.
+approches basées sur OT sur un scénario impliquant une séquence répliquée. Dans
+cet exemple, les répliques sont toutes initialisées avec la séquence
+\texttt{WERTY}. Ensuite, tandis que la première réplique insère le caractère
+\texttt{Q} en tête de séquence pour obtenir \texttt{QWERTY}, la troisième
+réplique supprime son premier caractère correspondant au \texttt{W}. Lorsque la
+réplique 1 reçoit cette dernière opération de suppression, elle est interprétée
+comme une opération dont le contexte d'exécution n'avait pas encore intégré
+l'insertion du caractère \texttt{Q}. Le décalage d'une position vers la droite
+de chaque caractère n'avait donc pas encore été intégré. Par conséquent,
+l'argument de l'opération voit sa cible changée aux second caractères :
+\texttt{W}.  Réciproquement, la réplique 3 intègre l'insertion de la réplique 1
+: l'insertion et la suppression sont détectées concurrentes, toutefois aucune
+transformation n'est nécessaire. À terme, les répliques convergent vers la
+séquence \texttt{QERTY}. Sans transformation, la réplique 1 aurait obtenu la
+séquence \texttt{WERTY} et la propriété de convergence du système aurait été
+bafouée.
 
-Dans le cadre de l'édition de texte, en plus des usuelles opérations d'insertion
-et de suppression, OT fournit des opérations ciblant les chaînes de caractères
-telles que le déplacement, ou le couper -- coller. Toutefois, l'analyse de
-correction nécessite d'examiner chaque couple d'opérations ainsi que leurs
-paramètres. En conséquence, lors de l'écriture du
-papier~\cite{imine2003proving}, peu d'approches étaient réellement correctes.
-% De plus, Joseph Gentle, l'un des ingénieurs ayant participé au développement de
-% \emph{Google Wave}~\cite{googlewave, kaewkitipong2012diffusion} a déclaré que la
-% complexité de OT avait conduit à 2 ans de développement, et que 2 ans seraient à
-% nouveau nécessaire s'il fallait recommencer son développement.
-
-%\noindent Les approches OT peuvent être divisées en deux classes :
+Dans le cadre de l'édition de textes, en plus des usuelles opérations
+d'insertion et de suppression, OT fournit des opérations ciblant les chaînes de
+caractères telles que le déplacement, ou le couper -- coller. Toutefois,
+l'analyse de correction nécessite d'examiner chaque couple d'opérations ainsi
+que leurs arguments. En conséquence, lors de l'écriture du
+papier~\cite{imine2003proving}, peu d'approches étaient réellement
+correctes. \TODO{Keep it or not?}
 
 Dans les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
 est aussi un serveur hébergeant une réplique de la séquence. Chacune de ces
