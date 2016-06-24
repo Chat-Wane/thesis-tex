@@ -3,23 +3,51 @@
 \label{repl:sec:proposal}
 
 \LSEQ (\emph{polyLogarithmic SEQuence}) est une fonction d'allocation
-d'identifiants de taille variable.  Elle est composée de trois composants. Le
-premier composant est un structure d'arbre dont l'arité maximale augmente avec
-sa profondeur. Le second composant comprend deux sous-fonctions d'allocation
-conçues pour gérer des comportements d'édition opposés. Le troisième composant
-est une fonction assignant à chaque profondeur de l'arbre une sous-fonction
-d'allocation parmi celles disponibles.
+d'identifiants de taille variable. L'algorithme~\ref{repl:algo:allocpath} montre
+les instructions de \LSEQ : la fonction \textsc{allocPath} choisit le chemin
+associé à chaque élément afin d'encoder sa position relative à l'égard de ses
+éléments adjacents dans la séquence. Dans le but de conserver de bonnes
+performances, la profondeur de l'arbre doit rester aussi petite que possible.
 
-Pris individuellement, ces composants n'arrivent pas à pourvoir des identifiants
-de taille satisfaisante. Utilisés simultanément, les défaillances des uns sont
-comblées par les forces des autres.  L'idée générale de \LSEQ consiste à
-accepter la perte de niveaux des chemins composants ses identifiants pour peu
-que les futures allocations compensent ces pertes.
+\begin{algorithm}
+  \input{input/replication/algoallocpath.tex}
+  \caption[Allocation des chemins selon \LSEQ]
+  {\label{repl:algo:allocpath}Allocation des chemins selon \LSEQ.}
+\end{algorithm}
 
-Cette section commence par présenter les instructions composant l'algorithme de
-\LSEQ. Ensuite, elle présente chacun des trois composants
-individuellement. Enfin, elle résume le fonctionnement de \LSEQ au travers un
-exemple.
+La fonction \textsc{allocPath} calcule la distance entre les deux chemins
+adjacents. L'objectif est de trouver le plus petit niveau de l'arbre exponentiel
+(cf. §\ref{repl:subsec:exponentialtree}) contenant assez d'espace pour
+accueillir le nouvel élément.  Ensuite, une fonction de hachage $h$
+(cf. §\ref{repl:subsec:allocationchoice}) défère l'allocation du chemin à une
+sous-fonction d'allocation (cf. §\ref{repl:subsec:suballocation}) selon la
+profondeur trouvée.  La sous-fonction d'allocation calcule alors l'intervalle à
+disposition et la profondeur du nouveau chemin. Si l'intervalle est plus grand
+que la limite imposée, alors ce premier est restreint. Le nouveau chemin
+commence à partir de l'un des chemin adjacent auquel est ajouté ou soustrait une
+valeur aléatoire dans le nouvel intervalle.
+
+
+Ainsi, trois éléments principaux composent la fonction d'allocation des chemins
+de \LSEQ :
+\begin{inparaenum}[(i)]
+\item une structure d'arbre dont l'arité maximale augmente avec sa
+  profondeur;
+\item deux sous-fonctions d'allocation conçues pour gérer des comportements
+  d'édition opposés;
+\item une fonction assignant à chaque profondeur de l'arbre une sous-fonction
+  d'allocation parmi celles disponibles.
+\end{inparaenum}
+Individuellement, ces éléments n'arrivent pas à pourvoir des chemins de taille
+satisfaisante. Utilisés simultanément, ils permettent à \LSEQ de générer des
+identifiants de taille sous-linéaire.
+
+% L'idée générale de \LSEQ consiste à accepter la perte de niveaux des chemins
+% composants ses identifiants pour peu que les futures allocations compensent ces
+% pertes.
+
+Cette section détaille chacun de ces éléments avant de résumer le fonctionnement
+de \LSEQ au travers un exemple.
 
 % En résulte une allocation d'identifiants dont la borne supérieure sur la
 % taille est polylogarithmique comparé au nombre d'insertions effectuées dans le
@@ -35,31 +63,8 @@ exemple.
 % §\ref{repl:subsec:allocationchoice}). % Cette fonction de choix doit fournir des
 % réponses similaires quelle que soit la réplique.
 
-\subsection{Allocation des chemins}
+%% \subsection{Allocation des chemins}
 
-La fonction \textsc{allocPath} choisit le chemin associé à chaque élément afin
-d'encoder sa position relative à l'égard de ses éléments adjacents dans la
-séquence. Dans le but de conserver de bonnes performances, la structure d'arbre
-sous-jacente doit garder une petite profondeur.
-
-\begin{algorithm}
-  \input{input/replication/algoallocpath.tex}
-  \caption[Allocation des chemins selon \LSEQ]
-  {\label{repl:algo:allocpath}Allocation des chemins selon \LSEQ.}
-\end{algorithm}
-
-L'algorithme~\ref{repl:algo:allocpath} montre les instructions de \LSEQ. Tout
-d'abord, la fonction \textsc{allocPath} calcule la distance entre les deux
-chemins adjacents. L'objectif est de trouver le plus petit niveau de l'arbre
-exponentiel (cf. §\ref{repl:subsec:exponentialtree}) contenant assez d'espace
-pour accueillir le nouvel élément.  Ensuite, la fonction de hachage $h$
-(cf. §\ref{repl:subsec:allocationchoice}) défère l'allocation du chemin à une
-sous-fonction d'allocation (cf. §\ref{repl:subsec:suballocation}) selon la
-profondeur trouvée.  La sous-fonction d'allocation calcule alors l'intervalle à
-disposition et la profondeur du nouveau chemin. Si l'intervalle est plus grand
-que la limite imposée, alors ce premier est restreint. Le nouveau chemin
-commence à partir de l'un des chemin adjacent auquel est ajouté ou soustrait une
-valeur aléatoire dans le nouvel intervalle.
 
 \subsection{Arbre exponentiel}
 \label{repl:subsec:exponentialtree}
@@ -164,7 +169,7 @@ sous-fonctions doit être uniformément réparti. De plus, afin de ne pas facili
 les comportements malveillants, la fonction de hachage doit rendre les choix
 imprévisibles.
 
-\subsection{Résumé}
+\subsection{Conclusion}
 
 \begin{figure}
   \begin{center}
@@ -180,6 +185,11 @@ imprévisibles.
       même séquence \texttt{QWERTY}.}
   \end{center}
 \end{figure}
+
+L'idée générale de \LSEQ consiste à accepter la perte de niveaux des chemins
+composants ses identifiants pour peu que les futures allocations compensent ces
+pertes.
+
 
 La figure~\ref{repl:fig:lseqtreeexample} montre le résultat de la stratégie
 d'allocation \LSEQ après deux comportements d'éditions : l'un écrit de gauche à
@@ -199,7 +209,9 @@ la profondeur de l'arbre n'augmente pas d'avantage. Si le comportement d'éditio
 reste ainsi, l'allocation finira par compenser les pertes subies par le mauvais
 choix de sous-fonction au premier niveau de l'arbre. 
 
-
+La section suivante présente l'analyse en complexité de \LSEQ. En particulier,
+elle s'attache à montrer la complexité spatiale sous-linéaire des identifiants
+ainsi que les conditions sous lesquelles elle s'applique.
 
 %%% Local Variables:
 %%% mode: latex
