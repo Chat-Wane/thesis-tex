@@ -26,8 +26,8 @@ contenu. La mise en place de ces fonctionnalités requière
 
 La figure~\ref{intro:img:world} présente une session d'édition comprenant 6
 auteurs répartis à travers le monde. Afin d'augmenter la disponibilité du
-document et le temps de réponse lors d'une modification, les éditeurs
-collaboratifs actuels suivent le principe de la réplication
+document et de diminuer le temps de réponse lors d'une modification, les
+éditeurs collaboratifs actuels suivent le principe de la réplication
 optimiste~\cite{saito2005optimistic}. Chaque éditeur collaboratif possède une
 copie locale du document.  Lorsque l'utilisateur effectue une modification, elle
 est directement répercutée sur sa copie avant d'être envoyée au reste des
@@ -59,9 +59,9 @@ est directement répercutée sur sa copie avant d'être envoyée au reste des
 
 L'utilisation des structures de données ``classiques'' telles que les listes
 n'est pas directement possible du fait de la latence entre les
-collaborateurs. Par exemple, si un auteur insère une lettre en début de document
-pendant qu'un autre supprime une lettre au même endroit, le premier auteur
-risque, à tort, de voir supprimé la lettre qu'il vient d'insérer. Afin d'éviter
+collaborateurs. Par exemple, si un auteur insère un caractère en début de document
+pendant qu'un autre supprime un caractère au même endroit, le premier auteur
+risque, à tort, de voir supprimé le caractère qu'il vient d'insérer. Afin d'éviter
 de telles situations, de nouvelles structures et de nouveaux algorithmes doivent
 être employés.
 
@@ -69,18 +69,20 @@ Une première famille d'approches consiste à transformer les arguments de
 l'opération afin qu'elle considère les opérations intégrées
 concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
 l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
-compte qu'une lettre a été ajoutée en tête concurremment. Il doit donc modifier
-les arguments de l'opération reçue afin que la seconde lettre soit supprimée, et
-non plus la première. Détecter ces cas nécessite de transporter, avec chaque
-opération, des données dont le coût est prohibitif~\cite{sun2009contextbased}.
+compte qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier
+les arguments de l'opération reçue afin que le second caractère soit supprimé,
+et non plus le premier. Détecter ces cas nécessite de communiquer, avec chaque
+opération, des données dont la croissance linéaire empêche au groupe d'éditeurs
+d'atteindre de large dimensions~\cite{charronbost1991concerning,
+  sun2009contextbased}.
 
 Une seconde famille d'approches consiste à utiliser des structures de données
 dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
-opérations commutent, ces approches associent à chaque lettre un identifiant
+opérations commutent, ces approches associent à chaque caractère un identifiant
 unique et immuable.
 
 \paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
-de suppression de lettres se contente de cacher la lettre ciblée à
+de suppression de caractères se contente de cacher le caractère ciblé à
 l'utilisateur. Afin de purger la structure des identifiants cachés et ainsi
 conserver de bonnes performances, un protocole de ramasse-miettes
 réparti~\cite{abdullahi1998garbage} doit être exécuté
@@ -93,8 +95,8 @@ grandir très rapidement~\cite{weiss2009logoot}. Cette croissance impacte
 négativement les performances du système. Pour y remédier, un protocole de
 relocalisation des identifiants doit être exécuté
 régulièrement~\cite{zawirskiasynchronous}. Malheureusement, ces protocoles
-s'apparentent à l'obtention d'un consensus dans un contexte réparti dont le coût
-s'avère également très élevé~\cite{mostefaoui2015signature}.
+reviennent à obtenir un consensus dans un contexte réparti. Leur coût s'avère
+également très élevé~\cite{mostefaoui2015signature}.
 
 Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces

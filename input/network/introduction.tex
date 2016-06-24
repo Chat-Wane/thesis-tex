@@ -39,17 +39,17 @@ autres géographiquement. Par exemple, un japonais, un français et un brésilie
 peuvent éditer un même document en temps réel depuis leur pays d'origine. Cette
 répartition géographique necessite l'établissement de moyens de communication
 entre éditeurs distants. De plus, le web favorise la dissémination d'idées. Il
-n'est dès lors pas impossible qu'une document soit lu et rédigé par des milliers
+n'est dès lors pas impossible qu'un document soit lu et rédigé par des milliers
 de participants avant de tomber dans l'oubli.  Chaque modification doit parvenir
 efficacement à tous les participants afin que le même document puisse être lu
 partout. Pour établir ces communications, les éditeurs collaboratifs doivent
-construire un réseau superposé.
+construire un réseau superposé (\emph{network overlay}).
 
-Un réseau superposé (\emph{network overlay}) permet à un ensemble de machines de
-communiquer entre elles au dessus d'un autre réseau tels que, par exemple,
-l'internet ou un autre réseau superposé.  Toutes sortes de réseaux superposés
-existent. Si chaque machine possède un canal de communication avec chacune des
-autres machines, alors la topologie correspond à celle d'un graphe complet
+Un réseau superposé permet à un ensemble de machines de communiquer entre elles
+au dessus d'un autre réseau tels que, par exemple, l'internet ou un autre réseau
+superposé.  Toutes sortes de réseaux superposés existent. Si chaque machine
+possède un canal de communication avec chacune des autres machines, alors la
+topologie correspond à celle d'un graphe complet
 (cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
 d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
 grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
@@ -63,7 +63,7 @@ chaque machine une vue partielle peuplée d'adresses logiques réparties selon u
 loi uniforme. La topologie en résultant est proche de celle des graphes
 aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
 propriétés tels que la tolérance aux pannes ou un faible diamètre. Cette
-première garantie que lorsqu'un nœud disparaît soudainement le graphe reste
+première garantit que lorsqu'un nœud disparaît soudainement le graphe reste
 connecté avec une forte probabilité, la seconde garantie que les messages se
 propagent rapidement à tous les membres du réseau.
 
