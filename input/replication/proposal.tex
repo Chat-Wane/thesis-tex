@@ -3,14 +3,12 @@
 \label{repl:sec:proposal}
 
 \LSEQ (\emph{polyLogarithmic SEQuence}) est une fonction d'allocation
-d'identifiants de taille variable.
-% pour les structures de données sans résolution
-%de conflits dédiées aux séquences.
-Elle est composée de trois composants. Le premier composant est un structure
-d'arbre dont l'arité maximale augmente avec sa profondeur. Le second composant
-comprend deux sous-fonctions d'allocation conçues pour gérer des comportements
-d'édition opposés. Le troisième composant est une fonction assignant à chaque
-profondeur de l'arbre une sous-fonction d'allocation parmi celles disponibles.
+d'identifiants de taille variable.  Elle est composée de trois composants. Le
+premier composant est un structure d'arbre dont l'arité maximale augmente avec
+sa profondeur. Le second composant comprend deux sous-fonctions d'allocation
+conçues pour gérer des comportements d'édition opposés. Le troisième composant
+est une fonction assignant à chaque profondeur de l'arbre une sous-fonction
+d'allocation parmi celles disponibles.
 
 Pris individuellement, ces composants n'arrivent pas à pourvoir des identifiants
 de taille satisfaisante. Utilisés simultanément, les défaillances des uns sont

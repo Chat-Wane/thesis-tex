@@ -8,9 +8,9 @@ séquences -- un document pouvant être représenté par une séquence de caract
 (cf. §\ref{repl:subsec:optimistic}).  Ensuite, cette section passe en revue deux
 familles d'approches appartenant à la réplication optimiste des séquences : les
 transformées opérationnelles (cf. §\ref{repl:subsec:ot}) et les structures de
-données répliquées sans résolution de conflits
-(cf. §\ref{repl:subsec:crdts}). Cette section s'attache particulièrement à cette
-dernière famille et en détaille les représentants.
+données répliquées sans conflits (cf. §\ref{repl:subsec:crdts}). Cette section
+s'attache particulièrement à cette dernière famille et en détaille les
+représentants.
 
 \subsection{Réplication optimiste de séquences}
 \label{repl:subsec:optimistic}
@@ -40,11 +40,10 @@ tels que la cohérence à terme~\cite{bailis2013eventual}, ou la cohérence fort
 terme~\cite{shapiro2011conflict}. Ces critères de cohérence sont très faibles
 mais ont beaucoup de succès ces dernières années avec, par exemple, les bases de
 données réparties~\cite{dynamo, riak, cassandra, mongodb}. Malheureusement, ces
-critères ne sont pas suffisamment expressifs : l'état de convergence n'est pas
-spécifié. Par exemple, ils permettent aux répliques de converger vers un état
-arbitraire n'ayant aucun lien avec les modifications apportées par les
-participants. À ce titre, ces critères seuls sont insuffisants pour l'édition
-collaborative.
+critères sont trop expressifs : l'état de convergence n'est pas spécifié. Par
+exemple, ils permettent aux répliques de converger vers un état arbitraire
+n'ayant aucun lien avec les modifications apportées par les participants. À ce
+titre, ces critères seuls sont insuffisants pour l'édition collaborative.
 
 \noindent La causalité contraint l'ordre d'intégration des opérations. Ainsi,
 une opération dépendante d'une autre opération effectuée avant se trouve
@@ -62,18 +61,19 @@ ordre causal ne fonctionne pas : les opérations concurrentes n'ont pas de
 comportement défini.
 
 \noindent Lorsque les définitions des propriétés de convergence et de causalité
-font consensus, l'intention des opérations d'une séquence demeure plus
-flou. L'effet d'une opération doit respecter le plus possible sa spécification
-séquentielle~\cite{bieniusa2012brief}. La spécification séquentielle d'une
-séquence inclue deux opérations : l'insertion d'un élément à une position dans
-la séquence et la suppression d'un élément à une position dans la
-séquence. L'intention semble donc liée à la position des éléments dans la
-séquence. Contre cette intuition, nous soutenons qu'une séquence se définie
-simplement par un ordre dense sur ses éléments : les éléments sont ordonnés et
-il est toujours possible d'insérer un élément entre deux autres éléments.
+font consensus, l'intention des opérations d'une séquence demeure plus difficile
+à formaliser dans le cas général. L'effet d'une opération doit respecter le plus
+possible sa spécification séquentielle~\cite{bieniusa2012brief}. La
+spécification séquentielle d'une séquence inclue deux opérations : l'insertion
+d'un élément à une position dans la séquence et la suppression d'un élément à
+une position dans la séquence. L'intention semble donc liée à la position des
+éléments dans la séquence. Contre cette intuition, nous soutenons qu'une
+séquence se définie simplement par un ordre dense sur ses éléments : les
+éléments sont ordonnés et il est toujours possible d'insérer un élément entre
+deux autres éléments.
 
-On distingue la complexité spatiale de la réplique, la complexité en
-communication des messages, la complexité temporelle d'une opération effectuée
+Nous distingue la complexité spatiale de la réplique, la complexité en
+communication des messages, la complexité temporelle d'une opération générée
 localement, la complexité temporelle de l'intégration d'une opération
 reçue. Parmi ces complexités, la complexité en communication est la plus
 critique et doit être sous-linaire pour passer à l'échelle. En ce qui concerne
@@ -201,13 +201,13 @@ séquence \texttt{QERTY}. Sans transformation, la réplique 1 aurait obtenu la
 séquence \texttt{WERTY} et la propriété de convergence du système aurait été
 bafouée.
 
-Dans le cadre de l'édition de textes, en plus des usuelles opérations
-d'insertion et de suppression, OT fournit des opérations ciblant les chaînes de
-caractères telles que le déplacement, ou le couper -- coller. Toutefois,
-l'analyse de correction nécessite d'examiner chaque couple d'opérations ainsi
-que leurs arguments. En conséquence, lors de l'écriture du
-papier~\cite{imine2003proving}, peu d'approches étaient réellement
-correctes. \TODO{Keep it or not?}
+% Dans le cadre de l'édition de textes, en plus des usuelles opérations
+% d'insertion et de suppression, OT fournit des opérations ciblant les chaînes de
+% caractères telles que le déplacement, ou le couper -- coller. Toutefois,
+% l'analyse de correction nécessite d'examiner chaque couple d'opérations ainsi
+% que leurs arguments. En conséquence, lors de l'écriture du
+% papier~\cite{imine2003proving}, peu d'approches étaient réellement
+% correctes. \TODO{Keep it or not?}
 
 Dans les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
 est aussi un serveur hébergeant une réplique de la séquence. Chacune de ces
@@ -221,31 +221,35 @@ opération. Par conséquent, la complexité en communication est au minimum
 linéaire par rapport au nombre de répliques. De plus, ces vecteurs et leur
 opération associée sont ensuite sauvegardés dans un historique. La complexité
 spatiale est au minimum linéaire selon les deux dimensions : nombre de répliques
-et nombre d'opérations. Enfin, le temps d'exécution d'une opération locale est
-insignifiant. À l'opposé, le temps d'exécution d'une opération distante peut
-devenir très élevé si la concurrence est forte. Cette répartition des coûts
-d'opération est malheureuse car 1 opération locale efficace correspond à $N$
-exécutions distantes potentiellement lente, où $N$ est le nombre de répliques
-recevant l'opération. Pour ces raisons, les approches OT décentralisées ne
-passent pas à l'échelle. Du reste, dans un environnement bien maîtrisé, où les
-opérations arrivent très rapidement à un groupe raisonnable de participants, ces
-approches décentralisées sont extrêmement efficaces~\cite{mehdi2014merging}.
+et nombre d'opérations. Enfin, la génération d'une opération s'exécute en temps
+constant. Cependant, son intégration s'exécute en temps quadratique comparé au
+nombre d'opérations concurrentes à l'opération intégrée. Cette répartition des
+coûts d'opération est malheureuse car 1 opération locale efficace correspond à
+$N$ exécutions distantes potentiellement lente, où $N$ est le nombre de
+répliques recevant l'opération. Pour ces raisons, les approches OT
+décentralisées ne passent pas à l'échelle. Du reste, dans un environnement bien
+maîtrisé, où les opérations arrivent très rapidement à un groupe raisonnable de
+participants, ces approches décentralisées sont extrêmement
+efficaces~\cite{mehdi2014merging}.
 
-\subsection{Structure de données répliquée sans résolution de conflits}
+\subsection{Structure de données répliquée sans conflits}
 \label{repl:subsec:crdts}
 
-Les structures de données répliquées sans résolution de conflits
+Les structures de données répliquées sans conflits
 (CRDTs)~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent au
 schéma de réplication optimiste. Ces approches sont basées sur des structures de
-données abstraites fournissant des opérations dont les résultats commutent, et
-donc convergent vers un état identique même en cas de concurrence. Contrairement
-aux approches OT, la signature des opérations est différente des séquences \og
-classiques \fg et correspond à l'intention telles que nous la définissons
-où une séquence est un ensemble d'éléments muni d'un ordre dense : les éléments
-sont ordonnés et il est toujours possible d'insérer un élément entre deux autres
-éléments. Par exemple, \og insérer l'élément $e$ à la position $i$ \fg devient
-\og insérer l'élément $e$ entre l'élément en position $i-1$ et l'élément en
-position $i$ \fg.
+données abstraites fournissant des opérations dont les résultats commutent par
+nature. Les répliques convergent donc vers un état identique même en cas de
+concurrence. Contrairement aux approches OT, les opérations concurrentes n'ont
+pas besoin d'être détectées. Les CRDTs s'affranchissent donc de la nécessité de
+joindre un vecteur d'horloges à chaque opération. Sans cette contrainte, les
+CRDTs ont l'opportunité de passer à l'échelle. Contrairement aux approches OT,
+la signature des opérations est différente des séquences \og classiques \fg et
+correspond à l'intention telles que nous la définissons où une séquence est un
+ensemble d'éléments muni d'un ordre dense : les éléments sont ordonnés et il est
+toujours possible d'insérer un élément entre deux autres éléments. Par exemple,
+\og insérer l'élément $e$ à la position $i$ \fg devient \og insérer l'élément
+$e$ entre l'élément en position $i-1$ et l'élément en position $i$ \fg.
 
 Pour fonctionner , les CRDTs pour séquences surchargent chaque élément d'une
 métadonnée nommée identifiant. Les identifiants, uniques et immuables,
@@ -271,10 +275,10 @@ Le reste de cette section s'attache à les présenter.
 \subsubsection{Pierres tombales}
 
 Une pierre tombale est une marque laissée après la suppression d'un élément
-indiquant qu'un jour, celui-ci a existé, et qu'il était positionné là. Bien
-entendu, ces marques sont cachées à l'utilisateur et n'apparaissent que dans la
-structure sous-jacente. L'impact sur les performances des opérations en reste
-néanmoins présent.
+indiquant qu'un jour, celui-ci a existé à cet emplacement. Bien entendu, ces
+marques sont cachées à l'utilisateur et n'apparaissent que dans la structure
+sous-jacente. L'impact sur les performances à l'intrégation des opérations en
+reste néanmoins présent.
 
 \paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
 CRDTs pour séquences suivi par deux extensions
@@ -288,7 +292,7 @@ qu'elles soient
 \item déjà intégrées et
 \item toujours présentes.
 \end{inparaenum}
-D'où les suppressions réelles impossibles.
+%D'où les suppressions réelles impossibles.
 
 \begin{figure}
   \centering
@@ -339,9 +343,9 @@ proposée~\cite{attiya2016specification}.
 principalement les chaînes de caractères pouvant être subdivisées lors
 d'opérations jusqu'à devenir une série de caractères. Les identifiants
 référencent alors les chaînes adjacentes à l'insertion ainsi que les autres
-éléments de la chaînes si subdivision il y a. De la même manière que pour les
-approches précédentes, les références rendent les suppressions réelles
-impossibles.
+éléments de la chaînes si subdivision il y a. 
+%% De la même manière que pour les approches précédentes, les références rendent
+%% les suppressions réelles impossibles.
 
 \paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
 principalement ses efforts sur les garanties de confluence de la
@@ -381,26 +385,26 @@ membres du réseaux étant toujours accessibles. Les décisions peuvent alors ê
 prises de manière fiable. Le reste des participants se conforme à ces décisions
 au risque de perdre certaines de leurs modifications.
  
-Si l'espace consommé par les pierres tombales est trop important pour être
-envisagé, et si ni le ramasse-miettes réparti, ni les contraintes sur la
-topologie du réseau ne sont possibles, il existe une alternative : une famille
-de CRDTs conçue pour le type séquence et dont le bon fonctionnement ne nécessite
-pas de référencer directement d'autres identifiants. En cela, ils évitent
-l'usage des pierres tombales mais font face à des problèmes concernant la
-complexité spatiale de leurs identifiants.
+Un autre famille de CRDTs conçue pour le type séquence et dont le bon
+fonctionnement ne nécessite pas de référencer directement d'autres
+identifiants. En cela, ils évitent l'usage des pierres tombales mais font face à
+des problèmes concernant la complexité spatiale de leurs identifiants.
 
 \subsubsection{Identifiants de taille variable}
 
-Certaines structures de données sans résolution de conflits pour séquences
-utilisent des identifiants dont la taille est variable, mais définie à la
-génération~\cite{andre2013supporting, preguica2009commutative,
-  weiss2009logoot}. Ainsi, les identifiants sont toujours uniques et immuables
-une fois générés, mais leur structure est une liste de valeurs encodant la
-position relative de l'élément par rapport aux positions relatives des éléments
-adjacents à son insertion. Ces identifiants sont directement créés dans un
-ensemble muni d'un ordre total pour assurer la convergence, et muni d'un ordre
-dense pour assurer l'intention. À ce titre, ces approches constituent une
-implémentation analogue à notre spécification séquentielle des séquences.
+Contrairement aux approches basées sur les pierres tombales, certains CRDTs
+génèrent des identifiants ne référenciant pas d'autres identifiants. Par
+conséquent, ces identifiants sont indépendants : leur intégration ne nécessite
+pas l'intégration d'autres identifiants. Ces identifiants ont une taille
+variable définie à la génération~\cite{andre2013supporting,
+  preguica2009commutative, weiss2009logoot}.  Ainsi, les identifiants sont
+toujours uniques et immuables une fois générés, mais leur structure est une
+liste de valeurs encodant la position relative de l'élément par rapport aux
+positions relatives des éléments adjacents à son insertion. Ces identifiants
+sont directement créés dans un ensemble muni d'un ordre total pour assurer la
+convergence, et muni d'un ordre dense pour assurer l'intention. À ce titre, ces
+approches constituent une implémentation directe de notre spécification
+séquentielle des séquences.
 
 % Contrairement aux approches basées sur les pierres tombales, ces identifiants
 % sont indépendents : leur intégration ne dépend pas des autres identifiants. À ce
@@ -444,8 +448,9 @@ possède pas de second triplet ce qui correspond implicitement à
 $\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre $0$ et $1337$ de nombreuses
 valeurs sont disponibles.  Logoot doit choisir parmi toutes ces valeurs laquelle
 constituera définitivement le nouvel identifiant. Ce choix impactera également
-sur l'allocation des identifiants à venir et ne doit pas être pris à la
-légère. Des observations effectuées sur un corpus de documents
+sur l'allocation des identifiants à venir.
+%% et ne doit pas être pris à la légère.
+Des observations effectuées sur un corpus de documents
 \emph{Wikipedia}~\cite{wikipedia} suggère qu'allouer un identifiant proche de
 l'identifiant précédent est une meilleure stratégie afin de conserver des
 identifiants de petite taille.  Ici, Logoot choisit donc une valeurs proche de
