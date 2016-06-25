@@ -2,58 +2,14 @@
 \section{Définition du problème}
 \label{net:sec:problem}
 
-Les approches des §\ref{net:subsec:fixed} et §\ref{net:subsec:variable} présentent des
-limitations. Les approches appartenant à la famille dont les vues partielles
-sont constantes ne sont pas adaptées aux contextes où :
 
-\paragraph{Un même réseau.} La taille du réseau fluctue au cours du temps. Par
-exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
-alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
-l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
-temps peuvent avoir lieu.  Les approches de taille fixe ne peuvent configurer la
-taille de leurs vues partielles au cours du temps. C'est pourquoi les vues
-partielles sont généralement surdimensionnées afin de pourvoir aux besoins des
-plus grands réseaux estimés. Lorsque ces réseaux sont plus modestes aux périodes
-creuses, les nœuds sont surconnectés.
-
-\paragraph{Plusieurs réseaux.} La taille des réseaux d'une même application
-varie. Par exemple, l'ampleur du groupe collaboratif d'un projet comme
-\emph{Linux} n'est pas comparable à celle d'un projet personnel partagé avec
-quelques amis. Malgré tout, le développeur d'application doit prévoir large afin
-de supporter les grands groupes s'ils existent, au détriment des plus petits
-groupes d'utilisateurs.
 
 
 %\TODO{Maybe talk about estimators\ldots}
 
-L'approche réactive qu'est \SCAMP possède quant à elle la capacité d'ajuster les
-vues partielles de ces membres à la taille du réseau auquel ils
-appartiennent. Malheureusement, cette approche fait face à deux problèmes :
-
-\paragraph{Propagation des arcs.} Les annonces sont systématiquement propagées à
-plusieurs voisins de distance. Ce méchanisme participe à la construction rapide
-d'une topologie proche de celle des graphes aléatoires. Toutefois, entre
-l'origine et la destination de l'annonce, toute perte de message empêche
-l'établissement de la connexion. Cela s'avère particulièrement problématique
-lorsque l'établissement d'une connexion nécéssite plusieurs allers-retours comme
-c'est le cas dans le contexte WebRTC~\cite{webrtc}. En effet, non seulement le
-message ne doit pas se perdre, mais les nœuds et arcs composants le chemin de
-l'annonce doivent rester disponibles.
-
-\paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
-la phase d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
-relativement bien répartis, \SCAMP doit renouveller les vues partielles afin de
-mieux intégrer les nouveaux arrivants en peuplant leurs vues partielles et de
-décharger les nœuds plus anciens. Ainsi, le méchanisme de bail (\emph{lease})
-est introduit et consiste à rejoindre à nouveau le réseau après un certains
-temps. La vue partielle sortante est conservée tandis que la vue partielle
-entrante est réinitialisée avant d'être naturellement remplie lors de l'entrée
-dans le réseau. Malheureusement, ce méchanisme tend à faire augmenter le nombre
-d'arcs dans le réseau de manière non bornée. De plus, rejoindre à nouveau le
-réseau confronte au premier problème susmentionné.
 
 
-À la lumière des différentes limitations de ces approches, nous définissons le
+À la lumière des différentes limitations des approches composant l'état de l'art, nous définissons le
 problème suivant :
 
 \begin{problem}

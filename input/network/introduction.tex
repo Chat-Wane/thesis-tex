@@ -39,11 +39,11 @@ La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
 l'établissement de connexions d'un navigateur à l'autre, permet de construire
 des éditeurs collaboratifs décentralisés fonctionnant directement dans les
 navigateurs web.  Les mécanismes de diffusion se basent sur des protocoles
-d'échantillonnage de pairs. Toutefois, deployer ces protocoles avec WebRTC n'est
+d'échantillonnage de pairs. Toutefois, déployer ces protocoles avec WebRTC n'est
 pas sans poser de problèmes :
 \begin{itemize}
 \item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
-  des connexions plus coûteuses et sujètes aux défaillances que sur un réseau
+  des connexions plus coûteuses et sujettes aux défaillances que sur un réseau
   IP.
 \item Les navigateurs web fonctionnent sur des outils informatiques aux
   capacités hétérogènes tels que les ordinateurs de bureau, les téléphones
@@ -62,15 +62,16 @@ pas sans poser de problèmes :
 
 Malheureusement, les protocoles d'échantillonnage actuels ne parviennent pas à
 répondre à l'ensemble de ces problématiques. D'un coté,
-\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptivité en
+\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptation en
 fournissant une vue dont la taille est $\ln (N) + k$, avec $N$ étant le nombre
 de membres dans le réseau et $k$ une constante positive. Cependant, son
 processus d'établissement des connexions impliquant des propagations aléatoires
 systématiques n'est pas adapté au contexte WebRTC. D'une autre coté, les
 protocoles plus utilisés tels que \CYCLON~\cite{voulgaris2005cyclon} fournissent
-une vue dont la taille est constante et paramêtrée lors du
+une vue dont la taille est constante et paramétrée lors du
 déploiement. Cependant, le développeur est obligé de surdimensionner la taille
-des vues afin de gérer les possibles pics de popularités. 
+des vues afin de gérer les possibles pics de popularités.
+
 
 
 % L'état de l'art des protocoles d'échantillonnage aléatoire de pairs se divise en
@@ -97,9 +98,9 @@ des vues afin de gérer les possibles pics de popularités.
 % message en fait de même. Les messages parviennent à tous les pairs par
 % transitivité à la manière d'une épidémie.
 
-Afin d'adapter le trafic généré par la transmission de messages, \textbf{comment
-  adapter efficacement le voisinage de chaque éditeur au nombre fluctuant de
-  collaborateurs ?}
+% Afin d'adapter le trafic généré par la transmission de messages, \textbf{comment
+% adapter efficacement le voisinage de chaque éditeur au nombre fluctuant de
+ % collaborateurs ?}
 
 Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
 voient leur vue partielle s'ajuster à la taille du réseau, sans l'usage d'aucune
@@ -113,7 +114,8 @@ dimensions du réseau.
 Ce chapitre commence par présenter l'état de l'art des protocoles
 d'échantillonnage de pairs en les divisant en deux catégories : ceux dont les
 vues partielles sont fixes, et ceux dont les vues partielles s'adaptent au
-réseau. La section~\ref{net:sec:problem} La section~\ref{net:sec:spray} présente
+réseau. La section~\ref{net:sec:problem} définit le problème scientifique.
+La section~\ref{net:sec:spray} présente
 \SPRAY, un protocole appartenant à la seconde catégorie. La
 section~\ref{net:sec:properties} présente et compare les propriétés des
 protocoles d'échantillonnages. La section~\ref{net:sec:usecase} présente l'effet
