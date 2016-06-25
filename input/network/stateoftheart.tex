@@ -1,6 +1,33 @@
 
+
 \section{État de l'art}
 \label{net:sec:stateoftheart}
+
+
+Un réseau superposé permet à un ensemble de machines de communiquer entre elles
+au dessus d'un autre réseau tels que, par exemple, l'internet ou un autre réseau
+superposé.  Toutes sortes de réseaux superposés existent. Si chaque machine
+possède un canal de communication avec chacune des autres machines, alors la
+topologie correspond à celle d'un graphe complet
+(cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
+d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
+grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
+qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
+direct d'un nœud. Le défi consiste alors à peupler ces vues avec des liens
+logiques selon les critères souhaités.
+
+
+Dans ce manuscrit, nous nous intéressons aux protocoles d'échantillonnage
+aléatoire de pairs~\cite{jelasity2007gossip} dont l'objectif est de fournir à
+chaque machine une vue partielle peuplée d'adresses logiques réparties selon une
+loi uniforme. La topologie en résultant est proche de celle des graphes
+aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
+propriétés tels que la tolérance aux pannes ou un faible diamètre. Cette
+première garantit que lorsqu'un nœud disparaît soudainement le graphe reste
+connecté avec une forte probabilité, la seconde garantie que les messages se
+propagent rapidement à tous les membres du réseau.
+
+
 Deux familles d'approches existent quant à la taille des vues partielles :
 \begin{inparaenum}[(i)]
 \item La famille d'approches dont la taille est fixée lors de la

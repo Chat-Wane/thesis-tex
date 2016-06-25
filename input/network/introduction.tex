@@ -1,21 +1,4 @@
 
-% \lettrine{C}ommuniquer des informations d'une machine à une autre est un besoin
-% ancien. Une solution se developpe rapidement sous l'impulsion du projet Arpanet
-% qui deviendra plus tard la base de l'internet. Initialement créé dans le but de
-% connecter une machine à une autre, l'échelle évolue afin d'impliquer plusieurs
-% machines communicant entre elles. Il s'agit alors d'un réseau de communication.
-
-
-
-% Les machines d'un réseau sont adressables : Grâce à une métadonnée, un message
-% émis par une machine trouve un chemin jusqu'à la machine ciblée. Par exemple,
-% une adresse IP (\emph{Internet Protocol}) permet de retrouver une machine de
-% manière transparente : Les infrastructures sous-jacentes sur l'itinéraire entre
-% les machines, tels que les routeurs, sont inconnues. Un réseau construit sur de
-% telles adresses logiques est appelé réseau superposé (\emph{network
-%   overlay}). Un réseau superposé peut être construit sur un autre réseau
-% superposé.
-
 \begin{figure}
   \begin{center}
     \input{input/network/figcompletegraph.tex}
@@ -23,101 +6,119 @@
   \end{center}
 \end{figure}
 
-\lettrine{L}'édition collaborative~\cite{ellis1991groupware} permet de répartir
-le travail de rédaction d'un document selon les trois dimensions : le temps,
-l'espace, et les activités~\cite{desanctis1987foundation,
-  grudin1994computersupported, johansen1988groupware}. L'éditeur collaboratif en
-constitue l'outil principal récemment popularisé grâce aux éditeurs web tels que
-\emph{Google Docs}~\cite{googledocs} ou \emph{ShareLatex}~\cite{sharelatex}. Ces
-éditeurs proposent à leurs utilisateurs de créer et modifier un document en
-temps réel. Grâce à un simple lien, un utilisateur en mesure de partager ce
-document à des amis ou des collègues. Ces derniers sont à leur tour capables de
-lire et modifier le document en temps réel.
+% \lettrine{L}'édition collaborative~\cite{ellis1991groupware} permet de répartir
+% le travail de rédaction d'un document selon les trois dimensions : le temps,
+% l'espace, et les activités~\cite{desanctis1987foundation,
+%   grudin1994computersupported, johansen1988groupware}. L'éditeur collaboratif en
+% constitue l'outil principal récemment popularisé grâce aux éditeurs web tels que
+% \emph{Google Docs}~\cite{googledocs} ou \emph{ShareLatex}~\cite{sharelatex}. Ces
+% éditeurs proposent à leurs utilisateurs de créer et modifier un document en
+% temps réel. Grâce à un simple lien, un utilisateur en mesure de partager ce
+% document à des amis ou des collègues. Ces derniers sont à leur tour capables de
+% lire et modifier le document en temps réel.
 
-Les utilisateurs impliquées dans l'édition peuvent être éloignés les uns des
-autres géographiquement. Par exemple, un japonais, un français et un brésilien
-peuvent éditer un même document en temps réel depuis leur pays d'origine. Cette
-répartition géographique necessite l'établissement de moyens de communication
-entre éditeurs distants. De plus, le web favorise la dissémination d'idées. Il
-n'est dès lors pas impossible qu'un document soit lu et rédigé par des milliers
-de participants avant de tomber dans l'oubli.  Chaque modification doit parvenir
-efficacement à tous les participants afin que le même document puisse être lu
-partout. Pour établir ces communications, les éditeurs collaboratifs doivent
-construire un réseau superposé (\emph{network overlay}).
+% Les utilisateurs impliquées dans l'édition peuvent être éloignés les uns des
+% autres géographiquement. Par exemple, un japonais, un français et un brésilien
+% peuvent éditer un même document en temps réel depuis leur pays d'origine. Cette
+% répartition géographique necessite l'établissement de moyens de communication
+% entre éditeurs distants. De plus, le web favorise la dissémination d'idées. Il
+% n'est dès lors pas impossible qu'un document soit lu et rédigé par des milliers
+% de participants avant de tomber dans l'oubli.  Chaque modification doit parvenir
+% efficacement à tous les participants afin que le même document puisse être lu
+% partout. Pour établir ces communications, les éditeurs collaboratifs doivent
+% construire un réseau superposé (\emph{network overlay}).
 
-Un réseau superposé permet à un ensemble de machines de communiquer entre elles
-au dessus d'un autre réseau tels que, par exemple, l'internet ou un autre réseau
-superposé.  Toutes sortes de réseaux superposés existent. Si chaque machine
-possède un canal de communication avec chacune des autres machines, alors la
-topologie correspond à celle d'un graphe complet
-(cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
-d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
-grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
-qu'une vue partielle du réseau. Cette vue partielle constitue le voisinage
-direct d'un nœud. Le défi consiste alors à peupler ces vues avec des liens
-logiques selon les critères souhaités.
+\lettrine{L}es éditeurs collaboratifs répartis~\cite{ellis1991groupware} suivent
+le schéma de réplication optimiste~\cite{demers1987epidemic,
+  johnson1975maintenance, ladin1992providing, saito2005optimistic}. Pour que les
+répliques d'un document convergent vers un état équivalent, toute opération
+générée sur une réplique doit parvenir à toutes les autres répliques afin d'être
+intégrée. Un mécanisme de diffusion efficace et fiable est requis.
 
-Dans ce manuscrit, nous nous intéressons aux protocoles d'échantillonnage
-aléatoire de pairs~\cite{jelasity2007gossip} dont l'objectif est de fournir à
-chaque machine une vue partielle peuplée d'adresses logiques réparties selon une
-loi uniforme. La topologie en résultant est proche de celle des graphes
-aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
-propriétés tels que la tolérance aux pannes ou un faible diamètre. Cette
-première garantit que lorsqu'un nœud disparaît soudainement le graphe reste
-connecté avec une forte probabilité, la seconde garantie que les messages se
-propagent rapidement à tous les membres du réseau.
+La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
+l'établissement de connexions d'un navigateur à l'autre, permet de construire
+des éditeurs collaboratifs décentralisés fonctionnant directement dans les
+navigateurs web.  Les mécanismes de diffusion se basent sur des protocoles
+d'échantillonnage de pairs. Toutefois, deployer ces protocoles avec WebRTC n'est
+pas sans poser de problèmes :
+\begin{itemize}
+\item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
+  des connexions plus coûteuses et sujètes aux défaillances que sur un réseau
+  IP.
+\item Les navigateurs web fonctionnent sur des outils informatiques aux
+  capacités hétérogènes tels que les ordinateurs de bureau, les téléphones
+  portables ou les tablettes tactiles. Le protocole doit donc réduire sa
+  consommation de ressources au maximum.
+\item Avec WebRTC, un simple lien HTTP %(\emph{HyperText Transfer Protocol})
+  permet de partager l'accès à une session d'édition en temps réel. Cette
+  simplicité d'accès expose l'éditeur aux explosions soudaines de popularité
+  caractéristiques du web.
+  %% TODO : insert concrete example
+  Le mécanisme de diffusion et le protocole duquel il dépend doivent s'adapter à
+  ces montés fulgurantes en nombre de participants et maintenir leur qualité de
+  service avant de revenir à leur configuration initiale lorsque le pic de
+  popularité retombe.
+\end{itemize}
 
-% Puisque les protocoles de dissémination de messages font un usage soutenu de ces
-% vues partielles, améliorer le protocole d'échantillonnage revient à améliorer la
-% dissémination. Le problème scientifique consiste à 
+Malheureusement, les protocoles d'échantillonnage actuels ne parviennent pas à
+répondre à l'ensemble de ces problématiques. D'un coté,
+\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptivité en
+fournissant une vue dont la taille est $\ln (N) + k$, avec $N$ étant le nombre
+de membres dans le réseau et $k$ une constante positive. Cependant, son
+processus d'établissement des connexions impliquant des propagations aléatoires
+systématiques n'est pas adapté au contexte WebRTC. D'une autre coté, les
+protocoles plus utilisés tels que \CYCLON~\cite{voulgaris2005cyclon} fournissent
+une vue dont la taille est constante et paramêtrée lors du
+déploiement. Cependant, le développeur est obligé de surdimensionner la taille
+des vues afin de gérer les possibles pics de popularités. 
 
-L'état de l'art des protocoles d'échantillonnage aléatoire de pairs se divise en
-deux catégories selon les vues partielles fournies :
-\begin{inparaenum}[(i)]
-\item les approches fournissant des vues partielles de taille
-  constante~\cite{eugster2003lightweight, leitao2007dependable,
-    tolgyeski2009adaptive, voulgaris2005cyclon} qui doivent être configurées
-  \emph{a priori}. Dans ce cas le développeur doit prévoir les dimensions des
-  réseaux gérés par son application;
-  %%Cela entraîne un  surdimensionnement des vues partielles.
-\item les approches fournissant des vues partielles s'auto-ajustant pendant la
-  vie du réseau~\cite{ganesh2001scamp, ganesh2003peer}. Malheureusement, ces
-  approches ne sont pas adaptées aux réseaux dynamiques.
-\end{inparaenum}
 
-Les protocoles d'échantillonnages aléatoire de pairs sont au cœur de nombreuses
-autres approches~\cite{folz2016cyclades, jelasity2009tman,
-  krasikova2016distributed, voulgaris2013vicinity}. Entre autres, la propagation
-de messages~\cite{birman1999bimodal, kermarrec2003probabilistic} d'un pair à
-tous les autres (\emph{broadcast}) fait un usage intensif des vues
-partielles. Un pair souhaitant propager un message choisit un ensemble de
-voisins auquel il communique le message. A son tour, chaque pair recevant un tel
-message en fait de même. Les messages parviennent à tous les pairs par
-transitivité à la manière d'une épidémie.
+% L'état de l'art des protocoles d'échantillonnage aléatoire de pairs se divise en
+% deux catégories selon les vues partielles fournies :
+% \begin{inparaenum}[(i)]
+% \item les approches fournissant des vues partielles de taille
+%   constante~\cite{eugster2003lightweight, leitao2007dependable,
+%     tolgyeski2009adaptive, voulgaris2005cyclon} qui doivent être configurées
+%   \emph{a priori}. Dans ce cas le développeur doit prévoir les dimensions des
+%   réseaux gérés par son application;
+%   %%Cela entraîne un  surdimensionnement des vues partielles.
+% \item les approches fournissant des vues partielles s'auto-ajustant pendant la
+%   vie du réseau~\cite{ganesh2001scamp, ganesh2003peer}. Malheureusement, ces
+%   approches ne sont pas adaptées aux réseaux dynamiques.
+% \end{inparaenum}
+
+% Les protocoles d'échantillonnages aléatoire de pairs sont au cœur de nombreuses
+% autres approches~\cite{folz2016cyclades, jelasity2009tman,
+%   krasikova2016distributed, voulgaris2013vicinity}. Entre autres, la propagation
+% de messages~\cite{birman1999bimodal, kermarrec2003probabilistic} d'un pair à
+% tous les autres (\emph{broadcast}) fait un usage intensif des vues
+% partielles. Un pair souhaitant propager un message choisit un ensemble de
+% voisins auquel il communique le message. A son tour, chaque pair recevant un tel
+% message en fait de même. Les messages parviennent à tous les pairs par
+% transitivité à la manière d'une épidémie.
 
 Afin d'adapter le trafic généré par la transmission de messages, \textbf{comment
   adapter efficacement le voisinage de chaque éditeur au nombre fluctuant de
   collaborateurs ?}
 
 Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
-voient leur vue partielle s'ajuster gracieusement à la taille du réseau, sans
-l'usage d'aucune connaissance globale. Le cycle de vie d'un pair, divisé entre
-son entrée, sa vie, et son départ, est conçu pour conserver un nombre d'arcs
-dans le système consistant avec la taille de ce dernier. Les protocoles
-construits au dessus de \SPRAY peuvent bénéficier de cette auto-ajustement. Par
-exemple, le trafic généré par un protocole de dissémination de messages peut
-évoluer selon les dimensions du réseau.
+voient leur vue partielle s'ajuster à la taille du réseau, sans l'usage d'aucune
+connaissance globale. Le cycle de vie d'un pair, divisé entre son entrée, sa
+vie, et son départ, est conçu pour conserver un nombre d'arcs dans le système
+consistant avec la taille de ce dernier. Les protocoles construits au dessus de
+\SPRAY peuvent bénéficier de cette auto-ajustement. Par exemple, le trafic
+généré par un protocole de dissémination de messages peut évoluer selon les
+dimensions du réseau.
 
-Ce chapitre commence par introduire vocabulaire et notations. La
-section~\ref{net:sec:stateoftheart} présente l'état de l'art des protocoles
+Ce chapitre commence par présenter l'état de l'art des protocoles
 d'échantillonnage de pairs en les divisant en deux catégories : ceux dont les
 vues partielles sont fixes, et ceux dont les vues partielles s'adaptent au
-réseau. La section~\ref{net:sec:spray} présente \SPRAY, un protocole appartenant
-à la seconde catégorie. La section~\ref{net:sec:properties} présente et compare
-les propriétés des protocoles d'échantillonnages. La
-section~\ref{net:sec:usecase} présente l'effet de \SPRAY sur un protocole de
-dissémination épidémique de messages. Le chapitre se conclut à la
-section~\ref{net:sec:conclusion}.
+réseau. La section~\ref{net:sec:problem} La section~\ref{net:sec:spray} présente
+\SPRAY, un protocole appartenant à la seconde catégorie. La
+section~\ref{net:sec:properties} présente et compare les propriétés des
+protocoles d'échantillonnages. La section~\ref{net:sec:usecase} présente l'effet
+de \SPRAY sur un protocole de dissémination épidémique de messages. Le chapitre
+se conclut à la section~\ref{net:sec:conclusion}.
 
 %%% Local Variables:
 %%% mode: latex
