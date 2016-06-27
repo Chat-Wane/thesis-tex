@@ -214,8 +214,8 @@ résoudre est le suivant :
 \begin{problem}
   Soit la séquence d'identifiants $s(I)= id_1.id_2\ldots id_I$, et
   $s(I+1) = s(I) \cup \textsc{insert}(p,\, \_,\, n)$ où $p,q \in s(I)$ et
-  $p<_\mathcal{I}q$. La fonction \textsc{allocPath} doit allouer des chemins
-  tels que : 
+  $p<_\mathcal{I}q$. Soit $|s(I)|$ la taille de la représentation binaire de la
+  séquence. La fonction \textsc{allocPath} doit allouer des chemins tels que :
   \begin{equation}
     {|s(I+1)|\over{|s(I)|}} < \mathcal{O}(I)
   \end{equation}
@@ -225,13 +225,14 @@ En d'autres termes, les chemins allouées par la fonction d'allocation
 \textsc{allocPath} garantissent des identifiants dont la taille est
 sous-linéaire par rapport aux nombres d'insertions dans la séquence. Logoot et
 Treedoc échouent à fournir des identifiants bornés de cette façon dans les cas
-d'insertions de gauche à droite et de droite à gauche.
+d'insertions de gauche à droite et de droite à gauche. Ces deux approchent
+nécessiten l'exécution périodique d'un mécanisme de relocalisation des
+identifiants afin de conserver de bonnes performances.
 
 La section suivante présente \LSEQ, une fonction d'allocation d'identifiants
 dont la taille croît de manière polylogarithmique par rapport au nombre
-d'insertions effectuées dans la séquence. À ce titre, aucun protocole
-additionnel de relocalisation ayant pour objectif l'équilibrage de la structure
-n'est nécessaire.
+d'insertions effectuées dans la séquence. À ce titre, aucun mécanisme
+additionnel de relocalisation n'est nécessaire.
 
 
 %%% Local Variables:
