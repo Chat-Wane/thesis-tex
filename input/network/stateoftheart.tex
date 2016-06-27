@@ -167,24 +167,36 @@ reçus.
 
 
 Les approches appartenant à la famille dont les vues partielles
-sont constantes ne sont pas adaptées aux contextes où :
+sont constantes ne sont pas adaptées aux contextes avec :
 
-\paragraph{Un même réseau.} La taille du réseau fluctue au cours du temps. Par
+\paragraph{Un même réseau.} La taille d'un réseau fluctue au cours du temps. Par
 exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
 alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
 l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
-temps peuvent avoir lieu.  Les approches de taille fixe ne peuvent configurer la
-taille de leurs vues partielles au cours du temps. C'est pourquoi les vues
-partielles sont généralement surdimensionnées afin de pourvoir aux besoins des
-plus grands réseaux estimés. Lorsque ces réseaux sont plus modestes aux périodes
-creuses, les nœuds sont surconnectés.
+temps peuvent avoir lieu. Le web amplifie ces fluctuations. En effet, le web
+favorise la diffusion d'idées. Par exemple, dans le cadre de l'édition
+collaborative, un simple lien HTTP permet le partage d'un document. Un lien
+\emph{tweeté} par une célébrité sur un événement particulier peut attirer des
+milliers de participants en très peu de temps. Cette soudaine popularité retombe
+lorsque l'événement s'achève.  Pour gérer ces cas, les approches fournissant des
+vues dont la taille est configurée \emph{a priori} doivent être pessimistes :
+les vues partielles sont surdimensionnées afin de supporter ces cas
+éphémères. Les protocoles qui dépendent, tel que la dissémination de messages,
+héritent de ce pessimisme qui les conduit à, par exemple, produire un trafic
+excessif lorsque le réseau est plus modeste que prévu.
 
-\paragraph{Plusieurs réseaux.} La taille des réseaux créés par une application
-varie. Par exemple, l'ampleur du groupe collaboratif d'un projet comme
-\emph{Linux} n'est pas comparable à celle d'un projet personnel partagé avec
-quelques amis. Malgré tout, le développeur d'application doit prévoir large afin
-de supporter les grands groupes s'ils existent, au détriment des plus petits
+
+\paragraph{Plusieurs réseaux.} La taille des réseaux créés par une même
+application varie. Par exemple, un document partagé pour un événement de grande
+ampleur n'a pas la même audience qu'un document partagé avec quelques
+amis. Malgré tout, le développeur d'application doit prévoir large afin de
+supporter les grands groupes s'ils existent, au détriment des plus petits
 groupes d'utilisateurs.
+
+
+%\TODO{Maybe talk about estimators\ldots}
+
+% TRANSITION
 
 
 \subsection{Taille variable}
@@ -354,10 +366,11 @@ $e_2$ tombe en panne durant cette procédure, la connexion ne pourra s'effectuer
 correctement, et ce, même si une route alternative existe (puisque WebRTC ne
 gère pas le routage).
 
-\noident Avec \SCAMP, pendant l'établissement d'une connexion WebRTC, non seulement le 
- message ne doit pas se perdre, mais les nœuds et arcs composants le chemin de
- l'annonce doivent rester disponibles. L'établissement d'une connexion est particulièrement vulnérable
- aux défaillances dans \SCAMP.
+\noindent Avec \SCAMP, pendant l'établissement d'une connexion WebRTC, non
+seulement le message ne doit pas se perdre, mais les nœuds et arcs composant le
+chemin de l'annonce doivent rester disponibles pour préserver le pont entre les
+nœuds établissant une connexion. Par conséquent, l'établissement d'une connexion
+suivant le protocole \SCAMP est particulièrement vulnérable aux défaillances.
 
 % \noindent Comparé aux méthodes plus traditionnelles d'établissement de
 % connexions, les connexions WebRTC sont nettement plus coûteuse à mettre en place

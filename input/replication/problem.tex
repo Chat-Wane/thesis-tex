@@ -212,19 +212,26 @@ fonction d'allocation efficace. Le problème scientifique que l'on souhaite
 résoudre est le suivant :
 
 \begin{problem}
-  \TODO{ Soit $p_1.p_2\ldots p_x$ la liste de chemins générés par la série
-    d'insertions $i_1.i_2\ldots i_x$, la tailles des identifiants progresse de
-    manière sous-linéaire :}
+  Soit la séquence d'identifiants $s(I)= id_1.id_2\ldots id_I$, et
+  $s(I+1) = s(I) \cup \textsc{insert}(p,\, \_,\, n)$ où $p,q \in s(I)$ et
+  $p<_\mathcal{I}q$. La fonction \textsc{allocPath} doit allouer des chemins
+  tels que : 
   \begin{equation}
-    \mathcal{O}(|p_x|) < \mathcal{O}(x)    
+    {|s(I+1)|\over{|s(I)|}} < \mathcal{O}(I)
   \end{equation}
 \end{problem}
 
+En d'autres termes, les chemins allouées par la fonction d'allocation
+\textsc{allocPath} garantissent des identifiants dont la taille est
+sous-linéaire par rapport aux nombres d'insertions dans la séquence. Logoot et
+Treedoc échouent à fournir des identifiants bornés de cette façon dans les cas
+d'insertions de gauche à droite et de droite à gauche.
+
 La section suivante présente \LSEQ, une fonction d'allocation d'identifiants
-dont la taille croît de manière sous-linéaire par rapport au nombre d'insertions
-effectuées dans la séquence. À ce titre, aucun protocole additionnel de
-relocalisation ayant pour objectif l'équilibrage de la structure n'est
-nécessaire.
+dont la taille croît de manière polylogarithmique par rapport au nombre
+d'insertions effectuées dans la séquence. À ce titre, aucun protocole
+additionnel de relocalisation ayant pour objectif l'équilibrage de la structure
+n'est nécessaire.
 
 
 %%% Local Variables:
