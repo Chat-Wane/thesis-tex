@@ -460,17 +460,36 @@ $id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_y, x\rangle]$.  En
 utilisant l'ordre lexicographique définit auparavant, nous obtenons bien
 $id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
 
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/motivationlogoot.eps}
+    \caption{\label{repl:img:motivationlogoot} Taille des chemins allouées par
+      Logoot sur un document principalement édité en tête. L'axe des abscisses
+      montre le numéro de la ligne dans le document. L'axe des ordonnées de la
+      partie haute de la figure montre la révision à laquelle a été ajoutée la
+      ligne. L'axe des ordonnées de la partie base de la figure montre la taille
+      du chemin allouée à une ligne.}
+  \end{center}
+\end{figure}
+
 \noindent Logoot favorise, par son choix d'entier proche de l'identifiant
 précédent la position d'insertion, les comportements d'édition où les éléments
 sont insérés de gauche à droite. Toutefois, lorsque le comportement d'édition va
 à l'encontre de cette stratégie, la taille des identifiants peut grimper
-extrêmement rapidement. La complexité spatiale de chaque identifiant est
-linéaire comparé au nombre d'insertions dans le document, et puisque chaque
-identifiant est disséminé aux autres répliques, la complexité en communication
-en hérite. De plus, les valeurs choisies par Logoot dans les identifiants sont
-toujours comprises entre $0$ et $2^{64}$. Cette constance implique que, même
-dans le cadre d'un comportement d'édition attendu, la complexité est linéaire
-(mais fortement atténuée). Là encore, le trafic généré en souffre directement.
+extrêmement rapidement. La figure~\ref{repl:img:motivationlogoot} met en
+évidence cette croissance. La taille des chemins (i.e. les identifiants uniques
+de site et compteurs sont ignorés) augmente par pallier. De nombreuses séries
+d'insertions en tête se traduisent par l'ajout d'un niveau dans les chemins. Sur
+un petit document de moins de 200 lignes, un chemin alloué par Logoot atteint 16
+concaténations. Ici, chacun de ces concaténations pèse 16 bits.  La complexité
+spatiale de chaque identifiant est linéaire comparé au nombre d'insertions dans
+le document, et puisque chaque identifiant est disséminé aux autres répliques,
+la complexité en communication en hérite. De plus, les valeurs choisies par
+Logoot dans les identifiants sont toujours comprises entre $0$ et $2^{c}$ où $c$
+est une constante ($c = 16$ dans la
+figure~\ref{repl:img:motivationlogoot}). Cette constance implique que, même dans
+le cadre d'un comportement d'édition attendu, la complexité est linéaire (mais
+fortement atténuée). Là encore, le trafic généré en souffre directement.
 
 \noindent La représentation de la séquence sous forme de liste possède
 l'avantage de fournir un accès instantané à ses éléments. Ainsi, la traduction
@@ -518,13 +537,31 @@ dans le cas contraire. Si aucun des identifiants n'est l'ancêtre de l'autre,
 Treedoc choisit de copier l'identifiant précédant la position d'insertion et lui
 suffixe le triple $\langle 1,\, s_y,\, x \rangle$.
 
-\noindent Tout comme l'approche Logoot, les observations effectuées sur un
-corpus de documents Wikipédia montrent l'importance d'une stratégie d'allocation
-gérant l'édition de gauche à droite. Elles conduisent à proposer une heuristique
-selon laquelle des nœuds de l'arbre sont virtuellement créés en prévoyance des
-éditions à venir. Toutefois, de manière identique à Logoot, lorsque le
-comportement d'édition va à l'encontre de cette stratégie, les identifiants sont
-de taille linéaire comparée à la taille du document.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{img/lseq/motivationtreedoc.eps}
+    \caption{\label{repl:img:motivationtreedoc} Taille des chemins allouées par
+      Treedoc sur un grand document principalement édité en fin. L'axe des
+      abscisses montre le numéro de la ligne dans le document. L'axe des
+      ordonnées de la partie haute de la figure montre la révision à laquelle a
+      été ajoutée la ligne. L'axe des ordonnées de la partie base de la figure
+      montre la taille du chemin allouée à une ligne.}
+  \end{center}
+\end{figure}
+
+
+\noindent La figure~\ref{repl:img:motivationtreedoc} met en évidence la rapide
+croissance des chemins (i.e. les identifiants uniques de site et compteurs sont
+ignorés) allouées par Treedoc. Un série d'insertions se succédant conduit à des
+identifiants de plus de 1k bits. Tout comme l'approche Logoot, les observations
+effectuées sur un corpus de documents Wikipédia montrent l'importance d'une
+stratégie d'allocation gérant l'édition de gauche à droite. Elles conduisent à
+proposer une heuristique selon laquelle des nœuds de l'arbre sont virtuellement
+créés en prévoyance des éditions à venir. Toutefois, de manière identique à
+Logoot, lorsque le comportement d'édition va à l'encontre de cette stratégie,
+les identifiants sont de taille linéaire comparée à la taille du document.
+
 
 \noindent La représentation de la séquence sous forme d'arbre possède l'avantage
 de factoriser les nombreux triples communs composants les identifiants

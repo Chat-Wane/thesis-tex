@@ -325,22 +325,22 @@ négociation s'achève avec succès, un canal de communication bidirectionnel es
   \begin{center}
     \subfloat[Des nœuds utilisent un médiateur pour se connecter]
     [\label{editor:fig:webrtcA}
-    $e_1$ se connecte à $e_2$ via un médiateur.
-    1: $e_1$ crée ses offres;
-    2: $e_2$ récupère ces offres;
-    3: $e_2$ crée ses offres en réponse;
-    4: $e_1$: reçoit les offres et établit une connexion bidirectionnelle avec
-    $e_2$. $e_3$ en fait de même avec $e_2$.
+    $n_1$ se connecte à $n_2$ via un médiateur.
+    1: $n_1$ crée ses offres;
+    2: $n_2$ récupère ces offres;
+    3: $n_2$ crée ses offres en réponse;
+    4: $n_1$: reçoit les offres et établit une connexion bidirectionnelle avec
+    $n_2$. $n_3$ en fait de même avec $n_2$.
     La figure~\ref{editor:fig:webrtcB} décrit le réseau en résultant.]{
       \input{input/editor/figsignalingexampleA.tex}}
     \hspace{5pt}
     \subfloat[Des nœuds utilisent l'un des leurs comme médiateur]
     [\label{editor:fig:webrtcB}
-    $e_1$ se connecte à $e_3$ en utilisant $e_2$ comme médiateur.
-    1: $e_1$ envoie ses offres à $e_2$;
-    2: $e_2$ redirige les offres à $e_3$;
-    3: $e_3$ envoie ses offres en réponse à $e_2$;
-    4: $e_2$ redirige les offres vers $e_1$ qui se connecte à $e_3$.]{
+    $n_1$ se connecte à $n_3$ en utilisant $n_2$ comme médiateur.
+    1: $n_1$ envoie ses offres à $n_2$;
+    2: $n_2$ redirige les offres à $n_3$;
+    3: $n_3$ envoie ses offres en réponse à $n_2$;
+    4: $n_2$ redirige les offres vers $n_1$ qui se connecte à $n_3$.]{
       \input{input/editor/figsignalingexampleB.tex}}
     \hspace{5pt}
     \subfloat[Réseau superposé en résultant]
@@ -354,28 +354,42 @@ négociation s'achève avec succès, un canal de communication bidirectionnel es
 
 \noindent Pour établir une connexion, les navigateurs s'échangent des offres et
 acquittements via un médiateur commun (e.g. mails, services dédiés de
-signalement, connexions WebRTC connues, etc.). Dans la figure~\ref{editor:fig:webrtcA},
-$e_1$ souhaite se connecter à $e_2$. Par conséquent, $e_1$ envoie ses offres au
-service de signalement connu. Le nœud $e_2$ récupère l'offre et envoie ses
-propres offres en réponse au service de signalement. Enfin, $e_1$ récupère les
-offres de $e_2$ et établit une connexion bidirectionnelle avec $e_2$. De manière
-identique, $e_3$ établit une connexion avec $e_2$. Désormais, le nœud $e_1$ est
-capable d'établir une connexion avec $e_3$ sans passer par l'intermédiaire du
-serveur. Pour cela, il utilise $e_2$ comme médiateur. Toutefois, si le nœud
-$e_2$ tombe en panne durant cette procédure, la connexion ne pourra s'effectuer
-correctement, et ce, même si une route alternative existe (puisque WebRTC ne
-gère pas le routage).
+signalement, connexions WebRTC connues, etc.). Dans la
+figure~\ref{editor:fig:webrtcA}, $n_1$ souhaite se connecter à $n_2$. Par
+conséquent, $n_1$ envoie ses offres au service de signalement connu. Le nœud
+$n_2$ récupère l'offre et envoie ses propres offres en réponse au service de
+signalement. Enfin, $n_1$ récupère les offres de $n_2$ et établit une connexion
+bidirectionnelle avec $n_2$. De manière identique, $n_3$ établit une connexion
+avec $n_2$. Désormais, le nœud $n_1$ est capable d'établir une connexion avec
+$n_3$ sans passer par l'intermédiaire du serveur. Pour cela, il utilise $n_2$
+comme médiateur. Toutefois, si le nœud $n_2$ tombe en panne durant cette
+procédure, la connexion ne pourra s'effectuer correctement, et ce, même si une
+route alternative existe (puisque WebRTC ne gère pas le routage).
 
 \noindent Avec \SCAMP, pendant l'établissement d'une connexion WebRTC, non
 seulement le message ne doit pas se perdre, mais les nœuds et arcs composant le
 chemin de l'annonce doivent rester disponibles pour préserver le pont entre les
-nœuds établissant une connexion. Par conséquent, l'établissement d'une connexion
-suivant le protocole \SCAMP est particulièrement vulnérable aux défaillances.
-
-% \noindent Comparé aux méthodes plus traditionnelles d'établissement de
-% connexions, les connexions WebRTC sont nettement plus coûteuse à mettre en place
-% et à entretenir. À ce titre, elles ne doivent pas être établies à la légère.
-
+nœuds établissant une connexion.  Soit $P_f$ la probabilité qu'un élément (nœud
+ou arc) tombe en panne ou quitte le réseau pendant l'établissement d'une
+connexion. Soit $P_E$ la probabilité que l'établissement d'une connexion soit
+achevée avec succès. Sans les allers-retours de WebRTC, la probabilité est : 
+\begin{equation} P_{E,\,1way}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
+correspond à la probabilité que chaque élément sur le chemin de taille $k+1$
+reste disponible et fonctionnel pendant leur tour de dissémination. Avec WebRTC,
+au minimum un aller-retour est nécéssaire entre les nœuds se connectant. Aucun
+des éléments constituant le chemin de dissémination ne doivent tomber en panne
+ou partir jusqu'au retour du message. Nous obtenons : 
+\begin{align} P_{E,\,3way}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
+                                     \ldots (1-P_f)^2) \nonumber \\
+                                   &=1-(1-P_f)^{k^2+3k+2}
+\end{align}
+En d'autres termes, les premiers nœud et arc doivent rester disponibles et
+fonctionnels $2k +2$ unités de temps. Les seconds nœud et arc doivent rester
+disponibles et fonctionnels $2k$ unités de temps etc. Avec WebRTC, la
+probabilité d'échec sur l'établissement d'une connexion a augmenté d'une classe
+de complexité.  Par conséquent, l'établissement d'une connexion suivant le
+protocole \SCAMP est particulièrement vulnérable aux défaillances. À terme, le
+réseau perd sa connexité.
 
 
 \paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
