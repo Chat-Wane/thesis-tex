@@ -309,17 +309,17 @@ lorsque l'établissement d'une connexion nécessite plusieurs allers-retours com
 c'est le cas dans le contexte WebRTC~\cite{webrtc} : 
 % \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
 %  Communication}.
-cette technologie permet l'établissement de canaux de
-communication d'un navigateur web à l'autre, et ce, même en présence de
-configurations réseaux complexes impliquant pare-feu, proxy, ou NAT
-(\emph{Network Address Translation}). Toutefois, WebRTC ne gère ni l'adressage,
-ni le routage.  Établir une connexion WebRTC requière une négociation où le nœud
-d'origine et le nœud de réception s'envoient mutuellement des moyens d'accès
-distants dans l'ordre définit du plus aisé au plus ardu. Par exemple, les
-échanges vont d'abord concerner la boucle locale (\emph{localhost}), puis le
-réseau local (e.g. $192.168.255.255$), puis l'internet\ldots Aussitôt que la
-négociation s'achève avec succès, un canal de communication bidirectionnel est
-établi. Les nœuds peuvent alors communiquer entre eux.
+cette technologie permet l'établissement de canaux de communication d'un
+navigateur web à l'autre, et ce, même en présence de configurations réseaux
+complexes impliquant pare-feu, proxy, ou NAT (\emph{Network Address
+  Translation}). Toutefois, WebRTC ne gère ni l'adressage, ni le routage.
+Établir une connexion WebRTC requière une négociation où le nœud d'origine et le
+nœud de réception s'envoient mutuellement des moyens d'accès distants dans
+l'ordre définit du plus aisé au plus ardu. Par exemple, les échanges vont
+d'abord concerner la boucle locale (\emph{localhost}), puis le réseau local
+(e.g. $192.168.255.255$), puis l'internet etc. Aussitôt que la négociation
+s'achève avec succès, un canal de communication bidirectionnel est établi. Les
+nœuds peuvent alors communiquer entre eux.
 
 \begin{figure*}
   \begin{center}
@@ -366,20 +366,34 @@ comme médiateur. Toutefois, si le nœud $n_2$ tombe en panne durant cette
 procédure, la connexion ne pourra s'effectuer correctement, et ce, même si une
 route alternative existe (puisque WebRTC ne gère pas le routage).
 
-\noindent Avec \SCAMP, pendant l'établissement d'une connexion WebRTC, non
+\begin{figure}
+  \begin{center}
+    \input{input/network/fighandshake.tex}
+    \caption{\label{repl:fig:handshake} Établissement d'une connexion impliquant
+      des allers-retours avec WebRTC. (1) $n_1$ initie la création d'une
+      connexion. Le message transite par $n_2$. (2) Lorsque \CYCLON établit un
+      connexion avec le voisin du voisin -- ici $n_3$ -- \SCAMP cherche
+      $k$-voisins plus loin. (3) Un message doit être envoyé en sens inverse
+      jusqu'à $n_1$ pour que la connexion soit finalement établie.}
+  \end{center}
+\end{figure}
+
+\noindent La figure~\ref{repl:fig:handshake} montre la différence entre \SCAMP
+et une approche établissant des connexions de voisin à voisin tel que
+\CYCLON. Avec \SCAMP, pendant l'établissement d'une connexion WebRTC, non
 seulement le message ne doit pas se perdre, mais les nœuds et arcs composant le
 chemin de l'annonce doivent rester disponibles pour préserver le pont entre les
 nœuds établissant une connexion.  Soit $P_f$ la probabilité qu'un élément (nœud
 ou arc) tombe en panne ou quitte le réseau pendant l'établissement d'une
 connexion. Soit $P_E$ la probabilité que l'établissement d'une connexion soit
-achevée avec succès. Sans les allers-retours de WebRTC, la probabilité est : 
-\begin{equation} P_{E,\,1way}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
+achevée avec succès. Sans les allers-retours de WebRTC, la probabilité est :
+\begin{equation} P_{E}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
 correspond à la probabilité que chaque élément sur le chemin de taille $k+1$
 reste disponible et fonctionnel pendant leur tour de dissémination. Avec WebRTC,
 au minimum un aller-retour est nécéssaire entre les nœuds se connectant. Aucun
 des éléments constituant le chemin de dissémination ne doivent tomber en panne
 ou partir jusqu'au retour du message. Nous obtenons : 
-\begin{align} P_{E,\,3way}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
+\begin{align} P_{E,\,webrtc}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
                                      \ldots (1-P_f)^2) \nonumber \\
                                    &=1-(1-P_f)^{k^2+3k+2}
 \end{align}
@@ -392,17 +406,17 @@ protocole \SCAMP est particulièrement vulnérable aux défaillances. À terme, 
 réseau perd sa connexité.
 
 
-\paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
-la phase d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
-relativement bien répartis, \SCAMP doit renouveler les vues partielles afin de
-mieux intégrer les nouveaux arrivants en peuplant leurs vues partielles et de
-décharger les nœuds plus anciens. Ainsi, le mécanisme de bail (\emph{lease})
-est introduit et consiste à rejoindre à nouveau le réseau après un certains
-temps. La vue partielle sortante est conservée tandis que la vue partielle
-entrante est réinitialisée avant d'être naturellement remplie lors de l'entrée
-dans le réseau. Malheureusement, ce mécanisme tend à faire augmenter le nombre
-d'arcs dans le réseau de manière non bornée. De plus, rejoindre à nouveau le
-réseau confronte au premier problème susmentionné.
+% \paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
+% la phase d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
+% relativement bien répartis, \SCAMP doit renouveler les vues partielles afin de
+% mieux intégrer les nouveaux arrivants en peuplant leurs vues partielles et de
+% décharger les nœuds plus anciens. Ainsi, le mécanisme de bail (\emph{lease})
+% est introduit et consiste à rejoindre à nouveau le réseau après un certains
+% temps. La vue partielle sortante est conservée tandis que la vue partielle
+% entrante est réinitialisée avant d'être naturellement remplie lors de l'entrée
+% dans le réseau. Malheureusement, ce mécanisme tend à faire augmenter le nombre
+% d'arcs dans le réseau de manière non bornée. De plus, rejoindre à nouveau le
+% réseau confronte au premier problème susmentionné.
 
 
 
