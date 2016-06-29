@@ -196,8 +196,10 @@ groupes d'utilisateurs.
 
 %\TODO{Maybe talk about estimators\ldots}
 
-% TRANSITION
-
+Afin de résoudre ces problèmes, un développeur pourrait se tourner vers un
+protocoles d'échantillonnage aléatoire de pairs étant conçu pour être adaptatif.
+Ainsi, la taille des vues partielles s'ajusterai automatiquement à la taille du
+réseau.
 
 \subsection{Taille variable}
 \label{net:subsec:variable}
@@ -296,8 +298,8 @@ $n_1$. Entre autres, nous observons que si $n_4$ ne possède pas d'autres voisin
 dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas d'autres
 voisins dans leur vue partielle entrante, alors le réseau n'est plus connexe.
 
-L'approche réactive qu'est \SCAMP possède quant à elle la capacité d'ajuster les
-vues partielles de ces membres à la taille du réseau auquel ils
+L'approche réactive qu'est \SCAMP possède la capacité d'ajuster les vues
+partielles de ces membres à la taille du réseau auquel ils
 appartiennent. Malheureusement, cette approche fait face au problème suivant :
 
 \paragraph{Propagation des arcs.} Les annonces sont systématiquement propagées à
@@ -369,7 +371,8 @@ route alternative existe (puisque WebRTC ne gère pas le routage).
 \begin{figure}
   \begin{center}
     \input{input/network/fighandshake.tex}
-    \caption{\label{repl:fig:handshake} Établissement d'une connexion impliquant
+    \caption[Établissement d'une connexion impliquant des allers-retours avec
+    WebRTC]{\label{repl:fig:handshake} Établissement d'une connexion impliquant
       des allers-retours avec WebRTC. (1) $n_1$ initie la création d'une
       connexion. Le message transite par $n_2$. (2) Lorsque \CYCLON établit un
       connexion avec le voisin du voisin -- ici $n_3$ -- \SCAMP cherche

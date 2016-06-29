@@ -72,7 +72,7 @@ séquence se définie simplement par un ordre dense sur ses éléments : les
 éléments sont ordonnés et il est toujours possible d'insérer un élément entre
 deux autres éléments.
 
-Nous distingue la complexité spatiale de la réplique, la complexité en
+Nous distinguons la complexité spatiale de la réplique, la complexité en
 communication des messages, la complexité temporelle d'une opération générée
 localement, la complexité temporelle de l'intégration d'une opération
 reçue. Parmi ces complexités, la complexité en communication est la plus
@@ -463,12 +463,13 @@ $id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/motivationlogoot.eps}
-    \caption{\label{repl:img:motivationlogoot} Taille des chemins allouées par
+    \caption[Taille des chemins alloués par Logoot sur un document édité en
+    tête]{\label{repl:img:motivationlogoot} Taille des chemins alloués par
       Logoot sur un document principalement édité en tête. L'axe des abscisses
       montre le numéro de la ligne dans le document. L'axe des ordonnées de la
       partie haute de la figure montre la révision à laquelle a été ajoutée la
       ligne. L'axe des ordonnées de la partie base de la figure montre la taille
-      du chemin allouée à une ligne.}
+      du chemin alloué à une ligne.}
   \end{center}
 \end{figure}
 
@@ -541,19 +542,20 @@ suffixe le triple $\langle 1,\, s_y,\, x \rangle$.
 \begin{figure}
   \begin{center}
     \includegraphics[width=0.8\textwidth]{img/lseq/motivationtreedoc.eps}
-    \caption{\label{repl:img:motivationtreedoc} Taille des chemins allouées par
+    \caption[Taille des chemins alloués par Treedoc sur un grand document édité
+    en fin]{\label{repl:img:motivationtreedoc} Taille des chemins alloués par
       Treedoc sur un grand document principalement édité en fin. L'axe des
       abscisses montre le numéro de la ligne dans le document. L'axe des
       ordonnées de la partie haute de la figure montre la révision à laquelle a
       été ajoutée la ligne. L'axe des ordonnées de la partie base de la figure
-      montre la taille du chemin allouée à une ligne.}
+      montre la taille du chemin alloué à une ligne.}
   \end{center}
 \end{figure}
 
 
 \noindent La figure~\ref{repl:img:motivationtreedoc} met en évidence la rapide
 croissance des chemins (i.e. les identifiants uniques de site et compteurs sont
-ignorés) allouées par Treedoc. Un série d'insertions se succédant conduit à des
+ignorés) alloués par Treedoc. Un série d'insertions se succédant conduit à des
 identifiants de plus de 1k bits. Tout comme l'approche Logoot, les observations
 effectuées sur un corpus de documents Wikipédia montrent l'importance d'une
 stratégie d'allocation gérant l'édition de gauche à droite. Elles conduisent à
