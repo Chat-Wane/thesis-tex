@@ -20,7 +20,7 @@ contenu. La mise en place de ces fonctionnalités requière
   \begin{center}
     \includegraphics[width=0.85\textwidth]{img/world.png}
     \caption[Édition collaborative décentralisée]{\label{intro:img:world}Édition
-      collaborative décentralisée.}
+      collaborative décentralisée répartie à travers le monde.}
   \end{center}
 \end{figure}
 
@@ -29,83 +29,77 @@ auteurs répartis à travers le monde. Afin d'augmenter la disponibilité du
 document et de diminuer le temps de réponse lors d'une modification, les
 éditeurs collaboratifs actuels suivent le principe de la réplication
 optimiste~\cite{saito2005optimistic}. Chaque éditeur collaboratif possède une
-copie locale du document.  Lorsque l'utilisateur effectue une modification, elle
-est directement répercutée sur sa copie avant d'être envoyée au reste des
-éditeurs où elle est intégrée.
+copie locale d'un document -- pouvant être représenté simplement par une
+séquence\footnote{ou liste, ou tableau, ou série.} de caractères autorisant les
+deux opérations suivantes :
+\begin{inparaenum}[(a)]
+\item l'insertion d'un caractère à une position dans la séquence et
+\item la suppression d'un caractère à une position dans la séquence.
+\end{inparaenum}
+Lorsque l'utilisateur effectue une opération
+\begin{inparaenum}[(i)]
+\item elle est directement répercutée sur sa copie avant
+\item d'être envoyée au reste des éditeurs où
+\item elle est intégrée.
+\end{inparaenum}
 
-% \begin{figure}
-%   \begin{center}
-%     \input{input/introduction/architecture.tex}
-%     \caption[Architecture des éditeurs collaboratifs]
-%     {\label{intro:fig:architecture} Architecture en 4 couches des éditeurs
-%       collaboratifs.}
-%   \end{center}
-% \end{figure}
 
-% La figure~\ref{intro:fig:architecture} montre l'architecture d'un éditeur
-% collaboratif constituée de quatre parties :
-% \begin{inparaenum}[(i)]
-% \item l'interface homme-machine qui constitue le lien entre l'utilisateur et son
-%   document, 
-% \item la structure de données représentant le document partagé,
-% \item la structure de causalité qui permet d'ordonner les changements effectués
-%   sur le document,
-% \item la couche réseau qui permet de disséminer les changements effectués sur le
-%   document.
-% \end{inparaenum}
-% Aucune de ces couches ne doit empêcher le passage à l'échelle de l'application.
-% Cela concerne aussi bien le nombre d'utilisateurs, la taille des documents, la
-% fréquence des changements et la durée avant laquelle ils sont intégrés.
+\begin{figure}
+  \input{input/introduction/figripconvergence.tex}
+  \caption{\label{intro:fig:ripconvergence} Répliques divergentes d'un
+    document.}
+\end{figure}
 
-L'utilisation des structures de données ``classiques'' telles que les listes
-n'est pas directement possible du fait de la latence entre les
-collaborateurs. Par exemple, si un auteur insère un caractère en début de document
-pendant qu'un autre supprime un caractère au même endroit, le premier auteur
-risque, à tort, de voir supprimé le caractère qu'il vient d'insérer. Afin d'éviter
-de telles situations, de nouvelles structures et de nouveaux algorithmes doivent
-être employés.
+L'utilisation des structures de données \og classiques \fg n'est pas directement
+possible du fait de la latence entre les collaborateurs. Par exemple, la
+figure~\ref{intro:fig:ripconvergence} présente un exemple où un auteur insère un
+caractère sur la réplique 1 en début de document pendant qu'un autre supprime un
+caractère sur la réplique 3 au même endroit. Le premier auteur risque, à tort,
+de voir supprimé le caractère qu'il vient d'insérer. L'état final de la réplique
+2 dépend de l'ordre de réception et d'intégration des opérations. Ici, la
+suppression arrivant avant l'insertion, la séquence devient \texttt{QERTY}.
+Afin d'éviter de telles divergences dans l'état des répliques, de nouvelles
+structures et de nouveaux algorithmes doivent être employés.
 
 Une première famille d'approches consiste à transformer les arguments de
 l'opération afin qu'elle considère les opérations intégrées
 concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
 l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
 compte qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier
-les arguments de l'opération reçue afin que le second caractère soit supprimé,
-et non plus le premier. Détecter ces cas nécessite de communiquer, avec chaque
-opération, des données dont la croissance linéaire empêche au groupe d'éditeurs
-d'atteindre de large dimensions~\cite{charronbost1991concerning,
-  sun2009contextbased}.
+les arguments de l'opération reçue afin que le caractère \texttt{W} soit
+supprimé, et non plus le caractère \texttt{Q}. Toutes les répliques convergent
+alors vers la séquence \texttt{QERTY}.  Détecter ces cas concurrents nécessite
+de communiquer, avec chaque opération, des données dont la croissance linéaire
+empêche au groupe d'éditeurs d'atteindre de large
+dimensions~\cite{charronbost1991concerning, sun2009contextbased}.
 
 Une seconde famille d'approches consiste à utiliser des structures de données
-dont les opérations sont commutatives~\cite{shapiro2011conflict}. Pour que les
-opérations commutent, ces approches associent à chaque caractère un identifiant
-unique et immuable.
+dont les opérations sont commutatives~\cite{shapiro2011conflict} et ne souffrent
+donc pas de la concurrence. Pour que les opérations commutent, ces approches
+associent à chaque caractère un identifiant unique et immuable.
 
-\paragraph{Les identifiants non supprimables~\cite{oster2006data}.} L'opération
-de suppression de caractères se contente de cacher le caractère ciblé à
-l'utilisateur. Afin de purger la structure des identifiants cachés et ainsi
-conserver de bonnes performances, un protocole de ramasse-miettes
-réparti~\cite{abdullahi1998garbage} doit être exécuté
-régulièrement. Malheureusement, cela s'avère extrêmement
+\paragraph{Les identifiants cachés~\cite{oster2006data}.} L'opération de
+suppression de caractères se contente de cacher le caractère ciblé à
+l'utilisateur. La mémoire consommée par une réplique croît de manière
+monotone. Les performances d'intégration des opérations s'en trouvent
+diminuées. Afin d'y remédier, un protocole de ramasse-miettes
+réparti~\cite{abdullahi1998garbage} doit être exécuté régulièrement pour purger
+la structure des identifiants cachés. Malheureusement, cela s'avère extrêmement
 coûteux~\cite{abdullahi1998garbage}.
 
 \paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
 identifiants sont des listes dont la taille, définie à la génération, peut
-grandir très rapidement~\cite{weiss2009logoot}. Cette croissance impacte
-négativement les performances du système. Pour y remédier, un protocole de
-relocalisation des identifiants doit être exécuté
-régulièrement~\cite{zawirskiasynchronous}. Malheureusement, ces protocoles
-reviennent à obtenir un consensus dans un contexte réparti. Leur coût s'avère
-également très élevé~\cite{mostefaoui2015signature}.
+croître de manière linéaire par rapport au nombre d'insertions dans la
+séquence~\cite{weiss2009logoot}. Cette croissance impacte négativement les
+performances du système. Afin d'y remédier, un protocole de relocalisation des
+identifiants doit être exécuté régulièrement~\cite{zawirskiasynchronous}. Ces
+protocoles reviennent à obtenir un consensus dans un contexte
+réparti. Malheureusement, leur coût s'avère également très
+élevé~\cite{mostefaoui2015signature}.
 
 Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces
   identifiants de sorte que leur taille soit directement sous-linéaire?}
-
-%%et des canaux de communication avec des
-%%éditeurs distants. Une opération effectuée par l'auteur localisé aux États-Unis
-%%peut transiter par Madagascar avant de parvenir à l'éditeur Japonais. Une
-%%latence entre emission
 
 Pour converger vers des documents identiques, tous les changements doivent
 parvenir à tous les éditeurs. Par conséquent, un réseau superposé doit être mis

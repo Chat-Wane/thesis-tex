@@ -21,90 +21,56 @@ temps et l'espace~\cite{desanctis1987foundation, grudin1994computersupported,
 même pièce ni même de se retrouver au même moment pour participer à la rédaction
 du document.
 
-Depuis la présentation du premier éditeur de ce type par Engelbart en
-1968~\cite{engelbart1968research}, les éditeurs collaboratifs ont
-fleuri. Toutefois, leur adoption massive par le public n'est que récente et
-provient principalement des éditeurs web~\cite{mogan2010impact,
+Si le premier éditeur collaboratif date de 1968~\cite{engelbart1968research},
+leur adoption massive par le public n'est que récente
+%Depuis la présentation du premier éditeur de ce type par Engelbart en
+%1968~\cite{engelbart1968research}, les éditeurs collaboratifs ont
+%fleuri. Toutefois,
+% leur adoption massive par le public n'est que récente 
+et émane principalement des éditeurs Web temps réel~\cite{mogan2010impact,
   perkel2014scientific} tels que \emph{Google Docs}~\cite{googledocs} ou
-\emph{ShareLaTeX}~\cite{sharelatex}. Grâce au web, il est possible de créer et
-d'éditer facilement un document depuis un ordinateur, un portable, ou une
-tablette. Un simple lien permet de le partager avec des amis ou des
-collègues. L'édition collaborative devient si aisée qu'elle est à la portée de
-tous. Cette facilité d'accès ouvre à de nouveaux usages. Par exemple, un
-document n'est plus cantonné aux petits groupes : le web entier peut participer
-à son élaboration, donner ses avis, participer à sa rédaction. Lors d'un cours
-formation en ligne (\emph{MOOC})~\cite{breslow2013studying}, la prise de notes
-peut rassembler des milliers de personnes à son commencement. Ensuite, nombre
-d'étudiants quittent le cours par manque d'interêt. Enfin, beaucoup d'étudiants
-réintègrent le groupe d'édition lorsque l'examen final approche.  Par
-conséquent, les éditeurs collaboratifs doivent supporter des groupes dont les
-dimensions ont largement augmenté, et dont le nombre de collaborateurs fluctue à
-chaque instant. Le web est-il prêt à accueillir ce genre d'applications?
-
-%Jusqu'alors, l'architecture des applications web était éminement centralisé,
-%avec un serveur
-
-%% Initialement pensé en terme decentralisé, le web a été pris à son compte par les
-%% grandes fournisseurs de services ; .   . fef oizbfio z
-
-%% Jusqu'alors, le web comme support à la collaboration a été utilisé uniquement de
-%% manière centralisée, avec un server ... .  . . .
-
-%Actuellement, une large portion du web est détenue par quelques acteurs.
-
-%La majeur partie du web est détenue par quelques groupes 
-
-De nos jours, un petit nombre d'entreprises détient une large portion du web. En
-résulte une forte centralisation des données et de puissance de calcul. Cette
-organisation éminemment centralisée, où quelques serveurs sont en charge d'un
-nombre titanesque de clients, pose des problèmes d'ordre éthique sur la
+\emph{ShareLaTeX}~\cite{sharelatex}. Grâce au Web, il est possible de créer et
+d'éditer facilement un document depuis un ordinateur de bureau, un téléphone
+portable ou une tablette tactile. Un simple lien permet de le partager avec des
+amis ou des collègues. L'édition collaborative devient si aisée qu'elle est à la
+portée de tous.  Cependant, de nos jours, seul un petit groupe d'entreprises
+détient une large portion du Web. Les applications Web populaires tels que les
+éditeurs collaboratifs sont maintenues par quelques grandes
+sociétés.  %% En résulte une
+%% forte centralisation des données et de puissance de calcul.
+Cette organisation éminemment centralisée, où quelques serveurs sont en charge
+d'un nombre titanesque de clients, pose des problèmes d'ordre éthique sur la
 confidentialité, la propriété et la censure~\cite{cherrueau2016composer,
   gellman2013us, pearson2011toward}; et des problèmes d'ordre technique sur le
 passage à l'échelle et la résilience aux pannes.
 
- 
-% L'utilisation du web comme support à la collaboration n'est pas sans défaut. Son
-% organisation éminemment centralisée, avec un serveur en charge de l'ensemble des
-% clients, pose les problèmes suivant :
-
-% \paragraph{Confidentialité :} Chaque lettre tapée transite par un serveur
-% appartenant à un fournisseur de services. Ce dernier est en mesure de lire le
-% document, d'en vendre ou d'en concéder le contenu à des tiers tels que des
-% entreprises publicitaires ou des entités du
-% gouvernement~\cite{cherrueau2016composer, gellman2013us, pearson2011toward};
-
-% \paragraph{Censure :} Bien souvent, la propriété du document doit être accordée
-% au fournisseur de service. À tout moment, le document peut être supprimé, au bon
-% vouloir du fournisseur, si son contenu est jugé contradictoire aux termes du
-% service;
-
-% \paragraph{Passage à l'échelle :} Un serveur est en charge du document. Si le
-% nombre d'utilisateurs augmente et que l'infrastructure mise en place n'est pas
-% adaptée, le serveur risque de ne pouvoir le supporter. Les utilisateurs
-% souffrent alors d'une baisse de qualité de service. Par exemple, leur document
-% peut devenir temporairement inaccessible;
-
-% \paragraph{Point unique de défaillance :} Puisqu'un seul serveur est en charge
-% du document, si celui-ci tombe en panne, l'accès aux documents qu'il héberge est
-% compromis~\cite{demers1987epidemic}.
-
-Pour ces raisons, la redécentralisation du web, et plus généralement de
+Pour ces raisons, la redécentralisation du Web, et plus généralement de
 l'internet, a reçu beaucoup d'attention ces derniers temps~\cite{benet2014ipfs,
   maelstrom, mansour2016demonstration, wood2014ethereum}.  La décentralisation
-constituerait un progrès vers une solution aux problèmes liées à l'éthique ainsi
-qu'une solution partielle aux problèmes d'ordre technique.
-% La décentralisation permettrait de résoudre les problèmes liés à la
-% confidentialité, à la censure, et aux défaillances. 
-Entre autres, la propriété des documents pourrait être rendue à ceux qui les
-rédigent. La décentralisation permettrait aussi d'alléger l'infrastructure des
-services web. Chaque client devenant également un serveur, le poids de l'édition
+constituerait un progrès vers une solution aux problèmes liées à l'éthique.  Par
+exemple, la propriété des documents pourrait être rendue à ceux qui les
+rédigent. La décentralisation constituerait une solution partielle aux problèmes
+d'ordre technique. Par exemple, elle permettrait d'alléger l'infrastructure des
+services Web. Chaque client devenant également un serveur, le poids de l'édition
 s'en trouverait réparti parmi les participants au lieu du
-Nuage~\cite{mell2011national}.
+Nuage~\cite{mell2011national}. 
 
+La facilité d'accès apportée par le Web au service de la décentralisation
+inspire également de nouveaux usages, de plus grande ampleur et plus
+dynamiques. Par exemple, un document n'est plus cantonné aux petits groupes : le
+Web entier peut participer à son élaboration, donner ses avis, participer à sa
+rédaction. Lors d'un cours formation en ligne
+(\emph{MOOC})~\cite{breslow2013studying}, la prise de notes peut rassembler des
+milliers de personnes à son commencement. Ensuite, nombre d'étudiants quittent
+le cours par manque d'intérêt. Enfin, beaucoup d'étudiants réintègrent le groupe
+d'édition lorsque l'examen final approche.  Par conséquent, les éditeurs
+collaboratifs doivent supporter des groupes dont les dimensions ont largement
+augmenté, et dont le nombre de collaborateurs fluctue à chaque instant.
+%% Le Web est-il prêt à accueillir ce genre d'applications?
 
-La question concerne donc la faisabilité d'une telle application :
-\textbf{L'édition collaborative temps réel est-elle possible sur le web, sans
-  l'intervention d'un tiers et sans limites quant aux dimensions du système?}
+La question concerne la faisabilité d'une telle application :
+\textbf{L'édition collaborative temps réel est-elle possible sur le Web, sans
+  l'intervention d'un tiers et sans limites quant aux dimensions du système ?}
 
 %%% Local Variables:
 %%% mode: latex
