@@ -7,10 +7,10 @@ document. Un éditeur de texte collaboratif temps réel~\cite{ellis1991groupware
 étend la rédaction d'un document à un groupe d'utilisateurs. Chacun possède son
 éditeur, voit les modifications effectuées par ses collaborateurs sur le
 document, effectue ses propres changements en insérant ou en supprimant du
-contenu. La mise en place de ces fonctionnalités requière
+contenu. La mise en place de ces fonctionnalités temps réel  requière
 \begin{inparaenum}[(i)]
-\item un moyen de communication entre les éditeurs fonctionnant sur des machines
-  potentiellement distantes;
+\item un moyen de communication fiable entre les éditeurs fonctionnant sur des
+  machines potentiellement distantes;
 \item un moyen de représenter les documents en mémoire de telle sorte que tous
   les éditeurs affichent un même document lorsqu'ils ont reçu les mêmes
   modifications~\cite{burckhardt2014replicated, shapiro2011conflict}.
@@ -64,12 +64,12 @@ structures et de nouveaux algorithmes doivent être employés.
 Une première famille d'approches consiste à transformer les arguments de
 l'opération afin qu'elle considère les opérations intégrées
 concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
-l'intégration de la suppression par le premier éditeur, celui-ci doit se rendre
-compte qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier
-les arguments de l'opération reçue afin que le caractère \texttt{W} soit
-supprimé, et non plus le caractère \texttt{Q}. Toutes les répliques convergent
-alors vers la séquence \texttt{QERTY}.  Détecter ces cas concurrents nécessite
-de communiquer, avec chaque opération, des données dont la croissance linéaire
+l'intégration de la suppression par le premier éditeur, celui-ci doit réaliser
+qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier les
+arguments de l'opération reçue afin que le caractère \texttt{W} soit supprimé,
+et non plus le caractère \texttt{Q}. Toutes les répliques convergent alors vers
+la séquence \texttt{QERTY}.  Détecter ces cas concurrents nécessite de
+communiquer, avec chaque opération, des données dont la croissance linéaire
 empêche au groupe d'éditeurs d'atteindre de large
 dimensions~\cite{charronbost1991concerning, sun2009contextbased}.
 
@@ -99,22 +99,46 @@ réparti. Malheureusement, leur coût s'avère également très
 
 Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces
-  identifiants de sorte que leur taille soit directement sous-linéaire?}
+  identifiants de sorte que leur taille soit directement sous-linéaire ?}
 
-Pour converger vers des documents identiques, tous les changements doivent
-parvenir à tous les éditeurs. Par conséquent, un réseau superposé doit être mis
-en place afin de permettre une communication fiable d'un éditeur à l'autre.  La
-figure~\ref{intro:img:world} montre que chaque éditeur est connecté à d'autres
-éditeurs -- ses voisins -- possédant une réplique du document. Ici, l'éditeur
-localisé aux États-Unis communique avec les éditeurs canadien, français et
-malgache. Chaque éditeur participe activement au bon fonctionnement du
-système. Une opération émise par ce premier peut transiter par l'éditeur
-localisé à Madagascar avant de parvenir à l'éditeur japonais.  Les changements
-parviennent à tous les éditeurs par transitivité~\cite{birman1999bimodal}.  La
-taille des voisinnages est déterminante. En effet, lorsqu'elle augmente, le
-trafic généré augmente au risque de dépasser les capacités d'émission des
-éditeurs; lorsqu'elle diminue, les changements risquent de ne plus parvenir à
-tous les éditeurs.
+Pour répondre à cette première question de recherche, nous avons fait
+l'hypothèse d'une communication fiable : chacune des modifications doit être
+reçue par l'ensemble des éditeurs collaboratifs.
+%%Pour converger vers des documents identiques, tous les changements doivent
+%% parvenir à tous les éditeurs.
+Une manière efficace de mettre en place cette diffusion fiable et décentralisée
+consiste à suivre le principe de propagation épidémique\footnote{ou propagation
+  de rumeurs.}  où
+\begin{inparaenum}[(i)]
+\item l'éditeur effectuant un changement choisit un sous-ensemble d'éditeurs
+  possédant une réplique du document et leur envoie la modification;
+\item lorsqu'un éditeur reçoit un tel message, il choisit à son tour un
+  sous-ensemble d'éditeurs auxquels faire suivre le message.
+\end{inparaenum}
+Les changements atteignent tous les éditeurs par transitivité.
+% Par conséquent, un réseau superposé doit être mis en place afin de permettre une
+% communication fiable d'un éditeur à l'autre.
+La figure~\ref{intro:img:world} montre que chaque éditeur est connecté à
+d'autres éditeurs -- ses voisins -- possédant une réplique du document. Ici,
+l'éditeur localisé aux États-Unis communique avec les éditeurs canadien,
+français et malgache.
+% Chaque éditeur participe activement au bon fonctionnement
+%du système.
+Une opération émise par ce premier peut transiter par l'éditeur localisé à
+Madagascar avant de parvenir à l'éditeur japonais. 
+% Les changements parviennent
+%à tous les éditeurs par transitivité~\cite{birman1999bimodal}.
+
+Notre contexte nous expose à deux contraintes :
+\begin{inparaenum}[(i)]
+\item l'éditeur doit fonctionner dans les navigateurs Web;
+\item l'éditeur doit maintenir un voisinnage dont la taille gère aussi bien les
+  petits groupes que les grands.
+\end{inparaenum}
+% La taille des voisinages est déterminante.
+En effet, lorsqu'il augmente, le trafic généré augmente au risque de dépasser
+les capacités d'émission des éditeurs; lorsqu'il diminue, les changements
+risquent de ne plus parvenir à tous les éditeurs.
 
 Afin de configurer la taille de cet ensemble idéalement~\cite{erdos1959random},
 le développeur doit connaître le nombre de collaborateurs que l'éditeur
