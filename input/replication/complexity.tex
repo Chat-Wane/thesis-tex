@@ -25,15 +25,16 @@ important de noter que le comportement d'édition monotone constitue un cas
 défavorable puisqu'il tend à déséquilibrer l'arbre stockant la séquence
 répliquée. Aussitôt que les participants commencent à éditer à différents
 endroits -- ce qui est plus proche d'un cas d'utilisation réel -- l'arbre
-commence à s'équilibrer et les opérations deviennent plus efficaces
-proportionnellement. L'analyse ne fait pas mention de cas moyen puisqu'il
-nécessite de connaître la distribution des positions d'insertions effectuées par
-des être humains ce qui représente une tâche complexe. Enfin, l'analyse en
-complexité se concentre sur la représentation de la séquence sous forme
-d'arbre. Cette représentation, par rapport à une liste, possède l'avantage d'une
-structure de séquences plus compacte au prix d'accès plus lents.  D'autres
-structures existent proposant d'autres compromis. Cependant, il est important de
-noter que la complexité spatiale d'un identifiant demeure inchangée.
+commence à s'équilibrer.% et les opérations deviennent plus efficaces
+%proportionnellement.
+L'analyse ne fait pas mention de cas moyen puisqu'il nécessite de connaître la
+distribution des positions d'insertions effectuées par des être humains ce qui
+représente une tâche complexe. Enfin, l'analyse en complexité se concentre sur
+la représentation de la séquence sous forme d'arbre. Cette représentation, par
+rapport à une liste, possède l'avantage d'une structure de séquences plus
+compacte au prix d'accès plus lents.  D'autres structures existent proposant
+d'autres compromis. Cependant, il est important de noter que la complexité
+spatiale d'un identifiant demeure inchangée.
 
 \subsection{Complexité spatiale}
 \label{repl:subsec:space}
@@ -46,7 +47,7 @@ de réplique. La seconde est importante puisqu'elle représente le mémoire allo
 localement par chaque éditeur collaboratif.
 
 La section~\ref{repl:sec:proposal} spécifie que chaque nouvelle concaténation
-dans le chemin de l'identifiant requière un bit additionnel pour l'encoder. Cela
+dans le chemin de l'identifiant requiert un bit additionnel pour l'encoder. Cela
 représente au total $\mathcal{O}(e^2)$ bits pour encoder le chemin, où $e$ est
 la profondeur du chemin dans l'arbre. Heureusement, cette profondeur est bornée
 selon le comportement d'édition remplissant l'arbre exponentiel. 
@@ -96,7 +97,7 @@ quadratique, la complexité spatiale des identifiants est
 $\mathcal{O}((\log I)^2)$. Globalement, la complexité spatiale de l'arbre reste
 la même, à savoir $\mathcal{O}(I \log I)$.
 
-\paragraph{Pire cas.} Le pire cas s'obtient par l'insertions systématique
+\paragraph{Pire cas.} Le pire cas s'obtient par l'insertion systématique
 d'éléments à l'endroit où l'espace d'allocation est le plus faible. Par exemple,
 lorsque la sous-fonction d'allocation employée est conçue pour l'édition de
 gauche à droite, peu d'espace est laissé disponible à gauche de ce niveau.  Dans
@@ -111,7 +112,7 @@ elle aussi $\mathcal{O}(I^2)$.
   \begin{center}
     \caption[Bornes supérieures de la complexité spatiale de \LSEQ, Logoot, et
     Treedoc] {\label{repl:table:lseqspace} Bornes supérieures de la complexité
-      spatiale de \LSEQ, Logoot, et Treedoc. Où $I$ est le nombre d'insertions
+      spatiale de \LSEQ, Logoot, et Treedoc. $I$ est le nombre d'insertions
       effectuées sur la séquence.}
     \input{input/replication/tablelseqspace.tex}
   \end{center}
@@ -145,11 +146,11 @@ d'édition suivant : aléatoire, monotone, et pire cas.
 \paragraph{Insertion locale.} Cette opération consiste simplement à construire
 un nouveau chemin en fonction des chemins adjacents. Par conséquent, la
 complexité dépend de la taille de ces chemins qui grandissent en fonction du
-comportement d'édition. Les comportements aléatoire, monotone, et pire cas
-conduisent respectivement à une croissance de l'arbre en
-$\mathcal{O}(\sqrt{\log I})$, $\mathcal{O}(\log I)$, et $\mathcal{O}(I)$. La
-complexité temporelle de la partie locale de l'insertion suit donc ces
-même complexités.
+comportement d'édition. Les comportements d'édition aléatoire, monotone et pire
+cas conduisent respectivement à une croissance de l'arbre en
+$\mathcal{O}(\sqrt{\log I})$, $\mathcal{O}(\log I)$ et $\mathcal{O}(I)$. La
+complexité temporelle de la partie locale de l'insertion suit donc ces mêmes
+complexités.
 
 \paragraph{Suppression locale.} L'opération consiste à propager l'identifiant à
 supprimer à tous les participants. L'opération se fait donc en temps constant
@@ -170,7 +171,7 @@ supprime les nœuds qu'elle traverse si ce nœud ne possède qu'un seul élémen
 parmi ses sous-arbres. La complexité temporelle de la recherche dichotomique
 dépend du niveau $l$ à laquelle elle est effectuée : $\mathcal{O}(\log 2^l)$.
 Les recherches à répétition conduisent à une borne supérieure en
-$\mathcal{O}(\textstyle\sum\nolimits_{i=1}^{e}(\log 2^i))$ où $e$e est la
+$\mathcal{O}(\textstyle\sum\nolimits_{i=1}^{e}(\log 2^i))$ où $e$ est la
 profondeur de l'arbre. En remplaçant la variable $e$, les bornes supérieures sur
 la complexité temporelle des opérations deviennent
 $\mathcal{O}(\log I + \sqrt{\log I})$ pour le comportement aléatoire,
@@ -183,7 +184,7 @@ profonde.
   \begin{center}
     \caption[Bornes supérieures de la complexité temporelle de \LSEQ]
     {\label{repl:table:lseqtime} Bornes supérieures de la complexité temporelle
-      de \LSEQ. Où $I$ est le nombre d'insertions effectuées sur la séquence.}
+      de \LSEQ. $I$ est le nombre d'insertions effectuées sur la séquence.}
     \input{input/replication/tablelseqtime.tex}
   \end{center}
 \end{table}
@@ -219,10 +220,10 @@ recherche concerne la position $5$ correspondant au caractère \texttt{Y}. Ici,
 l'arbre est parcouru en partant du fils gauche de la racine. Ce fils sait que
 ses sous-branches contiennent 3 caractères. L'algorithme en déduit que le
 prochain fils de la racine est à la position 4. En examinant ce second fils,
-l'algorithme déduit que l'identifiant recherché est inclue dans l'un de ses
+l'algorithme déduit que l'identifiant recherché est inclus dans l'un de ses
 fils. Ainsi, il continue l'exploration dans ce sous-arbre. Lorsqu'il examine le
 nœud contenant \texttt{Y}, il sait que celui-ci est en position $5$. Par
-conséquent, il retourne le chemin qu'il a empreinté pour y parvenir, à savoir
+conséquent, il retourne le chemin qu'il a emprunté pour y parvenir, à savoir
 [5.4]. Nous pouvons observer dans cet exemple que si la recherche était parti de
 la droite, elle n'aurait eu à parcourir qu'un seul élément intermédiaire
 (contenant le caractère \texttt{T}), et aurait donc été plus efficace.
@@ -231,7 +232,7 @@ la droite, elle n'aurait eu à parcourir qu'un seul élément intermédiaire
   \begin{center}
     \caption[Bornes supérieures de la complexité temporelle du
     \textsc{lookup} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures
-      de la complexité temporelle de la fonction \textsc{lookup} de \LSEQ. Où
+      de la complexité temporelle de la fonction \textsc{lookup} de \LSEQ.
       $I$ est le nombre d'insertions effectuées sur la séquence.}
     \input{input/replication/tablelseqlookup.tex}
   \end{center}
@@ -245,7 +246,7 @@ qui force à examiner la moitié des voisins du nœud exploré à chaque niveau 
 l'arbre. Puisque chaque nœud peut posséder jusqu'à deux fois plus de fils que
 son parent, le nombre de voisins à examiner double également. Au total, la somme
 de ces voisins est égale au nombre de nœuds présents dans une branche du plus
-profond niveau, c'est-à-dire $\mathcal{O}(2^{\sqrt{\log I}}$ éléments.
+profond niveau, c'est-à-dire $\mathcal{O}(2^{\sqrt{\log I}})$ éléments.
 
 \noindent Grâce à un raisonnement identique, la fonction de \textsc{lookup} après
 un comportement d'édition monotone -- ce qui constitue le pire cas -- est bornée
@@ -260,9 +261,12 @@ $\mathcal{O}(I)$.
 et~\ref{repl:table:lseqlookup} synthétisent la complexité temporelle des
 opérations. L'arbre exponentiel permet d'obtenir des opérations de mise-à-jour
 de l'état efficace. En revanche, l'opération \textsc{lookup} qui permet
-d'interfacer l'arbre et la séquence souffre de ce choix de structure. Entre
+d'interfacer l'arbre et la séquence souffre de ce choix de structure.  Entre
 autres, le comportement d'édition monotone constitue le pire cas pour cette
-opération où l'accès se fait en temps linéaire. Heureusement, 
+opération où l'accès se fait en temps linéaire. Pour comparaison, une liste
+offre des accès en temps constant et retrouve la position d'insertion à partir
+d'un identifiant en temps logarithmique par rapport à la taille de la
+séquence. Heureusement,
 \begin{inparaenum}[(i)]
 \item la vue n'a pas besoin d'être mise-à-jour si l'indice du nouvel élément se
   trouve hors du champs de visibilité de l'utilisateur. Ainsi, la fonction
@@ -283,8 +287,8 @@ performances sur les autres comportements d'édition considérés plus probables
 dans l'édition collaborative. Le résultat le plus important concerne la borne
 supérieure sur la complexité spatiale des identifiants, à savoir une croissance
 polylogarithmique comparée au nombre d'insertions dans la séquence. L'importance
-de ce résultat provient du fait qu'il s'étend à la complexité en communication
-de l'application qui l'utilise. En comparaison, les représentants de l'état de
+de ce résultat provient du fait qu'il influence la complexité en communication
+de l'application qui l'utilise. En comparaison, les approches de l'état de
 l'art fournissent des identifiants dont la taille croît linéairement par rapport
 au nombre d'insertions dans la séquence.  En outre, la complexité spatiale de la
 structure ainsi que la complexité temporelle de ses opérations montre que le
