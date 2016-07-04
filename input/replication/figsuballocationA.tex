@@ -9,13 +9,14 @@
   \small
   %% boundary
   \draw[<->, very thick, color=darkblue](-30pt, -40pt)
-  -- node[anchor=north]{max 10} ( 0pt, -40pt);
-  \draw[very thick, color=darkblue] (1pt,-38pt) -- (1pt, -42pt);
+  --   ( 0pt, -40pt);
+  \draw[very thick, color=darkblue] (1pt,-38pt) -- node[anchor=north]{10}
+  node[anchor=south]{boundary} (1pt, -42pt);
   \draw[<->, very thick, color= darkblue] (2pt, -40pt)--
   node[anchor=north]{large espace}(67pt,-40pt);  
   
   \draw[<-, thick, color=darkblue] 
-  (-15pt, -54pt)--(-15pt, -75pt) node[anchor=north]{insert \texttt{E}};
+  (-15pt, -44pt)--(-15pt, -75pt) node[anchor=north]{insert \texttt{E}};
 
   %% node to element
   \draw[->] (-50pt,-40pt) -- (-50pt,-50pt);

@@ -15,62 +15,102 @@ représentants.
 \subsection{Réplication optimiste de séquences}
 \label{repl:subsec:optimistic}
 
+\begin{figure}
+  \begin{center}
+    \input{input/replication/figoptimisticsteps.tex}
+    \caption[Étapes de la réplication
+    optimiste]{\label{repl:fig:optimisticsteps} Les 3 étapes de la réplication
+      optimiste.}    
+  \end{center}
+\end{figure}
+
 La réplication optimiste~\cite{demers1987epidemic, johnson1975maintenance,
   ladin1992providing, saito2005optimistic} de séquence est un paradigme de
 réplication consistant à appliquer les modifications directement sur une
 réplique locale de la séquence.  Ainsi, un document est toujours disponible et
-réactif aux changements effectués. Ensuite, les modifications sont disséminées
-aux autres serveurs hébergeant une réplique où elles sont intégrées. 
+réactif aux changements effectués. La modification produit un résultat qui est
+disséminés aux autres serveurs hébergeant une réplique. Le serveur exécute -- ou
+\emph{intègre} -- le résultat reçu. La figure~\ref{repl:fig:optimisticsteps}
+illustre ces trois étapes.
+% Grâce à $\textsc{insert}(Q, 0)$, un résultat est
+% produit puis disséminé aux deux autres répliques. L'intrégation de ce résultat
+
+\noindent La réplication optimiste fait l'hypothèse d'une dissémination fiable
+où tous les serveurs reçoivent toutes les modifications afin que toutes les
+répliques convergent vers un état équivalent. Ainsi, après réception et
+intégration du $resultat$, les trois répliques de la
+figure~\ref{repl:fig:optimisticsteps} contiennent la même séquence
+\texttt{QWERTY}.
 
 Sun et al.~\cite{sun1998achieving} déclarent que l'édition collaborative temps
 réel nécessite un système préservant les trois propriétés :
-\begin{itemize}
-\item Convergence : les répliques ayant reçues les même opérations convergent
-  vers un état identique;
-\item Causalité : si une opération précède une autre
-  opération~\cite{lamport1978time}, alors l'intégration de cette première
-  opération précède l'intégration de cette seconde opération;
-\item Intention : l'effet observé sur le document lors de la génération d'une
-  opération doit être également observé lors de son intégration malgré l'
-  interférence d'opérations concurrentes.
-\end{itemize}
+
+%\begin{itemize}
+\paragraph{Convergence.} Les répliques ayant reçues les même opérations
+convergent vers un état identique. Par exemple, la
+figure~\ref{repl:fig:optimisticsteps} montre que les répliques peuvent avoir des
+états temporairement divergent. En revanche, après réception et intégration du
+résultat de l'opération d'insertion, les trois répliques convergent vers une
+séquence identique.
 
 \noindent La convergence fait l'objet de critère de cohérence à part entière
 tels que la cohérence à terme~\cite{bailis2013eventual}, ou la cohérence forte à
 terme~\cite{shapiro2011conflict}. Ces critères de cohérence sont très faibles
 mais ont beaucoup de succès ces dernières années avec, par exemple, les bases de
-données réparties~\cite{dynamo, riak, cassandra, mongodb}. Malheureusement, ces
-critères sont trop expressifs : l'état de convergence n'est pas spécifié. Par
-exemple, ils permettent aux répliques de converger vers un état arbitraire
-n'ayant aucun lien avec les modifications apportées par les participants. À ce
-titre, ces critères seuls sont insuffisants pour l'édition collaborative.
+données réparties~\cite{dynamo, riak, cassandra, mongodb}.
+% Malheureusement, ces critères sont trop expressifs : l'état de convergence
+% n'est pas spécifié. Par exemple, ils permettent aux répliques de converger
+% vers un état arbitraire n'ayant aucun lien avec les modifications apportées
+% par les participants. À ce titre, ces critères seuls sont insuffisants pour
+% l'édition collaborative.
 
-\noindent La causalité contraint l'ordre d'intégration des opérations. Ainsi,
-une opération dépendante d'une autre opération effectuée avant se trouve
-forcément intégrée à sa suite. C'est une manière de forcer l'exécution correcte
-de cette première opération : le contexte d'exécution est le même que sur la
-réplique d'origine donc le résultat est le même.  
-% Malheureusement, capturer
-% toutes les relations causales s'avère
-% coûteux~\cite{charronbost1991concerning}. Pour chaque participant ayant jamais
-% effectué une modification sur le document, une valeur entière doit être
-% conservée dans un vecteur. Ce vecteur indique les opérations visibles lors de
-% l'exécution de cette opération.  
-De même que pour la convergence, baser l'édition collaborative seulement sur un
-ordre causal ne fonctionne pas : les opérations concurrentes n'ont pas de
-comportement défini.
+\begin{figure}
+  \begin{center}
+    \input{input/replication/figcausality.tex}
+    \caption[Exemple de respect des relations
+    causales]{\label{repl:fig:causality}Exemple de respect des relations
+      causales entre deux opérations.}
+  \end{center}
+\end{figure}
 
-\noindent Lorsque les définitions des propriétés de convergence et de causalité
-font consensus, l'intention des opérations d'une séquence demeure plus difficile
-à formaliser dans le cas général. L'effet d'une opération doit respecter le plus
+\paragraph{Causalité.} Si une opération précède une autre
+opération~\cite{lamport1978time}, alors l'intégration de cette première
+opération précède l'intégration de cette seconde opération.  La causalité
+contraint l'ordre d'intégration des opérations. Ainsi, une opération dépendante
+d'une autre opération effectuée avant se trouve forcément intégrée à sa suite.
+La figure~\ref{repl:fig:causality} montre un exemple où, sur la réplique 3,
+l'intégration de l'opération de suppression doit attendre l'arrivée de
+l'opération d'insertion pour supprimer le caractère \texttt{Q}.
+
+
+% C'est une manière de forcer l'exécution correcte de cette première opération
+% : le contexte d'exécution est le même que sur la réplique d'origine donc le
+% résultat est le même.  Malheureusement, capturer toutes les relations
+% causales s'avère coûteux~\cite{charronbost1991concerning}. Pour chaque
+% participant ayant jamais effectué une modification sur le document, une
+% valeur entière doit être conservée dans un vecteur. Ce vecteur indique les
+% opérations visibles lors de l'exécution de cette opération.  De même que
+% pour la convergence, baser l'édition collaborative seulement sur un ordre
+% causal ne fonctionne pas : les opérations concurrentes n'ont pas de
+% comportement défini.
+
+\paragraph{Intention.} L'effet observé sur le document lors de la génération
+d'une opération doit être également observé lors de son intégration malgré l'
+interférence d'opérations concurrentes.
+% Lorsque les définitions des propriétés de convergence et de causalité font
+% consensus,
+
+\noindent L'intention des opérations d'une séquence demeure difficile à
+formaliser dans le cas général. L'effet d'une opération doit respecter le plus
 possible sa spécification séquentielle~\cite{bieniusa2012brief}. La
-spécification séquentielle d'une séquence inclue deux opérations : l'insertion
-d'un élément à une position dans la séquence et la suppression d'un élément à
-une position dans la séquence. L'intention semble donc liée à la position des
-éléments dans la séquence. Contre cette intuition, nous soutenons qu'une
-séquence se définie simplement par un ordre dense sur ses éléments : les
-éléments sont ordonnés et il est toujours possible d'insérer un élément entre
-deux autres éléments.
+spécification séquentielle d'une séquence inclue deux opérations : \og insérer
+l'élément $e$ à la position $i$ dans la séquence \fg et \og supprimer l'élément
+à la position $i$ dans la séquence \fg. L'intention semble donc liée à la
+position des éléments dans la séquence. Contre cette intuition, nous soutenons
+qu'une séquence se définie plus simplement par un ordre dense sur ses éléments :
+les éléments sont ordonnés et il est toujours possible d'insérer un élément
+entre deux autres éléments.
+%\end{itemize}
 
 Nous distinguons la complexité spatiale de la réplique, la complexité en
 communication des messages, la complexité temporelle d'une opération générée
@@ -79,7 +119,9 @@ reçue. Parmi ces complexités, la complexité en communication est la plus
 critique et doit être sous-linaire pour passer à l'échelle. En ce qui concerne
 les complexités temporelles, il est plus important d'améliorer l'intégration que
 la génération car chaque opération locale effectuée conduit à $N$ intégrations,
-où $N$ est le nombre de répliques.
+où $N$ est le nombre de répliques.  Les opérations étant atomiques, leur
+exécution est blocante vis-à-vis des autres opérations. Un temps d'exécution
+trop long constitue un danger pour l'édition en temps réel.
 
 Le reste de cette section présente les approches appartenant à la réplication
 optimiste de séquences. Les approches à transformées opérationnelles cherchent à
@@ -87,87 +129,18 @@ garantir les trois propriétés au prix du passage à l'échelle. Les approches 
 structure de données proposant des opérations commutatives s'attachent à la
 convergence et à l'intention.
 
-
-% \paragraph{Cohérence à terme~\cite{bailis2013eventual} :} Lorsque toutes les
-% modifications ont été reçues et intégrées par toutes les répliques, celles-ci
-% possèdent un état équivalent.
-
-% \noindent Puisque ``\emph{toutes} les modifications'' constitue un ensemble peu
-% réaliste pour raisonner sur une exécution réelle, une définition plus précise
-% porte sur un sous-ensemble de ces modifications :
-
-% \paragraph{Cohérence forte à terme~\cite{shapiro2011conflict} :} Les répliques
-% ayant reçu et intégré les mêmes modifications possèdent un état équivalent.
-
-% \noindent Hélas, ce critère de cohérence est trop expressif : l'état de
-% convergence n'est pas spécifié. Par exemple, la cohérence forte à terme permet
-% aux répliques de converger vers un état arbitraire n'ayant aucun lien avec les
-% modifications apportées par les participants.
-
-% \begin{figure*}
-%   \centering
-%   \subfloat[Modifications concurrentes]
-%   [Les serveurs $n_1$ et $n_3$ modifient leur couleur en même temps.]
-%   {\input{./input/replication/figoptimisticexampleA.tex}}
-%   \hspace{10pt}
-%   \subfloat[Plusieurs états possibles]
-%   [Les répliques convergent. Plusieurs états de convergence sont possibles.]
-%   {\input{./input/replication/figoptimisticexampleB.tex}}
-%   \caption[Convergence en réplication optimiste]
-%   {\label{repl:fig:optimisticexample} Exemple de réplication optimiste avec
-%     modifications concurrentes.}
-% \end{figure*}
-
-
-% Le type de données répliqué doit respecter autant que possible la spécification
-% de sa version séquentielle~\cite{bieniusa2012brief}. Pour nous, une séquence est
-% un type abstrait proposant deux opérations de modification dont le résultat sera
-% propagé au reste des répliques:
-% \begin{inparaenum}[(i)]
-% \item l'insertion locale d'un élément à une certaine position dans la séquence; 
-% \item la suppression locale de l'élément présent à une certaine position dans la
-%   séquence.
-% \end{inparaenum}
-% Concrètement, les éléments sont positionnés dans la séquence suivant un ordre
-% dense, i.e., les éléments sont ordonnées et il est toujours possible d'insérer
-% un élément entre deux autres éléments. Lorsqu'une réplique reçoit une opération
-% d'insertion, le nouvel élément est ajouté de telle sorte que l'ordre dense entre
-% les éléments ayant servi à son insertion locale est préservé. Lorsqu'une
-% réplique reçoit une opération de suppression, l'élément à la position ciblé dans
-% l'ordre dense est supprimé et l'ordre des éléments ayant servi à sa suppression
-% locale est préservé. \TODO{Review.}
-
-
-% Cependant, résoudre les cas concurrents reste à la charge des développeurs. La
-% figure~\ref{repl:fig:optimisticexample} montre un exemple où les répliques
-% concernent une couleur. Le serveur $n_1$ souhaite une couleur bleu tandis que
-% $n_3$ souhaite une couleur blanche. Après échange, une infinité d'états
-% convergeants sont possibles. Par exemple, l'état (i) et (ii) privilégient une
-% seule des modifications. L'état (iii) tente de réconcilier les deux
-% modifications en mélangeant les couleurs pour obtenir un bleu plus clair. L'état
-% (iv) est un état arbitraire sans signification réelle. Tous ces choix respectent
-% la cohérence forte à terme, même celui de l'état arbitraire.
-
-% Ce type de cohérence charge le développeur d'un poids énorme quant au bien fondé
-% de l'état convergeant.  Récemment, de nombreux efforts ont été fournis afin de
-% proposer des bases de données avec cohérence à terme~\cite{dynamo, riak,
-%   cassandra, mongodb}, ainsi que des langages sur lesquels
-% raisonner~\cite{conway2012logic, meiklejohn2015lasp}.
-
 \subsection{Transformées opérationnelles}
 \label{repl:subsec:ot}
 
 Les approches basées sur les transformées opérationnelles
-(OT)~\cite{sun1998operational, sun2009contextbased} sont les plus anciennes et
-s'appliquent à un large champs d'applications telles que l'édition de textes ou
-l'édition d'images. Pour l'édition de textes, les opérations locales d'insertion
-et de suppression proposées possèdent une signature correspondant exactement à
-la signature commune des séquences : $\textsc{insert}(element,\, position)$ et
-$\textsc{delete}(position)$. Lors de la réception d'une opération, ses arguments
-sont ajustés afin qu'ils s'appliquent à l'état courant de la réplique malgré les
-opérations effectuées et intégrées en concurrence. Cette phase d'intégration
-nécéssite l'examen des opérations concurrentes afin d'en compenser les effets
-sur la séquence.
+(OT)~\cite{sun1998operational, sun2009contextbased} sont les plus anciennes. Les
+opérations locales d'insertion et de suppression proposées possèdent une
+signature correspondant exactement à la signature commune des séquences :
+$\textsc{insert}(element,\, position)$ et $\textsc{delete}(position)$. Lors de
+la réception d'une opération, ses arguments sont ajustés afin qu'ils
+s'appliquent à l'état courant de la réplique malgré les opérations effectuées et
+intégrées en concurrence. Cette phase d'intégration nécessite l'examen des
+opérations concurrentes afin d'en compenser les effets sur la séquence.
 
 % En d'autres termes, le résultat d'une opération locale est l'opération
 % elle-même. En revanche, son intégration nécessite l'examen des opérations
@@ -178,7 +151,7 @@ sur la séquence.
   \centering
   \input{./input/replication/figotexample.tex}
   \caption[Exemple de transformées opérationnelles] {\label{repl:fig:otexample}
-    Exemple de scenario impliquant des transformées opérationnelles. L'opération
+    Exemple de scénario impliquant des transformées opérationnelles. L'opération
     de suppression du premier caractère sur la réplique 3 est transformée afin
     de supprimer le second caractère sur les autres répliques.}
 \end{figure}
@@ -197,9 +170,9 @@ l'argument de l'opération voit sa cible changée aux second caractères :
 \texttt{W}.  Réciproquement, la réplique 3 intègre l'insertion de la réplique 1
 : l'insertion et la suppression sont détectées concurrentes, toutefois aucune
 transformation n'est nécessaire. À terme, les répliques convergent vers la
-séquence \texttt{QERTY}. Sans transformation, la réplique 1 aurait obtenu la
-séquence \texttt{WERTY} et la propriété de convergence du système aurait été
-bafouée.
+séquence \texttt{QERTY}. % Sans transformation, la réplique 1 aurait obtenu la
+% séquence \texttt{WERTY} et la propriété de convergence du système aurait été
+% bafouée.
 
 % Dans le cadre de l'édition de textes, en plus des usuelles opérations
 % d'insertion et de suppression, OT fournit des opérations ciblant les chaînes de
@@ -210,36 +183,42 @@ bafouée.
 % correctes. \TODO{Keep it or not?}
 
 Dans les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
-est aussi un serveur hébergeant une réplique de la séquence. Chacune de ces
-entités doit être en mesure d'effectuer les transformations d'elle-même. Parmi
-les pré-requis à cette tâche figure le mécanisme de détection de concurrence. En
-effet, retrouver le contexte d'exécution revient à transformer l'opération reçue
-contre toutes celles qui ont été intégrées sans avoir connaissance de cette
-première. Cependant, chaque message doit transporter un vecteur d'horloges
-(\emph{vector clock})~\cite{lamport1978time} ou de contexte pour chaque
-opération. Par conséquent, la complexité en communication est au minimum
-linéaire par rapport au nombre de répliques. De plus, ces vecteurs et leur
-opération associée sont ensuite sauvegardés dans un historique. La complexité
-spatiale est au minimum linéaire selon les deux dimensions : nombre de répliques
-et nombre d'opérations. Enfin, la génération d'une opération s'exécute en temps
-constant. Cependant, son intégration s'exécute en temps quadratique comparé au
-nombre d'opérations concurrentes à l'opération intégrée. Cette répartition des
-coûts d'opération est malheureuse car 1 opération locale efficace correspond à
-$N$ exécutions distantes potentiellement lente, où $N$ est le nombre de
-répliques recevant l'opération. Pour ces raisons, les approches OT
-décentralisées ne passent pas à l'échelle. Du reste, dans un environnement bien
-maîtrisé, où les opérations arrivent très rapidement à un groupe raisonnable de
-participants, ces approches décentralisées sont extrêmement
-efficaces~\cite{mehdi2014merging}.
+est aussi un serveur hébergeant une réplique de la séquence. Deux problèmes
+apparaissent : 
+
+\paragraph{Coût de la détection.} Chacune de ces entités doit être en mesure
+d'effectuer les transformations d'elle-même. Parmi les pré-requis à cette tâche
+figure le mécanisme de détection de concurrence. En effet, retrouver le contexte
+d'exécution revient à transformer l'opération reçue contre toutes celles qui ont
+été intégrées sans avoir connaissance de cette première. Cependant, chaque
+message doit transporter un vecteur d'horloges (\emph{vector
+  clock})~\cite{lamport1978time} ou de contexte pour chaque opération. Par
+conséquent, la complexité en communication est au minimum linéaire par rapport
+au nombre de répliques.  De plus, ces vecteurs et leur opération associée sont
+ensuite sauvegardés dans un historique. La complexité spatiale est au minimum
+linéaire selon les deux dimensions : nombre de répliques et nombre d'opérations.
+
+\paragraph{Répartition des temps d'exécution.} La génération d'une opération
+s'exécute en temps constant. Cependant, son intégration s'exécute en temps
+quadratique comparé au nombre d'opérations concurrentes à l'opération
+intégrée. Cette répartition des coûts d'opération est malheureuse car 1
+opération locale efficace correspond à $N$ exécutions distantes potentiellement
+lente, où $N$ est le nombre de répliques recevant l'opération.
+
+Pour ces raisons, les approches OT décentralisées ne passent pas à l'échelle. Du
+reste, dans un environnement bien maîtrisé, où les opérations arrivent très
+rapidement à un groupe raisonnable de participants, ces approches décentralisées
+sont extrêmement efficaces~\cite{mehdi2014merging}.
 
 \subsection{Structure de données répliquée sans conflits}
 \label{repl:subsec:crdts}
 
 Les structures de données répliquées sans conflits
-(CRDTs)~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent au
-schéma de réplication optimiste. Ces approches sont basées sur des structures de
-données abstraites fournissant des opérations dont les résultats commutent par
-nature. Les répliques convergent donc vers un état identique même en cas de
+(\emph{CRDTs}\footnote{\emph{Conflict-free Replicated Data
+    Types}})~\cite{shapiro2011comprehensive, shapiro2011conflict} appartiennent
+au schéma de réplication optimiste. Ces approches sont basées sur des structures
+de données abstraites fournissant des opérations dont les résultats commutent
+par nature. Les répliques convergent donc vers un état identique même en cas de
 concurrence. Contrairement aux approches OT, les opérations concurrentes n'ont
 pas besoin d'être détectées. Les CRDTs s'affranchissent donc de la nécessité de
 joindre un vecteur d'horloges à chaque opération. Sans cette contrainte, les
@@ -263,21 +242,16 @@ l'intégration de $e$ doit tout de même respecter l'ordre dense établi lors de
 l'insertion de $p$ et $q$. Par exemple, si $o$ précède $p$ dans la séquence mais
 que $p$ est supprimé, alors $o$ précède -- directement ou non -- l'élément $e$.
 
-Selon la manière dont les identifiants sont générés, nous distinguons les
-approches dont les identifiants référencient des identifiants adjacents à
-l'insertion des approches dont les identifiants sont générés à partir des
-identifiants adjacents dans un ensemble muni d'un ordre dense. Ces premières
-approches recourent à des marqueurs nommés \og pierre tombales \fg lorsqu'une
-suppression est effectuée; ces dernières approches n'utilisent pas de pierres
-tombales mais des identifiants dont la taille, définie à la génération, varie.
-Le reste de cette section s'attache à les présenter.
+Selon la manière dont les identifiants sont générés, nous distinguons deux types
+d'approches : les approches recourant à des marqueurs nommés \og pierre tombales
+\fg; les approches générant des identifiants dont la taille varie.
 
 \subsubsection{Pierres tombales}
 
-Une pierre tombale est une marque laissée après la suppression d'un élément
-indiquant qu'un jour, celui-ci a existé à cet emplacement. Bien entendu, ces
-marques sont cachées à l'utilisateur et n'apparaissent que dans la structure
-sous-jacente. L'impact sur les performances à l'intrégation des opérations en
+Une \og pierre tombale \fg est une marque laissée après la suppression d'un
+élément indiquant qu'un jour, celui-ci a existé à cet emplacement. Bien entendu,
+ces marques sont cachées à l'utilisateur et n'apparaissent que dans la structure
+sous-jacente. L'impact sur les performances à l'intégration des opérations en
 reste néanmoins présent.
 
 \paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
@@ -318,10 +292,10 @@ positionnable, et tout ceux qui en dépendent par transitivité.
 explicitement les relations causales grâce à une représentation sous forme
 d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la dernière
 opération observée. En parcourant l'arbre et en appliquant les opérations, la
-séquence peut être retrouvée. Toutefois, les identifiants sont des horloges
-vectorielles dont la taille devient élevée. De plus, il est nécessaire de
-conserver tous les nœuds de cet arbre causal au cas où une opération y ferait
-référence.
+séquence peut être retrouvée. Toutefois, les identifiants sont des vecteurs
+d'horloges dont la taille croît linéairement avec le nombre de participants. De
+plus, il est nécessaire de conserver tous les nœuds de cet arbre causal au cas
+où une opération y ferait référence.
 
 \paragraph{Partial persistent sequence~\cite{wu2010partial} :} Cette approche
 définit les identifiants dans l'ensemble des nombres rationnels auxquels est
@@ -354,7 +328,7 @@ l'insertion. L'ordre des éléments est alors fonction de ces relations de
 positionnement relatif, et de causalité.
 
 Pour préserver l'ordre dense défini lors de l'exécution locale de l'insertion,
-toutes ces approches génèrent des identifiants qui référencient au moins l'un
+toutes ces approches génèrent des identifiants qui référencent au moins l'un
 des identifiants adjacent. Il devient impossible de supprimer un élément de la
 structure répliquée sans mettre en danger l'ordre dense à préserver. Ainsi, les
 suppressions conservent tous les éléments, qu'ils soient supprimés ou non du
@@ -377,13 +351,15 @@ de la séquence revient à s'interroger : \og Est-ce que
   localement ?
 \end{inparaenum}\fg Cela va sans dire qu'il est difficile d'apporter une réponse
 à ces deux questions. D'autant plus lorsque les répliques ne sont pas
-perpétuellement accessibles. La \emph{core-nebula}~\cite{letia2009crdts} propose
-de contraindre la topologie réseau afin de rendre la prise de décisions
+perpétuellement accessibles. \emph{Core-nebula}~\cite{letia2009crdts} propose de
+contraindre la topologie réseau afin de rendre la prise de décisions
 possible. Ainsi, un cœur décisionnel prend en charge les choix de suppression
 réelle des objets.  Ce cœur décisionnel est restreint à un sous-ensemble des
 membres du réseaux étant toujours accessibles. Les décisions peuvent alors être
 prises de manière fiable. Le reste des participants se conforme à ces décisions
-au risque de perdre certaines de leurs modifications.
+au risque de perdre certaines de leurs modifications. Cette re-centralisation
+expose le système aux problèmes de confidentialité, de censure, de propriété, de
+passage à l'échelle et de défaillance.
  
 Un autre famille de CRDTs conçue pour le type séquence et dont le bon
 fonctionnement ne nécessite pas de référencer directement d'autres
@@ -393,7 +369,7 @@ des problèmes concernant la complexité spatiale de leurs identifiants.
 \subsubsection{Identifiants de taille variable}
 
 Contrairement aux approches basées sur les pierres tombales, certains CRDTs
-génèrent des identifiants ne référenciant pas d'autres identifiants. Par
+génèrent des identifiants ne référençant pas d'autres identifiants. Par
 conséquent, ces identifiants sont indépendants : leur intégration ne nécessite
 pas l'intégration d'autres identifiants. Ces identifiants ont une taille
 variable définie à la génération~\cite{andre2013supporting,
@@ -444,7 +420,7 @@ par examiner chaque niveau des identifiants adjacents afin de connaitre la
 taille du nouvel identifiant. Ici, les identifiants commencent tous les deux
 avec l'entier $12$.  Puisqu'entre $12$ et $12$ aucune valeur entière n'est
 disponible, Logoot doit chercher plus loin dans les identifiants. L'un d'eux ne
-possède pas de second triplet ce qui correspond implicitement à
+possède pas de second triple ce qui correspond implicitement à
 $\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre $0$ et $1337$ de nombreuses
 valeurs sont disponibles.  Logoot doit choisir parmi toutes ces valeurs laquelle
 constituera définitivement le nouvel identifiant. Ce choix impactera également
@@ -468,7 +444,7 @@ $id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
       Logoot sur un document principalement édité en tête. L'axe des abscisses
       montre le numéro de la ligne dans le document. L'axe des ordonnées de la
       partie haute de la figure montre la révision à laquelle a été ajoutée la
-      ligne. L'axe des ordonnées de la partie base de la figure montre la taille
+      ligne. L'axe des ordonnées de la partie basse de la figure montre la taille
       du chemin alloué à une ligne.}
   \end{center}
 \end{figure}
@@ -499,7 +475,7 @@ ente l'identifiant $id_{i-1}$ de l'élément en position $i-1$ et l'identifiant
 $id_i$ de l'élément en position $i$ \fg s'effectue en temps constant.
 Cependant, cette rapidité d'accès est seulement possible au détriment d'une
 consommation en espace élevée : Logoot ne profite pas de la redondance
-d'informations sur les triplets. La complexité spatiale de la structure est
+d'informations sur les triples. La complexité spatiale de la structure est
 quadratique comparée au nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
@@ -516,7 +492,7 @@ binaire 0 ou 1.  Si un nœud possède un élément et deux fils, tous les élém
 du sous-arbre accessible par l'arête dont l'étiquette est 0 se trouvent à gauche
 de ce premier élément; tous les éléments du sous-arbre accessible par l'arête
 dont l'étiquette est 1 se trouve à droite de ce premier élément. Du fait de la
-concurrence, chaque nœuds peut aussi devenir un super-nœud acceuillant plusieurs
+concurrence, chaque nœuds peut aussi devenir un super-nœud accueillant plusieurs
 nœuds. De plus, chaque nœuds est décoré d'un identifiant unique de site et d'un
 compteur local à ce site. Ainsi, les nœuds inclus dans chaque super-nœuds
 suivent eux aussi un ordre total. Un identifiant est donc une liste de triples
@@ -547,31 +523,32 @@ suffixe le triple $\langle 1,\, s_y,\, x \rangle$.
       Treedoc sur un grand document principalement édité en fin. L'axe des
       abscisses montre le numéro de la ligne dans le document. L'axe des
       ordonnées de la partie haute de la figure montre la révision à laquelle a
-      été ajoutée la ligne. L'axe des ordonnées de la partie base de la figure
+      été ajoutée la ligne. L'axe des ordonnées de la partie basse de la figure
       montre la taille du chemin alloué à une ligne.}
   \end{center}
 \end{figure}
 
 
-\noindent La figure~\ref{repl:img:motivationtreedoc} met en évidence la rapide
-croissance des chemins (i.e. les identifiants uniques de site et compteurs sont
-ignorés) alloués par Treedoc. Un série d'insertions se succédant conduit à des
-identifiants de plus de 1k bits. Tout comme l'approche Logoot, les observations
-effectuées sur un corpus de documents Wikipédia montrent l'importance d'une
-stratégie d'allocation gérant l'édition de gauche à droite. Elles conduisent à
-proposer une heuristique selon laquelle des nœuds de l'arbre sont virtuellement
-créés en prévoyance des éditions à venir. Toutefois, de manière identique à
-Logoot, lorsque le comportement d'édition va à l'encontre de cette stratégie,
-les identifiants sont de taille linéaire comparée à la taille du document.
+\noindent La figure~\ref{repl:img:motivationtreedoc} met en évidence la
+croissance rapide des chemins (i.e. les identifiants uniques de site et
+compteurs sont ignorés) alloués par Treedoc. Un série d'insertions se succédant
+conduit à des identifiants de plus de 1k bits. Tout comme l'approche Logoot, les
+observations effectuées sur un corpus de documents Wikipédia montrent
+l'importance d'une stratégie d'allocation gérant l'édition de gauche à
+droite. Elles conduisent à proposer une heuristique selon laquelle des nœuds de
+l'arbre sont virtuellement créés en prévoyance des éditions à venir. Toutefois,
+de manière identique à Logoot, lorsque le comportement d'édition va à l'encontre
+de cette stratégie, les identifiants sont de taille linéaire comparée à la
+taille du document.
 
 
 \noindent La représentation de la séquence sous forme d'arbre possède l'avantage
 de factoriser les nombreux triples communs composants les identifiants
-Treedoc. Cette forme compacte de structure à le défaut de ne pas permettre
+Treedoc. Cette forme compacte de structure a le défaut de ne pas permettre
 d'accès direct aux identifiants. Retrouver les identifiants adjacents à la
 position d'insertion requière un parcours de l'arbre. De plus, cette
 représentation compacte n'a pas d'incidence sur les identifiants
-eux-même. Puisque chaque identifiant doit être disséminé individuellement aux
+eux-mêmes. Puisque chaque identifiant doit être disséminé individuellement aux
 autres répliques, le trafic généré demeure inchangé.
 
 Les CRDTs fonctionnant avec des identifiants de taille variable n'utilisent pas
@@ -579,15 +556,15 @@ de pierre tombales lors de la suppression d'éléments. Par conséquent, la mém
 consommée par ces approches n'est pas strictement croissante. Un document vide
 signifie que la séquence répliquée est également vide. En revanche, les
 identifiants peuvent croître de manière linéaire par rapport au nombre
-d'insertions dans le document. Malheureusement, la complexité en communication
-hérite de cette progression. De même, les opérations d'insertions subissent des
-baisses de performances. 
+d'insertions dans le document. Malheureusement, cette progression se répercute
+sur la complexité en communication. De même, les opérations d'insertions
+subissent des baisses de performances.
 
 Une solution consiste à relocaliser les identifiants. En d'autres termes, les
 identifiants sont modifiés au profit d'identifiants plus courts et conservant
 l'ordre dense des éléments de la séquence. Toutefois, supprimer puis réinsérer
 l'ensemble des éléments dans un document neuf ne suffit pas : le trafic engendré
-est élevé et un tel processus effectué en concurrence est susceptible de clôner
+est élevé et un tel processus effectué en concurrence est susceptible de cloner
 les éléments. Il faut donc parvenir à prendre une décision globale sur la
 relocalisation ce qui revient à obtenir un consensus en contexte réparti. Les
 consensus sont coûteux à obtenir dans les systèmes à large échelle où le nombre

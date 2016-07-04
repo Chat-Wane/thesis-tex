@@ -1,9 +1,9 @@
 
-\lettrine{L}es éditeurs web tels que \emph{Google Docs}~\cite{googledocs} ou
+\lettrine{L}es éditeurs Web tels que \emph{Google Docs}~\cite{googledocs} ou
 \emph{ShareLaTeX}\cite{sharelatex} ont fortement contribué à l'adoption des
 éditeurs collaboratifs par le public~\cite{mogan2010impact}. Des millions
 d'utilisateurs partagent et rédigent leurs documents en temps réel directement
-dans leur navigateur web. Cependant un serveur central appartenant à un
+dans leurs navigateurs Web. Cependant un serveur central appartenant à un
 fournisseur de services sert d'intermédiaire à l'édition. Cela soulève des
 problèmes en termes de confidentialité, de censure, et d'intelligence
 économique~\cite{cherrueau2016composer, gellman2013us, pearson2011toward}. À
@@ -55,7 +55,7 @@ sont efficaces pour les petits groupes d'utilisateurs mais ne sont pas adaptées
 aux groupes de plus large dimension, plus dynamiques, et sujet aux aléas du
 réseau -- notamment sur la latence.
 
-Les structures de données répliqués sans  conflits
+Les structures de données répliqués sans conflits
 (\emph{CRDTs})~\cite{burckhardt2014replicated, shapiro2011comprehensive,
 shapiro2011conflict}, contrairement aux approches OT, ne payent pas le prix de
 la détection de concurrence entre les opérations. Toutefois, ils transportent
@@ -66,25 +66,28 @@ Deux classes de CRDTs conçues pour les séquences existent :
 \paragraph{Pierre tombales~\cite{ahmed2011evaluating, attiya2016specification,
 conway2014language, grishchenko2010deep, oster2006data, roh2011replicated,
 weiss2007wooki, wu2010partial, yu2012stringwise}.} Les CRDTs tels que
-WOOT~\cite{oster2006data} transportent un identifiant de taille constante. La
-complexité en communication est donc excellente. Toutefois, les éléments
-supprimés sont simplement cachés à l'utilisateur. La consommation en espace de
-la réplique croît inexorablement. Les opérations deviennent moins
-performantes. Pour alléger la réplique, il devient nécessaire de la purger de
-ses pierres tombales. Cette purge reviendrait à exécuter un protocole de
-ramasse-miettes réparti~\cite{abdullahi1998garbage} qui ne passe pas à
+WOOT~\cite{oster2006data} transportent un identifiant de taille constante.  
+%La complexité en communication est donc excellente. 
+Toutefois, les éléments supprimés sont simplement cachés à l'utilisateur. La
+consommation en espace de la réplique croît inexorablement. 
+%Les opérations deviennent moins performantes.
+%Pour alléger la réplique, il devient nécessaire de la purger de ses pierres tombales. 
+Pour réellement détruire les éléments supprimés, l'exécution périodique d'un
+ramasse-miettes réparti~\cite{abdullahi1998garbage} est
+nécessaire. Malheureusement, cela ne passe pas à
 l'échelle~\cite{abdullahi1998garbage}.
 
 \paragraph{Identifiants de taille variable~\cite{andre2013supporting,
  preguica2009commutative, weiss2009logoot}.} Les CRDTs tels que
 Logoot~\cite{weiss2009logoot} ne nécessitent pas de pierres tombales mais
-transportent des identifiants dont la taille varie à la génération. En fonction
-de la stratégie d'allocation, ces identifiants peuvent croître linéairement
-comparé au nombre d'insertions effectuées dans le document. Puisque chaque
-identifiant doit être envoyé à l'ensemble des répliques, la complexité en
-communication s'en trouve directement impactée.  Équilibrer la structure
-reviendrait à exécuter un protocole de consensus qui ne passe pas à
-l'échelle~\cite{mostefaoui2015signature}.
+transportent des identifiants de taille variable. En fonction de la stratégie
+d'allocation, ces identifiants peuvent croître linéairement comparé au nombre
+d'insertions effectuées dans le document. Puisque chaque identifiant doit être
+envoyé à l'ensemble des répliques, la complexité en communication s'en trouve
+directement impactée. Pour équilibrer la structure \emph{a posteriori},
+l'exécution périodique d'un mécanisme de relocalisation~\cite{letia2009crdts}
+est nécessaire. Malheureusement, dans notre contexte, atteindre un tel consensus
+s'avère très coûteux~\cite{mostefaoui2015signature}.
 
 \textbf{Afin d'éviter tout protocole additionnel de relocalisation des
 identifiants, comment allouer des identifiants de taille variable dont la taille
@@ -93,8 +96,8 @@ soit directement sous-linéaire ?}
 Ce chapitre présente \LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une
 fonction d'allocation d'identifiants dont la taille croît de manière
 polylogarithmique par rapport au nombre d'insertions dans la séquence. À ce
-titre, elle évite l'utilisation de protocole de relocalisation et, par
-conséquent, passe à l'échelle.
+titre, elle évite l'utilisation de protocole de relocalisation.
+%% et, par conséquent, passe à l'échelle.
 
 La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
 le schéma de réplication optimiste des séquences avant d'en détailler les

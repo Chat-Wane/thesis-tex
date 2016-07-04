@@ -30,17 +30,18 @@ valeur aléatoire dans le nouvel intervalle.
 
 Ainsi, trois éléments principaux composent la fonction d'allocation des chemins
 de \LSEQ :
-\begin{inparaenum}[(i)]
+\begin{itemize}[(i)]
 \item une structure d'arbre dont l'arité maximale augmente avec sa
   profondeur;
 \item deux sous-fonctions d'allocation conçues pour gérer des comportements
   d'édition opposés;
 \item une fonction assignant à chaque profondeur de l'arbre une sous-fonction
   d'allocation parmi celles disponibles.
-\end{inparaenum}
-Individuellement, ces éléments n'arrivent pas à pourvoir des chemins de taille
-satisfaisante. Utilisés simultanément, ils permettent à \LSEQ de générer des
-identifiants de taille sous-linéaire.
+\end{itemize}
+Individuellement, ces éléments n'arrivent pas à construire des chemins dont la
+taille soit sous-linéaire par rapport au nombre d'insertions dans la
+séquence. En revanche, utilisés simultanément, ils permettent à \LSEQ de
+résoudre ce problème.
 
 % L'idée générale de \LSEQ consiste à accepter la perte de niveaux des chemins
 % composants ses identifiants pour peu que les futures allocations compensent ces
