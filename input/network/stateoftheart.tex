@@ -3,12 +3,18 @@
 \section{État de l'art}
 \label{net:sec:stateoftheart}
 
+\begin{figure}
+  \begin{center}
+    \input{input/network/figcompletegraph.tex}
+    \caption[Graphes complets]{\label{net:fig:completegraph}Graphes complets.}
+  \end{center}
+\end{figure}
 
-Un réseau superposé permet à un ensemble de machines de communiquer entre elles
-au dessus d'un autre réseau tels que, par exemple, l'internet ou un autre réseau
-superposé.  Toutes sortes de réseaux superposés existent. Si chaque machine
-possède un canal de communication avec chacune des autres machines, alors la
-topologie correspond à celle d'un graphe complet
+Un réseau superposé (\emph{overlay network}) permet à un ensemble de machines de
+communiquer entre elles au dessus d'un autre réseau tels que, par exemple,
+l'internet ou un autre réseau superposé.  Toutes sortes de réseaux superposés
+existent. Si chaque machine possède un canal de communication avec chacune des
+autres machines, alors la topologie correspond à celle d'un graphe complet
 (cf. figure~\ref{net:fig:completegraph}). La progression quadratique du nombre
 d'arcs en fonction du nombre de nœuds empêche un tel système d'atteindre de
 grandes envergures. Afin de résoudre ce problème, les machines ne possèdent
@@ -28,13 +34,13 @@ connecté avec une forte probabilité, la seconde garantie que les messages se
 propagent rapidement à tous les membres du réseau.
 
 
-Deux familles d'approches existent quant à la taille des vues partielles :
+\noindent Deux familles d'approches existent quant à la taille des vues partielles :
 \begin{inparaenum}[(i)]
-\item La famille d'approches dont la taille est fixée lors de la
-  configuration. Ainsi la taille des vues partielles ne change pas au cours du
-  temps, même si la taille du réseau est susceptible de fluctuer
-  (cf. §\ref{net:subsec:fixed}).
-\item La famille dont les machines, lorsqu'elles rejoignent le réseau,
+\item la famille d'approches dont la taille est fixée lors de la
+  configuration% Ainsi la taille des vues partielles ne change pas au cours du
+%  temps, même si la taille du réseau est susceptible de fluctuer
+  (cf. §\ref{net:subsec:fixed});
+\item la famille d'approches dont les nœuds, lorsqu'ils rejoignent le réseau,
   contribuent à hauteur du logarithme de la taille du réseau
   (cf. §\ref{net:subsec:variable}).
 \end{inparaenum}
@@ -90,8 +96,8 @@ le mélange garantit que le graphe reste connexe.
 
 \paragraph{Newscast~\cite{tolgyeski2009adaptive} :} est un protocole où les vues
 partielles associent à chaque arc une estampille
-(\emph{timestamp}). Périodiquement, les nœuds de Newscast effectuent un mélange
-périodique. Pour cela, ils choisissent l'un de leurs voisins aléatoirement et
+(\emph{timestamp}). Les nœuds de Newscast effectuent un mélange
+périodiquement. Pour cela, ils choisissent l'un de leurs voisins aléatoirement et
 envoient la totalité de leur vue partielle à laquelle est ajoutée leur propre
 identité associée à une estampille à jour. Lors de la réception, leur homologue
 en fait de même. Tout deux fusionnent leur table de voisinage de telle sorte que
@@ -103,12 +109,11 @@ partielles possédant un arc pointant vers ce nœud s'en débarrassent car l'arc
 est devenu obsolète en comparaison des arcs nouvellement reçus.
 
 \noindent Les pertes de messages dues à la non-fiabilité des communications
-mettent en dangers la distribution des arcs. Par exemple, si un message sur deux
-est perdu lorsqu'un certain nœuds tente de communiquer, il perd tout autant
+mettent en danger la distribution des arcs. Par exemple, si un message sur deux
+est perdu lorsqu'un certain nœud tente de communiquer, il perd autant
 d'occasions de s'annoncer au réseau. Par conséquent, il encourt le risque d'être
-évincé de certaines vues partielles, voir de disparaître complètement. En
-d'autres termes, le nœud est moins bien connecté que les autres à cause de ces
-messages perdus. Newscast propose de compenser cela. Ainsi, si un nœud perd un
+évincé de certaines vues partielles. Dans le pire cas, il disparaît
+complètement. Newscast propose de compenser cela. Ainsi, si un nœud perd un
 message sur deux, il émet deux fois plus. La distribution des arcs s'en trouve
 ajustée.
 
@@ -123,34 +128,34 @@ ajustée.
   {\input{input/network/fignewscastexampleB.tex}}
   \caption[Exemple de mélange dans Newscast]
   {\label{net:fig:newscastexample} Exemple de mélange par Newscast. Ici, les
-    estampilles sont simplement formatées hh:mm.}
+    estampilles sont simplement formatées $hh:mm$.}
 \end{figure}
 
 \noindent La figure~\ref{net:fig:newscastexample} montre un exemple de mélange
-avec le protocole Newscast. Là encore, la taille des vues partielles est fixée à
-4 entrées. Le nœud $n_1$ initie le mélange avec un voisin choisit aléatoirement
-: $n_2$. Il envoie l'intégralité de sa vue à laquelle il s'ajoute avec
-l'estampille actuelle 13:18. Le nœud $n_2$ le reçoit et en fait de même. Les
+avec le protocole Newscast. La taille des vues partielles est fixée à 4
+entrées. Le nœud $n_1$ initie le mélange avec un voisin choisit aléatoirement :
+$n_2$. Il envoie l'intégralité de sa vue à laquelle il s'ajoute avec
+l'estampille actuelle $13:18$. Le nœud $n_2$ le reçoit et en fait de même. Les
 deux nœuds $n_1$ et $n_2$ conservent les quatre arcs les plus récents qu'ils
-possèdent, à savoir les arcs vers leur homologue, $n_4$, $n_5$ et $n_9$. La
-figure~\ref{net:fig:newscastexampleB} nous permet de remarquer que le réseau
-semble collapser. En particulier, certains nœuds ne sont plus référencés ni par
-$n_1$, ni par $n_2$. Toutefois, il ne s'agit là que de la représentation locale
-au mélange. Globalement, la topologie résultante reste proche de celle des
-graphes aléatoires.
+possèdent, à savoir les arcs vers leur homologue, $n_4$, $n_5$ et $n_9$. Dans la
+figure~\ref{net:fig:newscastexampleB}, nous remarquons que le réseau semble
+collapser. En particulier, certains nœuds ne sont plus référencés ni par $n_1$,
+ni par $n_2$. Toutefois, il ne s'agit là que de la représentation locale au
+mélange. Globalement, la topologie résultante reste proche de celle des graphes
+aléatoires.
 
 \paragraph{Lpbcast~\cite{eugster2003lightweight} :} est le diminutif de
 \emph{lightweight probabilistic broadcast}. C'est un protocole dont les vues
-partielles ne comprennent que des arcs sans metadonnées additionnelles. C'est
-lorsqu'un nœud diffuse un message au réseau que les vues sont mises à
-jour. Chaque message comporte un ensemble borné d'identités de nœuds ayant
-quitté le réseau, et un ensemble borné d'identités de nœuds échantillonnés au
-cours du cheminement du message. Si aucun message n'a été reçu ni envoyé dans un
-certain intervalle de temps, une diffusion est automatiquement générée afin
-d'activer le mécanisme de mélange.
+partielles ne comprennent que des arcs sans metadonnées additionnelles.  Les
+vues sont rafraîchies lorsqu'un nœud diffuse un message au réseau. Chaque
+message comporte un ensemble borné d'identités de nœuds ayant quitté le réseau,
+et un ensemble borné d'identités de nœuds échantillonnés au cours du cheminement
+du message. Si aucun message n'a été reçu ni envoyé dans un certain intervalle
+de temps, une diffusion est automatiquement générée afin d'activer le mécanisme
+de mélange.
 
 \noindent Lors de la réception de tels messages, un nœud peuple sa propre vue
-partielle des nouveaux éléments présent dans le message avant de la réajuster à
+partielle des nouveaux éléments présents dans le message avant de la réajuster à
 la taille maximale autorisée en supprimant aléatoirement des arcs.
 
 \paragraph{HyParView~\cite{leitao2007dependable} :} est un protocole possédant
@@ -298,9 +303,9 @@ $n_1$. Entre autres, nous observons que si $n_4$ ne possède pas d'autres voisin
 dans sa vue partielle sortante, ou si $n_7$ ou $n_8$ ne possèdent pas d'autres
 voisins dans leur vue partielle entrante, alors le réseau n'est plus connexe.
 
-L'approche réactive qu'est \SCAMP possède la capacité d'ajuster les vues
-partielles de ces membres à la taille du réseau auquel ils
-appartiennent. Malheureusement, cette approche fait face au problème suivant :
+\SCAMP possède la capacité d'ajuster les vues partielles de ses membres à la
+taille du réseau auquel ils appartiennent. Malheureusement, cette approche fait
+face au problème suivant :
 
 \paragraph{Propagation des arcs.} Les annonces sont systématiquement propagées à
 plusieurs voisins de distance. Ce mécanisme participe à la construction rapide

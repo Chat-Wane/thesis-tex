@@ -1,11 +1,4 @@
 
-\begin{figure}
-  \begin{center}
-    \input{input/network/figcompletegraph.tex}
-    \caption[Graphes complets]{\label{net:fig:completegraph}Graphes complets.}
-  \end{center}
-\end{figure}
-
 % \lettrine{L}'édition collaborative~\cite{ellis1991groupware} permet de répartir
 % le travail de rédaction d'un document selon les trois dimensions : le temps,
 % l'espace, et les activités~\cite{desanctis1987foundation,
@@ -33,26 +26,32 @@ le schéma de réplication optimiste~\cite{demers1987epidemic,
   johnson1975maintenance, ladin1992providing, saito2005optimistic}. Pour que les
 répliques d'un document convergent vers un état équivalent, toute opération
 générée sur une réplique doit parvenir à toutes les autres répliques afin d'être
-intégrée. Un mécanisme de diffusion efficace et fiable est requis.
+intégrée. Un mécanisme de diffusion fiable, décentralisé et compatible avec le
+Web est requis.
 
-La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
-l'établissement de connexions d'un navigateur à l'autre, permet de construire
-des éditeurs collaboratifs décentralisés fonctionnant directement dans les
-navigateurs web.  Les mécanismes de diffusion se basent sur des protocoles
-d'échantillonnage de pairs. Toutefois, déployer ces protocoles avec WebRTC n'est
-pas sans poser de problèmes :
+Grâce à \emph{WebRTC}~\cite{webrtc}, il est dorénavant possible d'établir des
+connexions de navigateur à navigateur, et par conséquent d'implémenter un tel
+mécanisme de diffusion.
+% La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
+% l'établissement de connexions d'un navigateur à l'autre, rend l'implémentation
+% d'un mécanisme de diffusion possible.
+% , permet de construire des éditeurs collaboratifs décentralisés fonctionnant
+% directement dans les navigateurs Web.
+Les mécanismes de diffusion se basent sur des protocoles d'échantillonnage de
+pairs. Toutefois, déployer ces protocoles avec WebRTC n'est pas sans poser de
+problèmes :
 \begin{itemize}
 \item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
   des connexions plus coûteuses et sujettes aux défaillances que sur un réseau
   IP.
-\item Les navigateurs web fonctionnent sur des outils informatiques aux
+\item Les navigateurs Web fonctionnent sur des outils informatiques aux
   capacités hétérogènes tels que les ordinateurs de bureau, les téléphones
   portables ou les tablettes tactiles. Le protocole doit donc réduire sa
   consommation de ressources au maximum.
 \item Avec WebRTC, un simple lien HTTP %(\emph{HyperText Transfer Protocol})
   permet de partager l'accès à une session d'édition en temps réel. Cette
   simplicité d'accès expose l'éditeur aux explosions soudaines de popularité
-  caractéristiques du web.
+  caractéristiques du Web.
   %% TODO : insert concrete example
   Le mécanisme de diffusion et le protocole duquel il dépend doivent s'adapter à
   ces montés fulgurantes en nombre de participants et maintenir leur qualité de
