@@ -1,8 +1,8 @@
 
 \section{Contributions}
 
-Afin de répondre à la première question de recherche, nous nous sommes
-interessés à la réplication optimiste~\cite{demers1987epidemic,
+Afin de répondre à la première question de recherche, nous nous sommes tout
+d'abord interessés à la réplication optimiste~\cite{demers1987epidemic,
   saito2005optimistic}, i.e., un schéma de réplication où le document partagé
 est copié chez chaque utilisateur afin de fournir réactivité et
 disponibilité. La structure de séquence constitue une abstraction proche du
@@ -21,24 +21,26 @@ borne et en fournissons la preuve. Au travers de simulations, nous validons
 \LSEQ et sa complexité.
 
 Afin de répondre à la seconde question de recherche, nous nous sommes interessés
-dans un premier temps aux protocoles d'appartenance aux réseaux
-(\emph{membership}). Plus particulièrement à ceux dont la topologie résultante
-possède des propriétés similaires à celles des graphes
-aléatoires~\cite{erdos1959random}. Parmi ces propriétés se trouve la capacité à
-gérer les connexions et déconnexions fréquentes. Ces protocoles sont regroupés
-sous l'appellation de \og protocoles d'échantillonnage aléatoire de
-pairs \fg~\cite{jelasity2004peer, jelasity2007gossip} et servent de base à de
-nombreux protocoles répartis~\cite{dabek2004vivaldi, folz2016cyclades,
-  montresor2005chord}. Nous proposons une nouvelle approche nommée
-\SPRAY~\cite{nedelec2015spray} appartenant à cette famille. Comparé à l'état de
+aux protocoles d'appartenance aux réseaux (\emph{membership}). Plus
+particulièrement à ceux dont la topologie résultante possède des propriétés
+similaires à celles des graphes aléatoires~\cite{erdos1959random}. Parmi ces
+propriétés se trouve la capacité à gérer les connexions et déconnexions
+fréquentes. Ces protocoles sont regroupés sous l'appellation de \og protocoles
+d'échantillonnage aléatoire de pairs \fg~\cite{jelasity2004peer,
+  jelasity2007gossip} et servent de base à de nombreux protocoles
+répartis~\cite{dabek2004vivaldi, folz2016cyclades, montresor2005chord}. Nous
+proposons une nouvelle approche nommée \SPRAY~\cite{nedelec2015spray}
+appartenant à cette famille. Comparé à l'état de
 l'art~\cite{eugster2003lightweight, ganesh2001scamp, jelasity2007gossip,
   leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon}, \SPRAY
 s'adapte à la taille du réseau automatiquement en suivant une progression
-logarithmique comparativement à la taille globale du réseau. Nous mettons cela
-en évidence grâce à des simulations.  Les protocoles de diffusion
-épidémique~\cite{birman1999bimodal} de messages (\emph{gossip}) qui en dépendent
-bénéficient à leur tour de cette capacité à s'adapter. Entre autres, le trafic
-généré peut s'adapter à la taille réelle du réseau.
+logarithmique comparativement à la taille globale du réseau tout en supportant
+les contraintes imposées par le processus complexe d'établissement de connexions
+dans les navigateurs Web. Nous mettons cela en évidence grâce à des simulations.
+Les protocoles de diffusion épidémique~\cite{birman1999bimodal} de messages
+(\emph{gossip}) qui en dépendent bénéficient à leur tour de cette capacité à
+s'adapter. Entre autres, le trafic généré peut s'adapter à la taille réelle du
+réseau.
 
 Afin de répondre à la problématique générale de ce manuscrit, nous avons réuni
 les deux approches susmentionnées dans un éditeur collaboratif décentralisé

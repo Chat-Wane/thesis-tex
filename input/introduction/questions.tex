@@ -118,10 +118,10 @@ consiste à suivre le principe de propagation épidémique\footnote{ou propagati
 Les changements atteignent tous les éditeurs par transitivité.
 % Par conséquent, un réseau superposé doit être mis en place afin de permettre une
 % communication fiable d'un éditeur à l'autre.
-La figure~\ref{intro:img:world} montre que chaque éditeur est connecté à
-d'autres éditeurs -- ses voisins -- possédant une réplique du document. Ici,
-l'éditeur localisé aux États-Unis communique avec les éditeurs canadien,
-français et malgache.
+La figure~\ref{intro:img:world} montre que chaque éditeur collaboratif est
+connecté à d'autres éditeurs -- ses voisins -- possédant une réplique du
+document. Ici, l'éditeur localisé aux États-Unis communique avec les éditeurs
+canadien, français et malgache.
 % Chaque éditeur participe activement au bon fonctionnement
 %du système.
 Une opération émise par ce premier peut transiter par l'éditeur localisé à
@@ -129,34 +129,52 @@ Madagascar avant de parvenir à l'éditeur japonais.
 % Les changements parviennent
 %à tous les éditeurs par transitivité~\cite{birman1999bimodal}.
 
-Notre contexte nous expose à deux contraintes :
-\begin{inparaenum}[(i)]
-\item l'éditeur doit fonctionner dans les navigateurs Web;
-\item l'éditeur doit maintenir un voisinnage dont la taille gère aussi bien les
-  petits groupes que les grands.
-\end{inparaenum}
-% La taille des voisinages est déterminante.
-En effet, lorsqu'il augmente, le trafic généré augmente au risque de dépasser
-les capacités d'émission des éditeurs; lorsqu'il diminue, les changements
-risquent de ne plus parvenir à tous les éditeurs.
+\noindent Notre contexte nous expose à deux contraintes :
 
-Afin de configurer la taille de cet ensemble idéalement~\cite{erdos1959random},
-le développeur doit connaître le nombre de collaborateurs que l'éditeur
-collaboratif doit supporter. Malheureusement, celui-ci varie, que ce soit
-pendant la durée de la collaboration, e.g., un cours de formation en ligne
-(\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
-l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pour un
-événement de grande ampleur n'a pas la même audience que celle d'un rapport de
-projet écrit par des étudiants.
+\paragraph{Web.} L'éditeur collaboratif doit fonctionner dans les navigateurs
+Web sans installations d'aucune sorte (e.g. extensions). Depuis peu, les
+navigateurs sont capables communiquer entre eux après avoir suivi un processus
+de connexion complexe~\cite{webrtc}. L'éditeur doit supporter ce mode de
+connexion.
+
+\paragraph{Dimensions et dynamisme.} L'éditeur collaboratif doit maintenir un
+voisinage dont la taille gère aussi bien les petits groupes que les grands.  La
+taille des voisinages est déterminante puisque lorsqu'elle augmente, le trafic
+généré augmente au risque de dépasser les capacités d'émission des éditeurs;
+lorsqu'elle diminue,
+%% les changements risquent de ne plus parvenir à tous les éditeurs.
+le risque que les opérations ne parviennent plus à tous les éditeurs augmente.
+L'éditeur doit supporter les sessions d'édition où le nombre de participants
+fluctue fortement au cours du temps.
+
+Les protocoles d'échantillonnage aléatoire de pairs~\cite{jelasity2007gossip}
+permettent à chaque éditeur de peupler son voisinage d'éditeurs choisis
+aléatoirement parmi les éditeurs impliqués dans la rédaction du document. Entre
+autres, ces protocoles assurent une forte résilience aux arrivées et aux départs
+dans la session collaborative -- comportement fréquent dans le contexte
+Web. Cependant, la grande majorité de ces protocoles fournissent des voisinages
+configurés \emph{a priori}, et donc, de taille
+constante~\cite{eugster2003lightweight, jelasity2007gossip,
+  leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon}. En d'autres
+termes, le développeur doit connaître le nombre de participants impliqués dans
+la rédaction d'un document afin de configurer la taille des voisinages
+idéalement~\cite{erdos1959random}.  Pour ne pas renoncer aux grands groupes, les
+voisinages doivent être surdimensionnés. Le trafic en résultant est élevé. Le
+seul protocole permettant d'adapter automatiquement la taille des voisinages à
+la taille de la session d'édition se nomme
+\SCAMP~\cite{ganesh2003peer}. Toutefois, ce dernier est inadapté au processus
+complexe d'établissement de connexions disponible dans les navigateurs Web.
+
+% Malheureusement, celui-ci varie, que ce soit
+%pendant la durée de la collaboration, e.g., un cours de formation en ligne
+%(\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
+%l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pour un
+%événement de grande ampleur n'a pas la même audience que celle d'un rapport de
+%projet écrit par des étudiants.
 
 Cela pose la seconde question de recherche : \textbf{Comment adapter
-  efficacement le voisinage de chaque éditeur au nombre fluctuant de
-  collaborateurs?}
-
-%%\paragraph{QR A.} \textbf{Afin d'ajuster le trafic à la session d'édition,
-%%  comment adapter efficacement le voisinage de chaque éditeur aux fluctuations
-%%  des réseaux?}
-
+  efficacement le voisinage de chaque éditeur collaboratif Web au nombre
+  fluctuant de collaborateurs ?}
 
 
 %%% Local Variables:

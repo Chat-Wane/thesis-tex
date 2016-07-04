@@ -4,15 +4,15 @@
 Le reste du manuscrit est découpé en 4 chapitres :
 
 \paragraph{Le chapitre~\ref{repl:chap:lseq}} décrit la structure de données
-répliquée représentant le document partagé. Il commence par la présentation des
-approches appartenant à la réplication dite optimiste~\cite{demers1987epidemic,
-  saito2005optimistic}. En particulier, les approches à transformées
-opérationnelles et les approches à structure de données sans
-conflits~\cite{burckhardt2014replicated, shapiro2011conflict}. Ensuite, le
-chapitre détaille \LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une
-fonction d'allocation d'identifiants conçue pour ces dernières et dont la taille
-des identifiants est bornée supérieurement selon le polylogarithme de la taille
-du document. Le reste du chapitre s'attache à valider cette propriété.
+répliquée représentant le document partagé. Il présente les approches
+appartenant à la réplication dite optimiste~\cite{demers1987epidemic,
+  saito2005optimistic} : les approches à transformées opérationnelles et les
+approches à structure de données sans conflits~\cite{burckhardt2014replicated,
+  shapiro2011conflict}. Ensuite, le chapitre détaille
+\LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une fonction d'allocation
+d'identifiants conçue pour ces dernières et dont la taille des identifiants est
+bornée supérieurement selon le polylogarithme de la taille du document. Le reste
+du chapitre s'attache à valider cette propriété.
 
 \paragraph{Le chapitre~\ref{net:chap:spray}} commence par décrire les
 protocoles réseau qui nous permettront de former les sessions d'édition : les
