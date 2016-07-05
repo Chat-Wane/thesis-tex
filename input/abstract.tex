@@ -1,20 +1,32 @@
 
 \begin{resume}
-  Par défaut, les éditeurs collaboratifs temps réel sur le Web sont
-  centralisés. Un serveur du fournisseur de service gère une session
-  d'édition. Cela pose des problèmes de confidentialité et de passage à
-  l'échelle.  Seulement récemment l'opportunité nous a été offerte d'établir des
-  communications d'un navigateur Web à l'autre. Cette possibilité ouvre les
-  portes aux applications décentralisées directement accessibles dans les
-  navigateurs. Cette thèse comporte trois contributions :
+  Un éditeur collaboratif permet de répartir la tâche de rédaction d'un document
+  à travers le temps et l'espace. Par leur simplicité d'utilisation, les
+  éditeurs collaboratifs temps réel du Web ont contribué à l'adoption massive
+  de ces outils par le grand public. Cependant, les éditeurs actuels sont
+  centralisés. Le serveur d'un fournisseur de services gère une session
+  d'édition. Des problèmes de confidentialité et de passage à l'échelle en
+  résultent.
+
+  \noindent Récemment, la possibilité d'établir des communications d'un
+  navigateur Web à l'autre a ouvert de nouvelles opportunités en faveur d'un Web
+  décentralisé. Un éditeur collaboratif temps réel décentralisé fonctionnant
+  dans les navigateurs Web doit gérer efficacement des groupes de taille
+  variable et hautement dynamiques.
+
+  \noindent Cette thèse comporte trois contributions :
   \begin{inparaenum}[(i)]
-  \item Une structure de données répliquée dont la taille des métadonnées passe
-    à l'échelle;
-  \item Un protocole d'échantillonnage aléatoire de pairs s'ajustant
-    automatiquement aux variations de taille du réseau sans connaissances
-    globales;
-  \item Un éditeur collaboratif temps réel fonctionnant dans les navigateurs Web
-    de manière décentralisée utilisant les deux approches ci-dessus.
+  \item Pour représenter le document, nous proposons une structure de données
+    répliquée dont la taille des métadonnées croît de manière sous-linéaire par
+    rapport au nombre de caractères insérés dans le document.
+  \item Pour propager efficacement les changements à tous les éditeurs
+    participant à l'édition, nous proposons un protocole d'échantillonnage
+    aléatoire de pairs adapté aux contraintes des navigateurs Web et s'ajustant
+    automatiquement au logarithme de la taille de la session d'édition.
+  \item Pour démontrer la faisabilité d'un éditeur collaboratif temps réel
+    décentralisé fonctionnant dans les navigateurs Web, nous proposons un
+    éditeur réunissant (i) et (ii), et dont les performances passent à
+    l'échelle.
   \end{inparaenum}
 \end{resume}
 
