@@ -8,7 +8,7 @@ documents.
 
 \paragraph{Description :} Cette expérimentation construit des réseaux de 101 à
 601 participants. Pour cela, des machines sont réservées sur le banc d'essai
-Grid'5000. Sur chacune d'elle sont lancées un à plusieurs navigateurs web
+Grid'5000. Sur chacune d'elle sont lancées un à plusieurs navigateurs Web
 observant le processus d'intégration au réseau. Par exemple, 100 machines avec 6
 navigateurs chacune permettent de créer le réseau à 601 participants -- le
 participant supplémentaire étant le créateur du document hébergeant aussi le
@@ -33,15 +33,15 @@ réparties entre les participants. La session dure 7 heures.
 résultat de cette expérimentation.
 \begin{inparaenum}[(i)]
 \item Le trafic généré croît de façon polylogarithmique comparativement à la
-  taille du document : Plus l'expérience progresse, plus le nombre d'insertions
+  taille du document : plus l'expérience progresse, plus le nombre d'insertions
   effectuées sur le document est important, plus la croissance des identifiants
   diminue.
 \item À cela s'ajoute un facteur multiplicatif logarithmique comparé au nombre
-  de participants : Plus la session d'édition comporte de membres, plus le trafic
-  généré est important. Toutefois, l'écart entre les mesures diminues tandis que
-  le nombre de participants est incrémenté linéairement. On note toutefois des
-  exceptions à ces observations. Par exemple, les mesures sur 501 éditeurs
-  dominent les mesures sur 601 éditeurs.
+  de participants : plus la session d'édition comporte de membres, plus le
+  trafic généré est important. Toutefois, l'écart entre les mesures diminue
+  tandis que le nombre de participants est incrémenté linéairement. On note
+  toutefois des exceptions à ces observations. Par exemple, les mesures sur 501
+  éditeurs dominent les mesures sur 601 éditeurs.
 \end{inparaenum}
 
 \paragraph{Explication :} \CRATE utilise \LSEQ
@@ -51,17 +51,22 @@ identifiants, comparé au nombre d'insertions effectuées dans la séquence. Ain
 plus les expérimentations progressent, plus le nombre d'insertions dans la
 séquence augmente. Les messages envoyées ne comportant que les identifiants de
 \LSEQ, la croissance du trafic hérite de cette croissance
-polylogarithmique. \CRATE utilise \SPRAY
-(cf. §\ref{net:chap:spray}). Lorsqu'un nouveau membre rejoins une
-session d'édition, il apporte avec lui un nombre logarithmique de connexions par
-rapport à la taille du réseau. Chacune ces connexions est activement utilisée
-par le mécanisme de diffusion de messages afin que chacun des identifiants
-parvienne à tous les éditeurs. Pour chaque opération locale effectuée, chaque
-membre retransmet le message aux membres sa vue partielle exactement une
-fois. D'où la progression logarithmique du trafic généré entre les sessions
-d'édition. L'exception perçue entre certaines configurations de
-l'expérimentation est due au coté aléatoire du protocole. Sur un grand nombre
-d'exécution, cet aléatoire serait gommé.
+polylogarithmique. \CRATE utilise \SPRAY (cf. §\ref{net:chap:spray}). Lorsqu'un
+nouveau membre rejoint une session d'édition, il ajoute avec lui un nombre
+logarithmique de connexions par rapport à la taille du réseau. Chacune de ces
+connexions est activement utilisée par le mécanisme de diffusion de messages
+afin que chacun des identifiants parvienne à tous les éditeurs. Pour chaque
+opération locale effectuée, chaque membre retransmet le message à ses voisins
+exactement une fois. Ainsi, chaque opération est transmise par chaque nœud à
+leur vue dont la taille est logarithmique par rapport à la taille de la session
+d'édition. Ainsi, une session d'édition à 100 participants génère moins de
+trafic qu'une session d'édition à 200 participants. L'exception perçue entre
+certaines configurations de l'expérimentation est due à l'aspect aléatoire du
+processus d'entrée dans le réseau de \SPRAY. En effet, le nombre d'arcs ajoutés
+dans le réseau dépend du nœud contact du nouvel arrivant. Si ce contact possède
+plus de voisins que le logarithme recherché, alors la taille moyenne des vues
+partielles augmentera d'autant plus; et inversement.  Sur un grand nombre
+d'exécutions, l'effet aléatoire induit par les choix de contacts serait gommé.
 
 
 

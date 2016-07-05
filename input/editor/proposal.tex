@@ -3,7 +3,7 @@
 \label{editor:sec:crate}
 
 \CRATE est un éditeur décentralisé permettant l'édition en temps réel de
-documents dans les navigateurs web. Cette section décrit son architecture avant
+documents dans les navigateurs Web. Cette section décrit son architecture avant
 de détailler chacun des composants constituant cette architecture.
 
 \begin{figure}
@@ -17,7 +17,7 @@ de détailler chacun des composants constituant cette architecture.
 La figure~\ref{editor:fig:architecture} montre l'architecture en 4 couches de
 \CRATE. Chacune de ces couches peut devenir un obstacle au passage à l'échelle
 de l'éditeur :
-\begin{inparaenum}[(i)]
+\begin{enumerate}[(i)]
 \item la couche de communication comprend le mécanisme d'appartenance au réseau
   et la propagation des messages dans ce réseau;
 \item la couche de causalité comprend la structure permettant de lier les
@@ -28,23 +28,24 @@ de l'éditeur :
   de suppression doivent garantir des répliques convergeantes du document;
 \item la couche d'interaction homme-machine fournissant les outils avec lesquels
   l'utilisateur peut interagir.
-\end{inparaenum}
+\end{enumerate}
 
-La partie gauche de la figure montre le processus le plus courant : Lorsqu'un
-participant effectue une opération sur le document, l'opération est appliquée à
-la séquence répartie. L'opération est ensuite décorée avec des métadonnées
-correspondant à la causalité. Enfin, l'éditeur propage l'opération en utilisant
-le voisinage de l'éditeur fournit par le protocole d'appartenance au réseau.  À
-l'inverse, lorsque l'éditeur reçoit une opération, il vérifie si cette dernière
-est prête à être intégrée. Lorsque la condition est vérifiée, l'éditeur intègre
-l'opération à la réplique de la séquence. Enfin l'interface utilisateur est
-notifiée du changement.
+\noindent La partie gauche de la figure montre le processus le plus courant :
+Lorsqu'un participant effectue une opération sur le document, l'opération est
+appliquée à la séquence répartie. L'opération est ensuite décorée avec des
+métadonnées correspondant à la causalité. L'éditeur propage l'opération en
+utilisant le voisinage de l'éditeur fournit par le protocole d'appartenance au
+réseau.  À l'inverse, lorsque l'éditeur reçoit une opération, il vérifie si
+cette dernière est prête à être intégrée. Lorsque la condition est vérifiée,
+l'éditeur intègre l'opération à la réplique de la séquence. L'interface
+utilisateur est notifiée du changement.
 
-La partie droite de la figure correspond à la stratégie de rattrapage où un
-participant a peut-être manqué quelques opérations à cause de pertes de messages
-dans le réseau, ou simplement car il était hors-ligne pendant un moment. Ainsi,
-dès que l'éditeur est en ligne, il vérifie régulièrement auprès de ses voisins
-s'il lui manque des opérations.
+\noindent La partie droite de la figure correspond à la stratégie de rattrapage
+où un participant a peut-être manqué quelques opérations à cause de pertes de
+messages dans le réseau, ou simplement car il était hors-ligne pendant un
+moment. Ainsi, dès que l'éditeur est en ligne, il vérifie régulièrement auprès
+de ses voisins s'il lui manque des opérations~\cite{demers1987epidemic,
+  vanderlinde2016delta}.
 
 
 \subsection{Communications}
@@ -109,15 +110,17 @@ opération dépend d'autres opérations précédemment intégrées. Par exemple,
 génération d'une suppression nécessite l'existence de l'élément ciblé, et donc,
 que l'opération d'insertion de cet élément soit intégrée. Ces relations de
 précédence (\emph{happens before})~\cite{lamport1978time} contraignent l'ordre
-d'intégration des opérations.  Malheureusement, plus cet ordre est contraint,
-plus le maintenir devient onéreux. Par exemple, caractériser les relations
-causales d'une opération par rapport à toutes les autres nécessite au minimum
-$\mathcal{O}(W)$ où $W$ est le nombre de participants ayant effectué au moins
-une opération~\cite{charronbost1991concerning}. Ce surcoût concerne à la fois la
-mémoire locale et la taille des messages envoyés. Lorsqu'il est tolérable de
-payer ce prix localement, la taille des messages confine l'utilisation de telles
-contraintes sur l'ordre d'intégrations à de petites sessions d'édition bien
-contrôlées.
+d'intégration des opérations.  Malheureusement, l'ordre causal est très coûteux
+: maintenir les relations causales d'une opération par rapport à toutes les
+autres nécessite au minimum $\mathcal{O}(W)$ où $W$ est le nombre de
+participants ayant effectués au moins une
+opération~\cite{charronbost1991concerning}. La réception causale introduit dans
+la complexité en communication un facteur linéaire sur le nombre de
+participants. Si cela reste acceptable pour les petits groupes, le coût devient
+trop élevé pour les grands groupes.
+
+%la taille des messages confine l'utilisation de telles contraintes sur l'ordre
+%d'intégration à de petites sessions d'édition bien contrôlées.
 
 \CRATE ne contraint l'ordre d'intégration que pour les paires d'opérations liées
 sémantiquement, c'est à dire que la suppression d'un élément suit toujours son
@@ -136,26 +139,6 @@ chaque participant
 Tandis qu'une telle structure conserve un surcoût local de l'ordre du vecteur
 d'horloges $\mathcal{O}(W)$, le surcoût en communication devient constant
 $\mathcal{O}(1)$.
-
-Cette structure sert aussi d'outil afin d'identifier les différences entre
-répliques lorsqu'un éditeur à besoin de récupérer l'état courant du document
-dans la session d'édition. Ce protocole
-d'anti-entropie~\cite{demers1987epidemic} fonctionne de la façon suivante :
-\begin{inparaenum}
-\item Un éditeur choisit un éditeur de son voisinage aléatoirement et lui envoie
-  son vecteur d'horloges avec exceptions.
-\item L'éditeur recevant un tel vecteur effectue la différence, entrée par
-  entrée, avec son propre vecteur. Ces différences permettent d'identifier les
-  opérations manquantes qui sont alors envoyées en réponse.
-\item L'éditeur recevant la réponse intègre les opérations normalement.
-\end{inparaenum}
-
-\CRATE utilise donc une approche basée sur les opérations lorsqu'il fonctionne
-normalement afin de permettre l'édition en temps réel. Lorsqu'il est en mode
-hors ligne, ou si le réseau subit des perturbations, alors \CRATE utilise un
-approche basée sur les différences. Le temps de convergence des répliques est
-rapide grâce à la diffusion des messages, et fiable grâce au mécanisme
-d'anti-entropie.
 
 \begin{figure}
   \begin{center}
@@ -181,10 +164,38 @@ suppression immédiatement, $c_2$ doit attendre puisque l'opération d'insertion
 ciblée appartient aux exceptions. Une fois l'opération manquante reçue,
 l'exception disparaît et l'insertion est appliquée suivie de la suppression.
 
+\subsection{Anti-entropie}
+
+Lorsqu'un éditeur a besoin de récupérer l'état courant du document
+(e.g. lorsqu'il rejoint la session d'édition), il exécute un mécanisme
+d'anti-entropie.  Ce mécanisme a pour objectif de détecter les divergences entre
+les répliques avant de les faire converger vers un état équivalent. À cela
+s'ajoute la contrainte de ne perdre aucunes des modifications effectuées sur les
+répliques. Le vecteur utilisé pour détecter les relations causales sert aussi
+d'outil afin d'identifier les différences entre répliques. Le mécanisme
+d'anti-entropie~\cite{demers1987epidemic, vanderlinde2016delta} fonctionne de la
+façon suivante :
+\begin{enumerate}[(i)]
+\item Un éditeur choisit un éditeur de son voisinage aléatoirement et lui envoie
+  son vecteur d'horloges avec exceptions.
+\item L'éditeur recevant un tel vecteur effectue la différence, entrée par
+  entrée, avec son propre vecteur. Ces différences permettent d'identifier les
+  opérations manquantes qui sont alors envoyées en réponse.
+\item L'éditeur recevant la réponse intègre les opérations normalement.
+\end{enumerate}
+
+\CRATE utilise donc une approche basée sur les opérations lorsqu'il fonctionne
+normalement afin de permettre l'édition en temps réel. Lorsqu'il est en mode
+hors ligne, ou si le réseau subit des perturbations, alors \CRATE utilise un
+approche basée sur les différences. Le temps de convergence des répliques est
+rapide grâce à la diffusion épidémique des messages, et fiable grâce au
+mécanisme d'anti-entropie.
+
+
 \subsection{Séquence répliquée}
 
-La convergence forte à terme définit qu'un système correcte si et seulement si
-les répliques intégrant un même ensemble d'opérations convergent vers un état
+La convergence forte à terme définit qu'un système est correct si les répliques
+intégrant un même ensemble d'opérations convergent vers un état
 équivalent~\cite{shapiro2011conflict}. La séquence répliquée a pour objectif de
 garantir cette propriété de convergence des copies. Ainsi, les membres d'une
 session d'édition lisent un document identique.
@@ -217,7 +228,7 @@ l'application doit donner l'illusion d'un unique document accédé par plusieurs
 utilisateurs.
 
 \CRATE est un éditeur temps réel -- écrit en HTML, CSS, et JavaScript -- qui
-tourne directement dans les navigateurs web. Il établit des canaux de
+tourne directement dans les navigateurs Web. Il établit des canaux de
 communication d'un navigateur à l'autre en utilisant la récente technologie
 WebRTC~\cite{webrtc}. La zone de texte où l'utilisateur peut écrire est fournie
 grâce à l'éditeur JavaScript Ace~\cite{ace}.
@@ -256,19 +267,25 @@ La barre d'état nous indique que
   planète verte.
 \end{inparaenum}
 
-La barre d'état possède aussi des boutons tels que
-\begin{inparaenum}[(i)]
-\item la disquette qui enregistre sur le disque la réplique locale du
-  document. En ouvrant ce fichier, l'éditeur est capable de se reconnecter à la
-  session d'édition sans avoir à rattraper toutes les opérations qui lui manque
-  depuis son départ;
-\item l'œil sert à visualiser le texte écrit dans le langage
-  Markdown~\cite{markdown}. Ainsi, le document n'est plus une simple suite de
-  caractères mais est interprété afin de présenter un document structuré plus
-  agréable à lire;
-\item la chaîne sert à partager l'accès au document ou à le stopper;
-\item les engrenages servent à la configuration.
-\end{inparaenum}
+% La barre d'état possède aussi des boutons tels que
+% \begin{inparaenum}[(i)]
+% \item la disquette qui enregistre sur le disque la réplique locale du
+%   document. En ouvrant ce fichier, l'éditeur est capable de se reconnecter à la
+%   session d'édition sans avoir à rattraper toutes les opérations qui lui manque
+%   depuis son départ;
+% \item l'œil sert à visualiser le texte écrit dans le langage
+%   Markdown~\cite{markdown}. Ainsi, le document n'est plus une simple suite de
+%   caractères mais est interprété afin de présenter un document structuré plus
+%   agréable à lire;
+% \item la chaîne sert à partager l'accès au document ou à le stopper;
+% \item les engrenages servent à la configuration.
+% \end{inparaenum}
+
+Le document lui-même peut contenir des URL référençant d'autres documents édités
+en temps réel. D'un simple clique, un participant peut naviguer d'une session
+d'édition temps réel à l'autre de manière décentralisée. Cette simple
+fonctionnalité permet d'envisager la construction d'un Wikipédia à la fois
+décentralisé et temps réel. 
 
 
 %%% Local Variables:
