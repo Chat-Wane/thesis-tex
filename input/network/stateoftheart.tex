@@ -108,7 +108,7 @@ ainsi n'annonce plus sa présence au reste du réseau. Petit à petit, les vues
 partielles possédant un arc pointant vers ce nœud s'en débarrassent car l'arc
 est devenu obsolète en comparaison des arcs nouvellement reçus.
 
-\noindent Les pertes de messages dues à la non-fiabilité des communications
+\noindent Les pertes de messages dues au manque de fiabilité des communications
 mettent en danger la distribution des arcs. Par exemple, si un message sur deux
 est perdu lorsqu'un certain nœud tente de communiquer, il perd autant
 d'occasions de s'annoncer au réseau. Par conséquent, il encourt le risque d'être
@@ -178,7 +178,7 @@ sont constantes ne sont pas adaptées aux contextes avec :
 exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
 alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
 l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
-temps peuvent avoir lieu. Le web amplifie ces fluctuations. En effet, le web
+temps peuvent avoir lieu. Le Web amplifie ces fluctuations. En effet, le Web
 favorise la diffusion d'idées. Par exemple, dans le cadre de l'édition
 collaborative, un simple lien HTTP permet le partage d'un document. Un lien
 \emph{tweeté} par une célébrité sur un événement particulier peut attirer des
@@ -317,7 +317,7 @@ c'est le cas dans le contexte WebRTC~\cite{webrtc} :
 % \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
 %  Communication}.
 cette technologie permet l'établissement de canaux de communication d'un
-navigateur web à l'autre, et ce, même en présence de configurations réseaux
+navigateur Web à l'autre, et ce, même en présence de configurations réseaux
 complexes impliquant pare-feu, proxy, ou NAT (\emph{Network Address
   Translation}). Toutefois, WebRTC ne gère ni l'adressage, ni le routage.
 Établir une connexion WebRTC requière une négociation où le nœud d'origine et le
@@ -398,16 +398,16 @@ achevée avec succès. Sans les allers-retours de WebRTC, la probabilité est :
 \begin{equation} P_{E}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
 correspond à la probabilité que chaque élément sur le chemin de taille $k+1$
 reste disponible et fonctionnel pendant leur tour de dissémination. Avec WebRTC,
-au minimum un aller-retour est nécéssaire entre les nœuds se connectant. Aucun
+au minimum un aller-retour est nécessaire entre les nœuds se connectant. Aucun
 des éléments constituant le chemin de dissémination ne doivent tomber en panne
 ou partir jusqu'au retour du message. Nous obtenons : 
 \begin{align} P_{E,\,webrtc}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
                                      \ldots (1-P_f)^2) \nonumber \\
                                    &=1-(1-P_f)^{k^2+3k+2}
 \end{align}
-En d'autres termes, les premiers nœud et arc doivent rester disponibles et
-fonctionnels $2k +2$ unités de temps. Les seconds nœud et arc doivent rester
-disponibles et fonctionnels $2k$ unités de temps etc. Avec WebRTC, la
+En d'autres termes, le premier nœud et le premier arc doivent rester disponibles
+et fonctionnels $2k +2$ unités de temps. Le second nœud et le second arc doivent
+rester disponibles et fonctionnels $2k$ unités de temps etc. Avec WebRTC, la
 probabilité d'échec sur l'établissement d'une connexion a augmenté d'une classe
 de complexité.  Par conséquent, l'établissement d'une connexion suivant le
 protocole \SCAMP est particulièrement vulnérable aux défaillances. À terme, le
