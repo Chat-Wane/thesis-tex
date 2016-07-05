@@ -320,23 +320,22 @@ l'écart entre vues partielles. La figure montre aussi que les départs ne
 déséquilibrent pas les vues partielles.
 
 \paragraph{Explication :} Puisque les vues partielles de \SPRAY s'adaptent à la
-taille du réseau, le nombre d'arcs augmente lorsque des membres s'ajoutent
-au réseau. Les pics de variance correspondent à la partie du protocole où les
-nœuds rejoignent le réseau. Les différences de hauteur des pics proviennent du
-fait que les nouveaux arrivants commencent avec une petite vue partielle. Les
-nœuds étant présents avant que le nouveau groupe rejoigne le réseau ont eu
-quelques cycles d'échanges afin d'équilibrer leur vues. Par conséquent, le poids
-des nouveaux arrivants est proportionnellement plus faible. Le départ des 500
-nœuds au cycle 40 ne perturbe pas la variance car ils sont choisis
+taille du réseau, le nombre d'arcs augmente lorsque des membres s'ajoutent au
+réseau. Les pics de variance correspondent à la partie du protocole où les nœuds
+rejoignent le réseau. Les différences de hauteur des pics proviennent du fait
+que les nouveaux arrivants commencent avec une petite vue partielle. Les nœuds
+étant présents avant que le nouveau groupe rejoigne le réseau ont eu quelques
+cycles d'échanges afin d'équilibrer leur vues. Par conséquent, le poids des
+nouveaux arrivants est proportionnellement plus faible. Le départ des 500 nœuds
+au cycle 40 ne perturbe pas la variance car ils sont choisis
 aléatoirement. Ainsi, aucun nœud ne souffre particulièrement des départs comparé
 aux autres nœuds. Toutefois, nous observons une très faible décroissance du
-nombre d'arcs suite à cela. En effet, \CYCLON et \SPRAY utilisent tout deux un
-âge relatif à l'insertion d'un arc dans sa vue partielle. À chaque processus
-périodique de mélange, le plus vieil arc est examiné. S'il est obsolète, l'arc
-est retiré. Par conséquent, ce mécanisme de détection prend plusieurs cycles à
-détecter les départs et défaillances. Plus la vue partielle est petite, plus le
-processus est rapide ce qui fait de \SPRAY un processus plus réactif vis-à-vis
-des départs/défaillances.
+nombre d'arcs. En effet, \CYCLON et \SPRAY utilisent tout deux un âge relatif à
+l'insertion d'un arc dans sa vue partielle. À chaque mélange, le plus vieil arc
+est examiné. S'il est obsolète, l'arc est retiré. Par conséquent, ce mécanisme
+de détection prend plusieurs cycles à détecter les départs et défaillances. Plus
+la vue partielle est petite, plus le processus est rapide ce qui fait de \SPRAY
+un processus plus réactif vis-à-vis des départs/défaillances.
 
 \subsection{Robustesse}
 \label{net:subsec:robustness}
@@ -353,7 +352,7 @@ des départs/défaillances.
 
 La robustesse d'un réseau est sa capacité à rester connexe lorsque des
 défaillances apparaissent. Ici, nous ne prenons en compte que les défaillances
-aléatoires non-corrélés. Lorsqu'un nœud quitte le réseau, qu'il soit défaillant
+aléatoires non-corrélées. Lorsqu'un nœud quitte le réseau, qu'il soit défaillant
 ou non, des arcs deviennent obsolètes. Si ces arcs constituaient les seuls liens
 entre deux parties du réseau, alors apparaissent des partitions.  Dans les
 graphes aléatoires, un grand nombre de nœuds doivent disparaître avant que de
@@ -413,7 +412,7 @@ voisin. Ainsi, supprimer des nœuds aléatoirement parmi ceux-ci n'affecte pas
 les protocoles d'échantillonnage ne dépendent que d'arcs unidirectionnels pour
 fonctionner. Ainsi, s'il subsiste un arc entre deux composantes fortement
 connexes, les mélanges périodiques de vues partielles permettent de les
-raccommoder.
+raccorder.
 
 
 \subsection{Doublons}
@@ -435,7 +434,8 @@ impact négatif sur certains aspects du réseau : un arc doublon est un arc
 n'apportant aucun chemin supplémentaire au réseau. À cet égard, il est important
 que le taux de doublons reste faible.
 
-Le paradoxe des anniversaires déclare que le nombre de personnes qu'il faut
+Pour évaluer la proportion de doublons, nous en faisons l'analogie avec le
+paradoxe des anniversaires.  Ce paradoxe déclare que le nombre de personnes à
 réunir pour que deux d'entre elles aient le même jour d'anniversaire est, contre
 toute attente, faible. À partir de 23 personnes, la probabilité est au dessus de
 50\% et grimpe rapidement. Au delà des anniversaires, ce modèle permet de

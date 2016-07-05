@@ -46,7 +46,7 @@ ne reçoit pas le message, alors la réception totale à échouée. Le taux mesu
 est le nombre de messages ayant été reçus par tout les membres sur le nombre de
 messages ayant été envoyés.
 
-\paragraph{Objectif :} Montrer les bénéfices apportées au mécanisme de
+\paragraph{Objectif :} Montrer les avantages apportés au mécanisme de
 dissémination par un protocole adaptatif d'échantillonnage.
 
 \paragraph{Description :} L'application considérée cible approximativement 100
@@ -59,7 +59,7 @@ nous configurons \SPRAY pour qu'il fournisse des vues partielles 6 fois plus
 peuplés qu'à la normale. La variable d'épanouissement est configurée pour
 choisir 1 sixième de la vue, soit $\ln(|\mathcal{N}|)+1$ et
 $\ln(|\mathcal{N}|)+3$.  Les deux protocoles d'échantillonnage aléatoire
-possèdent donc les même configurations pour un réseau de 100 nœuds. La taille
+possèdent donc les mêmes configurations pour un réseau de 100 nœuds. La taille
 des réseaux considérés grandit de 0.1k à 2k nœuds. Nous mesurons à chaque cycle
 la fraction, sur 1k messages, parvenant à l'intégralité des membres du réseau.
 
@@ -89,28 +89,28 @@ adaptative de \SPRAY. Cela lui permet de s'ajuster aux besoins d'un réseau dont
 la taille fluctue au cours du temps.
 
 \paragraph{Explication :} Le seuil précis de connexité d'un graphe aléatoire est
-$\Theta(|\mathcal{N}|\ln(|\mathcal{N}|))$ arcs. Pour la dissémination de
-messages cela signifie que, avec des vues partielles suffisamment grandes et
+$\Theta(|\mathcal{N}|\ln(|\mathcal{N}|))$ arcs. En ce qui concerne la
+dissémination de messages, avec des vues partielles suffisamment grandes et
 peuplées d'arcs vers des nœuds suffisamment aléatoires, un épanouissement fixé à
 $\ln(|\mathcal{N}|)$ conduit à un taux de réception aux environs de 50\%. À ce
 stade, incrémenter cette variable augmente drastiquement le taux de
-réception. Cependant, la contribution de chaque incrémentation diminue petit à
-petit par rapport à l'incrémentation précédente. Le mécanisme de dissémination
-construit au dessus de \CYCLON possède un épanouissement constant, configuré
-pour une taille spécifique du réseau. Tant que la taille du réseau est
+réception. Cependant, la contribution de chaque incrémentation diminue
+progressivement par rapport à l'incrémentation précédente. Le mécanisme de
+dissémination construit au dessus de \CYCLON possède un épanouissement constant,
+configuré pour une taille spécifique du réseau. Tant que la taille du réseau est
 inférieure ou égale à la taille ciblée, le taux de réception demeure élevé. En
 revanche, une fois cette taille dépassée, le taux de réception chute très
 rapidement. \SPRAY donne la possibilité au mécanisme de dissémination d'ajuster
 sa variable d'épanouissement à la taille du réseau. Ainsi, le taux de réception
 des messages reste stable, même lorsque le réseau s'agrandit. Les petits sauts
-mesurées sont dûs au fait que les valeurs manipulées localement par chaque nœuds
+mesurées sont dûs au fait que les valeurs manipulées localement par chaque nœud
 sont des entiers. Le bond correspond donc à une valeur arrondie augmentant
 suffisamment pour être incrémentée.
 
 %%%%%%
 
 \paragraph{Objectif :} Montrer comment le taux de réception des messages se
-comporte lors d'un pique de population, i.e., une augmentation massive de la
+comporte lors d'un pic de population, i.e., une augmentation massive de la
 taille du réseau suivie peut après d'une diminution.
 
 \paragraph{Description :} Nous configurons \SPRAY et \CYCLON de la même manière
@@ -120,16 +120,16 @@ et $\ln(100)+3$. Pour \SPRAY, les vues partielles s'ajustent automatiquement à
 $6\cdot \ln(|\mathcal{N}|)$ et les valeurs d'épanouissement s'ajustent
 automatiquement à $\ln(|\mathcal{N}|)+1$ et $\ln(|\mathcal{N}|)+3$. La
 simulation commence avec 0.1k nœuds. Le réseau atteint rapidement 10k nœuds
-pendant le pique de popularité. Enfin il redescend à 3k nœuds. Dans cette
+pendant le pic de popularité. Enfin il redescend à 3k nœuds. Dans cette
 simulation, nous mesurons le taux de réception total des messages sur 0.1k
 messages.
 
 \begin{figure}
   \begin{center}
     \includegraphics[width=.8\textwidth]{img/spray/peak.eps}
-    \caption[Taux de réception des messages lors d'un pique de
+    \caption[Taux de réception des messages lors d'un pic de
     population]{\label{net:fig:peak} Taux de réception des messages lors d'un
-      pique d'entrée dans le réseau. L'axe des abscisses montre le temps en
+      pic d'entrée dans le réseau. L'axe des abscisses montre le temps en
       nombre de cycles. L'axe des ordonnées de la partie haute montre le nombre
       de nœuds présent dans le réseau. L'axe des ordonnées de la partie basse
       montre le taux de réception des messages sur 0.1k messages.}
@@ -139,11 +139,11 @@ messages.
 \paragraph{Résultat :} La figure~\ref{net:fig:peak} montre les résultats de
 cette simulation. Tout comme lors de la simulation précédente, l'utilisation de
 \CYCLON et d'une variable d'épanouissement prédéfinie fonctionne jusqu'à ce que
-la taille du réseau excède la taille prévue. Pendant le pique d'entrée dans le
+la taille du réseau excède la taille prévue. Pendant le pic d'entrée dans le
 réseau, le taux de réception chute très rapidement. À l'inverse, le mécanisme de
-dissémination construit avec \LSEQ ajuste automatiquement sa variable
+dissémination construit avec \SPRAY ajuste automatiquement sa variable
 d'épanouissement à la taille du réseau. Ainsi, le système ne souffre pas de
-sévère baisse du taux de réception lors du pique d'entrée. Cependant, lors du
+sévère baisse du taux de réception lors du pic d'entrée. Cependant, lors du
 départ massif de certains membres, le taux de réception chute. Cela est
 particulièrement vrai pour la configuration de \SPRAY avec un épanouissement
 plus modeste de $\ln(|\mathcal{N}|)+1$. Globalement, le mécanisme de
@@ -152,15 +152,15 @@ fluctuations rapides de la taille des réseaux.
 
 \paragraph{Explication :} La variable d'épanouissement des configurations
 impliquant \CYCLON est constante. Ainsi, lorsque la taille du réseau dépasse la
-taille prévue, le taux de réception chute drastiquement. À l'opposé, la
-variable d'épanouissement des configurations basés sur \SPRAY suit les
-évolutions du réseau. Le taux de réception reste stable lors d'augmentations
-rapides de la taille du réseau. Cependant, à la fois \CYCLON et \SPRAY détectent
-les nœuds partis lors de la phase d'échange de vues partielles. Les arcs
-obsolètes sont malgré tout utilisés dans la dissémination. Par conséquent, un
-plus grand nombre de messages à tendance à se perdre. Petit à petit, les arcs
-obsolètes disparaissent des vues partielles. Le taux de réception des messages
-recouvre sa valeur attendue.
+taille prévue, le taux de réception chute drastiquement. À l'opposé, la variable
+d'épanouissement des configurations basée sur \SPRAY suit les évolutions du
+réseau. Le taux de réception reste stable lors d'augmentations rapides de la
+taille du réseau. Cependant, à la fois \CYCLON et \SPRAY détectent les nœuds
+partis lors de la phase d'échange de vues partielles. Les arcs obsolètes sont
+malgré tout utilisés dans la dissémination. Par conséquent, un plus grand nombre
+de messages à tendance à se perdre. Progressivement, les arcs obsolètes
+disparaissent des vues partielles. Le taux de réception des messages recouvre sa
+valeur attendue.
 
 %%% Local Variables:
 %%% mode: latex
