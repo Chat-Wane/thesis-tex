@@ -1,6 +1,6 @@
 \documentclass[francais, 12pt, fancyChapter, oneside]{these-LUNAM-UBL}
 
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 \usepackage[french,english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{fontspec}
@@ -24,7 +24,6 @@
 %                bookmarksopen=true,%
 %                bookmarksopenlevel=2]{hyperref}
 
-\usepackage{minitoc}
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{paralist}
@@ -51,6 +50,9 @@
 \usepackage{epsfig}
 \usepackage{subfig}
 \usepackage{epstopdf}
+
+
+\usepackage{minitoc}
 
 %% Bibtex
 \usepackage[numbers]{natbib}
@@ -140,13 +142,13 @@
 
 \begingroup
 \tableofcontents\clearpage
-\let\cleardoublepage\relax
-\let\clearpage\relax
-\listoffigures
-\vspace{-35pt}
+%\let\cleardoublepage\relax
+%\let\clearpage\relax
+\listoffigures\clearpage
+%\vspace{-35pt}
 \renewcommand\listalgorithmname{Liste des algorithmes}
-\listofalgorithms%
-\vspace{-35pt}
+\listofalgorithms\clearpage
+%\vspace{-35pt}
 \listoftables
 \endgroup
 

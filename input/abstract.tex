@@ -2,11 +2,11 @@
 \begin{resume}
   Un éditeur collaboratif permet de répartir la tâche de rédaction d'un document
   à travers le temps et l'espace. Par leur simplicité d'utilisation, les
-  éditeurs collaboratifs temps réel du Web ont contribué à l'adoption massive
-  de ces outils par le grand public. Cependant, les éditeurs actuels sont
-  centralisés. Le serveur d'un fournisseur de services gère une session
-  d'édition. Des problèmes de confidentialité et de passage à l'échelle en
-  résultent.
+  éditeurs collaboratifs temps réel du Web ont contribué à l'adoption massive de
+  ces outils par le grand public. Cependant, les éditeurs actuels sont
+  centralisés : un serveur appartenant à un fournisseur de services gère une
+  session d'édition. En résultent des problèmes de confidentialité, de censure,
+  de propriété, de passage à l'échelle et de tolérance aux pannes.
 
   \noindent Récemment, la possibilité d'établir des communications d'un
   navigateur Web à l'autre a ouvert de nouvelles opportunités en faveur d'un Web
@@ -31,30 +31,40 @@
 \end{resume}
 
 \begin{motscles}
-  Édition collaborative, décentralisé, temps réel, passage à l'échelle,
+  Édition collaborative, décentralisé, temps réel, Web, passage à l'échelle,
   structure de donnée répartie pour séquences, échantillonnage aléatoire de
   pairs.
 \end{motscles}
 
 \begin{abstract}
-  Real-time collaborative editors on the Web are centralized. A service
-  provider's server hosts an editing session. It raises privacy and scalability
-  issues. Only recently the opportunity to establish browser-to-browser
-  communication channels has been enabled. This opens the way to decentralized
-  application running directly in web browsers. Contributions of this thesis are
-  threefold: 
+  Collaborative editors allow users to distribute the writing of a document
+  across space and time. Thanks to their ease of use, real-time collaborative
+  editors working in Web browsers vastly contributed to the adoption of such
+  tools. However, current editors are centralized: a service provider's server
+  hosts an editing session. It raises privacy and scalability issues.
+  
+  \noindent Recently, the enabling of browser-to-browser connection
+  establishments opened new opportunities in favor of a decentralized Web.
+  Decentralized real-time collaborative editors working in Web browsers must
+  efficiently handle highly dynamic groups of different size.
+
+  \noindent Contributions of this thesis are threefold:
   \begin{inparaenum}[(i)]
-  \item A replicated data structure for sequences using metadata the size of
-    which scales;
-  \item A random peer sampling protocol that self-adjust its functioning to
-    the variations in membership of networks, without global knowledge;
-  \item A real-time collaborative editor running in web browsers in a
-    decentralized fashion and using the two aforementioned approaches.
+  \item To represent the document, we propose a replicated data structure for
+    sequences using metadata the size of which scales sub-linearly compared to
+    the number of inserted characters.
+  \item To efficiently propagate the changes to all editors involved in the
+    collaborative writing, we propose a random peer sampling protocol that
+    supports Web browsers constraints and self-adjusts its functioning to the
+    variations of network membership.
+  \item To demonstrate the feasibility of a decentralized real-time
+    collaborative editors running in Web browsers, we propose an editor using
+    (i) and (ii), and we highlight its scalability.
   \end{inparaenum}
 \end{abstract}
 
 \begin{keywords}
-  Collaborative editing, decentralized, real-time, scalable,
+  Collaborative editing, decentralized, real-time, Web, scalable,
   distributed structure for sequences, random peer sampling.
 \end{keywords}
 

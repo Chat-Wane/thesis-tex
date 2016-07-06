@@ -1705,8 +1705,9 @@
 
 \def\cleardoublepage{
   \clearpage\thispagestyle{empty}
-  \ifodd\c@page\else
-  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}
+  \ifodd
+  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\else\c@page\fi\fi}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % En-t^etes de chapitres accord'es à la couverture
