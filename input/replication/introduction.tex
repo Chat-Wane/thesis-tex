@@ -1,16 +1,17 @@
 
 \lettrine{L}es éditeurs Web tels que \emph{Google Docs}~\cite{googledocs} ou
 \emph{ShareLaTeX}\cite{sharelatex} ont fortement contribué à l'adoption des
-éditeurs collaboratifs par le public~\cite{mogan2010impact}. Des millions
+éditeurs collaboratifs par le grand public~\cite{mogan2010impact}. Des millions
 d'utilisateurs partagent et rédigent leurs documents en temps réel directement
 dans leurs navigateurs Web. Cependant un serveur central appartenant à un
 fournisseur de services sert d'intermédiaire à l'édition. Cela soulève des
-problèmes en termes de confidentialité, de censure, et d'intelligence
-économique~\cite{cherrueau2016composer, gellman2013us, pearson2011toward}. À
-cela s'ajoutent des problèmes de passage à l'échelle, notamment en ce qui
-concerne le nombre d'utilisateurs. Bien que les petits groupes de collaborateurs
-soient la cible principale de ce genre d'application, certains événements de
-plus ample dimension tels que les cours en ligne ouverts et massifs
+problèmes en termes de confidentialité, de censure, de propriété et
+d'intelligence économique~\cite{cherrueau2016composer, gellman2013us,
+pearson2011toward}. À cela s'ajoutent des problèmes de tolérance aux pannes et
+de passage à l'échelle, notamment en ce qui concerne le nombre
+d'utilisateurs. Bien que les petits groupes de collaborateurs soient la cible
+principale de ce genre d'application, certains événements de plus ample
+dimension tels que les cours en ligne ouverts et massifs
 (\emph{MOOC})~\cite{breslow2013studying} nécessitent de supporter des groupes à
 la fois plus larges et plus dynamiques. En effet, si un cours commence avec
 quelques milliers d'étudiants prenant des notes, sa population diminue en
@@ -24,27 +25,44 @@ quel participant de la session d'édition devrait pouvoir lire et écrire
 lorsqu'il le souhaite.
 
 Les éditeurs décentralisés autorisant l'édition en temps réel n'ont pas besoin
-de serveurs intermédiaires. Par conséquent, ils résolvent les problèmes liés à
-la confidentialité. Toutefois les problèmes de passage à l'échelle
-demeurent. Résoudre ces problèmes revient à trouver un bon compromis entre les
-complexités en communication, en espace et en temps. Par dessus tout, obtenir
-une complexité en communication sous-linéaire comparée au nombre de participants
-est crucial pour gérer les groupes de grande taille.
+de serveurs intermédiaires. Ils constituent une étape nécessaire vers une
+solution aux problèmes liés à la confidentialité. Cependant, le problème du
+passage à l'échelle demeure. Résoudre ce problème revient à trouver un bon
+compromis entre les complexités en communication, en espace et en temps du
+système. Par dessus tout, obtenir une complexité en communication sous-linéaire
+comparée au nombre de participants est crucial pour gérer les groupes de grande
+envergure.
 
 Afin d'augmenter la réactivité aux changements et la disponibilité des
-documents, les éditeurs temps réel utilisent la réplication
+documents, les éditeurs temps réel actuels emploient le schéma de réplication
 optimiste~\cite{demers1987epidemic, ladin1992providing, saito2005optimistic,
-sun1998achieving} de séquences -- les documents étant simplement des séquences
-de caractères. En tant que tel, chaque éditeur héberge une copie locale d'un
-document. L'évolution de la mémoire prise par cette copie constitue la
-complexité spatiale de l'approche. Chaque modification est directement appliquée
-sur cette copie avant d'être propagée aux autres répliques où elle est
-intégrée. Ainsi, la complexité temporelle des opérations de modification se
-trouve divisée entre une partie locale et une partie distante. La complexité en
-communication intervient lors de la propagation des changements au système. Le
-système est correct si les répliques intégrant un même ensemble d'opérations
-convergent vers un état équivalent, i.e., les utilisateurs lisent un même
-document~\cite{bailis2013eventual, shapiro2011conflict}.
+sun1998achieving} de séquences -- les documents étant simplement représentés par
+des séquences de caractères. En tant que tel, chaque éditeur
+\begin{enumerate}[(i)] 
+\item héberge une copie locale du document. L'évolution de la mémoire prise par
+cette copie constitue la complexité spatiale de l'approche;
+
+\item modifie directement cette copie locale. L'évolution des performances de
+ces opérations de modification constitue la complexité temporelle à la
+génération de l'approche;
+
+\item propage le résultat de l'opération à tous les éditeurs impliqués dans la
+rédaction du document. L'évolution du nombre et de la taille des messages
+disséminés constitue la complexité en communication de l'éditeur;
+
+\item reçoit et intègre le message qu'il a reçu sur sa propre
+réplique. L'évolution des performances de l'intégration de ces opération de
+modification constitue la complexité temporelle à l'intrégation de l'approche.
+\end{enumerate}
+
+%  où elle est intégrée. Ainsi, la \textbf{complexité temporelle} des opérations
+% de modification se trouve divisée entre une partie \emph{locale} et une partie
+% \emph{distante}. La \emph{complexité en communication} intervient lors de la
+% propagation des changements au système.
+
+\noindent Le système est correct si les répliques intégrant un même ensemble
+d'opérations convergent vers un état équivalent, i.e., les utilisateurs lisent
+un même document~\cite{bailis2013eventual, shapiro2011conflict}.
 
 Les algorithmes décentralisés appartenant aux transformées opérationnelles
 (\emph{OT})~\cite{sun1998operational, sun2009contextbased} transportent un
