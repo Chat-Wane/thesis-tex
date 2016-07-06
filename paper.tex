@@ -137,7 +137,10 @@
 
 \begin{document}
 
-\maketitle%
+\maketitle
+%% ugly fix the first page not counted since i broke something in cls file
+\clearpage
+\setcounter{page}{2}
 \dominitoc%
 
 \begingroup

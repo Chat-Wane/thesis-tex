@@ -1705,8 +1705,8 @@
 
 \def\cleardoublepage{
   \clearpage\thispagestyle{empty}
-  \ifodd
-  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\else\c@page\fi\fi}
+  \ifodd\c@page\else
+  \hbox{}\newpage\thispagestyle{empty}\if@twocolumn\hbox{}\newpage\fi\fi}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
