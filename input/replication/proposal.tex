@@ -28,16 +28,16 @@ commence à partir de l'un des chemin adjacent auquel est ajouté ou soustrait u
 valeur aléatoire dans le nouvel intervalle.
 
 
-Ainsi, trois éléments principaux composent la fonction d'allocation des chemins
-de \LSEQ :
-\begin{itemize}[(i)]
+\noindent Ainsi, trois éléments principaux composent la fonction d'allocation
+des chemins de \LSEQ :
+\begin{enumerate}[(i)]
 \item une structure d'arbre dont l'arité maximale augmente avec sa
   profondeur;
 \item deux sous-fonctions d'allocation conçues pour gérer des comportements
   d'édition opposés;
 \item une fonction assignant à chaque profondeur de l'arbre une sous-fonction
   d'allocation parmi celles disponibles.
-\end{itemize}
+\end{enumerate}
 Individuellement, ces éléments n'arrivent pas à construire des chemins dont la
 taille soit sous-linéaire par rapport au nombre d'insertions dans la
 séquence. En revanche, utilisés simultanément, ils permettent à \LSEQ de

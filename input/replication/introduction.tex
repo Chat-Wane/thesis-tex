@@ -1,7 +1,7 @@
 
-\lettrine{L}es éditeurs Web tels que \emph{Google Docs}~\cite{googledocs} ou
-\emph{ShareLaTeX}\cite{sharelatex} ont fortement contribué à l'adoption des
-éditeurs collaboratifs par le grand public~\cite{mogan2010impact}. Des millions
+\lettrine{L}es éditeurs Web tels que Google Docs~\cite{googledocs} ou
+ShareLaTeX\cite{sharelatex} ont fortement contribué à l'adoption des éditeurs
+collaboratifs par le grand public~\cite{mogan2010impact}. Des millions
 d'utilisateurs partagent et rédigent leurs documents en temps réel directement
 dans leurs navigateurs Web. Cependant un serveur central appartenant à un
 fournisseur de services sert d'intermédiaire à l'édition. Cela soulève des
@@ -16,7 +16,7 @@ dimension tels que les cours en ligne ouverts et massifs
 la fois plus larges et plus dynamiques. En effet, si un cours commence avec
 quelques milliers d'étudiants prenant des notes, sa population diminue en
 fonction de l'intérêt qu'il suscite, avant de récupérer certains étudiants
-désireux de réussir leurs examens. \emph{Google Docs} gère les groupes de grande
+désireux de réussir leurs examens. Google Docs gère les groupes de grande
 taille. En revanche, seuls les $50$ premiers collaborateurs ont le droit
 d'écrire ensemble en temps réel, les suivants voient leurs accès limités à la
 simple lecture du document. Selon nous, même si seulement un petit ensemble
@@ -24,14 +24,14 @@ parmi les millions de collaborateurs est réellement en train d'écrire, n'impor
 quel participant de la session d'édition devrait pouvoir lire et écrire
 lorsqu'il le souhaite.
 
-Les éditeurs décentralisés autorisant l'édition en temps réel n'ont pas besoin
-de serveurs intermédiaires. Ils constituent une étape nécessaire vers une
-solution aux problèmes liés à la confidentialité. Cependant, le problème du
-passage à l'échelle demeure. Résoudre ce problème revient à trouver un bon
-compromis entre les complexités en communication, en espace et en temps du
-système. Par dessus tout, obtenir une complexité en communication sous-linéaire
-comparée au nombre de participants est crucial pour gérer les groupes de grande
-envergure.
+La décentralisation des éditeurs collaboratifs constitue une étape nécessaire
+vers une solution aux problèmes liés à la confidentialité : un document doit
+réellement appartenir à ceux qui le rédigent. Cependant, les problèmes de
+passage à l'échelle demeurent. Résoudre ces problèmes revient à trouver un bon
+compromis entre les complexités en communication, en espace et en temps de
+l'éditeur. En particulier, obtenir une complexité en communication sous-linéaire
+par rapport au nombre de participants est crucial pour gérer les groupes de
+grande envergure.
 
 Afin d'augmenter la réactivité aux changements et la disponibilité des
 documents, les éditeurs temps réel actuels emploient le schéma de réplication
@@ -50,28 +50,25 @@ génération de l'approche;
 rédaction du document. L'évolution du nombre et de la taille des messages
 disséminés constitue la complexité en communication de l'éditeur;
 
-\item reçoit et intègre le message qu'il a reçu sur sa propre
+\item reçoit le message et intègre son contenu sur sa propre
 réplique. L'évolution des performances de l'intégration de ces opération de
-modification constitue la complexité temporelle à l'intrégation de l'approche.
+modification constitue la complexité temporelle à l'intégration de l'approche.
 \end{enumerate}
 
-%  où elle est intégrée. Ainsi, la \textbf{complexité temporelle} des opérations
-% de modification se trouve divisée entre une partie \emph{locale} et une partie
-% \emph{distante}. La \emph{complexité en communication} intervient lors de la
-% propagation des changements au système.
-
-\noindent Le système est correct si les répliques intégrant un même ensemble
-d'opérations convergent vers un état équivalent, i.e., les utilisateurs lisent
-un même document~\cite{bailis2013eventual, shapiro2011conflict}.
+\noindent La réplication optimiste fait l'hypothèse d'une dissémination fiable
+des messages, i.e., toutes les éditeurs reçoivent l'intégralité des messages. Le
+système est correct si les répliques intégrant un même ensemble d'opérations
+convergent vers un état équivalent, i.e., les collaborateurs lisent un même
+document~\cite{bailis2013eventual, shapiro2011conflict}.
 
 Les algorithmes décentralisés appartenant aux transformées opérationnelles
-(\emph{OT})~\cite{sun1998operational, sun2009contextbased} transportent un
-vecteur d'état ou de contexte dans le but de détecter les opérations
-concurrentes. Ces vecteurs croissent linéairement en comparaison du nombre de
-membres ayant jamais participé à l'édition du document. Ainsi, ces approches
-sont efficaces pour les petits groupes d'utilisateurs mais ne sont pas adaptées
-aux groupes de plus large dimension, plus dynamiques, et sujet aux aléas du
-réseau -- notamment sur la latence.
+(\emph{OT})~\cite{sun1998operational, sun2009contextbased} transportent dans
+chaque message un vecteur d'état ou de contexte dans le but de détecter les
+opérations concurrentes. La croissance de ces vecteurs est linéaire par rapport
+au nombre de membres ayant jamais participé à l'édition du document. Ainsi, ces
+approches sont efficaces pour les petits groupes d'utilisateurs mais ne sont pas
+adaptées aux groupes de plus large dimension, plus dynamiques, et sujet aux
+aléas du réseau -- notamment sur la latence.
 
 Les structures de données répliqués sans conflits
 (\emph{CRDTs})~\cite{burckhardt2014replicated, shapiro2011comprehensive,
@@ -119,7 +116,7 @@ titre, elle évite l'utilisation de protocole de relocalisation.
 
 La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
 le schéma de réplication optimiste des séquences avant d'en détailler les
-représentants ainsi que les limites auxquelles ils sont asujetis.  La
+approches ainsi que les limites auxquelles elles sont assujetties.  La
 section~\ref{repl:sec:problem} définit le problème scientifique à résoudre. La
 section~\ref{repl:sec:proposal} présente \LSEQ, une approche basée sur les
 opérations commutatives dont la complexité est sous-linéaire. La

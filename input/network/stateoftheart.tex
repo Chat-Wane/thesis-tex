@@ -171,40 +171,16 @@ passives. Similairement à \CYCLON, les arcs privilégiés sont ceux nouvellemen
 reçus.
 
 
-Les approches appartenant à la famille dont les vues partielles
-sont constantes ne sont pas adaptées aux contextes avec :
-
-\paragraph{Un même réseau.} La taille d'un réseau fluctue au cours du temps. Par
-exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
-alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
-l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
-temps peuvent avoir lieu. Le Web amplifie ces fluctuations. En effet, le Web
-favorise la diffusion d'idées. Par exemple, dans le cadre de l'édition
-collaborative, un simple lien HTTP permet le partage d'un document. Un lien
-\emph{tweeté} par une célébrité sur un événement particulier peut attirer des
-milliers de participants en très peu de temps. Cette soudaine popularité retombe
-lorsque l'événement s'achève.  Pour gérer ces cas, les approches fournissant des
-vues dont la taille est configurée \emph{a priori} doivent être pessimistes :
-les vues partielles sont surdimensionnées afin de supporter ces cas
-éphémères. Les protocoles qui dépendent, tel que la dissémination de messages,
-héritent de ce pessimisme qui les conduit à, par exemple, produire un trafic
-excessif lorsque le réseau est plus modeste que prévu.
-
-
-\paragraph{Plusieurs réseaux.} La taille des réseaux créés par une même
-application varie. Par exemple, un document partagé pour un événement de grande
-ampleur n'a pas la même audience qu'un document partagé avec quelques
-amis. Malgré tout, le développeur d'application doit prévoir large afin de
-supporter les grands groupes s'ils existent, au détriment des plus petits
-groupes d'utilisateurs.
-
-
+Les approches à taille fixe constituent le cœur de nombreux protocoles
+décentralisés~\cite{dabek2004vivaldi, folz2016cyclades, jelasity2009tman,
+  krasikova2016distributed}. Malheureusement, leur manque d'adaptivité n'est pas
+compatible avec notre contexte.
 %\TODO{Maybe talk about estimators\ldots}
-
-Afin de résoudre ces problèmes, un développeur pourrait se tourner vers un
-protocoles d'échantillonnage aléatoire de pairs étant conçu pour être adaptatif.
-Ainsi, la taille des vues partielles s'ajusterai automatiquement à la taille du
-réseau.
+%Afin de résoudre ces problèmes, un développeur pourrait se tourner vers un
+%protocoles d'échantillonnage aléatoire de pairs étant conçu pour être adaptatif.
+La section suivante introduit une autre famille de protocole d'échantillonnage
+aléatoire de pairs fournissant des vues partielles s'ajustant automatiquement à
+la taille du réseau.
 
 \subsection{Taille variable}
 \label{net:subsec:variable}

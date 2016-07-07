@@ -73,9 +73,10 @@ nombre d'arcs requis (à droite)?
 
 \subsection{Table de hachage répartie}
 
-Une table de hachage répartie (DHT) est un système permettant de retrouver une
-ressource rapidement dans un réseau superposé de nœuds. La ressource recherchée
-possède une clé permettant l'exploration efficace du réseau.
+Une table de hachage répartie (\emph{DHT}\footnote{\emph{Distributed Hash
+    Table}}) est un système permettant de retrouver une ressource rapidement
+dans un réseau superposé de nœuds. La ressource recherchée possède une clé
+permettant l'exploration efficace du réseau.
 
 Parmi les représentants des DHT on trouve Chord~\cite{stoica2001chord},
 CAN~\cite{ratnasamy2001scalable}, Pastry~\cite{rowstron2001pastry},
@@ -149,28 +150,28 @@ L'idée serait alors d'allier
   opérations parviennent à tous les participants.
 \end{inparaenum}
 
-\subsection{Wiki réparti temps réel}
+% \subsection{Wiki réparti temps réel}
 
-Les wikis sont des espaces de collaborations permettant à plusieurs participants
-d'éditer des pages à tour de rôle, i.e., l'édition n'est pas effectuée en temps
-réel. Le succès de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia} n'est plus à
-démontrer~\cite{giles2005internet}. Cependant, le modèle même d'édition provoque
-l'apparition de conflits. Ces conflits ne concernent pas seulement des points de
-vue divergents, mais aussi des éditions placées aux même endroit dans le
-document au même moment. Les conflits doivent être résolus manuellement ce qui
-constitue une tâche complexe à tel point que les discussions quant à
-l'organisation de la rédaction ont énormément augmenté au cours du
-temps~\cite{kittur2007he}.
+% Les wikis sont des espaces de collaborations permettant à plusieurs participants
+% d'éditer des pages à tour de rôle, i.e., l'édition n'est pas effectuée en temps
+% réel. Le succès de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia} n'est plus à
+% démontrer~\cite{giles2005internet}. Cependant, le modèle même d'édition provoque
+% l'apparition de conflits. Ces conflits ne concernent pas seulement des points de
+% vue divergents, mais aussi des éditions placées aux même endroit dans le
+% document au même moment. Les conflits doivent être résolus manuellement ce qui
+% constitue une tâche complexe à tel point que les discussions quant à
+% l'organisation de la rédaction ont énormément augmenté au cours du
+% temps~\cite{kittur2007he}.
 
-Autoriser l'édition temps réel des pages de \emph{Wikipédia} permettrait à
-différent utilisateurs de voir les modifications effectués par d'autres
-collaborateurs afin d'agir en conséquence. Dans ce cas, les seuls conflits
-restants seraient ceux d'ordre sémantique.  De plus, décentraliser ces sessions
-d'édition temps réel permettrait de soulager le fournisseur du service des coûts
-liés à l'édition. Les membres d'une session d'édition participeraient seuls au
-bon fonctionnement de la session. Une fois le travail accompli, le document est
-sauvegardé sur le serveur et versionné normalement. Seul la sauvegarde finale
-reste de sa responsabilité.
+% Autoriser l'édition temps réel des pages de \emph{Wikipédia} permettrait à
+% différent utilisateurs de voir les modifications effectués par d'autres
+% collaborateurs afin d'agir en conséquence. Dans ce cas, les seuls conflits
+% restants seraient ceux d'ordre sémantique.  De plus, décentraliser ces sessions
+% d'édition temps réel permettrait de soulager le fournisseur du service des coûts
+% liés à l'édition. Les membres d'une session d'édition participeraient seuls au
+% bon fonctionnement de la session. Une fois le travail accompli, le document est
+% sauvegardé sur le serveur et versionné normalement. Seul la sauvegarde finale
+% reste de sa responsabilité.
 
 % Enfin, \CRATE permet de placer des liens à d'autres sessions d'édition dans le
 % document. Ce simple mécanisme permet de naviguer d'un document à l'autre, d'une
@@ -193,19 +194,21 @@ tablettes, ou les ordinateurs de bureaux.
 Développer une application Web, c'est développer pour une large audience
 hétérogène.  L'éditeur collaboratif temps réel \CRATE prouve qu'il est possible
 de développer des applications décentralisées directement dans le navigateur
-Web. Le projet \emph{WebTorrent}~\cite{webtorrent} constitue un autre exemple
-d'application décentralisée fonctionnant dans le navigateur Web. Ce projet permet
-le transfert de fichiers statique. Quelles autres applications décentralisées
-est-il possible de développer ?
+Web. Le projet WebTorrent~\cite{webtorrent} constitue un autre exemple
+d'application décentralisée fonctionnant dans le navigateur Web. Ce projet
+permet le transfert de fichiers statique. Quelles autres applications
+décentralisées est-il possible de développer ?
 
 Rassembler l'ensemble des composants répartis en un langage adapté au Web
 permettrait de développer un catalogue d'applications décentralisées
 garantissant certaines propriétés sur, par exemple, le critère de cohérence ou
-la sécurité. Cela constituerait une avancée certaine en faveur d'un Web
-décentralisé. De plus, lorsque des navigateurs Web sont actuellement entièrement
-développés dans l'optique de supporter le décentralisé~\cite{maelstrom} -- ce
-qui représente une dépense substantielle -- le même objectif pourrait être
-atteint en étendant simplement les capacités des navigateurs Web existants.
+la sécurité. \CRATE ne serait que l'une des applications temps réel que ce
+langage permettrait d'écrire. Cela constituerait une avancée certaine en faveur
+d'un Web décentralisé. De surcroît, lorsque des navigateurs Web sont
+actuellement entièrement développés dans l'optique de supporter le
+décentralisé~\cite{maelstrom} -- ce qui représente une dépense substantielle --
+le même objectif pourrait être atteint en étendant simplement les capacités des
+navigateurs Web existants.
 
 
 %%% Local Variables:

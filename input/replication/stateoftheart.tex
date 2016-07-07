@@ -10,7 +10,7 @@ familles d'approches appartenant à la réplication optimiste des séquences : l
 transformées opérationnelles (cf. §\ref{repl:subsec:ot}) et les structures de
 données répliquées sans conflits (cf. §\ref{repl:subsec:crdts}). Cette section
 s'attache particulièrement à cette dernière famille et en détaille les
-représentants.
+approches.
 
 \subsection{Réplication optimiste de séquences}
 \label{repl:subsec:optimistic}
@@ -26,12 +26,15 @@ représentants.
 
 La réplication optimiste~\cite{demers1987epidemic, johnson1975maintenance,
   ladin1992providing, saito2005optimistic} de séquence est un paradigme de
-réplication consistant à appliquer les modifications directement sur une
-réplique locale de la séquence.  Ainsi, un document est toujours disponible et
-réactif aux changements effectués. La modification produit un résultat qui est
-disséminés aux autres serveurs hébergeant une réplique. Le serveur exécute -- ou
-\emph{intègre} -- le résultat reçu. La figure~\ref{repl:fig:optimisticsteps}
-illustre ces trois étapes.
+réplication où chaque éditeur possède une réplique locale du document.  Un
+document est toujours disponible et réactif aux changements effectués. En effet,
+comme l'illustre la figure~\ref{repl:fig:optimisticsteps},
+\begin{inparaenum}[(a)]
+\item une opération de modification est directement exécutée sur la réplique
+  locale de la séquence.  La modification produit un résultat qui
+\item est disséminés aux autres serveurs hébergeant une réplique.
+\item Le serveur exécute -- ou \emph{intègre} -- le résultat reçu.
+\end{inparaenum}
 % Grâce à $\textsc{insert}(Q, 0)$, un résultat est
 % produit puis disséminé aux deux autres répliques. L'intrégation de ce résultat
 
@@ -43,7 +46,7 @@ figure~\ref{repl:fig:optimisticsteps} contiennent la même séquence
 \texttt{QWERTY}.
 
 Sun et al.~\cite{sun1998achieving} déclarent que l'édition collaborative temps
-réel nécessite un système préservant les trois propriétés :
+réel nécessite un système préservant les trois propriétés CCI :
 
 %\begin{itemize}
 \paragraph{Convergence.} Les répliques ayant reçues les même opérations
@@ -95,10 +98,15 @@ l'opération d'insertion pour supprimer le caractère \texttt{Q}.
 % comportement défini.
 
 \paragraph{Intention.} L'effet observé sur le document lors de la génération
-d'une opération doit être également observé lors de son intégration malgré l'
-interférence d'opérations concurrentes.
-% Lorsque les définitions des propriétés de convergence et de causalité font
-% consensus,
+d'une opération doit être également observé lors de son intégration.  Dans
+l'exemple de la figure~\ref{repl:fig:causality}, la cible originelle de la
+suppression sur la réplique 2 est le caractère \texttt{Q}. Par conséquent, ce
+caractère doit être supprimé lors de l'intégration de l'opération, et nul autre
+caractère.
+
+% malgré l'
+% interférence d'opérations concurrentes.  Lorsque les définitions des
+% propriétés de convergence et de causalité font consensus,
 
 \noindent L'intention des opérations d'une séquence demeure difficile à
 formaliser dans le cas général. L'effet d'une opération doit respecter le plus
@@ -113,9 +121,11 @@ entre deux autres éléments.
 %\end{itemize}
 
 Nous distinguons la complexité spatiale de la réplique, la complexité en
-communication des messages, la complexité temporelle d'une opération générée
-localement, la complexité temporelle de l'intégration d'une opération
-reçue. Parmi ces complexités, la complexité en communication est la plus
+communication sur les messages, la complexité temporelle d'une opération
+exécutée localement, la complexité temporelle de l'intégration d'une opération
+reçue.
+
+\noindent Parmi ces complexités, la complexité en communication est la plus
 critique et doit être sous-linaire pour passer à l'échelle. En ce qui concerne
 les complexités temporelles, il est plus important d'améliorer l'intégration que
 la génération car chaque opération locale effectuée conduit à $N$ intégrations,
@@ -125,8 +135,8 @@ trop long constitue un danger pour l'édition en temps réel.
 
 Le reste de cette section présente les approches appartenant à la réplication
 optimiste de séquences. Les approches à transformées opérationnelles cherchent à
-garantir les trois propriétés au prix du passage à l'échelle. Les approches à
-structure de données proposant des opérations commutatives s'attachent à la
+garantir les trois propriétés CCI au prix du passage à l'échelle. Les approches
+à structure de données proposant des opérations commutatives s'attachent à la
 convergence et à l'intention.
 
 \subsection{Transformées opérationnelles}
@@ -249,10 +259,12 @@ d'approches : les approches recourant à des marqueurs nommés \og pierre tombal
 \subsubsection{Pierres tombales}
 
 Une \og pierre tombale \fg est une marque laissée après la suppression d'un
-élément indiquant qu'un jour, celui-ci a existé à cet emplacement. Bien entendu,
-ces marques sont cachées à l'utilisateur et n'apparaissent que dans la structure
-sous-jacente. L'impact sur les performances à l'intégration des opérations en
-reste néanmoins présent.
+élément indiquant qu'un jour, celui-ci a existé à cet emplacement. Ces marques
+sont cachées à l'utilisateur : les caractères disparaissent du document mais
+existent toujours dans la structure répliquée.
+
+%% L'impact sur les performances à
+%% l'intégration des opérations en reste néanmoins présent.
 
 \paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
 CRDTs pour séquences suivi par deux extensions
@@ -288,6 +300,12 @@ référence l'identifiant de \texttt{Z}, lui-même référençant l'identifiant 
 \texttt{A} et/ou de \texttt{Z} revient à rendre l'identifiant de \texttt{E} non
 positionnable, et tout ceux qui en dépendent par transitivité.
 
+\noindent Même si le document apparaît vide, la structure répliquée contient
+tous les éléments ayant été insérés depuis sa création. Cette croissance
+monotone de la structure impacte négativement l'intégration des opérations qui
+devient moins efficace. Du reste, la complexité en communication est optimale
+puisque seul un identifiant de taille constante doit être envoyé par opération.
+
 \paragraph{Causal tree~\cite{grishchenko2010deep} :} Cette approche caractérise
 explicitement les relations causales grâce à une représentation sous forme
 d'arbre. Ainsi, chaque opération est accompagnée de l'identifiant de la dernière
@@ -295,7 +313,9 @@ opération observée. En parcourant l'arbre et en appliquant les opérations, la
 séquence peut être retrouvée. Toutefois, les identifiants sont des vecteurs
 d'horloges dont la taille croît linéairement avec le nombre de participants. De
 plus, il est nécessaire de conserver tous les nœuds de cet arbre causal au cas
-où une opération y ferait référence.
+où une opération y ferait référence. Cette approche garantie la réception
+causale comme le prescrit la cohérence CCI~\cite{sun1998achieving}. Cependant,
+elle n'est pas adaptée aux contextes où le groupe d'éditeurs est grand.
 
 \paragraph{Partial persistent sequence~\cite{wu2010partial} :} Cette approche
 définit les identifiants dans l'ensemble des nombres rationnels auxquels est
@@ -311,21 +331,26 @@ leurs identifiants. Les éléments incluent une référence au voisin qu'ils
 précèdent lors de leur insertion. Toutefois, pour ne jamais briser la chaîne
 ainsi construite, les éléments supprimés sont cachés et restent présents dans la
 structure. Une variante sous forme d'arbre a récemment été
-proposée~\cite{attiya2016specification}.
+proposée~\cite{attiya2016specification}. Tout comme pour WOOT, la mémoire locale
+consommée par la réplique est monotone croissante. Les performances des
+opérations se dégradent progressivement à chaque insertion.
 
 \paragraph{String-wise~\cite{yu2012stringwise} :} Cette approche cible
 principalement les chaînes de caractères pouvant être subdivisées lors
 d'opérations jusqu'à devenir une série de caractères. Les identifiants
 référencent alors les chaînes adjacentes à l'insertion ainsi que les autres
-éléments de la chaînes si subdivision il y a. 
-%% De la même manière que pour les approches précédentes, les références rendent
-%% les suppressions réelles impossibles.
+éléments de la chaînes si subdivision il y a. Le nombre d'identifiants générés
+s'en trouve diminué. Cependant, de la même manière que pour les approches
+précédentes, les références empêchent à la structure répliquée de se débarasser
+des éléments supprimés. La complexité spatiale de l'approche est monotone et
+linéaire par rapport au nombre d'insertions et subdivisions. Les performances
+des opérations en sont impactées négativement.
 
-\paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
-principalement ses efforts sur les garanties de confluence de la
-séquence. Chaque identifiant référence le voisin qu'il précède à
-l'insertion. L'ordre des éléments est alors fonction de ces relations de
-positionnement relatif, et de causalité.
+% \paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
+% principalement ses efforts sur les garanties de confluence de la
+% séquence. Chaque identifiant référence le voisin qu'il précède à
+% l'insertion. L'ordre des éléments est alors fonction de ces relations de
+% positionnement relatif, et de causalité.
 
 Pour préserver l'ordre dense défini lors de l'exécution locale de l'insertion,
 toutes ces approches génèrent des identifiants qui référencent au moins l'un

@@ -1,25 +1,4 @@
 
-% \lettrine{L}'édition collaborative~\cite{ellis1991groupware} permet de répartir
-% le travail de rédaction d'un document selon les trois dimensions : le temps,
-% l'espace, et les activités~\cite{desanctis1987foundation,
-%   grudin1994computersupported, johansen1988groupware}. L'éditeur collaboratif en
-% constitue l'outil principal récemment popularisé grâce aux éditeurs web tels que
-% \emph{Google Docs}~\cite{googledocs} ou \emph{ShareLatex}~\cite{sharelatex}. Ces
-% éditeurs proposent à leurs utilisateurs de créer et modifier un document en
-% temps réel. Grâce à un simple lien, un utilisateur en mesure de partager ce
-% document à des amis ou des collègues. Ces derniers sont à leur tour capables de
-% lire et modifier le document en temps réel.
-
-% Les utilisateurs impliquées dans l'édition peuvent être éloignés les uns des
-% autres géographiquement. Par exemple, un japonais, un français et un brésilien
-% peuvent éditer un même document en temps réel depuis leur pays d'origine. Cette
-% répartition géographique necessite l'établissement de moyens de communication
-% entre éditeurs distants. De plus, le web favorise la dissémination d'idées. Il
-% n'est dès lors pas impossible qu'un document soit lu et rédigé par des milliers
-% de participants avant de tomber dans l'oubli.  Chaque modification doit parvenir
-% efficacement à tous les participants afin que le même document puisse être lu
-% partout. Pour établir ces communications, les éditeurs collaboratifs doivent
-% construire un réseau superposé (\emph{network overlay}).
 
 \lettrine{L}es éditeurs collaboratifs répartis~\cite{ellis1991groupware} suivent
 le schéma de réplication optimiste~\cite{demers1987epidemic,
@@ -29,7 +8,7 @@ générée sur une réplique doit parvenir à toutes les autres répliques afin 
 intégrée. Un mécanisme de diffusion fiable, décentralisé et compatible avec le
 Web est requis.
 
-Grâce à \emph{WebRTC}~\cite{webrtc}, il est dorénavant possible d'établir des
+Grâce à WebRTC~\cite{webrtc}, il est dorénavant possible d'établir des
 connexions de navigateur à navigateur, et par conséquent d'implémenter un tel
 mécanisme de diffusion.
 % La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
@@ -40,7 +19,7 @@ mécanisme de diffusion.
 Les mécanismes de diffusion se basent sur des protocoles d'échantillonnage de
 pairs. Toutefois, déployer ces protocoles avec WebRTC n'est pas sans poser de
 problèmes :
-\begin{itemize}
+\begin{enumerate}[(i)]
 \item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
   des connexions plus coûteuses et sujettes aux défaillances que sur un réseau
   IP.
@@ -51,13 +30,42 @@ problèmes :
 \item Avec WebRTC, un simple lien HTTP %(\emph{HyperText Transfer Protocol})
   permet de partager l'accès à une session d'édition en temps réel. Cette
   simplicité d'accès expose l'éditeur aux explosions soudaines de popularité
-  caractéristiques du Web.
-  %% TODO : insert concrete example
-  Le mécanisme de diffusion et le protocole duquel il dépend doivent s'adapter à
-  ces montés fulgurantes en nombre de participants et maintenir leur qualité de
-  service avant de revenir à leur configuration initiale lorsque le pic de
-  popularité retombe.
-\end{itemize}
+  caractéristiques du Web.  Par exemple, un lien \og tweeté \fg par une
+  célébrité sur un événement particulier peut attirer des milliers de
+  participants en très peu de temps. Cette soudaine popularité retombe lorsque
+  l'événement s'achève.  Le mécanisme de diffusion et le protocole duquel il
+  dépend doivent s'adapter à ces montés fulgurantes en nombre de participants et
+  maintenir leur qualité de service avant de revenir à leur configuration
+  initiale lorsque le pic de popularité retombe.
+\end{enumerate}
+
+
+% \paragraph{Un même réseau.} La taille d'un réseau fluctue au cours du temps. Par
+% exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
+% alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
+% l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
+% temps peuvent avoir lieu. Le Web amplifie ces fluctuations. En effet, le Web
+% favorise la diffusion d'idées. Par exemple, dans le cadre de l'édition
+% collaborative, un simple lien HTTP permet le partage d'un document. Un lien
+% \emph{tweeté} par une célébrité sur un événement particulier peut attirer des
+% milliers de participants en très peu de temps. Cette soudaine popularité retombe
+% lorsque l'événement s'achève.  Pour gérer ces cas, les approches fournissant des
+% vues dont la taille est configurée \emph{a priori} doivent être pessimistes :
+% les vues partielles sont surdimensionnées afin de supporter ces cas
+% éphémères. Les protocoles qui dépendent, tel que la dissémination de messages,
+% héritent de ce pessimisme qui les conduit à, par exemple, produire un trafic
+% excessif lorsque le réseau est plus modeste que prévu.
+
+
+% \paragraph{Plusieurs réseaux.} La taille des réseaux créés par une même
+% application varie. Par exemple, un document partagé pour un événement de grande
+% ampleur n'a pas la même audience qu'un document partagé avec quelques
+% amis. Malgré tout, le développeur d'application doit prévoir large afin de
+% supporter les grands groupes s'ils existent, au détriment des plus petits
+% groupes d'utilisateurs.
+
+
+
 
 Malheureusement, les protocoles d'échantillonnage actuels ne parviennent pas à
 répondre à l'ensemble de ces problématiques. D'un coté,
