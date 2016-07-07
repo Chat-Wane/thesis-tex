@@ -118,6 +118,33 @@ position des éléments dans la séquence. Contre cette intuition, nous soutenon
 qu'une séquence se définie plus simplement par un ordre dense sur ses éléments :
 les éléments sont ordonnés et il est toujours possible d'insérer un élément
 entre deux autres éléments.
+
+\begin{definition}[Spécification séquentielle d'une séquence]
+  Soit la séquence $S = \{p_1,\, p_2 \ldots p_k\}$ avec
+  $p_{1..k} \in \mathcal{P}$ où $\mathcal{P}$ est un ensemble muni d'un ordre
+  dense $(\mathcal{P},\,<_\mathcal{P})$ tel que :
+  $p_\vdash <_\mathcal{P} p_1 <_\mathcal{P} p_2 <_\mathcal{P} \ldots p_k
+  <_\mathcal{P} p_\dashv$.
+  
+  \noindent L'insertion d'un élément $e$ en position $i$ dans la séquence $S$ est définie
+  de la façon suivante :
+  \begin{equation}
+    \textsc{insert}(i,\, e) \rightarrow S \cup 
+    \begin{cases}
+      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_\dashv \} & i = 0 \wedge |S| = 0\\
+      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_1 \} & i = 0 \wedge |S|>0\\
+      \{p,\, p_k <_\mathcal{P} p <_\mathcal{P} p_\dashv \} & i = k\\
+      \{p,\, p_i <_\mathcal{P} p <_\mathcal{P} p_{i+1} \} & sinon
+    \end{cases}
+  \end{equation}
+
+  \noindent La suppression de l'élément en position $i$ dans la séquence $S$ est définie
+  de la façon suivante :
+  \begin{equation}
+    \textsc{delete}(i) \rightarrow S \setminus \{ p_i \}
+  \end{equation}
+\end{definition}
+
 %\end{itemize}
 
 Nous distinguons la complexité spatiale de la réplique, la complexité en
