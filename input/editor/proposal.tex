@@ -1,5 +1,5 @@
 
-\section{\CRATE : Un éditeur décentralisé dans les navigateurs}
+\section{\CRATE : un éditeur décentralisé dans les navigateurs}
 \label{editor:sec:crate}
 
 \CRATE est un éditeur décentralisé permettant l'édition en temps réel de
@@ -92,7 +92,7 @@ Une session d'édition, composée de 8 éditeurs existe. Celle-ci est inaccessib
 depuis l'extérieur. Pour rejoindre le réseau, au moins un des éditeurs doit
 partager son accès. Pour ce faire, il crée une connexion avec un serveur de
 signalisation facilement accessible via \emph{websocket}. L'éditeur ayant
-partagé son accès donne à son collègue une adresse URL contenant suffisamment
+partagé son accès donne à son collègue un lien HTTP contenant suffisamment
 d'informations pour qu'il retrouve le médiateur et demande à rejoindre la
 session d'édition. Lorsqu'il clique sur l'adresse, une connexion est établie
 avec le serveur de signalisation qui va jouer le rôle de médiateur afin de créer
@@ -123,8 +123,8 @@ trop élevé pour les grands groupes.
 %d'intégration à de petites sessions d'édition bien contrôlées.
 
 \CRATE ne contraint l'ordre d'intégration que pour les paires d'opérations liées
-sémantiquement, c'est à dire que la suppression d'un élément suit toujours son
-insertion. Si les opérations sont réceptionnées dans le désordre, la suppression
+sémantiquement : la suppression d'un élément suit toujours l'insertion de ce
+dernier. Si l'éditeur reçoit les opérations dans le désordre, la suppression
 attend l'insertion correspondante. En revanche, les insertions sont
 immédiatement intégrées lorsqu'elles sont reçues. Pour caractériser ces
 relations causales, \CRATE utilise un vecteur d'horloges avec
@@ -136,8 +136,8 @@ chaque participant
   ce participants dont l'existence est connue mais qui ne sont pas encore
   reçues.
 \end{inparaenum}
-Tandis qu'une telle structure conserve un surcoût local de l'ordre du vecteur
-d'horloges $\mathcal{O}(W)$, le surcoût en communication devient constant
+Tandis qu'une telle structure conserve un coût local de l'ordre du vecteur
+d'horloges $\mathcal{O}(W)$, le coût en communication devient constant
 $\mathcal{O}(1)$.
 
 \begin{figure}

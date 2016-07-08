@@ -4,14 +4,35 @@
 
 \begin{figure}
   \begin{center}
+    \input{input/editor/figgroupware.tex}
+    \caption[Matrice de distribution des systèmes collaboratifs] {
+      \label{editor:fig:groupware} Matrice de distribution des systèmes
+      collaboratifs~\cite{johansen1988groupware}.}
+  \end{center}
+\end{figure}
+
+L'édition collaborative répartit l'écriture selon deux dimensions : le temps et
+l'espace~\cite{desanctis1987foundation, grudin1994computersupported,
+  johansen1988groupware}.  La figure~\ref{editor:fig:groupware} résume cette
+répartition. Dans ce manuscrit, nous nous intéressons particulièrement aux
+collaborateurs connectés en même temps en des lieux différents 
+correspondant à la problématique du temps réel. Dans ce contexte, \og temps réel
+\fg signifie que les modifications doivent être perçues au plus
+tôt~\cite{ellis1989concurrency}. La tolérance d'un utilisateur varie selon les
+outils collaboratifs à sa disposition. Une modification locale doit être
+observée immédiatement. En revanche, une modification distante prend plus de
+temps.
+
+\begin{figure}
+  \begin{center}
     \includegraphics[width=0.85\textwidth]{img/world.png}
     \caption[Édition collaborative décentralisée]{\label{intro:img:world}Édition
       collaborative décentralisée répartie à travers le monde.}
   \end{center}
 \end{figure}
 
-Un éditeur de textes tel que \emph{Microsoft Word}~\cite{word} ou
-\emph{Emacs}~\cite{emacs} permet à un utilisateur de créer et d'éditer un
+Un éditeur de textes tel que Microsoft Word~\cite{word} ou
+Emacs~\cite{emacs} permet à un utilisateur de créer et d'éditer un
 document. Un éditeur de texte collaboratif temps réel~\cite{ellis1991groupware}
 étend la rédaction d'un document à un groupe d'utilisateurs potentiellement
 distants les uns des autres.  Par exemple, la figure~\ref{intro:img:world}
