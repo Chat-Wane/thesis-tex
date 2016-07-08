@@ -120,28 +120,31 @@ les éléments sont ordonnés et il est toujours possible d'insérer un élémen
 entre deux autres éléments.
 
 \begin{definition}[Spécification séquentielle d'une séquence]
-  Soit la séquence $S = \{p_1,\, p_2 \ldots p_k\}$ avec
-  $p_{1..k} \in \mathcal{P}$ où $\mathcal{P}$ est un ensemble muni d'un ordre
-  dense $(\mathcal{P},\,<_\mathcal{P})$ tel que :
-  $p_\vdash <_\mathcal{P} p_1 <_\mathcal{P} p_2 <_\mathcal{P} \ldots p_k
-  <_\mathcal{P} p_\dashv$.
+  Soit une série d'opérations $H$ produisant la séquence
+  $s(H) = \{p_1,\, p_2 \ldots p_k\}$ avec $p_{1..k} \in \mathcal{P}$ où
+  $\mathcal{P}$ est un ensemble muni d'un ordre
+  dense $(\mathcal{P},\,<_\mathcal{P})$ tel que : \\
+  $\forall p\in\mathcal{P},\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_\dashv $
+  \hfill et \ \
+  $p_\vdash <_\mathcal{P} p_1 <_\mathcal{P} p_2 <_\mathcal{P} \ldots
+  <_\mathcal{P} p_k <_\mathcal{P} p_\dashv$.
   
-  \noindent L'insertion d'un élément $e$ en position $i$ dans la séquence $S$ est définie
-  de la façon suivante :
+  \noindent L'insertion d'un élément $e$ en position $i$ dans la séquence $s(H)$
+  est définie de la façon suivante :
   \begin{equation}
-    \textsc{insert}(i,\, e) \rightarrow S \cup 
+    s(H \cup \textsc{insert}(i,\, e)) \rightarrow s(H) \cup 
     \begin{cases}
-      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_\dashv \} & i = 0 \wedge |S| = 0\\
-      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_1 \} & i = 0 \wedge |S|>0\\
+      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_\dashv \} & i = 0 \wedge |s(H)| = 0\\
+      \{p,\, p_\vdash <_\mathcal{P} p <_\mathcal{P} p_1 \} & i = 0 \wedge |s(H)|>0\\
       \{p,\, p_k <_\mathcal{P} p <_\mathcal{P} p_\dashv \} & i = k\\
       \{p,\, p_i <_\mathcal{P} p <_\mathcal{P} p_{i+1} \} & sinon
     \end{cases}
   \end{equation}
 
-  \noindent La suppression de l'élément en position $i$ dans la séquence $S$ est définie
-  de la façon suivante :
+  \noindent La suppression de l'élément en position $i$ dans la séquence $s(H)$
+  est définie de la façon suivante :
   \begin{equation}
-    \textsc{delete}(i) \rightarrow S \setminus \{ p_i \}
+    s(H \cup \textsc{delete}(i)) \rightarrow s(H) \setminus \{ p_i \}
   \end{equation}
 \end{definition}
 
@@ -161,10 +164,9 @@ exécution est blocante vis-à-vis des autres opérations. Un temps d'exécution
 trop long constitue un danger pour l'édition en temps réel.
 
 Le reste de cette section présente les approches appartenant à la réplication
-optimiste de séquences. Les approches à transformées opérationnelles cherchent à
-garantir les trois propriétés CCI au prix du passage à l'échelle. Les approches
-à structure de données proposant des opérations commutatives s'attachent à la
-convergence et à l'intention.
+optimiste de séquences : les approches à transformées opérationnelles (cf.
+§\ref{repl:subsec:ot}) et les approches à structure de données proposant des
+opérations commutatives (cf. §\ref{repl:subsec:crdts}).
 
 \subsection{Transformées opérationnelles}
 \label{repl:subsec:ot}
@@ -281,9 +283,11 @@ que $p$ est supprimé, alors $o$ précède -- directement ou non -- l'élément 
 
 Selon la manière dont les identifiants sont générés, nous distinguons deux types
 d'approches : les approches recourant à des marqueurs nommés \og pierre tombales
-\fg; les approches générant des identifiants dont la taille varie.
+\fg (cf. §\ref{repl:subsubsec:tombstones}); les approches générant des
+identifiants dont la taille varie (cf. §\ref{repl:subsubsec:variable}).
 
 \subsubsection{Pierres tombales}
+\label{repl:subsubsec:tombstones}
 
 Une \og pierre tombale \fg est une marque laissée après la suppression d'un
 élément indiquant qu'un jour, celui-ci a existé à cet emplacement. Ces marques
@@ -419,6 +423,7 @@ identifiants. En cela, ils évitent l'usage des pierres tombales mais font face 
 des problèmes concernant la complexité spatiale de leurs identifiants.
 
 \subsubsection{Identifiants de taille variable}
+\label{repl:subsubsec:variable}
 
 Contrairement aux approches basées sur les pierres tombales, certains CRDTs
 génèrent des identifiants ne référençant pas d'autres identifiants. Par
@@ -447,7 +452,7 @@ d'identifiants. Chacun des identifiants est une liste de triples notée
 $id = [t_1,\,t_2,\,\ldots,\,t_k]$ où $t_k=\langle p_k,\,s_k,\,c_k \rangle$ où
 $p_k$ est un entier positif, $s_k$ est un identifiant unique de site, et $c_k$
 est un compteur local au site $s_k$. Un ordre lexicographique est utilisé pour
-préserver un ordre total parmi les éléments :
+préserver l'ordre parmi les éléments :
 \begin{align*}
   t_i < t_j \iff & (p_i < p_j) \vee \\
                  & ((p_i = p_j) \wedge (s_i<s_j)) \vee \\
@@ -462,31 +467,31 @@ comme seul facteur de choix à disposition de Logoot : l' entier $p$ présent da
 chaque triple. Lors de la $x$\up{ème} insertion locale par le site $s_y$, les
 identifiants adjacents à la position d'insertion sont récupérés. Ainsi
 l'identifiant $id$ du nouvel élément inséré en position $i$ doit respecter
-$id_{i-1}<_\mathcal{I} id <_\mathcal{I} id_i$. Par transitivité
-$\ldots id_{i-2} <_\mathcal{I} id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
+$id_{i}<_\mathcal{I} id <_\mathcal{I} id_{i+1}$. Par transitivité
+$\ldots id_{i-1} <_\mathcal{I} id_{i} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
 <_\mathcal{I} id_{i+2} \ldots$.
-Prenons pour exemple, $id_{i-1}=[\langle 12,\,s_1,\,c_1\rangle]$ et
-$id_{i}=[\langle 12,\, s_1,\,c_1\rangle.\langle 1337,\, s_2, c_2\rangle]$. Pour
-choisir les valeurs successives de $p$ du nouvel identifiant, Logoot commence
-par examiner chaque niveau des identifiants adjacents afin de connaitre la
-taille du nouvel identifiant. Ici, les identifiants commencent tous les deux
+Prenons pour exemple, $id_{i}=[\langle 12,\,s_1,\,c_1\rangle]$ et
+$id_{i+1}=[\langle 12,\, s_1,\,c_1\rangle.\langle 1337,\, s_2, c_2\rangle]$.
+Pour choisir les valeurs successives de $p$ du nouvel identifiant, Logoot
+commence par examiner chaque niveau des identifiants adjacents afin de connaitre
+la taille du nouvel identifiant. Ici, les identifiants commencent tous les deux
 avec l'entier $12$.  Puisqu'entre $12$ et $12$ aucune valeur entière n'est
-disponible, Logoot doit chercher plus loin dans les identifiants. L'un d'eux ne
-possède pas de second triple ce qui correspond implicitement à
-$\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre $0$ et $1337$ de nombreuses
-valeurs sont disponibles.  Logoot doit choisir parmi toutes ces valeurs laquelle
-constituera définitivement le nouvel identifiant. Ce choix impactera également
-sur l'allocation des identifiants à venir.
+disponible, Logoot doit chercher plus loin dans les identifiants. L'identifiant
+précédant la position d'insertion ne possède pas de second triple ce qui
+correspond implicitement à $\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre
+$0$ et $1337$ de nombreuses valeurs sont disponibles.  Logoot doit choisir parmi
+toutes ces valeurs laquelle constituera définitivement le nouvel identifiant. Ce
+choix impactera également sur l'allocation des identifiants à venir.
 %% et ne doit pas être pris à la légère.
 Des observations effectuées sur un corpus de documents
-\emph{Wikipedia}~\cite{wikipedia} suggère qu'allouer un identifiant proche de
+Wikipedia~\cite{wikipedia} suggère qu'allouer un identifiant proche de
 l'identifiant précédent est une meilleure stratégie afin de conserver des
 identifiants de petite taille.  Ici, Logoot choisit donc une valeurs proche de
 $0$ et compose le nouvel identifiant en copiant une partie des données présentes
 dans les identifiants adjacents. Par exemple,
 $id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_y, x\rangle]$.  En
 utilisant l'ordre lexicographique définit auparavant, nous obtenons bien
-$id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
+$id_{i} <_\mathcal{I} id <_\mathcal{I} id_{i+1}$.
 
 \begin{figure}
   \begin{center}
@@ -504,37 +509,37 @@ $id_{i-1} <_\mathcal{I} id <_\mathcal{I} id_i$.
 \noindent Logoot favorise, par son choix d'entier proche de l'identifiant
 précédent la position d'insertion, les comportements d'édition où les éléments
 sont insérés de gauche à droite. Toutefois, lorsque le comportement d'édition va
-à l'encontre de cette stratégie, la taille des identifiants peut grimper
+à l'encontre de cette stratégie, la taille des identifiants peut augmenter
 extrêmement rapidement. La figure~\ref{repl:img:motivationlogoot} met en
 évidence cette croissance. La taille des chemins (i.e. les identifiants uniques
 de site et compteurs sont ignorés) augmente par pallier. De nombreuses séries
 d'insertions en tête se traduisent par l'ajout d'un niveau dans les chemins. Sur
 un petit document de moins de 200 lignes, un chemin alloué par Logoot atteint 16
 concaténations. Ici, chacun de ces concaténations pèse 16 bits.  La complexité
-spatiale de chaque identifiant est linéaire comparé au nombre d'insertions dans
+spatiale de chaque identifiant est linéaire comparée au nombre d'insertions dans
 le document, et puisque chaque identifiant est disséminé aux autres répliques,
-la complexité en communication en hérite. De plus, les valeurs choisies par
-Logoot dans les identifiants sont toujours comprises entre $0$ et $2^{c}$ où $c$
-est une constante ($c = 16$ dans la
+la complexité en communication adopte cette progression. De plus, les valeurs
+choisies par Logoot dans les identifiants sont toujours comprises entre $0$ et
+$2^{c}$ où $c$ est une constante ($c = 16$ dans la
 figure~\ref{repl:img:motivationlogoot}). Cette constance implique que, même dans
-le cadre d'un comportement d'édition attendu, la complexité est linéaire (mais
-fortement atténuée). Là encore, le trafic généré en souffre directement.
+le cadre du comportement d'édition attendu, la complexité est linéaire -- bien
+que fortement atténuée. Là encore, le trafic généré en souffre directement.
 
 \noindent La représentation de la séquence sous forme de liste possède
 l'avantage de fournir un accès instantané à ses éléments. Ainsi, la traduction
 de \og insérer l'élément $e$ à la position $i$ \fg à \og insérer l'élément $e$
-ente l'identifiant $id_{i-1}$ de l'élément en position $i-1$ et l'identifiant
+ente l'identifiant $id_{i}$ de l'élément en position $i+1$ et l'identifiant
 $id_i$ de l'élément en position $i$ \fg s'effectue en temps constant.
 Cependant, cette rapidité d'accès est seulement possible au détriment d'une
 consommation en espace élevée : Logoot ne profite pas de la redondance
 d'informations sur les triples. La complexité spatiale de la structure est
-quadratique comparée au nombre d'insertions effectuées dans la séquence.
+quadratique par rapport au nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
 étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
 ciblé.  Cette extension prend pour granularité la chaîne de caractères avec la
 liberté de la scinder si besoin est. Le nombre d'identifiants à allouer s'en
-trouve diminué, et par conséquent, le trafic généré également.
+trouve diminué, et par conséquent, le trafic généré également. 
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
@@ -552,14 +557,14 @@ $id = [t_1.t_2\ldots t_k]$ où $k$ est un entier, et
 $t_k = \langle b_k,\, s_k,\, c_k\rangle$ où $b_k$ est une valeur binaire, $s_k$
 est un identifiants unique de site, et $c_k$ est un compteur local au site
 $s_k$.  Prenons par exemple les éléments adjacents
-$id_{i-1}=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle]$ et
-$id_i=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle. \langle 1,\,
+$id_i=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle]$ et
+$id_{i+1}=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle. \langle 1,\,
 s_2,\, c_3 \rangle]$.
 Lors de la $x$\up{ème} insertion locale par le site $s_y$, Treedoc examine les
 identifiants adjacents à la position d'insertion. Treedoc commence par examiner
 si un identifiant est l'ancêtre direct de l'autre, i.e., la liste de triples
 d'un identifiant est inclue dans la liste de triples de l'autre identifiant. Par
-exemple, $id_{i-1}$ est l'ancêtre de $id_i$. Dans ce cas, Treedoc copie
+exemple, $id_{i}$ est l'ancêtre de $id_{i+1}$. Dans ce cas, Treedoc copie
 l'identifiant du descendant et le suffixe par $\langle 1,\, s_y,\, x \rangle$ si
 le descendant précède la position d'insertion; $\langle 0,\, s_y,\, x \rangle$
 dans le cas contraire. Si aucun des identifiants n'est l'ancêtre de l'autre,
