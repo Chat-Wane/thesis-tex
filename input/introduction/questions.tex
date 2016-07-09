@@ -15,13 +15,13 @@ L'édition collaborative répartit l'écriture selon deux dimensions : le temps 
 l'espace~\cite{desanctis1987foundation, grudin1994computersupported,
   johansen1988groupware}.  La figure~\ref{editor:fig:groupware} résume cette
 répartition. Dans ce manuscrit, nous nous intéressons particulièrement aux
-collaborateurs connectés en même temps en des lieux différents 
-correspondant à la problématique du temps réel. Dans ce contexte, \og temps réel
-\fg signifie que les modifications doivent être perçues au plus
+collaborateurs connectés en même temps en des lieux différents correspondant à
+la problématique du temps réel. Dans ce contexte, \og temps réel \fg signifie
+que les modifications doivent être perçues au plus
 tôt~\cite{ellis1989concurrency}. La tolérance d'un utilisateur varie selon les
 outils collaboratifs à sa disposition. Une modification locale doit être
-observée immédiatement. En revanche, une modification distante prend plus de
-temps.
+observée immédiatement. En revanche, une modification distante est plus lente à
+être observée.
 
 \begin{figure}
   \begin{center}
@@ -69,12 +69,6 @@ Les séquences répliquées convergent vers un état identique sous l'hypothèse
 d'une diffusion fiable des opérations, i.e., tous les éditeurs reçoivent toutes
 les modifications.
 
-\begin{figure}
-  \input{input/introduction/figripconvergence.tex}
-  \caption{\label{intro:fig:ripconvergence} Répliques divergentes d'un
-    document.}
-\end{figure}
-
 Pour assurer la convergence des répliques, l'utilisation des structures de
 données \og classiques \fg n'est pas directement possible. % du fait de la latence
 %entre les collaborateurs.
@@ -87,6 +81,14 @@ suppression arrivant avant l'insertion, la séquence répliquée devient
 \texttt{QERTY}.  Afin d'éviter de telles divergences dans l'état des répliques,
 de nouvelles structures et de nouveaux algorithmes adaptés au contexte réparti
 doivent être employés.
+
+
+\begin{figure}
+  \input{input/introduction/figripconvergence.tex}
+  \caption{\label{intro:fig:ripconvergence} Répliques divergentes d'un
+    document.}
+\end{figure}
+
 
 Une première famille d'approches consiste à transformer les arguments de
 l'opération afin qu'elle considère les opérations intégrées
