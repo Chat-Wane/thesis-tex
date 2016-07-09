@@ -70,6 +70,15 @@ de \LSEQ au travers un exemple.
 \subsection{Arbre exponentiel}
 \label{repl:subsec:exponentialtree}
 
+\begin{figure}
+  \begin{center}
+    \input{input/replication/figexponentialtree.tex}
+    \caption[Arbre exponentiel]
+    {\label{repl:fig:exponentialtree}Arbre exponentiel.}
+  \end{center}
+\end{figure}
+
+
 Un arbre exponentiel est une structure d'arbre dont chacun des nœuds possède une
 arité maximale $k$ fois supérieure à celle de son parent. Ainsi, la progression
 du nombre de fils dans une branche est exponentielle. Un chemin dans un tel
@@ -82,18 +91,11 @@ d'identifiants. Ainsi, au lieu d'ouvrir un espace aussi large qu'auparavant,
 l'espace est encore élargi afin que la séquence puisse se satisfaire de ce champs
 d'identifiants plus longuement.
 
-\begin{figure}
-  \begin{center}
-    \input{input/replication/figexponentialtree.tex}
-    \caption[Arbre exponentiel]
-    {\label{repl:fig:exponentialtree}Arbre exponentiel.}
-  \end{center}
-\end{figure}
 
 La figure~\ref{repl:fig:exponentialtree} montre un arbre exponentiel. L'arbre
 commence avec une arité maximale de 2. Puis chacun de ces fils a une arité
-maximale de 4. Puis chacun de ces fils a une arité maximale de 8. Un chemin de
-profondeur 3 tel que [1.3.7] nécessite alors 1+2+3 = 6 bits pour sa
+maximale de 4. Puis chacun de ces fils a une arité maximale de 8, etc. Un chemin
+de profondeur 3 tel que [1.3.7] nécessite alors 1+2+3 = 6 bits pour sa
 représentation en mémoire.  Plus généralement, un chemin de profondeur $e$
 requière $\textstyle\sum\nolimits_{i=1}^{e}i = {e^2 + e \over{2}}$ bits. Cette
 progression quadratique en fonction de la profondeur rend essentielle la prise

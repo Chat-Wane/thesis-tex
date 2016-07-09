@@ -283,7 +283,7 @@ que $p$ est supprimé, alors $o$ précède -- directement ou non -- l'élément 
 
 Selon la manière dont les identifiants sont générés, nous distinguons deux types
 d'approches : les approches recourant à des marqueurs nommés \og pierre tombales
-\fg (cf. §\ref{repl:subsubsec:tombstones}); les approches générant des
+\fg (cf. §\ref{repl:subsubsec:tombstones}); et les approches générant des
 identifiants dont la taille varie (cf. §\ref{repl:subsubsec:variable}).
 
 \subsubsection{Pierres tombales}
@@ -373,9 +373,9 @@ référencent alors les chaînes adjacentes à l'insertion ainsi que les autres
 éléments de la chaînes si subdivision il y a. Le nombre d'identifiants générés
 s'en trouve diminué. Cependant, de la même manière que pour les approches
 précédentes, les références empêchent à la structure répliquée de se débarasser
-des éléments supprimés. La complexité spatiale de l'approche est monotone et
-linéaire par rapport au nombre d'insertions et subdivisions. Les performances
-des opérations en sont impactées négativement.
+des éléments supprimés. La complexité spatiale de l'approche est monotone
+croissante et linéaire par rapport au nombre d'insertions et subdivisions. Les
+performances des opérations en sont impactées négativement.
 
 % \paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
 % principalement ses efforts sur les garanties de confluence de la
@@ -407,7 +407,7 @@ de la séquence revient à s'interroger : \og Est-ce que
   localement ?
 \end{inparaenum}\fg Cela va sans dire qu'il est difficile d'apporter une réponse
 à ces deux questions. D'autant plus lorsque les répliques ne sont pas
-perpétuellement accessibles. \emph{Core-nebula}~\cite{letia2009crdts} propose de
+perpétuellement accessibles. Core-nebula~\cite{letia2009crdts} propose de
 contraindre la topologie réseau afin de rendre la prise de décisions
 possible. Ainsi, un cœur décisionnel prend en charge les choix de suppression
 réelle des objets.  Ce cœur décisionnel est restreint à un sous-ensemble des
@@ -415,7 +415,7 @@ membres du réseaux étant toujours accessibles. Les décisions peuvent alors ê
 prises de manière fiable. Le reste des participants se conforme à ces décisions
 au risque de perdre certaines de leurs modifications. Cette re-centralisation
 expose le système aux problèmes de confidentialité, de censure, de propriété, de
-passage à l'échelle et de défaillance.
+passage à l'échelle et de défaillances.
  
 Un autre famille de CRDTs conçue pour le type séquence et dont le bon
 fonctionnement ne nécessite pas de référencer directement d'autres
@@ -539,7 +539,9 @@ quadratique par rapport au nombre d'insertions effectuées dans la séquence.
 étend Logoot lui offrant la possibilité d'adapter la granularité de l'élément
 ciblé.  Cette extension prend pour granularité la chaîne de caractères avec la
 liberté de la scinder si besoin est. Le nombre d'identifiants à allouer s'en
-trouve diminué, et par conséquent, le trafic généré également. 
+trouve diminué, et par conséquent, le trafic généré également. Cette
+amélioration s'étend à tous les CRDTs générant des identifiants de taille
+variable.
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
@@ -606,7 +608,7 @@ d'accès direct aux identifiants. Retrouver les identifiants adjacents à la
 position d'insertion requière un parcours de l'arbre. De plus, cette
 représentation compacte n'a pas d'incidence sur les identifiants
 eux-mêmes. Puisque chaque identifiant doit être disséminé individuellement aux
-autres répliques, le trafic généré demeure inchangé.
+autres répliques, le trafic généré demeure inchangé par ce choix de structure.
 
 Les CRDTs fonctionnant avec des identifiants de taille variable n'utilisent pas
 de pierre tombales lors de la suppression d'éléments. Par conséquent, la mémoire
@@ -614,8 +616,8 @@ consommée par ces approches n'est pas strictement croissante. Un document vide
 signifie que la séquence répliquée est également vide. En revanche, les
 identifiants peuvent croître de manière linéaire par rapport au nombre
 d'insertions dans le document. Malheureusement, cette progression se répercute
-sur la complexité en communication. De même, les opérations d'insertions
-subissent des baisses de performances.
+sur la complexité en communication. De même, cette progression se répercute sur
+les performances à l'intégration des opérations d'insertion.
 
 Une solution consiste à relocaliser les identifiants. En d'autres termes, les
 identifiants sont modifiés au profit d'identifiants plus courts et conservant

@@ -143,6 +143,16 @@ découpées entre leur exécution locale et leur exécution distante. Tout comme
 pour la complexité spatiale, l'analyse se porte sur les trois comportements
 d'édition suivant : aléatoire, monotone, et pire cas.
 
+\begin{table}
+  \begin{center}
+    \caption[Bornes supérieures de la complexité temporelle de \LSEQ]
+    {\label{repl:table:lseqtime} Bornes supérieures de la complexité temporelle
+      de \LSEQ. $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \input{input/replication/tablelseqtime.tex}
+  \end{center}
+\end{table}
+
+
 \paragraph{Insertion locale.} Cette opération consiste simplement à construire
 un nouveau chemin en fonction des chemins adjacents. Par conséquent, la
 complexité dépend de la taille de ces chemins qui grandissent en fonction du
@@ -179,16 +189,6 @@ $\mathcal{O}((\log I)^2 + \log I)$ pour le comportement monotone, et
 $\mathcal{O}(I)$ dans le pire cas. Pour ce dernier, cela signifie qu'une
 comparaison par élément est nécessaire afin d'atteindre la feuille la plus
 profonde.
-
-\begin{table}
-  \begin{center}
-    \caption[Bornes supérieures de la complexité temporelle de \LSEQ]
-    {\label{repl:table:lseqtime} Bornes supérieures de la complexité temporelle
-      de \LSEQ. $I$ est le nombre d'insertions effectuées sur la séquence.}
-    \input{input/replication/tablelseqtime.tex}
-  \end{center}
-\end{table}
-
 
 \paragraph{Interface arbre -- séquence.} La structure de données répliquée est
 un arbre mais l'objet manipulé par l'éditeur collaboratif est une séquence. Il
@@ -228,16 +228,6 @@ conséquent, il retourne le chemin qu'il a emprunté pour y parvenir, à savoir
 la droite, elle n'aurait eu à parcourir qu'un seul élément intermédiaire
 (contenant le caractère \texttt{T}), et aurait donc été plus efficace.
 
-\begin{table}
-  \begin{center}
-    \caption[Bornes supérieures de la complexité temporelle du
-    \textsc{lookup} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures
-      de la complexité temporelle de la fonction \textsc{lookup} de \LSEQ.
-      $I$ est le nombre d'insertions effectuées sur la séquence.}
-    \input{input/replication/tablelseqlookup.tex}
-  \end{center}
-\end{table}
-
 \noindent Le comportement d'édition aléatoire conduit à un arbre dont la
 profondeur est bornée par $\mathcal{O}(\sqrt{\log I})$. Dans pareil cas, une
 très faible portion de l'arbre est explorée. Pour obtenir la borne supérieure,
@@ -256,6 +246,17 @@ nœuds ne possèdent qu'un seul et unique élément. L'exploration s'achève au 
 profond des niveaux contenant $\mathcal{O}(2^{\log_2 I})$ éléments dont la
 moitié doit être examiné. La complexité temporelle dans ce cas est :
 $\mathcal{O}(I)$.
+
+\begin{table}
+  \begin{center}
+    \caption[Bornes supérieures de la complexité temporelle du
+    \textsc{lookup} de \LSEQ] {\label{repl:table:lseqlookup} Bornes supérieures
+      de la complexité temporelle de la fonction \textsc{lookup} de \LSEQ.
+      $I$ est le nombre d'insertions effectuées sur la séquence.}
+    \input{input/replication/tablelseqlookup.tex}
+  \end{center}
+\end{table}
+
 
 \paragraph{Résumé.} Les tableaux~\ref{repl:table:lseqtime}
 et~\ref{repl:table:lseqlookup} synthétisent la complexité temporelle des

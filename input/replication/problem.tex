@@ -19,7 +19,7 @@ accessible en suivant l'arrête étiquetée 3, puis l'arrête étiquetée 1. Plu
 formellement, la séquence est un arbre où chaque nœud peut contenir une valeur,
 i.e., un élément (dans l'alphabet $\mathcal{A}$) de la séquence. L'arbre est un
 ensemble de paires $\langle \mathcal{P}\subset \{N\}^*,\, \mathcal{A} \rangle$,
-i.e., chaque élément est associé à un chemin. De plus, un ordre total
+i.e., chaque élément est associé à un chemin. De plus, un ordre dense et total
 $(\mathcal{P},\, <_\mathcal{P})$ permet d'ordonner les chemins et de retrouver
 l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arrêtes
 étiquetées $\ell_1,\,\ell_2,\ldots,\ell_e$ est noté
@@ -47,7 +47,7 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
 
 La figure~\ref{repl:fig:treeexample} montre l'arbre d'arité maximale 10
 représentant la séquence. Un auteur insère les caractères \texttt{QWTY} les uns
-à la suite des autres résultant sur les chemins [1], [2], [4], et [8]
+à la suite des autres. Les chemins en résultant sont [1], [2], [4] et [8]
 respectivement. L'insertion du caractère \texttt{E} entre les paires
 $\langle [2],\, \texttt{W} \rangle$ et $\langle [4],\, \texttt{T} \rangle$
 engendre la paire suivante : $\langle [3],\, \texttt{E} \rangle$. Pour insérer
@@ -69,9 +69,9 @@ chemin pour les deux caractères risque d'être alloué. Dans ce cas, l'ordre de
 caractères n'est pas strictement défini et peut rompre la propriété de
 convergence des répliques. Les désambiguateurs utilisent des marqueurs unique de
 manière globale pour fournir un ordre total même en présence d'éditions
-concurrentes. Ces marqueurs comprennent couramment un identifiant de site unique
-associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
-$\langle element,\, path\rangle$ est associée à un désambiguateur.
+concurrentes. Ces marqueurs sont généralement constitués d'un identifiant de
+site unique associé à une horloge de Lamport~\cite{lamport1978time}. Chaque
+paire $\langle chemin,\, element \rangle$ est associée à un désambiguateur.
 
 Soit l'ensemble des identifiants $\mathcal{I}$ composés tels que
 $\mathcal{I} : \mathcal{P} \times \mathcal{A} \times \mathcal{D}$. La
@@ -101,7 +101,7 @@ que les collaborateurs ne choisissent pas les désambiguateurs. Ainsi, la
 séquence de cet exemple aurait pu être \texttt{QWTREY} auquel cas une correction
 aurait été nécessaire. De plus, la complexité spatiale de ces désambiguateurs
 est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
-concentre sur ces identifiants.
+concentre sur ces chemins.
 
 % Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
 % équippé des opérations d'insertion $\textsc{insert}$ et de suppression
@@ -125,7 +125,7 @@ insertion et suppression -- entre la partie locale et la partie distante du
 schéma de réplication optimiste. Le cœur de l'algorithme est situé dans la
 partie locale de l'opération d'insertion où le chemin et le désambiguateur
 doivent être créés. La fonction \textsc{convert2Path} se débarrasse de la partie
-désambiguateur des identifiants en argument pour n'en garder que les chemins,
+désambiguateur des identifiants en argument pour n'en garder que les chemins --
 transformés si nécessaire. Lorsqu'il n'y a pas de marques d'opérations
 concurrentes, les chemins sont simplement retournés tels quels. Dans le cas
 contraire, cette fonction convertit les identifiants en chemins préservant
@@ -146,9 +146,9 @@ $(\mathcal{I},\, <_\mathcal{I})$.
 \end{algorithm}
 
 La fonction \textsc{allocPath} choisit le chemin dans l'arbre entre deux autres
-chemins $p$ et $q$ tels que $p$ précède $q$ ($p <_\mathcal{P} q$). Le nouveau
-chemin $n$ est positionné entre ces bornes
-($p <_\mathcal{P} n <_\mathcal{P} q$). La fonction \textsc{allocPath} doit
+chemins $p$ et $q$ tels que $p$ précède $q$ (i.e. $p <_\mathcal{P} q$).  Le
+nouveau chemin $n$ est positionné entre ces bornes (i.e.
+$p <_\mathcal{P} n <_\mathcal{P} q$). La fonction \textsc{allocPath} doit
 choisir parmi les plus petits chemins disponibles afin de conserver de bonnes
 performances.
 
@@ -173,11 +173,11 @@ la stratégie suivante : la branche la plus à gauche avec la plus petite
 profondeur possible. Dans les deux cas, la séquence finale est
 \texttt{QWERTY}. Toutefois, les lettres ne sont pas insérées dans un ordre
 identique. Dans le premier cas, \texttt{Q} est insérée à l'indice 0, suivie de
-\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2 etc.  Dans le second
+\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2, etc.  Dans le second
 cas, la lettre \texttt{Y} est insérée à l'indice 0, suivie de \texttt{T} à
 l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
 séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
-position 0 décale toutes lettres de droite etc.
+position 0 décale toutes lettres de droite, etc.
 
 Dans le premier cas (cf. figure~\ref{repl:fig:allocpathexampleA}), l'opération
 d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
@@ -185,7 +185,7 @@ d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
 bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
 réserver la branche la plus à gauche et de plus petite taille, le chemin
 résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est transformée en
-\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2] etc.
+\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2], etc.
 Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la
 stratégie employée est très efficace. Cependant, elle n'est pas totalement
 optimale puisque l'arbre est prévu pour accueillir 8 identifiants lorsque
@@ -200,7 +200,7 @@ chemin doit augmenter de telle sorte que le nouvel identifiant muni de l'ordre
 total $(\mathcal{I},\,<_\mathcal{I})$ soit placé entre les deux. Considérons un
 ordre lexicographique, le chemin résultant est [0.$X$] où $X$ est choisi entre 0
 et 10. Suivant la stratégie, le chemin est [0.1] pour la lettre \texttt{T}. Puis
-[0.0.1] pour la lettre \texttt{R} etc. La taille des chemins alloués augmente
+[0.0.1] pour la lettre \texttt{R}, etc. La taille des chemins alloués augmente
 très rapidement.  La stratégie d'allocation s'avère inefficace dans ce cas.
 
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
