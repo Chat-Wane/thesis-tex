@@ -105,7 +105,8 @@ confine l'emploi de ces approches aux petits groupes d'utilisateurs.
 Une seconde famille d'approches consiste à utiliser des structures de données
 dont les opérations sont commutatives~\cite{shapiro2011conflict} et ne souffrent
 donc pas de la concurrence. Pour que les opérations commutent, ces approches
-associent à chaque caractère un identifiant unique et immuable.
+associent à chaque caractère un identifiant unique et immuable. Nous distinguons
+deux types de structures se différenciant par leurs identifiants :
 
 \paragraph{Les identifiants cachés~\cite{oster2006data}.} L'opération de
 suppression de caractères se contente de cacher le caractère ciblé à
@@ -164,21 +165,24 @@ Madagascar avant de parvenir à l'éditeur japonais.
 
 \noindent Notre contexte nous expose à deux contraintes :
 
-\paragraph{Web.} L'éditeur collaboratif doit fonctionner dans les navigateurs
-Web sans installations d'aucune sorte (e.g. extensions). Depuis peu, les
-navigateurs sont capables communiquer entre eux après avoir suivi un processus
-de connexion complexe~\cite{webrtc}. L'éditeur doit supporter ce mode de
-connexion.
+\begin{enumerate}[(i)]
+%\paragraph{Web.}
+\item L'éditeur collaboratif doit fonctionner dans les navigateurs Web sans
+  installations d'aucune sorte (e.g. extensions). Depuis peu, les navigateurs
+  sont capables communiquer entre eux après avoir suivi un processus de
+  connexion complexe~\cite{webrtc}. L'éditeur doit supporter ce mode de
+  connexion.
 
-\paragraph{Dimensions et dynamisme.} L'éditeur collaboratif doit maintenir un
-voisinage dont la taille gère aussi bien les petits groupes que les grands.  La
-taille des voisinages est déterminante puisque lorsqu'elle augmente, le trafic
-généré augmente au risque de dépasser les capacités d'émission des éditeurs;
-lorsqu'elle diminue,
+%\paragraph{Dimensions et dynamisme.}
+\item L'éditeur collaboratif doit maintenir un voisinage dont la taille gère
+  aussi bien les petits groupes que les grands.  La taille des voisinages est
+  déterminante puisque lorsqu'elle augmente, le trafic généré augmente au risque
+  de dépasser les capacités d'émission des éditeurs; lorsqu'elle diminue,
 %% les changements risquent de ne plus parvenir à tous les éditeurs.
-le risque que les opérations ne parviennent plus à tous les éditeurs augmente.
-L'éditeur doit supporter les sessions d'édition où le nombre de participants
-fluctue fortement au cours du temps.
+  le risque que les opérations ne parviennent plus à tous les éditeurs augmente.
+  L'éditeur doit supporter les sessions d'édition où le nombre de participants
+  fluctue fortement au cours du temps.
+\end{enumerate}
 
 Les protocoles d'échantillonnage aléatoire de pairs~\cite{jelasity2007gossip}
 permettent à chaque éditeur de peupler son voisinage d'éditeurs choisis
