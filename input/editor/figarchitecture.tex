@@ -29,9 +29,9 @@ node{monodiffusion}+(-0.85*\X,-0.5*\Y)rectangle+(0.85*\X,0.5*\Y);
 node[align=center]{détection\\[-1mm]des relations\\[-1mm]causales}
 +(-1.0*\X,-0.6*\Y)rectangle+(1.0*\X,0.6*\Y);
 \scriptsize
-\draw[->, thick](-1.5*\X, -0.75*\Y) -- node[anchor=west]{receive}
+\draw[->, thick](-1.5*\X, -0.75*\Y) -- node[anchor=west]{reçoit}
 (-1.5*\X, -1.4*\Y);
-\draw[<-, thick](-2.5*\X, -0.75*\Y) -- node[anchor=east]{send}
+\draw[<-, thick](-2.5*\X, -0.75*\Y) -- node[anchor=east]{envoie}
 (-2.5*\X, -1.4*\Y);
 \small
 \draw[<->]( 2*\X, -0.75*\Y)--( 1*\X, -2.5*\Y);
@@ -49,8 +49,8 @@ node{\DARKBLUE{réplique}}+(-0.75*\X,-0.5*\Y) rectangle +(0.75 *\X, 0.5*\Y);
 \draw[->] (0.05*\X, -2.75*\Y)--(-1*\X,-2*\Y);
 \draw[->] (0.05*\X, -3.25*\Y)--(-1.25*\X,-4*\Y);
 \scriptsize
-\draw[<-, thick] (-1.5*\X, -3.5*\Y)--node[anchor=west]{deliver}(-1.5*\X, -2.6*\Y);
-\draw[->, thick] (-2.5*\X, -3.5*\Y)--node[anchor=east]{decorate}(-2.5*\X, -2.6*\Y);
+\draw[<-, thick] (-1.5*\X, -3.5*\Y)--node[anchor=west]{délivre}(-1.5*\X, -2.6*\Y);
+\draw[->, thick] (-2.5*\X, -3.5*\Y)--node[anchor=east]{décore}(-2.5*\X, -2.6*\Y);
 \small
 %% gui
 \draw[rounded corners=2mm, color=\MEDIUMGRAY, fill=\LIGHTGRAY](0pt, -6*\Y)+(-4*\X,-\Y)rectangle+(4*\X,\Y);
@@ -61,7 +61,7 @@ node{éditeur web}+(-0.85*\X,-0.5*\Y) rectangle +(0.85 *\X, 0.5*\Y);
 
 %%\draw[<->] (-2*\X, -4.5*\Y) -- (0*\X, -5.5*\Y);
 \scriptsize
-\draw[->, thick] (-1.80*\X, -4.5*\Y)--node[anchor=west]{notify}(-0.85*\X, -5.75*\Y);
-\draw[<-, thick] (-2.20*\X, -4.5*\Y)--node[anchor=east]{update}(-0.85*\X, -6.25*\Y);
+\draw[->, thick] (-1.80*\X, -4.5*\Y)--node[anchor=west]{notifie}(-0.85*\X, -5.75*\Y);
+\draw[<-, thick] (-2.20*\X, -4.5*\Y)--node[anchor=east]{met à jour}(-0.85*\X, -6.25*\Y);
 \small
 \end{tikzpicture}

@@ -120,7 +120,7 @@ ajustée.
 \begin{figure}
   \centering
   \subfloat[Initiation du mélange dans Newscast]
-  [\label{net:fig:newscastexampleA} L'initiateur du mélange $n_2$ aléatoirement et lui envoie sa vue à laquelle il s'ajoute avec une estampille à jour. À la réception, $n_2$ en fait de même.]
+  [\label{net:fig:newscastexampleA} L'initiateur du mélange choisit $n_2$ aléatoirement et lui envoie sa vue à laquelle il s'ajoute avec une estampille à jour. À la réception, $n_2$ en fait de même.]
   {\input{input/network/fignewscastexampleA.tex}}
   \hspace{35pt}
   \subfloat[Établissement des connexions après le mélange dans Newscast]
@@ -246,7 +246,7 @@ communication bidirectionnels. Il requière aussi un travail supplémentaire de 
 part du nœud sortant impossible à garantir lors de défaillances : le nœud devra
 servir d'intermédiaire à la connexion de tous les voisins de sa vue partielle
 entrante (sauf un) vers autant de voisins appartenant à sa vue partielle
-sortante. Ainsi, le nombre d'arcs supprimé correspond en moyenne à celui injecté
+sortante. Ainsi, le nombre d'arcs supprimés correspond en moyenne à celui injecté
 à l'entrée d'un nœud dans le réseau. Ce mécanisme améliore considérablement le
 maintient de la connexité du réseau mais ne représente pas une solution fiable
 pour autant. En effet, certains nœuds peuvent se trouver sans voisins dans l'une
@@ -357,7 +357,7 @@ route alternative existe (puisque WebRTC ne gère pas le routage).
       des allers-retours avec WebRTC. (1) $n_1$ initie la création d'une
       connexion. Le message transite par $n_2$. (2) Lorsque \CYCLON établit un
       connexion avec le voisin du voisin -- ici $n_3$ -- \SCAMP cherche
-      $k$-voisins plus loin. (3) Un message doit être envoyé en sens inverse
+      $k$ voisins plus loin. (3) Un message est envoyé en sens inverse
       jusqu'à $n_1$ pour que la connexion soit finalement établie.}
   \end{center}
 \end{figure}

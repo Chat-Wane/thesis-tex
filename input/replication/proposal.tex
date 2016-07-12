@@ -24,8 +24,8 @@ sous-fonction d'allocation (cf. §\ref{repl:subsec:suballocation}) selon la
 profondeur trouvée.  La sous-fonction d'allocation calcule alors l'intervalle à
 disposition et la profondeur du nouveau chemin. Si l'intervalle est plus grand
 que la limite imposée, alors ce premier est restreint. Le nouveau chemin
-commence à partir de l'un des chemin adjacent auquel est ajouté ou soustrait une
-valeur aléatoire dans le nouvel intervalle.
+commence à partir de l'un des chemin adjacent, tronqué à la profondeur calculée,
+auquel est ajouté ou soustrait une valeur aléatoire dans le nouvel intervalle.
 
 
 \noindent Ainsi, trois éléments principaux composent la fonction d'allocation
