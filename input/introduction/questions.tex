@@ -31,16 +31,16 @@ observée immédiatement. En revanche, une modification distante est plus lente 
   \end{center}
 \end{figure}
 
-Un éditeur de textes tel que Microsoft Word~\cite{word} ou
-Emacs~\cite{emacs} permet à un utilisateur de créer et d'éditer un
-document. Un éditeur de texte collaboratif temps réel~\cite{ellis1991groupware}
-étend la rédaction d'un document à un groupe d'utilisateurs potentiellement
-distants les uns des autres.  Par exemple, la figure~\ref{intro:img:world}
-présente une session d'édition comprenant 6 éditeurs collaboratifs répartis à
-travers le monde éditant un même document. Chacun possède son éditeur, voit les
+Un éditeur de texte tel que Microsoft Word~\cite{word} ou Emacs~\cite{emacs}
+permet à un utilisateur de créer et d'éditer un document. Un éditeur de texte
+collaboratif temps réel~\cite{ellis1991groupware} étend la rédaction d'un
+document à un groupe d'utilisateurs potentiellement distants les uns des autres.
+Par exemple, la figure~\ref{intro:img:world} présente une session d'édition
+comprenant 6 instances d'un même éditeur collaboratif réparties à travers le
+monde éditant un même document. Chacun possède son éditeur, voit les
 modifications effectuées par ses collaborateurs sur le document, effectue ses
 propres changements en insérant ou en supprimant du contenu.  La mise en place
-de ces fonctionnalités temps réel requière
+de ces fonctionnalités temps réel requiert
 \begin{inparaenum}[(i)]
 \item un moyen de représenter les documents en mémoire de telle sorte que tous
   les éditeurs affichent un même document lorsqu'ils ont reçu les mêmes
@@ -53,8 +53,9 @@ Afin d'augmenter la disponibilité du document et de diminuer le temps de répon
 lors d'une modification, les éditeurs collaboratifs actuels suivent le principe
 de la réplication optimiste~\cite{saito2005optimistic}. Chaque éditeur
 collaboratif possède une copie locale d'un document -- pouvant être représenté
-simplement par une séquence\footnote{ou liste, ou tableau, ou série.} de
-caractères autorisant les deux opérations suivantes :
+simplement par une séquence
+%\footnote{ou liste, ou tableau, ou série.} 
+de caractères autorisant les deux opérations suivantes :
 \begin{inparaenum}[(a)]
 \item l'insertion d'un caractère à une position dans la séquence et
 \item la suppression du caractère à une position dans la séquence.
@@ -72,11 +73,11 @@ les modifications.
 Pour assurer la convergence des répliques, l'utilisation des structures de
 données \og classiques \fg n'est pas directement possible. % du fait de la latence
 %entre les collaborateurs.
-Par exemple, la figure~\ref{intro:fig:ripconvergence} présente un exemple où un
-auteur insère un caractère sur la réplique 1 en début de document pendant qu'un
-autre supprime un caractère sur la réplique 3 au même endroit. Le premier auteur
-voit le caractère qu'il vient d'insérer supprimé. Quant à l'état final de la
-réplique 2, il dépend de l'ordre de réception des opérations. Ici, la
+Par exemple, la figure~\ref{intro:fig:ripconvergence} présente une situation où
+un auteur insère un caractère sur la réplique 1 en début de document pendant
+qu'un autre supprime un caractère sur la réplique 3 au même endroit. Le premier
+auteur voit le caractère qu'il vient d'insérer supprimé. Quant à l'état final de
+la réplique 2, il dépend de l'ordre de réception des opérations. Ici, la
 suppression arrivant avant l'insertion, la séquence répliquée devient
 \texttt{QERTY}.  Afin d'éviter de telles divergences dans l'état des répliques,
 de nouvelles structures et de nouveaux algorithmes adaptés au contexte réparti
@@ -90,8 +91,8 @@ doivent être employés.
 \end{figure}
 
 
-Une première famille d'approches consiste à transformer les arguments de
-l'opération afin qu'elle considère les opérations intégrées
+Une première famille d'approches consiste à transformer les arguments de toute
+opération afin qu'elle considère les opérations intégrées
 concurremment~\cite{sun1998operational}. Dans l'exemple précédent, lors de
 l'intégration de la suppression par le premier éditeur, celui-ci doit réaliser
 qu'un caractère a été ajouté en tête concurremment. Il doit donc modifier les
@@ -105,27 +106,30 @@ confine l'emploi de ces approches aux petits groupes d'utilisateurs.
 Une seconde famille d'approches consiste à utiliser des structures de données
 dont les opérations sont commutatives~\cite{shapiro2011conflict} et ne souffrent
 donc pas de la concurrence. Pour que les opérations commutent, ces approches
-associent à chaque caractère un identifiant unique et immuable. Nous distinguons
-deux types de structures se différenciant par leurs identifiants :
+associent à chaque caractère de la séquence un identifiant unique et
+immuable. Nous distinguons deux types de structures se différenciant par la
+nature des identifiants considérés :
 
 \paragraph{Les identifiants cachés~\cite{oster2006data}.} L'opération de
-suppression de caractères se contente de cacher le caractère ciblé à
-l'utilisateur. La mémoire consommée par une réplique croît de manière
-monotone. % Les performances d'intégration des opérations s'en trouvent
-%diminuées.
-La structure répliquée d'un document vide peut contenir des milliers de
-caractères cachés.  Afin d'y remédier, un protocole de ramasse-miettes
-réparti~\cite{abdullahi1998garbage} doit être exécuté régulièrement pour purger
-la structure des identifiants cachés. Malheureusement, cela s'avère extrêmement
+suppression de caractères se contente de cacher le caractère ciblé par
+l'utilisateur. La mémoire consommée par une réplique croît de manière monotone
+par rapport au nombre d'insertions.
+% Les performances d'intégration des opérations s'en trouvent diminuées.
+La structure répliquée d'un document vide peut contenir des milliers
+d'identifiants cachés correspondant à des caractères supprimés.  Afin d'y
+remédier, un protocole de ramasse-miettes réparti~\cite{abdullahi1998garbage}
+doit être exécuté régulièrement pour purger la structure des identifiants
+cachés. Malheureusement, cela s'avère extrêmement
 coûteux~\cite{abdullahi1998garbage}.
 
 \paragraph{Les identifiants de taille variable~\cite{weiss2009logoot}.} Les
-identifiants sont des listes dont la taille, définie à la génération, peut
-croître de manière linéaire par rapport au nombre d'insertions dans la
-séquence~\cite{weiss2009logoot}. % Cette croissance impacte négativement les
-% performances du système.
+identifiants sont des listes dont la taille est fixée à la
+génération. Cependant, la fonction de génération d'identifiants alloue des
+identifiants dont la taille peut dépendre linéairement du nombre d'insertions
+dans la séquence~\cite{weiss2009logoot}.
+% Cette croissance impacte négativement les performances du système.
 Puisque chaque identifiant doit être envoyé à toutes les autres répliques, le
-trafic généré augmente rapidement.  Afin d'y remédier, un protocole de
+trafic généré peut augmenter rapidement.  Afin d'y remédier, un protocole de
 relocalisation des identifiants doit être exécuté
 régulièrement~\cite{zawirskiasynchronous}. Ces protocoles reviennent à obtenir
 un consensus dans un contexte réparti. Malheureusement, cela s'avère extrêmement
@@ -135,9 +139,10 @@ Cela pose la première question de recherche : \textbf{Afin d'éviter tout
   protocole additionnel de relocalisation des identifiants, comment allouer ces
   identifiants de sorte que leur taille soit directement sous-linéaire ?}
 
-Pour répondre à cette première question de recherche, nous faisons l'hypothèse
-d'une communication fiable : chacune des modifications doit être reçue par
-l'ensemble des éditeurs collaboratifs.
+Afin d'assurer la convergence de toutes les répliques du document vers un état
+équivalent, les éditeurs collaboratifs font l'hypothèse d'une communication
+fiable : chacune des modifications doit être reçue par l'ensemble des éditeurs
+collaboratifs.
 %%Pour converger vers des documents identiques, tous les changements doivent
 %% parvenir à tous les éditeurs.
 Une manière efficace de mettre en place cette diffusion fiable et décentralisée
