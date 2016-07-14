@@ -5,23 +5,23 @@
 % Cette section définit le problème et 
 Nous nous intéressons aux approches les plus proches de notre spécification des
 séquences : celles générant des identifiants dont la taille est variable et
-définie lors de la génération.
+définie à la génération.
 
 \paragraph{Chemins.}
 
 Les identifiants de taille variable peuvent être représentés comme la
 concaténation d'éléments basiques (e.g. des entiers). La séquence en résultant
 peut être représentée grâce à une structure d'arbre où les éléments de la
-séquence sont stockés sur les nœuds et où les arrêtes sont étiquetées de telle
+séquence sont stockés sur les nœuds et où les arêtes sont étiquetées de telle
 sorte qu'un chemin de la racine jusqu'au nœud forme l'identifiant de
 l'élément. Par exemple, un caractère dont l'identifiant serait [3.1] serait
-accessible en suivant l'arrête étiquetée 3, puis l'arrête étiquetée 1. Plus
+accessible en suivant l'arête étiquetée 3, puis l'arête étiquetée 1. Plus
 formellement, la séquence est un arbre où chaque nœud peut contenir une valeur,
 i.e., un élément (dans l'alphabet $\mathcal{A}$) de la séquence. L'arbre est un
 ensemble de paires $\langle \mathcal{P}\subset \{N\}^*,\, \mathcal{A} \rangle$,
 i.e., chaque élément est associé à un chemin. De plus, un ordre dense et total
 $(\mathcal{P},\, <_\mathcal{P})$ permet d'ordonner les chemins et de retrouver
-l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arrêtes
+l'ordre des éléments de la séquence. Notation : un chemin composé de $e$ arêtes
 étiquetées $\ell_1,\,\ell_2,\ldots,\ell_e$ est noté
 $[\ell_1.\ell_2\ldots\ell_e]$.
 
@@ -37,7 +37,7 @@ $[\ell_1.\ell_2\ldots\ell_e]$.
   alloué]
   [\label{repl:fig:disexample}L'arbre utilise les désambiguateur afin de
   maintenir un état équivalent, même en présence d'insertions concurrentes ayant
-  résulté en des chemins identiques. Par soucis de simplicité, seuls les
+  résulté en des chemins identiques. Par souci de simplicité, seuls les
   désambiguateurs des caractères \texttt{E}, \texttt{R}, et \texttt{T}
   sont affichés.]
   {\input{input/replication/figdisexample.tex}}
@@ -68,10 +68,10 @@ insèrent un caractère au même endroit dans le document, au même moment, le m
 chemin pour les deux caractères risque d'être alloué. Dans ce cas, l'ordre des
 caractères n'est pas strictement défini et peut rompre la propriété de
 convergence des répliques. Les désambiguateurs utilisent des marqueurs unique de
-manière globale pour fournir un ordre total même en présence d'éditions
-concurrentes. Ces marqueurs sont généralement constitués d'un identifiant de
-site unique associé à une horloge de Lamport~\cite{lamport1978time}. Chaque
-paire $\langle chemin,\, element \rangle$ est associée à un désambiguateur.
+manière globale pour fournir un ordre total même en présence d'édition
+concurrente. Ces marqueurs sont généralement constitués d'un identifiant de site
+unique associé à une horloge de Lamport~\cite{lamport1978time}. Chaque paire
+$\langle chemin,\, element \rangle$ est associée à un désambiguateur.
 
 Soit l'ensemble des identifiants $\mathcal{I}$ composés tels que
 $\mathcal{I} : \mathcal{P} \times \mathcal{A} \times \mathcal{D}$. La
@@ -172,12 +172,13 @@ composant les identifiants. Dans les deux cas, la fonction d'allocation utilise
 la stratégie suivante : la branche la plus à gauche avec la plus petite
 profondeur possible. Dans les deux cas, la séquence finale est
 \texttt{QWERTY}. Toutefois, les lettres ne sont pas insérées dans un ordre
-identique. Dans le premier cas, \texttt{Q} est insérée à l'indice 0, suivie de
-\texttt{W} à l'indice 1, suivie de \texttt{E} à l'indice 2, etc.  Dans le second
-cas, la lettre \texttt{Y} est insérée à l'indice 0, suivie de \texttt{T} à
-l'indice 0 qui, par effet de bord, décale le \texttt{Y} à l'indice 1. La
-séquence en résultant est donc \texttt{TY}. L'insertion du \texttt{R} en
-position 0 décale toutes lettres de droite, etc.
+identique. Dans le premier cas, la lettre \texttt{Q} est insérée à l'indice 0,
+suivie de la lettre \texttt{W} à l'indice 1, suivie de la lettre \texttt{E} à
+l'indice 2, etc.  Dans le second cas, la lettre \texttt{Y} est insérée à
+l'indice 0, suivie de \texttt{T} à l'indice 0 qui, par effet de bord, décale le
+\texttt{Y} à l'indice 1. La séquence en résultant est donc
+\texttt{TY}. L'insertion de \texttt{R} en position 0 décale toutes lettres de
+droite, etc.
 
 Dans le premier cas (cf. figure~\ref{repl:fig:allocpathexampleA}), l'opération
 d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
@@ -185,10 +186,10 @@ d'insertion (\texttt{Q}, 0) est transformée en \textsc{insert}($\vdash$,
 bornes virtuelles [0] et [9]. Puisque la stratégie d'allocation consiste à
 réserver la branche la plus à gauche et de plus petite taille, le chemin
 résultant est [1]. Ensuite, l'opération (\texttt{W}, 1) est transformée en
-\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant sur le chemin [2], etc.
+\textsc{insert}($i_Q$, \texttt{W}, $\dashv$) résultant en le chemin [2], etc.
 Dans ce cas, la profondeur de l'arbre n'augmente jamais. À cet égard, la
 stratégie employée est très efficace. Cependant, elle n'est pas totalement
-optimale puisque l'arbre est prévu pour accueillir 8 identifiants lorsque
+optimale puisque l'arbre est prévu pour accueillir 8 identifiants alors que
 seulement 6 sont alloués.
 
 Dans le second cas (cf. figure~\ref{repl:fig:allocpathexampleB}), l'opération
@@ -206,9 +207,9 @@ très rapidement.  La stratégie d'allocation s'avère inefficace dans ce cas.
 Cet exemple montre à quel point l'ordre d'insertion des éléments affecte la
 longueur des chemins alloués. Malheureusement, ni la séquence d'édition, ni sa
 taille ne sont connues par avance.  Passer d'indices locaux mutables et optimaux
-d'une séquence classique à des identifiants non-mutable de taille variable d'une
-séquence répliquée a un coût qu'il convient d'analyser afin de proposer une
-fonction d'allocation efficace. Le problème scientifique que l'on souhaite
+d'une séquence classique à des identifiants non-mutables de taille variable
+d'une séquence répliquée a un coût qu'il convient d'analyser afin de proposer
+une fonction d'allocation efficace. Le problème scientifique que l'on souhaite
 résoudre est le suivant :
 
 \begin{problem}
@@ -221,7 +222,7 @@ résoudre est le suivant :
   \end{equation}
 \end{problem}
 
-En d'autres termes, les chemins allouées par la fonction d'allocation
+En d'autres termes, les chemins alloués par la fonction d'allocation
 \textsc{allocPath}, principal élément de la fonction \textsc{insert}, doivent
 garantir des chemins dont la taille est sous-linéaire par rapport aux nombres
 d'insertions dans la séquence. Logoot et Treedoc échouent à fournir des

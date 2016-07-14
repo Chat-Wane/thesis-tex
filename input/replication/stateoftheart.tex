@@ -32,7 +32,7 @@ comme l'illustre la figure~\ref{repl:fig:optimisticsteps},
 \begin{inparaenum}[(a)]
 \item une opération de modification est directement exécutée sur la réplique
   locale de la séquence.  La modification produit un résultat qui
-\item est disséminés aux autres serveurs hébergeant une réplique.
+\item est disséminé aux autres serveurs hébergeant une réplique.
 \item Le serveur exécute -- ou \emph{intègre} -- le résultat reçu.
 \end{inparaenum}
 % Grâce à $\textsc{insert}(Q, 0)$, un résultat est
@@ -49,7 +49,7 @@ Sun et al.~\cite{sun1998achieving} déclarent que l'édition collaborative temps
 réel nécessite un système préservant les trois propriétés CCI :
 
 %\begin{itemize}
-\paragraph{Convergence.} Les répliques ayant reçues les même opérations
+\paragraph{Convergence.} Les répliques ayant reçues les mêmes opérations
 convergent vers un état identique. Par exemple, la
 figure~\ref{repl:fig:optimisticsteps} montre que les répliques peuvent avoir des
 états temporairement divergent. En revanche, après réception et intégration du
@@ -78,7 +78,7 @@ données réparties~\cite{dynamo, riak, cassandra, mongodb}.
 
 \paragraph{Causalité.} Si une opération précède une autre
 opération~\cite{lamport1978time}, alors l'intégration de cette première
-opération précède l'intégration de cette seconde opération.  La causalité
+opération précède l'intégration de la seconde opération.  La causalité
 contraint l'ordre d'intégration des opérations. Ainsi, une opération dépendante
 d'une autre opération effectuée avant se trouve forcément intégrée à sa suite.
 La figure~\ref{repl:fig:causality} montre un exemple où, sur la réplique 3,
@@ -111,7 +111,7 @@ caractère.
 \noindent L'intention des opérations d'une séquence demeure difficile à
 formaliser dans le cas général. L'effet d'une opération doit respecter le plus
 possible sa spécification séquentielle~\cite{bieniusa2012brief}. La
-spécification séquentielle d'une séquence inclue deux opérations : \og insérer
+spécification séquentielle d'une séquence inclut deux opérations : \og insérer
 l'élément $e$ à la position $i$ dans la séquence \fg et \og supprimer l'élément
 à la position $i$ dans la séquence \fg. L'intention semble donc liée à la
 position des éléments dans la séquence. Contre cette intuition, nous soutenons
@@ -152,7 +152,7 @@ vers un ordre dense.
 
 %\end{itemize}
 
-Nous distinguons la complexité spatiale de la réplique, la complexité en
+Nous distinguons la complexité spatiale de la réplique, et la complexité en
 communication sur les messages, la complexité temporelle d'une opération
 exécutée localement, la complexité temporelle de l'intégration d'une opération
 reçue.
@@ -162,7 +162,7 @@ critique et doit être sous-linaire pour passer à l'échelle. En ce qui concern
 les complexités temporelles, il est plus important d'améliorer l'intégration que
 la génération car chaque opération locale effectuée conduit à $N$ intégrations,
 où $N$ est le nombre de répliques.  Les opérations étant atomiques, leur
-exécution est blocante vis-à-vis des autres opérations. Un temps d'exécution
+exécution est bloquante vis-à-vis des autres opérations. Un temps d'exécution
 trop long constitue un danger pour l'édition en temps réel.
 
 Le reste de cette section présente les approches appartenant à la réplication
@@ -207,7 +207,7 @@ réplique 1 reçoit cette dernière opération de suppression, elle est interpr�
 comme une opération dont le contexte d'exécution n'avait pas encore intégré
 l'insertion du caractère \texttt{Q}. Le décalage d'une position vers la droite
 de chaque caractère n'avait donc pas encore été intégré. Par conséquent,
-l'argument de l'opération voit sa cible changée aux second caractères :
+l'argument de l'opération voit sa cible changée au second caractère :
 \texttt{W}.  Réciproquement, la réplique 3 intègre l'insertion de la réplique 1
 : l'insertion et la suppression sont détectées concurrentes, toutefois aucune
 transformation n'est nécessaire. À terme, les répliques convergent vers la
@@ -231,23 +231,23 @@ apparaissent :
 d'effectuer les transformations d'elle-même. Parmi les pré-requis à cette tâche
 figure le mécanisme de détection de concurrence. En effet, retrouver le contexte
 d'exécution revient à transformer l'opération reçue contre toutes celles qui ont
-été intégrées sans avoir connaissance de cette première. Cependant, chaque
-message doit transporter un vecteur d'horloges (\emph{vector
-  clock})~\cite{lamport1978time} ou de contexte pour chaque opération. Par
-conséquent, la complexité en communication est au minimum linéaire par rapport
-au nombre de répliques.  De plus, ces vecteurs et leur opération associée sont
-ensuite sauvegardés dans un historique. La complexité spatiale est au minimum
-linéaire selon les deux dimensions : nombre de répliques et nombre d'opérations.
+été intégrées sans en avoir connaissance. Cependant, chaque message doit
+transporter un vecteur d'horloges (\emph{vector clock})~\cite{lamport1978time}
+ou de contexte pour chaque opération. Par conséquent, la complexité en
+communication est au minimum linéaire par rapport au nombre de répliques.  De
+plus, ces vecteurs et leur opération associée sont ensuite sauvegardés dans un
+historique. La complexité spatiale est au minimum linéaire selon les deux
+dimensions : nombre de répliques et nombre d'opérations.
 
 \paragraph{Répartition des temps d'exécution.} La génération d'une opération
 s'exécute en temps constant. Cependant, son intégration s'exécute en temps
 quadratique comparé au nombre d'opérations concurrentes à l'opération
 intégrée. Cette répartition des coûts d'opération est malheureuse car 1
 opération locale efficace correspond à $N$ exécutions distantes potentiellement
-lente, où $N$ est le nombre de répliques recevant l'opération.
+lentes, où $N$ est le nombre de répliques recevant l'opération.
 
-Pour ces raisons, les approches OT décentralisées ne passent pas à l'échelle. Du
-reste, dans un environnement bien maîtrisé, où les opérations arrivent très
+Pour ces raisons, les approches OT décentralisées ne passent pas à l'échelle. A
+contrario, dans un environnement bien maîtrisé, où les opérations arrivent très
 rapidement à un groupe raisonnable de participants, ces approches décentralisées
 sont extrêmement efficaces~\cite{mehdi2014merging}.
 
@@ -299,8 +299,8 @@ existent toujours dans la structure répliquée.
 %% L'impact sur les performances à
 %% l'intégration des opérations en reste néanmoins présent.
 
-\paragraph{WOOT~\cite{oster2006data} :} Le premier représentant historique des
-CRDTs pour séquences suivi par deux extensions
+\paragraph{WOOT~\cite{oster2006data} :} WOOT est le premier représentant
+historique des CRDTs pour séquences suivi par deux extensions
 \textbf{WOOTO~\cite{weiss2007wooki}} et
 \textbf{WOOTH~\cite{ahmed2011evaluating}}. Dans cette approche chaque
 identifiant fait référence aux identifiants voisins à l'insertion.  Lorsqu'ils
@@ -333,7 +333,7 @@ référence l'identifiant de \texttt{Z}, lui-même référençant l'identifiant 
 \texttt{A} et/ou de \texttt{Z} revient à rendre l'identifiant de \texttt{E} non
 positionnable, et tout ceux qui en dépendent par transitivité.
 
-\noindent Même si le document apparaît vide, la structure répliquée contient
+\noindent Même si le document peut apparaître vide, la structure répliquée contient
 tous les éléments ayant été insérés depuis sa création. Cette croissance
 monotone de la structure impacte négativement l'intégration des opérations qui
 devient moins efficace. Du reste, la complexité en communication est optimale
@@ -376,8 +376,8 @@ référencent alors les chaînes adjacentes à l'insertion ainsi que les autres
 s'en trouve diminué. Cependant, de la même manière que pour les approches
 précédentes, les références empêchent à la structure répliquée de se débarasser
 des éléments supprimés. La complexité spatiale de l'approche est monotone
-croissante et linéaire par rapport au nombre d'insertions et subdivisions. Les
-performances des opérations en sont impactées négativement.
+croissante et linéaire par rapport au nombre d'insertions et de
+subdivisions. Les performances des opérations en sont impactées négativement.
 
 % \paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
 % principalement ses efforts sur les garanties de confluence de la
@@ -410,19 +410,19 @@ de la séquence revient à s'interroger : \og Est-ce que
 \end{inparaenum}\fg Cela va sans dire qu'il est difficile d'apporter une réponse
 à ces deux questions. D'autant plus lorsque les répliques ne sont pas
 perpétuellement accessibles. Core-nebula~\cite{letia2009crdts} propose de
-contraindre la topologie réseau afin de rendre la prise de décisions
+contraindre la topologie du réseau afin de rendre la prise de décision
 possible. Ainsi, un cœur décisionnel prend en charge les choix de suppression
-réelle des objets.  Ce cœur décisionnel est restreint à un sous-ensemble des
-membres du réseaux étant toujours accessibles. Les décisions peuvent alors être
-prises de manière fiable. Le reste des participants se conforme à ces décisions
-au risque de perdre certaines de leurs modifications. Cette re-centralisation
+réelle des objets.  Ce cœur décisionnel est restreint à un sous-ensemble de
+membres du réseaux toujours accessibles. Les décisions peuvent alors être prises
+de manière fiable. Le reste des participants se conforme à ces décisions au
+risque de perdre certaines de leurs modifications. Cette re-centralisation
 expose le système aux problèmes de confidentialité, de censure, de propriété, de
-passage à l'échelle et de défaillances.
+passage à l'échelle et de tolérance aux défaillances.
  
-Un autre famille de CRDTs conçue pour le type séquence et dont le bon
+Un autre famille de CRDTs existe pour le type séquence dont le bon
 fonctionnement ne nécessite pas de référencer directement d'autres
-identifiants. En cela, ils évitent l'usage des pierres tombales mais font face à
-des problèmes concernant la complexité spatiale de leurs identifiants.
+identifiants. Cela évite l'usage des pierres tombales mais pose le problème de
+la complexité spatiale des identifiants.
 
 \subsubsection{Identifiants de taille variable}
 \label{repl:subsubsec:variable}
@@ -465,9 +465,9 @@ préserver l'ordre parmi les éléments :
 \end{align*}
 L'identifiant unique de site est obtenu lors de la création de la réplique. Le
 compteur est incrémenté à chaque insertion locale dans la séquence. Ne reste
-comme seul facteur de choix à disposition de Logoot : l' entier $p$ présent dans
-chaque triple. Lors de la $x$\up{ème} insertion locale par le site $s_y$, les
-identifiants adjacents à la position d'insertion sont récupérés. Ainsi
+comme seul facteur de choix à disposition de Logoot que l'entier $p$ présent
+dans chaque triple. Lors de la $x$\up{ème} insertion locale par le site $s_y$,
+les identifiants adjacents à la position d'insertion sont récupérés. Ainsi
 l'identifiant $id$ du nouvel élément inséré en position $i$ doit respecter
 $id_{i}<_\mathcal{I} id <_\mathcal{I} id_{i+1}$. Par transitivité
 $\ldots id_{i-1} <_\mathcal{I} id_{i} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
@@ -475,7 +475,7 @@ $\ldots id_{i-1} <_\mathcal{I} id_{i} <_\mathcal{I} id <_\mathcal{I} id_{i+1}
 Prenons pour exemple, $id_{i}=[\langle 12,\,s_1,\,c_1\rangle]$ et
 $id_{i+1}=[\langle 12,\, s_1,\,c_1\rangle.\langle 1337,\, s_2, c_2\rangle]$.
 Pour choisir les valeurs successives de $p$ du nouvel identifiant, Logoot
-commence par examiner chaque niveau des identifiants adjacents afin de connaitre
+commence par examiner chaque niveau des identifiants adjacents afin de connaître
 la taille du nouvel identifiant. Ici, les identifiants commencent tous les deux
 avec l'entier $12$.  Puisqu'entre $12$ et $12$ aucune valeur entière n'est
 disponible, Logoot doit chercher plus loin dans les identifiants. L'identifiant
@@ -483,7 +483,7 @@ précédant la position d'insertion ne possède pas de second triple ce qui
 correspond implicitement à $\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre
 $0$ et $1337$ de nombreuses valeurs sont disponibles.  Logoot doit choisir parmi
 toutes ces valeurs laquelle constituera définitivement le nouvel identifiant. Ce
-choix impactera également sur l'allocation des identifiants à venir.
+choix impactera également l'allocation des identifiants à venir.
 %% et ne doit pas être pris à la légère.
 Des observations effectuées sur un corpus de documents
 Wikipedia~\cite{wikipedia} suggère qu'allouer un identifiant proche de
@@ -492,7 +492,7 @@ identifiants de petite taille.  Ici, Logoot choisit donc une valeurs proche de
 $0$ et compose le nouvel identifiant en copiant une partie des données présentes
 dans les identifiants adjacents. Par exemple,
 $id = [\langle 12,\, s_1,\,c_1 \rangle.\langle 10,\,s_y, x\rangle]$.  En
-utilisant l'ordre lexicographique définit auparavant, nous obtenons bien
+utilisant l'ordre lexicographique défini auparavant, nous obtenons bien
 $id_{i} <_\mathcal{I} id <_\mathcal{I} id_{i+1}$.
 
 \begin{figure}
@@ -517,7 +517,7 @@ extrêmement rapidement. La figure~\ref{repl:img:motivationlogoot} met en
 de site et compteurs sont ignorés) augmente par pallier. De nombreuses séries
 d'insertions en tête se traduisent par l'ajout d'un niveau dans les chemins. Sur
 un petit document de moins de 200 lignes, un chemin alloué par Logoot atteint 16
-concaténations. Ici, chacun de ces concaténations pèse 16 bits.  La complexité
+concaténations. Ici, chacune de ces concaténations pèse 16 bits.  La complexité
 spatiale de chaque identifiant est linéaire comparée au nombre d'insertions dans
 le document, et puisque chaque identifiant est disséminé aux autres répliques,
 la complexité en communication adopte cette progression. De plus, les valeurs
@@ -534,7 +534,7 @@ ente l'identifiant $id_{i}$ de l'élément en position $i+1$ et l'identifiant
 $id_i$ de l'élément en position $i$ \fg s'effectue en temps constant.
 Cependant, cette rapidité d'accès est seulement possible au détriment d'une
 consommation en espace élevée : Logoot ne profite pas de la redondance
-d'informations sur les triples. La complexité spatiale de la structure est
+d'information sur les triples. La complexité spatiale de la structure est
 quadratique par rapport au nombre d'insertions effectuées dans la séquence.
 
 \noindent Une extension nommée \textbf{Logoot split}~\cite{andre2013supporting}
@@ -542,8 +542,8 @@ quadratique par rapport au nombre d'insertions effectuées dans la séquence.
 ciblé.  Cette extension prend pour granularité la chaîne de caractères avec la
 liberté de la scinder si besoin est. Le nombre d'identifiants à allouer s'en
 trouve diminué, et par conséquent, le trafic généré également. Cette
-amélioration s'étend à tous les CRDTs générant des identifiants de taille
-variable.
+amélioration est orthogonale et s'applique à tous les CRDTs générant des
+identifiants de taille variable.
 
 \paragraph{Treedoc~\cite{letia2009crdts, preguica2009commutative} :} Cette
 approche représente le document sous forme d'arbre binaire avec parcours infixe.
@@ -553,27 +553,28 @@ binaire 0 ou 1.  Si un nœud possède un élément et deux fils, tous les élém
 du sous-arbre accessible par l'arête dont l'étiquette est 0 se trouvent à gauche
 de ce premier élément; tous les éléments du sous-arbre accessible par l'arête
 dont l'étiquette est 1 se trouve à droite de ce premier élément. Du fait de la
-concurrence, chaque nœuds peut aussi devenir un super-nœud accueillant plusieurs
-nœuds. De plus, chaque nœuds est décoré d'un identifiant unique de site et d'un
-compteur local à ce site. Ainsi, les nœuds inclus dans chaque super-nœuds
+concurrence, chaque nœud peut aussi devenir un super-nœud accueillant plusieurs
+nœuds. De plus, chaque nœud est décoré d'un identifiant unique de site et d'un
+compteur local à ce site. Ainsi, les nœuds contenus dans chaque super-nœud
 suivent eux aussi un ordre total. Un identifiant est donc une liste de triples
 $id = [t_1.t_2\ldots t_k]$ où $k$ est un entier, et
 $t_k = \langle b_k,\, s_k,\, c_k\rangle$ où $b_k$ est une valeur binaire, $s_k$
-est un identifiants unique de site, et $c_k$ est un compteur local au site
-$s_k$.  Prenons par exemple les éléments adjacents
+est un identifiant unique de site, et $c_k$ est un compteur local au site $s_k$.
+Prenons par exemple les éléments adjacents
 $id_i=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle]$ et
-$id_{i+1}=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle. \langle 1,\,
-s_2,\, c_3 \rangle]$.
+$id_{i+1}=[\langle 0,\,s_1,\,c_1 \rangle.\langle 1,\,s_1,\,c_2 \rangle. \langle
+1,\, s_2,\, c_3 \rangle]$.
 Lors de la $x$\up{ème} insertion locale par le site $s_y$, Treedoc examine les
 identifiants adjacents à la position d'insertion. Treedoc commence par examiner
 si un identifiant est l'ancêtre direct de l'autre, i.e., la liste de triples
-d'un identifiant est inclue dans la liste de triples de l'autre identifiant. Par
-exemple, $id_{i}$ est l'ancêtre de $id_{i+1}$. Dans ce cas, Treedoc copie
-l'identifiant du descendant et le suffixe par $\langle 1,\, s_y,\, x \rangle$ si
-le descendant précède la position d'insertion; $\langle 0,\, s_y,\, x \rangle$
-dans le cas contraire. Si aucun des identifiants n'est l'ancêtre de l'autre,
-Treedoc choisit de copier l'identifiant précédant la position d'insertion et lui
-suffixe le triple $\langle 1,\, s_y,\, x \rangle$.
+d'un identifiant est incluse dans la liste de triples de l'autre
+identifiant. Par exemple, $id_{i}$ est l'ancêtre de $id_{i+1}$. Dans ce cas,
+Treedoc copie l'identifiant du descendant et le suffixe par
+$\langle 1,\, s_y,\, x \rangle$ si le descendant précède la position
+d'insertion; $\langle 0,\, s_y,\, x \rangle$ dans le cas contraire. Si aucun des
+identifiants n'est l'ancêtre de l'autre, Treedoc choisit de copier l'identifiant
+précédant la position d'insertion et lui suffixe le triple
+$\langle 1,\, s_y,\, x \rangle$.
 
 
 \begin{figure}
@@ -604,7 +605,7 @@ taille du document.
 
 
 \noindent La représentation de la séquence sous forme d'arbre possède l'avantage
-de factoriser les nombreux triples communs composants les identifiants
+de factoriser les nombreux triples communs composant les identifiants
 Treedoc. Cette forme compacte de structure a le défaut de ne pas permettre
 d'accès direct aux identifiants. Retrouver les identifiants adjacents à la
 position d'insertion requiert un parcours de l'arbre. De plus, cette
@@ -613,13 +614,13 @@ eux-mêmes. Puisque chaque identifiant doit être disséminé individuellement a
 autres répliques, le trafic généré demeure inchangé par ce choix de structure.
 
 Les CRDTs fonctionnant avec des identifiants de taille variable n'utilisent pas
-de pierre tombales lors de la suppression d'éléments. Par conséquent, la mémoire
-consommée par ces approches n'est pas strictement croissante. Un document vide
-signifie que la séquence répliquée est également vide. En revanche, les
-identifiants peuvent croître de manière linéaire par rapport au nombre
-d'insertions dans le document. Malheureusement, cette progression se répercute
-sur la complexité en communication. De même, cette progression se répercute sur
-les performances à l'intégration des opérations d'insertion.
+de pierres tombales lors de la suppression d'éléments. Par conséquent, la
+mémoire consommée par ces approches n'est pas strictement croissante. Un
+document vide signifie que la séquence répliquée est également vide. En
+revanche, les identifiants peuvent croître de manière linéaire par rapport au
+nombre d'insertions dans le document. Malheureusement, cette progression se
+répercute sur la complexité en communication. De même, cette progression se
+répercute sur les performances à l'intégration des opérations d'insertion.
 
 Une solution consiste à relocaliser les identifiants. En d'autres termes, les
 identifiants sont modifiés au profit d'identifiants plus courts et conservant
@@ -632,9 +633,9 @@ consensus sont coûteux à obtenir dans les systèmes à large échelle où le n
 de répliques est grand, et particulièrement lorsque ces répliques ne sont pas
 accessibles en permanence.
 
-Afin d'éviter les baisses de performances ainsi que les mécanismes de
+Afin d'éviter les baisses de performance ainsi que les mécanismes de
 relocalisation, une autre solution consiste à obtenir des identifiants
-suffisamment courts pour qu'ils ne nécessite pas d'être relocalisé. La section
+suffisamment courts pour qu'ils ne nécessitent pas d'être relocalisé. La section
 suivante s'attache à décrire les difficultés liées à l'allocation d'identifiants
 à taille variable.
 
