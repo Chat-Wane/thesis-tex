@@ -5,8 +5,8 @@
 \SPRAY est un protocole d'échantillonnage aléatoire de pair adaptatif. Cette
 section a pour objectif d'examiner ses propriétés empiriquement au travers une
 série de simulations. Les métriques auxquelles nous nous intéressons sont
-communément employées dans l'étude de performances de ce type de protocoles ou
-en étude des graphes. Ceux-ci incluent le coefficient d'agglomération
+communément employées dans l'étude de performance de ce type de protocoles ou en
+étude des graphes. Ceux-ci incluent le coefficient d'agglomération
 (\emph{clustering coefficient}), la taille moyenne du plus court chemin, la
 distribution des arcs entrants, l'évolution du nombre d'arcs, les composantes
 connexes, et la robustesse. À cela nous ajoutons une analyse sur les doublons
@@ -140,7 +140,7 @@ importe le plus court.  Les graphes aléatoires possèdent un plus court chemin
 moyen très petit grandissant en $\ln|\mathcal{N}|\over\ln\ln|\mathcal{N}|$
 lorsque le nombre d'arcs suit $|\mathcal{N}|\ln|\mathcal{N}|$.
 
-Cette métrique permet de cerner l'efficacité de la diffusion d'informations dans
+Cette métrique permet de cerner l'efficacité de la diffusion d'information dans
 le réseau. Par exemple, si le plus court chemin d'un nœud $n_i$ à un nœud $n_j$
 est de 3, cela signifie qu'un message émanant de $n_i$ parviendra à $n_j$ par
 seulement 2 nœuds intermédiaires.
@@ -360,7 +360,7 @@ telles partitions apparaissent.
 
 Compter le nombre de composantes fortement connexes dans un réseau permet
 d'estimer la surface atteignable par les protocoles de dissémination
-d'informations. Par exemple, il y a deux composantes fortement connexes dans un
+d'information. Par exemple, il y a deux composantes fortement connexes dans un
 réseau dont une partie peut atteindre l'autre sans que l'inverse soit
 possible.
 
@@ -389,7 +389,7 @@ d'échantillonnage de pairs, \SPRAY et \CYCLON, ne souffrent de partitionnement
 qu'après un fort taux de suppressions, \CYCLON étant légèrement meilleur dans ce
 cas. La figure~\ref{net:fig:robustness} montre que les composantes fortement
 connexes commencent à se dégrader lentement dès 45\%, et plus rapidement à
-70\%. Dans ce cas, la dissémination d'informations est temporairement en danger
+70\%. Dans ce cas, la dissémination d'information est temporairement en danger
 : un message peut ne pas parvenir à l'ensemble des membres du
 réseau. Heureusement, la figure~\ref{net:fig:robustness} montre aussi que ces
 approches sont capables de réparer ce partitionnement. En effet, le nombre de
@@ -405,7 +405,7 @@ cette taille de réseau. Par conséquent, leur nombre d'arcs est très proche. I
 d'aléatoire notamment lors du choix du contact nécessaire pour rejoindre le
 réseau -- et aucun doublon dans les vues partielles -- \SPRAY possède un faible
 taux de doublons (cf. la figure~\ref{net:fig:duplicates}). Pour mettre en danger
-la dissémination d'informations, il est nécessaire de supprimer un grand nombre
+la dissémination d'information, il est nécessaire de supprimer un grand nombre
 de nœuds. En effet, chaque nœud revêt grossièrement la même importance que son
 voisin. Ainsi, supprimer des nœuds aléatoirement parmi ceux-ci n'affecte pas
 énormément le réseau dans son entièreté. Le réseau est capable de se réparer car

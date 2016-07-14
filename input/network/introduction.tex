@@ -21,8 +21,7 @@ pairs. Toutefois, déployer ces protocoles avec WebRTC n'est pas sans poser de
 problèmes :
 \begin{enumerate}[(i)]
 \item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
-  des connexions plus coûteuses et sujettes aux défaillances que sur un réseau
-  IP.
+  de connexion plus coûteux et sujet aux défaillances que sur un réseau IP.
 \item Les navigateurs Web fonctionnent sur des outils informatiques aux
   capacités hétérogènes tels que les ordinateurs de bureau, les téléphones
   portables ou les tablettes tactiles. Le protocole doit donc réduire sa
@@ -72,7 +71,7 @@ répondre à l'ensemble de ces problématiques. D'un coté,
 \SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptation en
 fournissant une vue dont la taille est $\ln (N) + k$, avec $N$ étant le nombre
 de membres dans le réseau et $k$ une constante positive. Cependant, son
-processus d'établissement des connexions impliquant des propagations aléatoires
+processus d'établissement de connexion impliquant des propagations aléatoires
 systématiques n'est pas adapté au contexte WebRTC. D'une autre coté, les
 protocoles plus utilisés tels que \CYCLON~\cite{voulgaris2005cyclon} fournissent
 une vue dont la taille est constante et paramétrée lors du

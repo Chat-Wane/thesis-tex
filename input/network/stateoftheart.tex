@@ -298,8 +298,8 @@ complexes impliquant pare-feu, proxy, ou NAT (\emph{Network Address
   Translation}). Toutefois, WebRTC ne gère ni l'adressage, ni le routage.
 Établir une connexion WebRTC requiert une négociation où le nœud d'origine et le
 nœud de réception s'envoient mutuellement des moyens d'accès distants dans
-l'ordre définit du plus aisé au plus ardu. Par exemple, les échanges vont
-d'abord concerner la boucle locale (\emph{localhost}), puis le réseau local
+l'ordre défini du plus aisé au plus ardu. Par exemple, les échanges vont d'abord
+concerner la boucle locale (\emph{localhost}), puis le réseau local
 (e.g. $192.168.255.255$), puis l'internet etc. Aussitôt que la négociation
 s'achève avec succès, un canal de communication bidirectionnel est établi. Les
 nœuds peuvent alors communiquer entre eux.
@@ -355,7 +355,7 @@ route alternative existe (puisque WebRTC ne gère pas le routage).
     \caption[Établissement d'une connexion impliquant des allers-retours avec
     WebRTC]{\label{repl:fig:handshake} Établissement d'une connexion impliquant
       des allers-retours avec WebRTC. (1) $n_1$ initie la création d'une
-      connexion. Le message transite par $n_2$. (2) Lorsque \CYCLON établit un
+      connexion. Le message transite par $n_2$. (2) Lorsque \CYCLON établit une
       connexion avec le voisin du voisin -- ici $n_3$ -- \SCAMP cherche
       $k$ voisins plus loin. (3) Un message est envoyé en sens inverse
       jusqu'à $n_1$ pour que la connexion soit finalement établie.}
@@ -370,7 +370,7 @@ chemin de l'annonce doivent rester disponibles pour préserver le pont entre les
 nœuds établissant une connexion.  Soit $P_f$ la probabilité qu'un élément (nœud
 ou arc) tombe en panne ou quitte le réseau pendant l'établissement d'une
 connexion. Soit $P_E$ la probabilité que l'établissement d'une connexion soit
-achevée avec succès. Sans les allers-retours de WebRTC, la probabilité est :
+achevé avec succès. Sans les allers-retours de WebRTC, la probabilité est :
 \begin{equation} P_{E}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
 correspond à la probabilité que chaque élément sur le chemin de taille $k+1$
 reste disponible et fonctionnel pendant leur tour de dissémination. Avec WebRTC,
