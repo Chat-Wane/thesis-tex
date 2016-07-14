@@ -12,12 +12,12 @@ structures de données sans conflits~\cite{burckhardt2014replicated,
   shapiro2011conflict}. Le chapitre définit le problème scientifique à
 résoudre. Ensuite, il détaille \LSEQ~\cite{nedelec2013concurrency,
   nedelec2013lseq}, une fonction d'allocation d'identifiants conçue pour le
-second type d'approches et dont la taille des identifiants croît en suivant le
-polylogarithme du nombre d'insertions effectuées dans le document. Le reste du
+second type d'approches et dont la taille des identifiants est polylogarithmique
+par rapport au nombre d'insertions effectuées dans le document. Le reste du
 chapitre s'attache à valider cette propriété.
 
 \paragraph{Le chapitre~\ref{net:chap:spray}} commence par décrire les protocoles
-qui nous permettront de former les sessions d'édition : les protocoles
+qui nous permettent de former les sessions d'édition : les protocoles
 d'échantillonnage aléatoire de pairs~\cite{jelasity2004peer,
   jelasity2007gossip}. Ceux-ci fournissent une vue partielle du réseau à chaque
 membre. Cette vue peut être utilisée afin de communiquer avec l'ensemble du
@@ -26,8 +26,8 @@ réseau. L'état de l'art se décompose en deux familles :
 \item Les vues partielles sont de taille constante configurée \emph{a
     priori}~\cite{eugster2003lightweight, jelasity2007gossip,
     leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon};
-\item Les vues partielles s'adaptent aux dimensions du réseau à la
-  volée~\cite{ganesh2001scamp, ganesh2003peer}.
+\item Les vues partielles s'adaptent à la volée aux dimensions du
+  réseau~\cite{ganesh2001scamp, ganesh2003peer}.
 \end{inparaenum}
 Le chapitre définit le problème scientifique à résoudre. Ensuite, il décrit le
 fonctionnement de \SPRAY~\cite{nedelec2015spray} appartenant à la seconde
@@ -35,8 +35,8 @@ famille d'approches. Le cycle de vie d'un pair est décomposé entre le moment o
 il rejoint, le temps où il est membre, et le moment où il se retire. Tout au
 long de ce processus, le système dans sa globalité doit rester cohérent sur la
 taille des vues partielles ainsi que sur leur contenu.  Le chapitre décrit les
-propriétés assurées par \SPRAY. Le chapitre montre également les avantages tirés
-par un système de diffusion de messages profitant de \SPRAY.
+propriétés assurées par \SPRAY. Le chapitre montre également les avantages
+obtenus par un système de diffusion de messages profitant de \SPRAY.
 
 \paragraph{Le chapitre~\ref{editor:chap:crate}} décrit
 \CRATE~\cite{nedelec2016crate}, un éditeur collaboratif temps réel décentralisé
@@ -49,7 +49,7 @@ de \SPRAY et de \LSEQ, \CRATE parvient à adapter le trafic généré par l'édi
 expérimentations à large échelle confirment cette analyse.
 
 \paragraph{Le chapitre~\ref{conclu:chap:conclusion}} clôt ce manuscrit et décrit
-quelques perspectives ouvertes par ce type d'applications ainsi que les défis
+quelques perspectives ouvertes par ce type d'application ainsi que les défis
 qu'il reste à relever.
 
 

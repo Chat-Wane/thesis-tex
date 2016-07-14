@@ -1,23 +1,23 @@
 
 \section{Contributions}
 
-La première question de recherche nous place dans le contexte de réplication
+La première question de recherche nous place dans le contexte de la réplication
 optimiste~\cite{demers1987epidemic, saito2005optimistic}, i.e., un schéma de
 réplication où le document partagé est copié chez chaque utilisateur afin de
 fournir réactivité et disponibilité. La structure de séquence constitue une
 abstraction proche du document. Par conséquent, nous nous intéressons
 particulièrement à un type de données pour séquences dont les opérations
 commutent par nature~\cite{burckhardt2014replicated, shapiro2011comprehensive,
-  shapiro2011conflict, zawirski2015dependable}. Elles présentent l'avantage de
+  shapiro2011conflict, zawirski2015dependable}. Ce type présente l'avantage de
 supporter efficacement les opérations concurrentes~\cite{ahmed2015evaluation,
-  ahmed2011evaluating}. Ces approches associent un identifiant unique et
-immuable à chacun de leurs éléments. Nous proposons
+  ahmed2011evaluating}. Ces structures de données associent un identifiant
+unique et immuable à chaque élément de la séquence. Nous proposons
 \LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une fonction d'allocation
 d'identifiants. Les identifiants générés ont une taille bornée
 polylogarithmiquement par rapport au nombre d'insertions effectuées dans la
-séquence. Nous définissons les conditions sous lesquelles s'appliquent cette
-borne et en fournissons la preuve. Au travers de simulations, nous validons
-\LSEQ et sa complexité.
+séquence. Nous définissons les conditions sous lesquelles s'applique cette borne
+et en fournissons la preuve. Au travers de simulations, nous validons \LSEQ et
+sa complexité.
 
 Afin de répondre à la seconde question de recherche, nous nous sommes interessés
 aux protocoles d'appartenance aux réseaux (\emph{membership}). Plus
@@ -32,21 +32,20 @@ proposons une nouvelle approche nommée \SPRAY~\cite{nedelec2015spray}
 appartenant à cette famille. Comparé à l'état de
 l'art~\cite{eugster2003lightweight, ganesh2001scamp, jelasity2007gossip,
   leitao2007dependable, tolgyeski2009adaptive, voulgaris2005cyclon}, \SPRAY
-s'adapte à la taille du réseau automatiquement en suivant une progression
+s'adapte automatiquement à la taille du réseau en suivant une progression
 logarithmique comparativement à la taille globale du réseau tout en supportant
-les contraintes imposées par le processus complexe d'établissement de connexions
+les contraintes imposées par le processus complexe d'établissement de connexion
 dans les navigateurs Web. Nous mettons cela en évidence grâce à des simulations.
 Les protocoles de diffusion épidémique~\cite{birman1999bimodal} de messages
 (\emph{gossip}) qui en dépendent bénéficient à leur tour de cette capacité à
-s'adapter. Par exemple, le trafic généré peut s'adapter à la taille réelle du
-réseau.
+s'adapter. Ainsi, le trafic généré peut s'adapter à la taille réelle du réseau.
 
 Afin de répondre à la problématique générale de ce manuscrit, nous avons réuni
 les deux approches \LSEQ et \SPRAY dans un éditeur collaboratif décentralisé
 nommé \CRATE~\cite{nedelec2016crate}. Ce dernier fonctionne directement dans les
 navigateurs Web. Pour peu que l'utilisateur ait un accès à l'internet, \CRATE
 lui permet l'édition de documents n'importe quand, n'importe où, avec autant de
-collaborateurs qu'il le souhaite, sans fournisseurs tiers. Comparé à l'état de
+collaborateurs qu'il le souhaite, sans fournisseur tiers. Comparé à l'état de
 l'art~\cite{etherpad, googledocs, hivejs, lautamaki2012cored,
   nicolaescu2015yjs},
 \begin{inparaenum}[(i)]
@@ -57,7 +56,7 @@ l'art~\cite{etherpad, googledocs, hivejs, lautamaki2012cored,
 \end {inparaenum}
 Nous validons \CRATE aux travers d'expériences réunissant jusqu'à 600 éditeurs
 sur le banc d'essai Grid'5000. Les résultats confirment le facteur logarithmique
-de \SPRAY et le facteur polylogarithmique des identifiants générés par \LSEQ.
+de \SPRAY et la taille polylogarithmique des identifiants générés par \LSEQ.
 
 
 
