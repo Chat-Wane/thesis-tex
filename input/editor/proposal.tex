@@ -24,7 +24,7 @@ de l'éditeur :
   opérations entre elles afin qu'elles soient intégrées dans un ordre reflétant
   une forme de causalité, e.g., elle assure que les opérations de suppression
   suivent toujours les opérations d'insertion de l'élément correspondant;
-\item la couche de structure pour séquences dont les opérations d'insertions et
+\item la couche de structure pour séquences dont les opérations d'insertion et
   de suppression doivent garantir des répliques convergeantes du document;
 \item la couche d'interaction homme-machine fournissant les outils avec lesquels
   l'utilisateur peut interagir.
@@ -34,7 +34,7 @@ de l'éditeur :
 Lorsqu'un participant effectue une opération sur le document, l'opération est
 appliquée à la séquence répartie. L'opération est ensuite décorée avec des
 métadonnées correspondant à la causalité. L'éditeur propage l'opération en
-utilisant le voisinage de l'éditeur fournit par le protocole d'appartenance au
+utilisant le voisinage de l'éditeur fourni par le protocole d'appartenance au
 réseau.  À l'inverse, lorsque l'éditeur reçoit une opération, il vérifie si
 cette dernière est prête à être intégrée. Lorsque la condition est vérifiée,
 l'éditeur intègre l'opération à la réplique de la séquence. L'interface
@@ -73,11 +73,11 @@ participants à nouveau, ils auront à nouveau 2.3 voisins en moyenne.
 
 La diffusion des messages fait un usage intensif des voisinages. Lorsqu'un
 utilisateur procède à des changements dans le document, l'éditeur l'envoie à son
-voisinage. Chacun des voisins ayant reçu le message le transmet à son tour à
-son voisinage. Les modifications sur le document atteignent rapidement tous les
+voisinage. Chacun des voisins ayant reçu le message le transmet à son tour à son
+voisinage. Les modifications sur le document atteignent rapidement tous les
 éditeurs par transitivité. La complexité en communication chez chaque éditeur
-est bornée par $\mathcal{O}(M\ln(R))$, où $M$ est la taille du message, et
-$R$ est le nombre de répliques connectées au moment de la propagation.
+est bornée par $\mathcal{O}(M\ln(R))$, où $M$ est la taille du message et $R$
+est le nombre de répliques connectées au moment de la propagation.
 
 \begin{figure}
   \begin{center}
@@ -102,7 +102,7 @@ du médiateur et applique le protocole \SPRAY en utilisant le canal
 WebRTC. Ensuite, les éditeurs eux-mêmes deviennent des médiateurs et permettent
 d'établir les connexions WebRTC d'un voisinage à l'autre.
 
-\subsection{Détection de causalité}
+\subsection{Détection de la causalité}
 
 Pour préserver des répliques cohérentes, le même résultat doit advenir lors de
 la création de l'opération et de son intégration. Souvent, le comportement d'une
@@ -113,7 +113,7 @@ précédence (\emph{happens before})~\cite{lamport1978time} contraignent l'ordre
 d'intégration des opérations.  Malheureusement, l'ordre causal est très coûteux
 : maintenir les relations causales d'une opération par rapport à toutes les
 autres nécessite au minimum $\mathcal{O}(W)$ où $W$ est le nombre de
-participants ayant effectués au moins une
+participants ayant effectué au moins une
 opération~\cite{charronbost1991concerning}. La réception causale introduit dans
 la complexité en communication un facteur linéaire sur le nombre de
 participants. Si cela reste acceptable pour les petits groupes, le coût devient
@@ -130,10 +130,10 @@ immédiatement intégrées lorsqu'elles sont reçues. Pour caractériser ces
 relations causales, \CRATE utilise un vecteur d'horloges avec
 exceptions~\cite{malkhi2007concise, mukund2014optimized}. Ce vecteur stocke pour
 chaque participant
-\begin{inparaenum}
+\begin{inparaenum}[(i)]
 \item un entier désignant le compteur maximal connu de ce participant et
 \item une liste d'entiers désignant les exceptions, à savoir les opérations de
-  ce participants dont l'existence est connue mais qui ne sont pas encore
+  ce participant dont l'existence est connue mais qui ne sont pas encore
   reçues.
 \end{inparaenum}
 Tandis qu'une telle structure conserve un coût local de l'ordre du vecteur
@@ -151,26 +151,27 @@ $\mathcal{O}(1)$.
 \end{figure}
 
 La figure~\ref{editor:fig:timeline} montre une session d'édition impliquant 3
-participants. Les vecteurs d'horloges avec exceptions sont initialisés vides. Le
-collaborateur $c_1$ insère deux lettres dans le document et envoie les messages
-correspondants. Le collaborateur $c_3$ reçoit rapidement les deux messages et
-ajoute les identifiants des opérations à la structure de causalité. Les
-opérations sont intégrées dans la séquence répliquée. Au même moment, le
-collaborateur $c_2$ ne reçoit quant à lui que la seconde opération. Par
-conséquent, il marque la première opération de $c_1$ en tant qu'exception et
-intègre l'opération reçue. Le collaborateur $c_3$ supprime la première lettre
-insérée par $c_1$ et en envoie le message. Tandis que $c_1$ intègre la
-suppression immédiatement, $c_2$ doit attendre puisque l'opération d'insertions
-ciblée appartient aux exceptions. Une fois l'opération manquante reçue,
-l'exception disparaît et l'insertion est appliquée suivie de la suppression.
+participants. Les vecteurs d'horloges avec exceptions sont initialisés à
+vides. Le collaborateur $c_1$ insère deux lettres dans le document et envoie les
+messages correspondants. Le collaborateur $c_3$ reçoit rapidement les deux
+messages et ajoute les identifiants des opérations à la structure de
+causalité. Les opérations sont intégrées dans la séquence répliquée. Au même
+moment, le collaborateur $c_2$ ne reçoit quant à lui que la seconde
+opération. Par conséquent, il marque la première opération de $c_1$ en tant
+qu'exception et intègre l'opération reçue. Le collaborateur $c_3$ supprime la
+première lettre insérée par $c_1$ et en envoie le message. Tandis que $c_1$
+intègre la suppression immédiatement, $c_2$ doit attendre puisque l'opération
+d'insertions ciblée appartient aux exceptions. Une fois l'opération manquante
+reçue, l'exception disparaît et l'insertion est appliquée suivie de la
+suppression.
 
 \subsection{Anti-entropie}
 
 Lorsqu'un éditeur a besoin de récupérer l'état courant du document
-(e.g. lorsqu'il rejoint la session d'édition), il exécute un mécanisme
+(e.g. lorsqu'il rejoint une session d'édition), il exécute un mécanisme
 d'anti-entropie.  Ce mécanisme a pour objectif de détecter les divergences entre
 les répliques avant de les faire converger vers un état équivalent. À cela
-s'ajoute la contrainte de ne perdre aucunes des modifications effectuées sur les
+s'ajoute la contrainte de ne perdre aucune des modifications effectuées sur les
 répliques. Le vecteur utilisé pour détecter les relations causales sert aussi
 d'outil afin d'identifier les différences entre répliques. Le mécanisme
 d'anti-entropie~\cite{demers1987epidemic, vanderlinde2016delta} fonctionne de la
@@ -186,9 +187,9 @@ façon suivante :
 
 \CRATE utilise donc une approche basée sur les opérations lorsqu'il fonctionne
 normalement afin de permettre l'édition en temps réel. Lorsqu'il est en mode
-hors ligne, ou si le réseau subit des perturbations, alors \CRATE utilise un
+hors ligne ou si le réseau subit des perturbations, alors \CRATE utilise un
 approche basée sur les différences. Le temps de convergence des répliques est
-rapide grâce à la diffusion épidémique des messages, et fiable grâce au
+rapide grâce à la diffusion épidémique des messages et fiable grâce au
 mécanisme d'anti-entropie.
 
 
@@ -209,16 +210,17 @@ sous-jacente. De plus, la croissance de ces identifiants est bornée entre une
 borne logarithmique et une borne polylogarithmique comparé au nombre
 d'insertions dans la séquence. Étant sous-linéaire, la complexité en
 communication devient acceptable. Étant sous-linéaire, la structure d'arbre
-représentant le document répliqué n'a pas besoin d'être rééquilibré et donc,
+représentant le document répliqué n'a pas besoin d'être rééquilibrée et donc,
 l'éditeur n'a pas besoin d'exécuter un protocole de consensus qui ne passerait
 pas à l'échelle~\cite{mostefaoui2015signature}.
 
-Le facteur logarithmique de la dissémination de message, le coût constant
-apporté par la détection de causalité, et le coût des identifiants implique une
-complexité en communication attendue entre $\mathcal{O}((\log I)\cdot (\ln R))$ et
-$\mathcal{O}((\log I)^2\cdot(\ln R))$ selon les comportements d'édition à l'œuvre,
-où $I$ est le nombre d'insertions effectuées sur la séquence, et $R$ le nombre
-de répliques dans la session d'édition au moment de la propagation de messages.
+Le facteur logarithmique de la dissémination de messages, le coût constant
+apporté par la détection de la causalité et le coût des identifiants implique
+une complexité en communication attendue entre
+$\mathcal{O}((\log I)\cdot (\ln R))$ et $\mathcal{O}((\log I)^2\cdot(\ln R))$
+selon les comportements d'édition à l'œuvre, où $I$ est le nombre d'insertions
+effectuées sur la séquence et $R$ le nombre de répliques dans la session
+d'édition au moment de la propagation des messages.
 
 
 \subsection{Interface utilisateur}
@@ -255,12 +257,12 @@ impliqués dans la session d'édition. En effet, 3 curseurs sont affichés. Le
 premier curseur appartient à \emph{Anonymous Mole} et semble être à l'origine du
 texte \emph{Hello}. Le second curseur appartient à \emph{Anonymous Penguin} et
 semble être à l'origine du texte \emph{World}. Le troisième curseur est celui de
-l'utilisateur ayant prit la capture d'écran.
+l'utilisateur ayant pris la capture d'écran.
 
 La barre d'état nous indique que
 \begin{inparaenum}[(i)]
 \item l'éditeur est en train de partager l'accès à la session d'édition via le
-  cercle bleue en rotation. L'utilisateur peut alors donner l'URL en bas de page
+  cercle bleu en rotation. L'utilisateur peut alors donner l'URL en bas de page
   à d'autres collaborateurs afin qu'ils le rejoignent dans l'écriture du
   document, en un simple clique;
 \item que l'utilisateur est bien connecté à d'autres collaborateurs via la

@@ -8,7 +8,7 @@ documents.
 
 \paragraph{Description :} Cette expérimentation construit des réseaux de 101 à
 601 participants. Pour cela, des machines sont réservées sur le banc d'essai
-Grid'5000. Sur chacune d'elle sont lancées un à plusieurs navigateurs Web
+Grid'5000. Sur chacune d'elles sont lancés un à plusieurs navigateurs Web
 observant le processus d'intégration au réseau. Par exemple, 100 machines avec 6
 navigateurs chacune permettent de créer le réseau à 601 participants -- le
 participant supplémentaire étant le créateur du document hébergeant aussi le
@@ -32,13 +32,13 @@ réparties entre les participants. La session dure 7 heures.
 \paragraph{Résultat :} La figure~\ref{editor:img:communication} montre le
 résultat de cette expérimentation.
 \begin{inparaenum}[(i)]
-\item Le trafic généré croît de façon polylogarithmique comparativement à la
-  taille du document : plus l'expérience progresse, plus le nombre d'insertions
+\item Le trafic généré croît de façon polylogarithmique par rapport à la taille
+  du document : plus l'expérience progresse, plus le nombre d'insertions
   effectuées sur le document est important, plus la croissance des identifiants
   diminue.
-\item À cela s'ajoute un facteur multiplicatif logarithmique comparé au nombre
-  de participants : plus la session d'édition comporte de membres, plus le
-  trafic généré est important. Toutefois, l'écart entre les mesures diminue
+\item À cela s'ajoute un facteur multiplicatif logarithmique par rapport au
+  nombre de participants : plus la session d'édition comporte de membres, plus
+  le trafic généré est important. Toutefois, l'écart entre les mesures diminue
   tandis que le nombre de participants est incrémenté linéairement. On note
   toutefois des exceptions à ces observations. Par exemple, les mesures sur 501
   éditeurs dominent les mesures sur 601 éditeurs.
@@ -47,10 +47,10 @@ résultat de cette expérimentation.
 \paragraph{Explication :} \CRATE utilise \LSEQ
 (cf. chapitre~\ref{repl:chap:lseq}). Le comportement d'édition des participants
 est monotone. \LSEQ possède une complexité polylogarithmique sur ses
-identifiants, comparé au nombre d'insertions effectuées dans la séquence. Ainsi,
-plus les expérimentations progressent, plus le nombre d'insertions dans la
-séquence augmente. Les messages envoyées ne comportant que les identifiants de
-\LSEQ, la croissance du trafic hérite de cette croissance
+identifiants par rapport au nombre d'insertions effectuées dans la
+séquence. Ainsi, plus les expérimentations progressent, plus le nombre
+d'insertions dans la séquence augmente. Les messages envoyés ne comportant que
+les identifiants de \LSEQ, la croissance du trafic hérite de cette croissance
 polylogarithmique. \CRATE utilise \SPRAY (cf. §\ref{net:chap:spray}). Lorsqu'un
 nouveau membre rejoint une session d'édition, il ajoute avec lui un nombre
 logarithmique de connexions par rapport à la taille du réseau. Chacune de ces
