@@ -2,14 +2,14 @@
 \section{Propriétés}
 \label{net:sec:properties}
 
-\SPRAY est un protocole d'échantillonnage aléatoire de pair adaptatif. Cette
-section a pour objectif d'examiner ses propriétés empiriquement au travers une
+\SPRAY est un protocole d'échantillonnage aléatoire de pairs adaptatif. Cette
+section a pour objectif d'examiner ses propriétés empiriquement au travers d'une
 série de simulations. Les métriques auxquelles nous nous intéressons sont
-communément employées dans l'étude de performance de ce type de protocoles ou en
-étude des graphes. Ceux-ci incluent le coefficient d'agglomération
+communément employées dans l'étude de performance de ce type de protocole ou en
+étude des graphes. Celles-ci incluent le coefficient d'agglomération
 (\emph{clustering coefficient}), la taille moyenne du plus court chemin, la
 distribution des arcs entrants, l'évolution du nombre d'arcs, les composantes
-connexes, et la robustesse. À cela nous ajoutons une analyse sur les doublons
+connexes et la robustesse. À cela nous ajoutons une analyse sur les doublons
 d'arcs, spécificité de \SPRAY.
 
 % \TODO{Review this §.}
@@ -31,7 +31,7 @@ d'arcs, spécificité de \SPRAY.
 
 Les expérimentations ont été effectuées sur le simulateur
 \PEERSIM~\cite{montresor2009peersim}. Le code relatif aux protocoles
-d'échantillonnages \CYCLON, \SCAMP, et \SPRAY sont disponibles sur la
+d'échantillonnage \CYCLON, \SCAMP, et \SPRAY sont disponibles sur la
 plate-forme Github à l'adresse : \url{http://github.com/justayak/peersim-spray}.
 
 \subsection{Coefficient d'agglomération}
@@ -53,7 +53,7 @@ plate-forme Github à l'adresse : \url{http://github.com/justayak/peersim-spray}
 \end{figure*}
 
 Le coefficient d'agglomération désigne une mesure de groupement des nœuds. En
-d'autres termes, si un petit groupe possède un grand nombre d'arcs les reliants,
+d'autres termes, si un petit groupe possède un grand nombre d'arcs les reliant,
 alors la mesure grimpe. Ainsi, les graphes complets affichent un coefficient
 maximal. À l'inverse, les graphes aléatoires affichent un coefficient très bas :
 la répartition des arcs ainsi que leur nombre ne favorise pas l'apparition de
@@ -72,11 +72,11 @@ moyenne du coefficient $C_x$ de chaque nœud $n_x$ :
 \paragraph{Objectif :} Montrer que \SPRAY converge rapidement vers une topologie
 ne comportant pas de groupes fortement connexes.
 
-\paragraph{Description :} Les simulations prend pour cible des réseaux composés
-respectivement de 0.1k, 1k, 10k, et 100k nœuds. Le représentant des approches à
-taille fixe est \CYCLON. Ce dernier est configuré de manière optimale pour 1k
-nœuds ($\ln(1000)\approx 7$ voisins). De plus, les nœuds utilisant \CYCLON
-échangent 3 de leurs 7 voisins à chaque mélange.
+\paragraph{Description :} Les simulations prennent pour cible des réseaux
+composés respectivement de 0.1k, 1k, 10k, et 100k nœuds. Le représentant des
+approches à taille fixe est \CYCLON. Ce dernier est configuré de manière
+optimale pour 1k nœuds ($\ln(1000)\approx 7$ voisins). De plus, les nœuds
+utilisant \CYCLON échangent 3 de leurs 7 voisins à chaque mélange.
 
 \paragraph{Résultat :} La figure~\ref{net:fig:clustering} montre que \CYCLON
 démarre avec un coefficient d'agglomération plus bas que \SPRAY. Malgré cela,
@@ -92,7 +92,7 @@ vues de \CYCLON sont trop grandes -- ou au dessus -- lorsque les vues de \CYCLON
 sont trop petites. Globalement, \SPRAY
 \begin{inparaenum}[(i)]
 \item converge vers un coefficient d'agglomération stable
-\item reflétant les besoins dûs à la taille du réseau.
+\item reflétant les besoins dus à la taille du réseau.
 \end{inparaenum}
 %%  Cela a une influence sur l'équilibrage des charges et la robustesse par
 %%  rapport aux allées et venues de pairs.    
@@ -102,23 +102,23 @@ du réseau via une dissémination aléatoire. Ainsi, le réseau de départ est d
 légèrement équilibré au moment où la simulation commence. En ce qui concerne
 \SPRAY, un nouvel arrivant n'annonce son entrée qu'au voisinage de son
 contact. De ce fait, le réseau est fortement déséquilibré au départ de
-l'expérience quelle que soit taille du réseau. Malgré cela, \CYCLON ne converge
-pas aussi vite que \SPRAY vers un coefficient stable. En effet, la taille fixe
-de sa vue partielle ainsi que le nombre d'entrées de chaque mélange contraint la
-qualité des échanges.  Le coefficient d'agglomération mesure la connexité du
-voisinage de chaque nœud. Plus particulièrement, cela mesure à quel point le
-réseau est proche d'un graphe complet. Cela dépend donc des tailles de vue
-partielle qui, pour \CYCLON, sont fixées à la configuration.  Ainsi lorsque le
-nombre de nœuds est multiplié par 10, le coefficient s'en trouve divisé par
-10. En revanche, les nœuds utilisant \SPRAY ont une taille de vue partielle
-reflétant automatiquement la taille du réseau.  Ainsi, quand le réseau contient
-1k nœuds, les vues partielles s'adaptent à cette taille. Par conséquent, \SPRAY
-est très légèrement en dessous de \CYCLON dans ce scénario. La taille moyenne de
-vue partielle est de 7.4 pour ce premier contre 7 pour ce second. En étendant ce
-raisonnement aux autres tailles de réseau, \SPRAY converge vers une valeur plus
-basse lorsque les vues partielles de \CYCLON sont trop grandes (0.1k nœuds), et
-vers une valeur plus haute lorsque les vues partielles de \CYCLON sont trop
-petites (10k et 100k nœuds).
+l'expérience quelle que soit la taille du réseau. Malgré cela, \CYCLON ne
+converge pas aussi vite que \SPRAY vers un coefficient stable. En effet, la
+taille fixe de sa vue partielle ainsi que le nombre d'entrées de chaque mélange
+contraint la qualité des échanges.  Le coefficient d'agglomération mesure la
+connexité du voisinage de chaque nœud. Plus particulièrement, cela mesure à quel
+point le réseau est proche d'un graphe complet. Cela dépend donc de la taille
+des vues partielles qui, pour \CYCLON, est fixée à la configuration.  Ainsi
+lorsque le nombre de nœuds est multiplié par 10, le coefficient s'en trouve
+divisé par 10. En revanche, les nœuds utilisant \SPRAY ont une taille de vue
+partielle reflétant automatiquement la taille du réseau.  Ainsi, quand le réseau
+contient 1k nœuds, les vues partielles s'adaptent à cette taille. Par
+conséquent, \SPRAY est très légèrement en dessous de \CYCLON dans ce
+scénario. La taille moyenne des vues partielles est de 7.4 pour ce premier
+contre 7 pour ce second. En étendant ce raisonnement aux autres tailles de
+réseau, \SPRAY converge vers une valeur plus basse lorsque les vues partielles
+de \CYCLON sont trop grandes (0.1k nœuds), et vers une valeur plus haute lorsque
+les vues partielles de \CYCLON sont trop petites (10k et 100k nœuds).
 
 \subsection{Plus court chemin moyen}
 \label{net:subsec:shortestpath}
@@ -126,10 +126,11 @@ petites (10k et 100k nœuds).
 \begin{figure}
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/avgpath.eps}
-  \caption[Plus courts chemins moyens]{\label{net:fig:shortestpath} La moyenne
-    des plus courts chemins dans \SPRAY et \CYCLON. L'axe des abscisses montre
-    le nombre de nœuds appartenant aux réseaux sur une échelle logarithmique de
-    base 10. L'axe des ordonnées montre la moyenne des plus courts chemins.}
+  \caption[Plus courts chemins moyens]{\label{net:fig:shortestpath} La taille
+    moyenne des plus courts chemins dans \SPRAY et \CYCLON. L'axe des abscisses
+    montre le nombre de nœuds appartenant aux réseaux sur une échelle
+    logarithmique de base 10. L'axe des ordonnées montre la taille moyenne des
+    plus courts chemins.}
 \end{figure}
 
 La moyenne des plus courts chemins permet de mesurer à quel point les nœuds sont
@@ -175,14 +176,14 @@ de \CYCLON.
 
 \paragraph{Explication :} Les mesures sont toutes effectuées après convergence,
 lorsque les réseaux possèdent une topologie proche des graphes aléatoires.  Dans
-de tels graphes, la taille du plus court chemin moyen reste petit.  La seconde
+de tels graphes, la taille du plus court chemin moyen reste petite.  La seconde
 observation concerne chacune des configurations de \CYCLON comparée à
 \SPRAY. Une surestimation de la taille du réseau pour \CYCLON est meilleure en
-terme de connexité entre nœuds et résulte dans de plus courts chemins en
+terme de connexité entre nœuds et résulte en de plus courts chemins en
 moyenne. En revanche, dès que la taille des vues partielles devient insuffisante
 pour le réseau, \SPRAY devient plus efficace car il possède de plus grandes vues
-partielles. Puisque \SPRAY suit toujours la taille optimale de vue partielle, il
-passe mieux à l'échelle en terme de taille du réseau.
+partielles. Puisque \SPRAY suit toujours la taille optimale de la vue partielle,
+il passe mieux à l'échelle en terme de taille du réseau.
 
 \subsection{Distribution des arcs entrants}
 \label{net:subsec:inview}
@@ -191,7 +192,7 @@ passe mieux à l'échelle en terme de taille du réseau.
   \centering
   \includegraphics[width=.8\textwidth]{img/spray/histo.eps}
   \caption[Distribution du nombre d'arcs entrants]{\label{net:fig:inview}
-    Distribution du nombre d'arcs entrants à chaque nœud dans \CYCLON et
+    Distribution du nombre d'arcs entrants à chaque nœud dans \CYCLON et dans
     \SPRAY. L'axe des ordonnées montre la proportion de nœuds ayant une vue
     entrante de la taille correspondante sur l'axe des abscisses. Les figures du
     haut et du bas sont respectivement dédiées aux exécutions concernant \CYCLON
@@ -228,8 +229,8 @@ compris entre 12 et 14 voisins inclus. Entre autre, cela signifie que la charge
 est équilibrée parmi les nœuds. Puisque chaque nœud est aussi important que son
 voisin en terme de connexité, le réseau est robuste aux défaillances.
 
-\paragraph{Explication :} Une fois configuré, \CYCLON doit gérer n'importe
-quelle taille de réseau avec une vue partielle dont la taille est
+\paragraph{Explication :} Une fois configuré, \CYCLON doit pouvoir gérer
+n'importe quelle taille de réseau avec une vue partielle dont la taille est
 constante. Proportionnellement, le nombre de fois qu'un nœud est référencé dans
 les vues partielles ne change pas comparé à la taille réseau. En effet, le
 nombre d'arcs apportés par un nœud lorsqu'il se connecte au réseau constitue
@@ -270,13 +271,14 @@ communiquer.
     réseau au cycles $60$ and $70$. Au plus haut, le réseau comprend 1k nœuds.}
 \end{figure*}
 
-Un réseau est dynamique lorsque des nœuds peuvent le rejoindre et le quitter --
-ce qui compose la plupart des cas en pratique. Le protocole d'échantillonnage
-doit être capable de gérer efficacement de tels changements. La variance d'un
-ensemble de valeurs permet de quantifier les différences qu'il existe entre les
-valeurs. Appliquée aux tailles de vues partielles, cette mesure permet
-d'observer l'évolution du système supposé convergeant. Une variance de 0
-signifie que toutes les valeurs de l'ensemble sont identiques.
+Un réseau est dynamique lorsque des nœuds peuvent le rejoindre et le quitter.
+% -- ce qui compose la plupart des cas en pratique.
+Le protocole d'échantillonnage doit être capable de gérer efficacement de tels
+changements. La variance d'un ensemble de valeurs permet de quantifier les
+différences qui existent entre les valeurs. Appliquée aux tailles de vues
+partielles, cette mesure permet d'observer l'évolution du système supposé
+convergeant. Une variance de 0 signifie que toutes les valeurs de l'ensemble
+sont identiques.
 
 \paragraph{Objectif :} Montrer l'évolution logarithmique du nombre d'arcs des
 vues partielles dans un réseau dont les nœuds entrent et sortent du réseau au
@@ -301,8 +303,8 @@ celui-ci à 1k nœuds. Les mesures concernent
 
 \paragraph{Résultat :} La figure~\ref{net:fig:churn} montre les résultats de
 cette expérimentation. La partie haute de la figure~\ref{net:fig:churnA} montre
-le nombre d'arcs créés dans le réseau sur une échelle $\times 10^3$ tandis que
-la partie basse de la figure montre la variance de taille des vues partielles de
+le nombre d'arcs créés dans le réseau sur une échell $\times 10^3$ tandis que la
+partie basse de la figure montre la variance de la taille des vues partielles de
 \SPRAY. Dans le cas des deux protocoles d'échantillonnage, nous observons qu'à
 chaque groupe rejoignant le réseau, le nombre d'arcs augmente. Toutefois, la
 surestimation de \CYCLON place son nombre d'arcs bien au dessus de \SPRAY (entre
@@ -324,15 +326,15 @@ taille du réseau, le nombre d'arcs augmente lorsque des membres s'ajoutent au
 réseau. Les pics de variance correspondent à la partie du protocole où les nœuds
 rejoignent le réseau. Les différences de hauteur des pics proviennent du fait
 que les nouveaux arrivants commencent avec une petite vue partielle. Les nœuds
-étant présents avant que le nouveau groupe rejoigne le réseau ont eu quelques
-cycles d'échanges afin d'équilibrer leur vues. Par conséquent, le poids des
+étant présents avant que le nouveau groupe ne rejoigne le réseau ont eu quelques
+cycles d'échange afin d'équilibrer leur vue. Par conséquent, le poids des
 nouveaux arrivants est proportionnellement plus faible. Le départ des 500 nœuds
 au cycle 40 ne perturbe pas la variance car ils sont choisis
-aléatoirement. Ainsi, aucun nœud ne souffre particulièrement des départs comparé
-aux autres nœuds. Toutefois, nous observons une très faible décroissance du
-nombre d'arcs. En effet, \CYCLON et \SPRAY utilisent tout deux un âge relatif à
-l'insertion d'un arc dans sa vue partielle. À chaque mélange, le plus vieil arc
-est examiné. S'il est obsolète, l'arc est retiré. Par conséquent, ce mécanisme
+aléatoirement. Ainsi, aucun nœud ne souffre particulièrement des départs par
+rapport aux autres nœuds. Toutefois, nous observons une très faible décroissance
+du nombre d'arcs. En effet, \CYCLON et \SPRAY utilisent tout deux un âge relatif
+à l'insertion d'un arc dans sa vue partielle. À chaque mélange, le plus vieil
+arc est examiné. S'il est obsolète, il est retiré. Par conséquent, ce mécanisme
 de détection prend plusieurs cycles à détecter les départs et défaillances. Plus
 la vue partielle est petite, plus le processus est rapide ce qui fait de \SPRAY
 un processus plus réactif vis-à-vis des départs/défaillances.

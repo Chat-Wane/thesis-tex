@@ -1,16 +1,16 @@
 
-\section{Cas d'utilisation : la dissémination de messages}
+\section{Cas d'utilisation : la dissémination de message}
 \label{net:sec:usecase}
 
-La diffusion de messages d'un nœud à tous les autres est une fonctionnalité
+La diffusion de message d'un nœud à tous les autres est une fonctionnalité
 courante des réseaux (\emph{broadcast}). La propagation épidémique
 (\emph{gossip})~\cite{birman1999bimodal} constitue un moyen efficace de la
 mettre en place. Sa dénomination provient de son fonctionnement : un nœud
 choisit un sous-ensemble des membres du réseau et les ``contamine'' en leur
 envoyant le message; les nœuds ``infectés'' en font de même; un nœud ayant déjà
 envoyé le message ne le renvoie pas. Plus la taille du sous-ensemble choisi est
-élevée, plus la probabilité selon laquelle le message parvient à tous les
-membres du réseau augmente~\cite{erdos1959random}.
+élevée, plus la probabilité que le message parvienne à tous les membres du réseau
+augmente~\cite{erdos1959random}.
 
 \begin{algorithm}
   \input{input/network/algobroadcast.tex}
@@ -25,25 +25,26 @@ désigne le nombre de voisins auxquels le message va être envoyé. La fonction
 \textsc{getPeers} renvoie autant de nœuds distincts. Dans le cadre d'approches
 fournissant une vue partielle de taille constante, cette variable
 d'épanouissement est elle aussi constante, et configurée à l'avance. Pour que
-les chemins employés lors de la dissémination soient eux aussi aléatoires malgré
-la fréquence beaucoup plus faible des échanges du protocole d'échantillonnage,
-la taille de la vue est nettement surestimée~\cite{frey2009heterogeneous}. Par
-exemple, une vue partielle contient 30 arcs, mais seulement 6 sont employés à
-chaque dissémination. Dans le cadre de \SPRAY, nous augmentons les tailles des
-vues partielles fournies : lors de l'entrée dans le réseau, un nœud n'ajoute
-plus qu'une seule référence au contact mais $c$ doublons; les vues partielles
-tendent vers $c\cdot\ln(|\mathcal{N}|)$~\cite{ganesh2003peer}; un nœud détectant
-un départ ou une panne ajuste la probabilité de supprimer un arc à
-$c \div (|P|+occ)$. La variable d'épanouissement est configurée comme étant une
-fraction de la vue partielle. Ainsi l'épanouissement peut s'ajuster
-automatiquement pour suivre une progression logarithmique :
-$\ln(|\mathcal{N}|)+x$, où $x$ est un entier positif.
+les chemins empruntés lors de la dissémination soient eux aussi aléatoires
+malgré la fréquence beaucoup plus faible des échanges du protocole
+d'échantillonnage, la taille de la vue est nettement
+surestimée~\cite{frey2009heterogeneous}. Par exemple, une vue partielle contient
+30 arcs, mais seulement 6 sont utilisés à chaque dissémination. Dans le cadre de
+\SPRAY, nous augmentons les tailles des vues partielles fournies : lors de
+l'entrée dans le réseau, un nœud n'ajoute plus qu'une seule référence au contact
+mais $c$ doublons; les vues partielles tendent vers
+$c\cdot\ln(|\mathcal{N}|)$~\cite{ganesh2003peer}; un nœud détectant un départ ou
+une panne ajuste la probabilité de supprimer un arc à $c \div (|P|+occ)$. La
+variable d'épanouissement est configurée comme étant une fraction de la vue
+partielle. Ainsi l'épanouissement peut s'ajuster automatiquement pour suivre une
+progression logarithmique : $\ln(|\mathcal{N}|)+x$, où $x$ est un entier
+positif.
 
 La suite met en évidence l'avantage apporté par une variable d'épanouissement
 s'ajustant à la taille du réseau. En particulier, nous mesurerons le taux de
 réception totale des messages par les membres du réseau. Si au moins un membre
-ne reçoit pas le message, alors la réception totale à échouée. Le taux mesuré
-est le nombre de messages ayant été reçus par tout les membres sur le nombre de
+ne reçoit pas le message, alors la réception totale a échoué. Le taux mesuré est
+le nombre de messages ayant été reçus par tous les membres sur le nombre de
 messages ayant été envoyés.
 
 \paragraph{Objectif :} Montrer les avantages apportés au mécanisme de
@@ -80,20 +81,19 @@ messages avec \CYCLON souffre d'une constante décroissance. De moins en moins d
 messages parviennent à l'ensemble des nœuds lorsque le réseau s'agrandit. La
 configuration dont la variable d'épanouissement est la plus élevée fournie de
 meilleurs résultats. En revanche, le taux de réception des messages de \SPRAY
-reste stable bien que nous puissions observer la présence de petits sauts dans
-les valeurs mesurées. Un épanouissement initialisé à $\ln(|\mathcal{N}|)+1$
-conduit à un taux aux environs de 90\%. Un épanouissement initialisé à
-$\ln(|\mathcal{N}|)+3$ conduit à un taux proche de 100\%. Globalement, le
-mécanisme de dissémination épidémique présenté profite bien de la nature
-adaptative de \SPRAY. Cela lui permet de s'ajuster aux besoins d'un réseau dont
-la taille fluctue au cours du temps.
+reste stable malgré la présence de petits sauts dans les valeurs mesurées. Un
+épanouissement initialisé à $\ln(|\mathcal{N}|)+1$ conduit à un taux aux
+environs de 90\%. Un épanouissement initialisé à $\ln(|\mathcal{N}|)+3$ conduit
+à un taux proche de 100\%. Globalement, le mécanisme de dissémination épidémique
+présenté profite bien de la nature adaptative de \SPRAY. Cela lui permet de
+s'ajuster aux besoins d'un réseau dont la taille fluctue au cours du temps.
 
 \paragraph{Explication :} Le seuil précis de connexité d'un graphe aléatoire est
 $\Theta(|\mathcal{N}|\ln(|\mathcal{N}|))$ arcs. En ce qui concerne la
 dissémination de messages, avec des vues partielles suffisamment grandes et
 peuplées d'arcs vers des nœuds suffisamment aléatoires, un épanouissement fixé à
 $\ln(|\mathcal{N}|)$ conduit à un taux de réception aux environs de 50\%. À ce
-stade, incrémenter cette variable augmente drastiquement le taux de
+stade, incrémenter cette variable augmente grandement le taux de
 réception. Cependant, la contribution de chaque incrémentation diminue
 progressivement par rapport à l'incrémentation précédente. Le mécanisme de
 dissémination construit au dessus de \CYCLON possède un épanouissement constant,
@@ -103,7 +103,7 @@ revanche, une fois cette taille dépassée, le taux de réception chute très
 rapidement. \SPRAY donne la possibilité au mécanisme de dissémination d'ajuster
 sa variable d'épanouissement à la taille du réseau. Ainsi, le taux de réception
 des messages reste stable, même lorsque le réseau s'agrandit. Les petits sauts
-mesurées sont dûs au fait que les valeurs manipulées localement par chaque nœud
+mesurés sont dus au fait que les valeurs manipulées localement par chaque nœud
 sont des entiers. Le bond correspond donc à une valeur arrondie augmentant
 suffisamment pour être incrémentée.
 

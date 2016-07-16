@@ -28,17 +28,17 @@ aléatoire de pairs~\cite{jelasity2007gossip} dont l'objectif est de fournir à
 chaque machine une vue partielle peuplée d'adresses logiques réparties selon une
 loi uniforme. La topologie en résultant est proche de celle des graphes
 aléatoires~\cite{erdos1959random}. Ces réseaux possèdent d'intéressantes
-propriétés tels que la tolérance aux pannes ou un faible diamètre. Cette
-première garantit que lorsqu'un nœud disparaît soudainement le graphe reste
-connecté avec une forte probabilité, la seconde garantie que les messages se
-propagent rapidement à tous les membres du réseau.
+propriétés tels que la tolérance aux pannes ou un faible diamètre. La première
+garantit que lorsqu'un nœud disparaît soudainement le graphe reste connecté avec
+une forte probabilité, la seconde garantit que les messages se propagent
+rapidement aux membres du réseau.
 
 
 \noindent Deux familles d'approches existent quant à la taille des vues partielles :
 \begin{inparaenum}[(i)]
-\item la famille d'approches dont la taille est fixée lors de la
-  configuration% Ainsi la taille des vues partielles ne change pas au cours du
-%  temps, même si la taille du réseau est susceptible de fluctuer
+\item la famille d'approches dont la taille est fixée à la configuration
+  % Ainsi la taille des vues partielles ne change pas au cours du
+  % temps, même si la taille du réseau est susceptible de fluctuer
   (cf. §\ref{net:subsec:fixed});
 \item la famille d'approches dont les nœuds, lorsqu'ils rejoignent le réseau,
   contribuent à hauteur du logarithme de la taille du réseau
@@ -49,19 +49,19 @@ propagent rapidement à tous les membres du réseau.
 \label{net:subsec:fixed}
 
 Les protocoles d'échantillonnage aléatoire de pairs peuplant des vues dont la
-taille est constante possèdent un socle commun à savoir l'échanges périodiques
+taille est constante possèdent un socle commun à savoir l'échange périodique
 de voisinages.
 
-\paragraph{\CYCLON~\cite{voulgaris2005cyclon} :} est un protocole où chaque nœud
-possède une vue partielle dont chaque arc est associé à un âge. Régulièrement,
-les nœuds initient un mélange (\emph{shuffling}) avec leur voisin le plus
-âgé. Si la communication est possible, le processus est amorcé et l'âge de tous
-les voisins est incrémenté, sinon l'adresse est supprimée. Cela permet de
-supprimer les nœuds considérés comme partis.
+\paragraph{\CYCLON~\cite{voulgaris2005cyclon}.} \CYCLON est un protocole où
+chaque nœud possède une vue partielle dont chaque arc est associé à un
+âge. Régulièrement, les nœuds initient un mélange (\emph{shuffling}) avec leur
+voisin le plus âgé. Si la communication est possible, le processus est amorcé et
+l'âge de tous les voisins est incrémenté, sinon l'adresse est supprimée. Cela
+permet de supprimer les nœuds considérés comme partis.
 
-\noindent Lors de ce mélange, le nœud envoie un nombre prédéfinit de ses arcs au
-nœud choisit, en prenant soin de remplacer l'arc vers son homologue par la
-sienne propre. Les adresses sont choisies aléatoirement. À la réception, son
+\noindent Lors de ce mélange, le nœud envoie un nombre prédéfini de ses arcs au
+nœud choisi, en prenant soin de remplacer l'arc vers son homologue par un arc
+vers lui-même. Les adresses sont choisies aléatoirement. À la réception, son
 vis-à-vis choisit un nombre d'arcs équivalent et les lui envoie. Les deux nœuds
 intègrent alors l'ensemble qu'ils ont reçu. Lorsque l'ensemble obtenu est trop
 grand pour la taille de vue partielle prédéfinie, des arcs sont rejetés en
@@ -87,28 +87,28 @@ initié par le nœud $n_1$. Dans cet exemple, les vues partielles sont configur�
 pour accueillir 4 arcs et en échanger 2 pendant les mélanges. La
 figure~\ref{net:fig:cyclonexampleA} montre que $n_1$ choisit son plus vieux
 voisin afin d'initier l'échange, à savoir $n_2$. Il incorpore dans l'échange sa
-propre identité ainsi que celle d'un arc connu aléatoirement. Le nœud $n_2$
+propre identité ainsi que celle d'un arc choisi aléatoirement. Le nœud $n_2$
 reçoit la demande de mélange et choisit 2 nœuds aléatoirement, ici $n_6$ et
 $n_7$ qu'il envoie à son tour. La figure~\ref{net:fig:cyclonexampleB} montre que
-les nœuds participants au mélange ont supprimé les arcs qu'ils ont envoyé et
-ajouté ceux nouvellement reçu. En particulier, l'inversion de l'arc ayant permis
+les nœuds participant au mélange ont supprimé les arcs qu'ils ont envoyé et
+ajouté ceux nouvellement reçus. En particulier, l'inversion de l'arc ayant permis
 le mélange garantit que le graphe reste connexe.
 
-\paragraph{Newscast~\cite{tolgyeski2009adaptive} :} est un protocole où les vues
-partielles associent à chaque arc une estampille
+\paragraph{Newscast~\cite{tolgyeski2009adaptive}.} Newscast est un protocole où
+les vues partielles associent à chaque arc une estampille
 (\emph{timestamp}). Les nœuds de Newscast effectuent un mélange
-périodiquement. Pour cela, ils choisissent l'un de leurs voisins aléatoirement et
+périodiquement. Pour cela, ils choisissent un de leurs voisins aléatoirement et
 envoient la totalité de leur vue partielle à laquelle est ajoutée leur propre
 identité associée à une estampille à jour. Lors de la réception, leur homologue
-en fait de même. Tout deux fusionnent leur table de voisinage de telle sorte que
-seules les entrées les plus récentes selon l'estampille sont conservées.
+en fait de même. Tout deux fusionnent leurs tables de voisinage de telle sorte
+que seules les entrées les plus récentes selon l'estampille sont conservées.
 
 \noindent Un nœud qui quitte le réseau n'effectue plus ce mélange périodique et
 ainsi n'annonce plus sa présence au reste du réseau. Petit à petit, les vues
 partielles possédant un arc pointant vers ce nœud s'en débarrassent car l'arc
 est devenu obsolète en comparaison des arcs nouvellement reçus.
 
-\noindent Les pertes de messages dues au manque de fiabilité des communications
+\noindent Les pertes de message dues au manque de fiabilité des communications
 mettent en danger la distribution des arcs. Par exemple, si un message sur deux
 est perdu lorsqu'un certain nœud tente de communiquer, il perd autant
 d'occasions de s'annoncer au réseau. Par conséquent, il encourt le risque d'être
@@ -133,7 +133,7 @@ ajustée.
 
 \noindent La figure~\ref{net:fig:newscastexample} montre un exemple de mélange
 avec le protocole Newscast. La taille des vues partielles est fixée à 4
-entrées. Le nœud $n_1$ initie le mélange avec un voisin choisit aléatoirement :
+entrées. Le nœud $n_1$ initie le mélange avec un voisin choisi aléatoirement :
 $n_2$. Il envoie l'intégralité de sa vue à laquelle il s'ajoute avec
 l'estampille actuelle $13:18$. Le nœud $n_2$ le reçoit et en fait de même. Les
 deux nœuds $n_1$ et $n_2$ conservent les quatre arcs les plus récents qu'ils
@@ -144,11 +144,11 @@ ni par $n_2$. Toutefois, il ne s'agit là que de la représentation locale au
 mélange. Globalement, la topologie résultante reste proche de celle des graphes
 aléatoires.
 
-\paragraph{Lpbcast~\cite{eugster2003lightweight} :} est le diminutif de
+\paragraph{Lpbcast~\cite{eugster2003lightweight}.} Lpbcast est le diminutif de
 \emph{lightweight probabilistic broadcast}. C'est un protocole dont les vues
-partielles ne comprennent que des arcs sans metadonnées additionnelles.  Les
+partielles ne comprennent que des arcs sans métadonnées additionnelles.  Les
 vues sont rafraîchies lorsqu'un nœud diffuse un message au réseau. Chaque
-message comporte un ensemble borné d'identités de nœuds ayant quitté le réseau,
+message comporte un ensemble borné d'identités de nœuds ayant quitté le réseau
 et un ensemble borné d'identités de nœuds échantillonnés au cours du cheminement
 du message. Si aucun message n'a été reçu ni envoyé dans un certain intervalle
 de temps, une diffusion est automatiquement générée afin d'activer le mécanisme
@@ -158,12 +158,12 @@ de mélange.
 partielle des nouveaux éléments présents dans le message avant de la réajuster à
 la taille maximale autorisée en supprimant aléatoirement des arcs.
 
-\paragraph{HyParView~\cite{leitao2007dependable} :} est un protocole possédant
-deux vues partielles. La première est active et est utilisée lors de l'émission
-de messages au réseau. La seconde est passive et sert à remplacer les arcs
-obsolètes de la vue active, e.g., lors d'une défaillance ou d'un départ
+\paragraph{HyParView~\cite{leitao2007dependable}.} HyParView est un protocole
+possédant deux vues partielles. La première est active et est utilisée lors de
+l'émission de messages au réseau. La seconde est passive et sert à remplacer les
+arcs obsolètes de la vue active, e.g., lors d'une défaillance ou d'un départ
 volontaire.  La vue active est considérablement plus petite que la vue passive
-et les arcs compris dans cette première sont vérifiés à chaque message émit.
+et les arcs compris dans cette première sont vérifiés à chaque message émis.
 
 \noindent Lors d'un mélange, les arcs contenus dans les deux vues sont sujets à
 échange dans le but de supprimer les nœuds défaillants de toutes les vues
@@ -188,12 +188,12 @@ la taille du réseau.
 La famille de protocoles d'échantillonnage aléatoire de pairs peuplant des vues
 dont la taille n'est pas définie au préalable a pour seul représentant :
 
-\paragraph{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer} :} est l'acronyme de
-\emph{SCAlable Membership Protocol}. Il s'agit d'un protocole d'échantillonnage
-associant une réaction à certains événements. En particulier, l'entrée dans le
-réseau doit permettre d'augmenter la taille moyenne des vues partielles. Cette
-augmentation est logarithmique. Le départ d'un nœud doit entraîner une
-équivalente diminution.
+\paragraph{\SCAMP~\cite{ganesh2001scamp, ganesh2003peer}.} \SCAMP est l'acronyme
+de \emph{SCAlable Membership Protocol}. Il s'agit d'un protocole
+d'échantillonnage associant une réaction à certains événements. En particulier,
+l'entrée dans le réseau doit permettre d'augmenter la taille moyenne des vues
+partielles. Cette augmentation est logarithmique. Le départ d'un nœud doit
+entraîner une équivalente diminution.
 
 \noindent Les pairs utilisant \SCAMP maintiennent deux vues partielles
 correspondants aux arcs entrant et aux arcs sortant.
@@ -201,12 +201,12 @@ correspondants aux arcs entrant et aux arcs sortant.
 \noindent Lorsque un nœud rejoint le réseau, il contacte un membre qu'il ajoute
 directement à sa vue partielle. Ce contact annonce ensuite le nouveau venu au
 réseau. Pour ce faire, il crée autant de messages d'annonce qu'il possède de
-voisins et les dissémine. Chaque nœud recevant ce type de messages est libre
+voisins et les dissémine. Chaque nœud recevant ce type de message est libre
 d'accepter l'annonce en ajoutant alors l'identité du nouveau venu à sa vue
 partielle, ou la refuser, auquel cas il réexpédie le message à l'un de ces
 voisins. Afin de répartir équitablement les annonces, chaque nœud $n_i$ a une
 probabilité inversement proportionnelle à la taille de sa vue partielle
-d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seules permet
+d'accepter l'annonce : $1/(|P_i|+1)$. Cette répartition des arcs seuls permet
 de créer une topologie proche de celle des graphes aléatoires. Cependant, la vue
 partielle du nouveau nœud est faiblement peuplée au contraire des nœuds plus
 vieux. Cela met en danger la robustesse du réseau face aux défaillances.
@@ -248,7 +248,7 @@ servir d'intermédiaire à la connexion de tous les voisins de sa vue partielle
 entrante (sauf un) vers autant de voisins appartenant à sa vue partielle
 sortante. Ainsi, le nombre d'arcs supprimés correspond en moyenne à celui
 injecté à l'entrée d'un nœud dans le réseau. Ce mécanisme améliore
-considérablement le maintient de la connexité du réseau mais ne représente pas
+considérablement le maintien de la connexité du réseau mais ne représente pas
 une solution fiable pour autant. En effet, certains nœuds peuvent se trouver
 sans voisins dans l'une de leurs vues partielles.
   
@@ -284,12 +284,12 @@ taille du réseau auquel ils appartiennent. Malheureusement, cette approche fait
 face au problème suivant :
 
 \paragraph{Propagation des arcs.} Les annonces sont systématiquement propagées à
-plusieurs voisins de distance. Ce mécanisme participe à la construction rapide
+distance de plusieurs nœuds. Ce mécanisme participe à la construction rapide
 d'une topologie proche de celle des graphes aléatoires. Toutefois, entre
 l'origine et la destination de l'annonce, toute perte de message empêche
 l'établissement de la connexion. Cela s'avère particulièrement problématique
 lorsque l'établissement d'une connexion nécessite plusieurs allers-retours comme
-c'est le cas dans le contexte WebRTC~\cite{webrtc} : 
+c'est le cas dans le contexte WebRTC~\cite{webrtc} :
 % \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
 %  Communication}.
 cette technologie permet l'établissement de canaux de communication d'un
@@ -344,7 +344,7 @@ $n_2$ récupère l'offre et envoie ses propres offres en réponse au service de
 signalement. Enfin, $n_1$ récupère les offres de $n_2$ et établit une connexion
 bidirectionnelle avec $n_2$. De manière identique, $n_3$ établit une connexion
 avec $n_2$. Désormais, le nœud $n_1$ est capable d'établir une connexion avec
-$n_3$ sans passer par l'intermédiaire du serveur. Pour cela, il utilise $n_2$
+$n_3$ sans intermédiaire. Pour cela, il utilise $n_2$
 comme médiateur. Toutefois, si le nœud $n_2$ tombe en panne durant cette
 procédure, la connexion ne pourra s'effectuer correctement, et ce, même si une
 route alternative existe (puisque WebRTC ne gère pas le routage).
@@ -371,12 +371,12 @@ nœuds établissant une connexion.  Soit $P_f$ la probabilité qu'un élément (
 ou arc) tombe en panne ou quitte le réseau pendant l'établissement d'une
 connexion. Soit $P_E$ la probabilité que l'établissement d'une connexion soit
 achevé avec succès. Sans les allers-retours de WebRTC, la probabilité est :
-\begin{equation} P_{E}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela
-correspond à la probabilité que chaque élément sur le chemin de taille $k+1$
-reste disponible et fonctionnel pendant leur tour de dissémination. Avec WebRTC,
-au minimum un aller-retour est nécessaire entre les nœuds se connectant. Aucun
-des éléments constituant le chemin de dissémination ne doivent tomber en panne
-ou partir jusqu'au retour du message. Nous obtenons : 
+\begin{equation} P_{E}^{Scamp}=1-(1- P_f)^{k+1} \end{equation} Cela correspond à
+la probabilité que chaque élément sur le chemin de taille $k+1$ reste disponible
+et fonctionnel pendant leur tour de dissémination. Avec WebRTC, au minimum un
+aller-retour est nécessaire entre les nœuds se connectant. Aucun des éléments
+constituant le chemin de dissémination ne doit tomber en panne ou partir
+avant le retour du message. Nous obtenons :
 \begin{align} P_{E,\,webrtc}^{Scamp} &=1 - ((1-P_f)^{2(k+1)} (1-P_f)^{2k}
                                      \ldots (1-P_f)^2) \nonumber \\
                                    &=1-(1-P_f)^{k^2+3k+2}
@@ -386,8 +386,8 @@ et fonctionnels $2k +2$ unités de temps. Le second nœud et le second arc doive
 rester disponibles et fonctionnels $2k$ unités de temps etc. Avec WebRTC, la
 probabilité d'échec sur l'établissement d'une connexion a augmenté d'une classe
 de complexité.  Par conséquent, l'établissement d'une connexion suivant le
-protocole \SCAMP est particulièrement vulnérable aux défaillances. À terme, le
-réseau perd sa connexité.
+protocole \SCAMP est particulièrement vulnérable aux défaillances. Le réseau
+perd rapidement sa connexité.
 
 
 % \paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si

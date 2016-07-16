@@ -2,14 +2,14 @@
 
 \lettrine{L}es éditeurs collaboratifs répartis~\cite{ellis1991groupware} suivent
 le schéma de réplication optimiste~\cite{demers1987epidemic,
-  johnson1975maintenance, ladin1992providing, saito2005optimistic}. Pour que les
-répliques d'un document convergent vers un état équivalent, toute opération
-générée sur une réplique doit parvenir à toutes les autres répliques afin d'être
-intégrée. Un mécanisme de diffusion fiable, décentralisé et compatible avec le
-Web est requis.
+  johnson1975maintenance, ladin1992providing, saito2005optimistic}. Pour que
+toutes les répliques d'un document convergent vers un état équivalent, toute
+opération générée sur une réplique doit parvenir à toutes les autres répliques
+afin d'être intégrée. Un mécanisme de diffusion fiable, décentralisé et
+compatible avec le Web est requis.
 
 Grâce à WebRTC~\cite{webrtc}, il est dorénavant possible d'établir des
-connexions de navigateur à navigateur, et par conséquent d'implémenter un tel
+connexions de navigateur à navigateur et par conséquent d'implémenter un tel
 mécanisme de diffusion.
 % La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
 % l'établissement de connexions d'un navigateur à l'autre, rend l'implémentation
@@ -21,11 +21,11 @@ pairs. Toutefois, déployer ces protocoles avec WebRTC n'est pas sans poser de
 problèmes :
 \begin{enumerate}[(i)]
 \item WebRTC ne gère ni les adresses ni les routes ce qui rend l'établissement
-  de connexion plus coûteux et sujet aux défaillances que sur un réseau IP.
+  de connexion plus coûteux que sur un réseau IP et sujet aux défaillances.
 \item Les navigateurs Web fonctionnent sur des outils informatiques aux
   capacités hétérogènes tels que les ordinateurs de bureau, les téléphones
   portables ou les tablettes tactiles. Le protocole doit donc réduire sa
-  consommation de ressources au maximum.
+  consommation en ressources au maximum.
 \item Avec WebRTC, un simple lien HTTP %(\emph{HyperText Transfer Protocol})
   permet de partager l'accès à une session d'édition en temps réel. Cette
   simplicité d'accès expose l'éditeur aux explosions soudaines de popularité
@@ -33,7 +33,7 @@ problèmes :
   célébrité sur un événement particulier peut attirer des milliers de
   participants en très peu de temps. Cette soudaine popularité retombe lorsque
   l'événement s'achève.  Le mécanisme de diffusion et le protocole duquel il
-  dépend doivent s'adapter à ces montés fulgurantes en nombre de participants et
+  dépend doivent s'adapter à ces montées fulgurantes en nombre de participants et
   maintenir leur qualité de service avant de revenir à leur configuration
   initiale lorsque le pic de popularité retombe.
 \end{enumerate}
@@ -67,16 +67,16 @@ problèmes :
 
 
 Malheureusement, les protocoles d'échantillonnage actuels ne parviennent pas à
-répondre à l'ensemble de ces problématiques. D'un coté,
+répondre à l'ensemble de ces problématiques. D'un côté,
 \SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptation en
-fournissant une vue dont la taille est $\ln (N) + k$, avec $N$ étant le nombre
-de membres dans le réseau et $k$ une constante positive. Cependant, son
-processus d'établissement de connexion impliquant des propagations aléatoires
-systématiques n'est pas adapté au contexte WebRTC. D'une autre coté, les
+fournissant une vue dont la taille est $\ln (N) + k$, $N$ étant le nombre de
+membres dans le réseau et $k$ une constante positive. Cependant, son processus
+d'établissement de connexion impliquant des propagations aléatoires
+systématiques n'est pas adapté au contexte WebRTC. D'une autre côté, les
 protocoles plus utilisés tels que \CYCLON~\cite{voulgaris2005cyclon} fournissent
-une vue dont la taille est constante et paramétrée lors du
-déploiement. Cependant, le développeur est obligé de surdimensionner la taille
-des vues afin de gérer les possibles pics de popularités.
+une vue dont la taille est constante et paramétrée lors du déploiement. De ce
+fait, le développeur est obligé de surdimensionner la taille des vues afin de
+gérer les possibles pics de popularités.
 
 
 
@@ -110,23 +110,22 @@ des vues afin de gérer les possibles pics de popularités.
 
 Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
 voient leur vue partielle s'ajuster à la taille du réseau, sans l'usage d'aucune
-connaissance globale. Le cycle de vie d'un pair, divisé entre son entrée, sa
-vie, et son départ, est conçu pour conserver un nombre d'arcs dans le système
-consistant avec la taille de ce dernier. Les protocoles construits au dessus de
-\SPRAY peuvent bénéficier de cette ajustement automatique. Par exemple, le trafic
+connaissance globale. Le cycle de vie d'un pair, divisé entre son entrée, sa vie
+et son départ, est conçu pour conserver un nombre d'arcs dans le système en
+rapport avec la taille de ce dernier. Les protocoles construits au dessus de
+\SPRAY peuvent bénéficier de cet ajustement automatique. Ainsi, le trafic
 généré par un protocole de dissémination de messages peut évoluer selon les
 dimensions du réseau.
 
 Ce chapitre commence par présenter l'état de l'art des protocoles
 d'échantillonnage de pairs en les divisant en deux catégories : ceux dont les
 vues partielles sont fixes, et ceux dont les vues partielles s'adaptent au
-réseau. La section~\ref{net:sec:problem} définit le problème scientifique.
-La section~\ref{net:sec:spray} présente
-\SPRAY, un protocole appartenant à la seconde catégorie. La
-section~\ref{net:sec:properties} présente et compare les propriétés des
-protocoles d'échantillonnages. La section~\ref{net:sec:usecase} présente l'effet
-de \SPRAY sur un protocole de dissémination épidémique de messages. Le chapitre
-se conclut à la section~\ref{net:sec:conclusion}.
+réseau. La section~\ref{net:sec:problem} définit le problème scientifique.  La
+section~\ref{net:sec:spray} présente \SPRAY, un protocole appartenant à la
+seconde catégorie. La section~\ref{net:sec:properties} présente et compare les
+propriétés des protocoles d'échantillonnage. La section~\ref{net:sec:usecase}
+présente l'effet de \SPRAY sur un protocole de dissémination épidémique de
+messages. La section~\ref{net:sec:conclusion} conclut le chapitre.
 
 %%% Local Variables:
 %%% mode: latex
