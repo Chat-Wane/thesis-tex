@@ -224,12 +224,12 @@ résoudre est le suivant :
 
 En d'autres termes, les chemins alloués par la fonction d'allocation
 \textsc{allocPath}, principal élément de la fonction \textsc{insert}, doivent
-garantir des chemins dont la taille est sous-linéaire par rapport aux nombres
+garantir des chemins dont la taille est sous-linéaire par rapport au nombre
 d'insertions dans la séquence. Logoot et Treedoc échouent à fournir des
-identifiants bornés de cette façon dans les cas d'insertions de gauche à droite
-et de droite à gauche. Ces deux approchent nécessitent l'exécution périodique
-d'un mécanisme de relocalisation des identifiants afin de conserver de bonnes
-performances.
+identifiants de taille bornée de cette façon dans les cas d'insertions de gauche
+à droite et de droite à gauche. Ces deux approches nécessitent l'exécution
+périodique d'un mécanisme de relocalisation des identifiants afin de conserver
+de bonnes performances.
 
 La section suivante présente \LSEQ, une fonction d'allocation d'identifiants
 dont la taille croît de manière polylogarithmique par rapport au nombre

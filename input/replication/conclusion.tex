@@ -2,7 +2,7 @@
 \section{Conclusion}
 \label{repl:sec:conclusion}
 
-Dans ce chapitre, nous avons présenté \LSEQ, un fonction d'allocation
+Dans ce chapitre, nous avons présenté \LSEQ, une fonction d'allocation
 d'identifiants pour les structures de données répliquées sans conflits conçues
 pour les séquences et n'utilisant pas de pierres tombales.
 
@@ -12,25 +12,25 @@ onéreux. Ce pire cas est rendu difficile à atteindre grâce à l'utilisation d
 deux sous-fonctions d'allocation conçues pour les comportements d'édition
 monotone. Si malgré tout un utilisateur malintentionné tente d'obtenir de tels
 identifiants, la différence entre les identifiants attendus et les identifiants
-incriminés est telle qu'il est facile de confondre le coupable, et donc, de
+incriminés est telle qu'il est facile de confondre le coupable et donc de
 prendre des mesures à son encontre. La complexité des identifiants \LSEQ est
-bornée par un polylogarithme comparativement au nombre d'insertions effectuées
+bornée par un polylogarithme par rapport au nombre d'insertions effectuées
 sur la séquence. \LSEQ permet donc de construire un éditeur collaboratif pouvant
-gérer des documents de grandes taille rédigés par de nombreux participants.
+gérer des documents de grande taille rédigés par de nombreux participants.
 
-Tout comme les approches basées sur le maintient de répliques distantes, \LSEQ a
+Tout comme les approches basées sur le maintien de répliques distantes, \LSEQ a
 besoin d'un protocole de dissémination fiable de messages. En effet, les
 identifiants générés et supprimés par \LSEQ doivent parvenir à toutes les
 répliques pour que celles-ci convergent vers un état équivalent.  Le chapitre
 suivant présente un protocole construisant un réseau superposé : chaque serveur
 détenant une réplique connaît un ensemble de serveurs détenant également une
-telle réplique et peut communiquer avec ceux-ci. La spécificité du protocole
-présenté est qu'il maintient ces ensembles de telle sorte que le cardinal de
-chaque ensemble croît et décroît logarithmiquement par rapport à la taille du
-réseau, et ce, sans connaissance globale. Grâce à ce protocole, un éditeur
-collaboratif est en mesure de disséminer efficacement les changements effectués
-sur le document à tous les autres éditeurs collaboratifs impliqués dans la
-rédaction (cf. §\ref{editor:chap:crate}).
+réplique du même document et peut communiquer avec ceux-ci. La spécificité du
+protocole présenté est qu'il maintient ces ensembles de telle sorte que le
+cardinal de chaque ensemble croît et décroît logarithmiquement par rapport à la
+taille du réseau et ce sans connaissance globale. Grâce à ce protocole, un
+éditeur collaboratif est en mesure de disséminer efficacement les changements
+effectués sur le document à tous les autres éditeurs collaboratifs impliqués
+dans la rédaction (cf. §\ref{editor:chap:crate}).
 
 % Le chapitre~\ref{editor:chap:crate} décrit un éditeur de texte collaboratif
 % temps réel. Dans ce contexte, chaque identifiant généré doit être envoyé au

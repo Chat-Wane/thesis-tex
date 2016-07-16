@@ -20,9 +20,9 @@ sur l'allocation d'identifiants.
     \includegraphics[width=0.8\textwidth]{img/lseq/logoot.eps}
     \caption[Mesures de référence de la taille des chemins]
     {\label{repl:img:logoot} Arbre à arité constante avec stratégie d'allocation
-      adaptée à l'édition en fin. L'axe des abscisses montre la taille du
-      document sur une échelle logarithmique en base décimale. L'axe des
-      ordonnées montre la moyenne des tailles des chemins alloués.}
+      adaptée à l'édition de gauche à droite. L'axe des abscisses montre la
+      taille du document sur une échelle logarithmique en base décimale. L'axe
+      des ordonnées montre la taille moyenne des chemins alloués.}
   \end{center}
 \end{figure}
 
@@ -32,7 +32,7 @@ de montrer les améliorations et les dégradations de chaque composant.
 
 \paragraph{Description :} La simulation concerne trois documents artificiels
 construits respectivement par un comportement d'édition aléatoire, un
-comportement d'édition monotone de gauche à droite, et un comportement d'édition
+comportement d'édition monotone de gauche à droite et un comportement d'édition
 monotone de droite à gauche. La fonction d'allocation utilise un arbre d'arité
 maximale constante et une seule sous-fonction d'allocation conçue pour l'édition
 monotone de gauche à droite. Cette configuration correspond aux stratégies de
@@ -67,14 +67,15 @@ espace, i.e. la profondeur de l'arbre augmente. L'augmentation reste linéaire.
     \includegraphics[width=0.8\textwidth]{img/lseq/double.eps}
     \caption[Influence de l'arbre exponentiel sur la taille des chemins]
     {\label{repl:img:exponentialtree} Arbre exponentiel avec stratégie
-      d'allocation adaptée à l'édition en fin. L'axe des abscisses montre la
-      taille du document sur une échelle logarithmique en base décimale. L'axe
-      des ordonnées montre la moyenne des tailles des chemins alloués.}
+      d'allocation adaptée à l'édition de gauche à droite. L'axe des abscisses
+      montre la taille du document sur une échelle logarithmique en base
+      décimale. L'axe des ordonnées montre la taille moyenne des chemins
+      alloués.}
   \end{center}
 \end{figure}
 
 \paragraph{Objectif :} Montrer que l'utilisation d'un arbre exponentiel permet
-d'allouer des chemins dont la taille croît de manière polylogarithmique comparé
+d'allouer des chemins dont la taille croît de manière polylogarithmique comparée
 au nombre d'insertions. Montrer que lorsque le comportement d'édition va à
 l'encontre de celui prévu, les identifiants alloués ont une croissance
 quadratique.
@@ -84,7 +85,7 @@ insertions successives de caractères. Pour chacun, un comportement d'édition
 différent est simulé :
 \begin{inparaenum}[(i)]
 \item aléatoire,
-\item monotone de gauche à droite,
+\item monotone de gauche à droite et
 \item monotone de droite à gauche.
 \end{inparaenum}
 La fonction d'allocation est conçue pour l'édition de gauche à droite et utilise
@@ -125,23 +126,23 @@ chemins croît de manière quadratique.
     chemins] {\label{repl:img:suballocation} Arbre à arité constante et deux
       sous-stratégies d'allocation. L'axe des abscisses montre la taille du
       document sur une échelle logarithmique en base décimale. L'axe des
-      ordonnées montre la moyenne des tailles des chemins alloués.}
+      ordonnées montre la taille moyenne des chemins alloués.}
   \end{center}
 \end{figure}
 
 \paragraph{Objectif :} Montrer que deux sous-fonctions d'allocation conçues avec
 des objectifs antagonistes et assignées à chaque profondeur de l'arbre
 permettent de gèrer les comportements d'édition triviaux. Montrer que la
-progression des identifiants reste linéaire comparé à la taille du document.
+progression des identifiants reste linéaire comparée à la taille du document.
 
 \paragraph{Description :} La simulation concerne trois documents grossissant au
-rythme des opérations d'insertions effectuées respectivement de gauche à droite,
-de droite à gauche, et aléatoirement. La fonction d'allocation utilise un arbre
+rythme des opérations d'insertion effectuées respectivement de gauche à droite,
+de droite à gauche et aléatoirement. La fonction d'allocation utilise un arbre
 dont l'arité maximale est constante. De plus, chaque niveau se voit attribuer
 une sous-fonction d'allocation, i.e., les niveaux pairs avec une fonction conçue
-pour l'édition de gauche à droite, et les niveaux impairs avec une fonction
-adaptée à l'édition de droite à gauche. Nous mesurons la moyenne des chemins
-composant les identifiants à 100, 1k, 5k, 10k, 50k, 100k insertions.
+pour l'édition de gauche à droite et les niveaux impairs avec une fonction
+adaptée à l'édition de droite à gauche. Nous mesurons la moyenne de la taille
+des chemins composant les identifiants à 100, 1k, 5k, 10k, 50k, 100k insertions.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:suballocation} montre les
 résultats obtenus à la suite de ces simulations. Nous observons tout d'abord que
@@ -173,16 +174,16 @@ comportement d'édition courant.
     d'allocation] {\label{repl:img:lseq} Arbre exponentiel avec deux
       sous-stratégies d'allocation. L'axe des abscisses montre la taille du
       document sur une échelle logarithmique en base décimale. L'axe des
-      ordonnées montre la moyenne des tailles des chemins alloués.}
+      ordonnées montre la taille moyenne des chemins alloués.}
   \end{center}
 \end{figure}
 
 \paragraph{Objectif :} Montrer que l'utilisation combinée d'un arbre exponentiel
-et de sous-fonctions d'allocation permet de pallier les faiblesses respectives
-de ceux-ci et d'obtenir une stratégie d'allocation sous-linéaire comparativement
-du nombre d'insertions effectuées sur le document. 
+et de sous-fonctions d'allocation permet de pallier leurs faiblesses respectives
+et d'obtenir une stratégie d'allocation sous-linéaire par rapport au nombre
+d'insertions effectuées sur le document.
 
-\paragraph{Description :} Trois documents chacun édité de façon différente :
+\paragraph{Description :} Trois documents chacun édité d'une façon différente :
 l'auteur du premier possède un comportement d'édition aléatoire; l'auteur du
 second possède un comportement d'édition monotone de gauche à droite; l'auteur
 du troisième de droite à gauche. La fonction d'allocation utilise un arbre
@@ -195,15 +196,15 @@ niveau de l'arbre. Les mesures sont faites à 100, 1k, 5k, 10k, 50k, 100k, 500k,
 obtenus lors de cette expérimentation. Nous observons que la progression de la
 taille des identifiants lors du comportement d'édition aléatoire reste
 logarithmique. Lors des deux autres comportements d'édition monotone, la
-croissance des identifiants suit une progression polylogarithmique comparé au
-nombre d'insertions effectuées dans la séquences. Cette observation confirme
+croissance des identifiants suit une progression polylogarithmique comparée au
+nombre d'insertions effectuées dans la séquence. Cette observation confirme
 l'analyse en complexité spatiale des identifiants
 (cf. §\ref{repl:subsec:space}). Cependant, nous observons de petites
 différences entre les deux courbes résultant des comportements d'édition monotone.
 
 \paragraph{Explication :} Le comportement d'édition aléatoire conduit à un arbre
 exponentiel équilibré, d'où la croissance logarithmique des identifiants. Les
-autres cas d'édition sont très similaires car les sous-fonctions d'allocations
+autres cas d'édition sont très similaires car les sous-fonctions d'allocation
 ont la même probabilité d'apparaître. Les différences s'expliquent par les
 différents choix lors des exécutions. La progression sous-linéaire s'explique
 grâce à l'augmentation d'arité de l'arbre lorsqu'il gagne en profondeur, i.e.,
@@ -211,8 +212,8 @@ chaque nœud de l'arbre peut posséder jusqu'à deux fois plus de fils que son
 parent. Lorsque la sous-fonction d'allocation employée ne s'accorde pas avec le
 comportement d'édition, la profondeur de l'arbre est incrémentée
 rapidement. Lorsque finalement la bonne sous-fonction d'allocation est trouvée,
-celle-ci couvre les dépenses qu'il a fallu déployer pour la trouver, i.e., les
-pertes de niveaux dans l'arbre.
+celle-ci couvre les dépenses qu'il a fallu déployer pour la trouver, i.e., la
+perte de niveaux dans l'arbre.
 
 \subsection{Complexité spatiale}
 
@@ -220,14 +221,14 @@ pertes de niveaux dans l'arbre.
 
 \begin{figure*}
   \centering
-  \subfloat[Document Wikipédia principalement édité en fin]
+  \subfloat[Document Wikipédia principalement édité de gauche à droite]
   [\label{repl:img:motivationsA}Document Wikipédia de très grande
-  taille principalement édité en fin.]
+  taille principalement édité de gauche à droite.]
   {\includegraphics[width=0.8\textwidth]{img/lseq/poste.eps}}
   \hspace{10pt}
-  \subfloat[Document Wikipédia principalement édité au début]
+  \subfloat[Document Wikipédia principalement édité de droite à gauche]
   [\label{repl:img:motivationsB}Document Wikipédia de petite taille
-  principalement édité au début.]
+  principalement édité de droite à gauche.]
   {\includegraphics[width=0.8\textwidth]{img/lseq/templatetalk.eps}}
   \caption[Taille du chemin alloué pour chaque ligne dans Wikipédia]
   {\label{repl:img:motivations} Taille du chemin alloué pour chaque ligne du
@@ -237,10 +238,10 @@ pertes de niveaux dans l'arbre.
     binaire du chemin alloué.}
 \end{figure*}
 
-L'encyclopédie Wikipédia~\cite{wikipedia} répertorie des millions
-d'articles écrits collaborativement. Un utilisateur, peut lire un article, et
-s'il le souhaite, en modifier le contenu. Lorsque ses modifications sont
-achevées, il les soumet à Wikipédia. Deux issues possibles :
+L'encyclopédie Wikipédia~\cite{wikipedia} répertorie des millions d'articles
+écrits collaborativement. Un utilisateur peut lire un article et, s'il le
+souhaite, en modifier le contenu. Lorsque ses modifications sont achevées, il
+les soumet à Wikipédia. Deux issues possibles :
 \begin{inparaenum}[(i)]
 \item La contribution est acceptée et sera visible de tous ou
 \item la contribution est rejetée car un autre utilisateur a effectué une
@@ -250,10 +251,10 @@ achevées, il les soumet à Wikipédia. Deux issues possibles :
 \end{inparaenum}
 Wikipédia garde l'historique des modifications apportées à tous les articles
 depuis leur création. Nous sommes alors à même de rejouer les éditions --
-nommées révision -- dans l'ordre où elles ont été effectuées. Toutefois, toute
+nommées révisions -- dans l'ordre où elles ont été effectuées. Toutefois, toute
 trace de concurrence est effacée par le processus d'édition même. D'autre part,
-la granularité est fixée à la ligne. En cela, les simulations sur corpus
-Wikipédia diffèrent légèrement de la réalité.
+la granularité est fixée à la ligne et non au caractère. En cela, les
+simulations sur corpus Wikipédia diffèrent légèrement de la réalité.
 
 
 \paragraph{Objectif :} Montrer que ni Logoot ni Treedoc ne parviennent à fournir
@@ -266,10 +267,10 @@ a une arité de $2^1$ et est configuré pour utiliser sa méthode originelle peu
 adaptée à l'édition monotone -- son autre stratégie étant équivalente à la
 stratégie de Logoot. Les documents considérés sont des articles extraits de
 Wikipédia et rejoués sur 200 révisions. L'un des articles atteint jusqu'à 10k
-lignes principalement ajoutées en fin
-d'article\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
-article atteint seulement 200 lignes mais est principalement édité en
-tête\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
+lignes principalement ajoutées de gauche à
+droite\footnote{\scriptsize\url{https://fr.wikipedia.org/wiki/Liste_des_bureaux_de_poste_français_classés_par_oblitération_Petits_Chiffres}}. L'autre
+article atteint seulement 200 lignes mais est principalement édité de droite à
+gauche\footnote{\scriptsize\url{https://en.wikipedia.org/wiki/Template_talk:Did_you_know}}.
 
 \paragraph{Résultat :} Les figures~\ref{repl:img:motivationsA}
 et~\ref{repl:img:motivationsB} montrent la taille de l'identifiant associé à
@@ -277,12 +278,12 @@ chaque ligne. Nous observons que Treedoc possède des chemins qui augmentent tr�
 vite quel que soit le type d'édition. Lorsque le nombre d'insertions successives
 est très grand (cf. figure~\ref{repl:img:motivationsA}) les chemins atteignent
 des tailles très élevées avec une claire croissance linéaire. Dans ce cas,
-Logoot se comporte mieux. Bien que \LSEQ démarre avec une base plus faible
-présente des résultats équivalent à Logoot. En revanche, dans le cadre de
-l'édition en tête (cf. figure~\ref{repl:img:motivationsB}), Logoot alloue des
-chemins dont la taille augmente extrêmement rapidement. Treedoc également, bien
-que les valeurs mesurées soient plus faibles. Les identifiants alloués par
-\LSEQ semblent se stabiliser.
+Logoot se comporte mieux. Bien que \LSEQ démarre avec une base plus faible il
+présente des résultats équivalents à Logoot. En revanche, dans le cadre de
+l'édition de droite à gauche (cf. figure~\ref{repl:img:motivationsB}), Logoot
+alloue des chemins dont la taille augmente extrêmement rapidement. Treedoc se
+comporte de manière similaire bien que les valeurs mesurées soient plus
+faibles. Les identifiants alloués par \LSEQ se stabilisent.
 
 %% Pour retrouvrer de bonnes performances, l'exécution d'un protocole de
 %% relocalisation des chemins devient nécessaire.
@@ -293,12 +294,13 @@ insertions se succèdent, plus l'arbre est déséquilibré, plus la taille du ch
 augmente. Cependant, comme Treedoc alloue des chemins où chaque pas est binaire
 ($\mathcal{P}\in \mathbb{N}_{<2}.\mathbb{N}_{<2}\ldots\mathbb{N}_{<2}$), les
 chemins restent plus petits que ceux de Logoot dans le cadre du document édité
-en tête. D'un autre coté, Logoot a conçu sa stratégie pour l'édition en fin. Dès
-lors, si le comportement suit cette hypothèse, les identifiants grossissent par
-palier -- linéairement certes, mais lentement. \LSEQ ne favorise aucun
-comportement d'édition et adapte la taille de ses identifiants à la taille du
-document. Ainsi, les deux types de documents sont gérés : beaucoup d'insertions
-effectuées de gauche à droite; peu d'insertions effectuées de droite à gauche.
+de droite à gauche. D'un autre côté, Logoot a conçu sa stratégie pour l'édition
+de gauche à droite. Dès lors, si le comportement suit cette hypothèse, les
+identifiants grossissent par palier -- linéairement certes, mais
+lentement. \LSEQ ne favorise aucun comportement d'édition et adapte la taille de
+ses identifiants à la taille du document. Ainsi, les deux types de documents
+sont gérés : beaucoup d'insertions effectuées de gauche à droite; peu
+d'insertions effectuées de droite à gauche.
 
 
 \subsubsection{Documents synthétiques}
@@ -335,28 +337,30 @@ document édité à des positions aléatoires. La partie du bas montre les résu
 du document édité à la fin. Nous observons que l'édition à des positions
 aléatoires entraîne une génération de chemins dont la taille est logarithmique,
 que ce soit pour Logoot, \LSEQ ou Treedoc. Dans ce cas, Treedoc est meilleur que
-Logoot et \LSEQ. Nous observons aussi que l'édition en fin entraine une
-croissance extrêmement rapide pour les identifiants alloués par Treedoc (la
-courbe est superposée à l'axe des ordonnées). De son coté, Logoot alloue des
+Logoot et \LSEQ. Nous observons aussi que l'édition de gauche à droite entraine
+une croissance extrêmement rapide pour les identifiants alloués par Treedoc (la
+courbe est superposée à l'axe des ordonnées). De son côté, Logoot alloue des
 chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
 reste linéaire comparée au nombre d'insertions dans la séquence. À terme,
 l'exécution d'un protocole de relocalisation des chemins devient nécessaire pour
 retrouver de bonnes performances. En revanche, \LSEQ alloue des identifiants
-dont la croissance est sous-linéaire comparé au nombre d'insertions. À terme,
+dont la croissance est sous-linéaire comparée au nombre d'insertions. À terme,
 l'allocation de \LSEQ finit par surpasser celle de l'état de l'art.
 
-\paragraph{Explication :} Les fonctions d'allocations Logoot, \LSEQ et Treedoc
-utilisent une structure d'arbres pour allouer le chemin associé à chaque
+\paragraph{Explication :} Les fonctions d'allocation Logoot, \LSEQ et Treedoc
+utilisent une structure d'arbre pour allouer le chemin associé à chaque
 caractère. Dans le cadre de l'édition aléatoire, l'arbre reste équilibré au
 cours des insertions. Les branches les plus basses se remplissent au maximum de
 leur capacité. Par conséquent, les identifiants alloués par ces trois approches
 croissent logarithmiquement par rapport au nombre d'insertions. L'arité de
 l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot et \LSEQ,
-Treedoc propose de meilleurs identifiants. Dans le cadre de l'édition en fin,
-chaque nouvelle insertion dans Treedoc ajoute un bit au chemin généré. La
-croissance est linéaire comparée au nombre d'insertions dans la séquence et
-extrêmement rapide. La fonction d'allocation de Logoot est conçue pour gérer ce
-type d'édition. Chaque niveau de l'arbre possède une branche remplie
+Treedoc propose de meilleurs identifiants. Dans le cadre de l'édition de gauche
+à droite, chaque nouvelle insertion dans Treedoc ajoute un bit au chemin
+généré. La croissance est linéaire comparée au nombre d'insertions dans la
+séquence.
+% et extrêmement rapide.
+La fonction d'allocation de Logoot est conçue pour gérer ce type
+d'édition. Chaque niveau de l'arbre possède une branche remplie
 d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
 constant, d'où la croissance linéaire de la taille des chemins générés. Avec
 \LSEQ, l'arbre est exponentiel : chaque nœud de l'arbre possède une arité
@@ -393,7 +397,7 @@ opérations prises en compte sont la fonction \textsc{lookup}, la partie locale
 de l'insertion, la partie distante de l'insertion, et la partie distante de la
 suppression -- la partie locale de cette dernière ne comprend que la propagation
 de l'identifiant ciblé aux autres membres. Les mesures sont effectuées à
-plusieurs reprises sur deux types de documents. Tout d'abord, un document généré
+plusieurs reprises sur deux types de document. Tout d'abord, un document généré
 par un comportement d'édition aléatoire, i.e., l'arbre \LSEQ est
 équilibré. Ensuite, un document généré par un comportement d'édition monotone,
 i.e., une seule branche de l'arbre \LSEQ est remplie. 
@@ -401,22 +405,22 @@ i.e., une seule branche de l'arbre \LSEQ est remplie.
 %tendances plutôt qu'aux valeurs absolues. En effet, 
 Le langage JavaScript opère de nombreuses optimisations à la volée. Afin
 de montrer la contribution réelle de chacune des opérations, ces optimisations
-ont été limité au maximum. Les performances réelles des opérations sont donc
+ont été limitées au maximum. Les performances réelles des opérations sont donc
 nettement meilleures que celles présentes dans cette expérimentation.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:time} montre les résultats de
 cette expérimentation. Nous observons que les valeurs mesurées, dans le cadre
-d'un arbre remplies par des éditions aléatoires, ne croissent pratiquement pas,
-et ce, quelle que soit l'opération. D'un autre coté, lorsque l'insertion locale
+d'un arbre remplies par des éditions aléatoires, ne croissent pratiquement pas
+et ce quelle que soit l'opération. D'un autre côté, lorsque l'insertion locale
 après édition monotone reste stable, nous observons une croissance linéaire du
-temps d'exécution de la fonction \textsc{lookup}, et une plus faible évolution
+temps d'exécution de la fonction \textsc{lookup} et une plus faible évolution
 pour les parties distantes des opérations d'insertion et de suppression.
 
 \paragraph{Explication :} Après un comportement d'édition aléatoire, l'arbre de
 \LSEQ est équilibré. Par conséquent l'influence d'une opération se limite à un
 petit sous ensemble d'éléments composant le document. Par exemple, la fonction
 \textsc{lookup} n'a pas besoin d'explorer chaque élément de l'arbre. Elle rejette
-rapidement de nombreuses branches sans importances à chaque niveau de l'arbre
+rapidement de nombreuses branches sans importance à chaque niveau de l'arbre
 car l'indice recherché ne tombe pas dans leur intervalle. Toutefois, cette
 remarque n'est pas vraie en ce qui concerne un arbre rempli par un comportement
 d'édition monotone. En effet, dans ce cas, la plupart des éléments sont
@@ -447,29 +451,29 @@ identifiants alloués sont petits.
 
 \paragraph{Description :} Deux utilisateurs artificiels dont le comportement est
 monotone écrivent de gauche à droite un même document. Grâce à
-netem~\cite{netem}, une latence est ajoutée sur le transport des
-messages créant des opérations concurrentes. Les documents atteignent 10k
-caractères. Les mesures sur la taille moyenne des messages envoyés sont
-effectuées tout au long de l'expérimentation. La fonction d'allocation employée
-est celle de \LSEQ : un arbre exponentiel avec deux sous-fonctions
-d'allocations. 
+netem~\cite{netem}, une latence est ajoutée sur le transport des messages créant
+des opérations concurrentes. Les documents atteignent 10k caractères. Les
+mesures sur la taille moyenne des messages envoyés sont effectuées tout au long
+de l'expérimentation. La fonction d'allocation employée est celle de \LSEQ : un
+arbre exponentiel avec deux sous-fonctions d'allocation.
 
 \paragraph{Résultat :} La figure~\ref{repl:img:latency} montre les résultats de
-cette expérimentation. Comme attendu, plus la latence est élevée, plus
-la concurrence est élevée, plus les messages sont de petite taille. Les
+cette expérimentation. Comme attendu, plus la latence est élevée, plus la
+concurrence est élevée, plus les messages sont de petite taille. Les
 expérimentations sans concurrence présentent donc la borne supérieure des
 fonctions d'allocation. La figure~\ref{repl:img:latency} nous montre aussi, avec
-une plus fine granularité, la croissance polylogarithmique des messages qui
-confirme une seconde fois l'analyse en complexité spatiale des identifiants.
+une plus fine granularité, la croissance polylogarithmique de la taille des
+messages qui confirme une seconde fois l'analyse en complexité spatiale des
+identifiants.
 
 \paragraph{Explication :} Les insertions effectuées par les participants ciblent
 une même position dans le document. Toutefois, ils ne prennent connaissance de
-cela que quelques temps plus tard, lorsque le message correspondant leur est
+cela que quelque temps plus tard, lorsque le message correspondant leur est
 parvenu. Ainsi, les opérations sont réellement concurrentes. Les insertions
 étant effectuées en concurrence à la même position dans la séquence, les
 opérations partagent le même espace d'allocation. Les identifiants ont une
 chance d'obtenir le même chemin dans l'arbre. En moyenne, ils sont plus
-rapproché les uns des autres. Il est important de noter que les documents
+rapprochés les uns des autres. Il est important de noter que les documents
 résultant de ces expérimentations sont différents. En d'autres termes, la série
 de caractères composant le document est différente en fonction de la latence.
 
