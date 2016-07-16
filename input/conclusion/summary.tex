@@ -13,15 +13,15 @@ l'intervention de tiers et sans limites quant aux dimensions du système. Nos
 contributions s'étalent sur les trois points suivants :
 
 \paragraph{Structure de données répliquée.} La réplication optimiste permet
-d'améliorer l'accessiblité, la réactivité, et la tolérance aux pannes de la
+d'améliorer l'accessiblité, la réactivité et la tolérance aux pannes de la
 donnée partagée. Pour la séquence, l'état de l'art fait tout d'abord mention des
 approches à transformées opérationnelles. Cependant, ces approches se voient
 restreintes aux contextes avec peu de répliques et peu de latence. Plus
 récemment, les structures dont les opérations commutent ont fait leur
-apparition. Hélas, soit celles-ci croissent continuellement, même en cas de
+apparition. Hélas, soit l'espace nécéssité croît continuellement, même en cas de
 suppressions d'éléments; soit celles-ci utilisent des identifiants dont la
 taille croît linéairement. Ces approches requièrent toutes un mécanisme
-additionnel afin recouvrer de bonnes performances. Malheureusement, ces
+additionnel afin de recouvrer de bonnes performances. Malheureusement, ces
 mécanismes sont inutilisables à large échelle. Nous proposons \LSEQ, une
 stratégie d'allocation d'identifiants dont les identifiants croissent de manière
 polylogarithmique comparé au nombre d'insertions effectuées sur la séquence. De
@@ -62,18 +62,18 @@ dans un éditeur collaboratif temps réel décentralisé accessible dans les
 navigateurs Web.
 
 \paragraph{Éditeur décentralisé dans le navigateur.} Google Docs et Etherpad ont
-rendu l'accès à l'édition collaborative aisée pour des millions
+rendu l'accès à l'édition collaborative aisé pour des millions
 d'utilisateurs. Toutefois, la centralisation de ces services pose des problèmes
-de confidentialité, de passage à l'échelle, et de tolérance aux pannes. Nous
-proposons \CRATE, un éditeur collaboratif temps réel décentralisé tournant
-directement dans les navigateurs Web. Étant décentralisé, un document appartient
-seulement à ceux qui l'éditent, ce qui règle les problèmes de
-confidentialité. Utilisant \SPRAY et \LSEQ, \CRATE parvient à adapter le trafic
-généré à la session d'édition. Ce trafic croît logarithmiquement par rapport à
-la taille de la session d'édition. Ce trafic croît polylogarithmiquement par
-rapport au nombre d'insertions dans le document. Ce résultat est validé par des
-expérimentations impliquant jusqu'à 601 navigateurs écrivant un document
-artificiel de plusieurs millions de caractères.
+de confidentialité, de passage à l'échelle et de tolérance aux
+défaillances. Nous proposons \CRATE, un éditeur collaboratif temps réel
+décentralisé tournant directement dans les navigateurs Web. Étant décentralisé,
+un document appartient seulement à ceux qui l'éditent, ce qui règle les
+problèmes de confidentialité. Utilisant \SPRAY et \LSEQ, \CRATE parvient à
+adapter le trafic généré à la session d'édition. Ce trafic croît
+logarithmiquement par rapport à la taille de la session d'édition. Ce trafic
+croît polylogarithmiquement par rapport au nombre d'insertions dans le
+document. Ce résultat est validé par des expérimentations impliquant jusqu'à 601
+navigateurs écrivant un document artificiel de plusieurs millions de caractères.
 
 %%% Local Variables:
 %%% mode: latex

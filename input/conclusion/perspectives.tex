@@ -8,7 +8,7 @@ Tout d'abord, chacun des composants de notre éditeur collaboratif peut être
 amélioré ou étendu. Ensuite, l'éditeur lui-même offre des opportunités
 inédites. Par exemple, son intégration, non en opposition, mais en complément
 des approches actuellement centralisés. Enfin, l'architecture ouvre aussi la
-voie à un plus large champs d'applications décentralisées directement
+voie à un plus large champ d'applications décentralisées directement
 accessibles via les navigateurs Web.
 
 \noindent  Cette section fournit une liste de
@@ -23,7 +23,7 @@ membres de plusieurs réseaux. Le réseau obtenu doit hériter des propriétés 
 ses parents.  Lors de ce processus, nous supposons qu'au moins un des nœuds
 appartenant à l'un des réseau contacte l'autre réseau afin d'initier la
 fusion. Grâce à la connexion qui en résulte, les réseaux sont à même de
-communiquer, et donc de fusionner.
+communiquer et donc de fusionner.
 
 Les approches à taille fixe sont triviales à étendre : les mélanges périodiques
 suffisent à garantir un réseau connexe. Si toutefois les vues partielles sont
@@ -35,7 +35,8 @@ partielle est peuplée de $7$ références.
 \SPRAY est une approche dont les vues partielles évoluent automatiquement en
 réaction aux entrées et sorties du réseau. En particulier, les vues partielles
 suivent une progression logarithmiques comparée à la taille du réseau. La fusion
-de réseaux \SPRAY doit résulter en un réseau \SPRAY garantissant de même.
+de réseaux \SPRAY doit résulter en un réseau \SPRAY garantissant cette
+progression.
 
 La première solution qui vient à l'esprit est la suivante : chacun des nœuds du
 premier réseau utilise le contact afin de rejoindre le second réseau, comme un
@@ -74,13 +75,13 @@ nombre d'arcs requis (à droite)?
 \subsection{Table de hachage répartie}
 
 Une table de hachage répartie (\emph{DHT}\footnote{\emph{Distributed Hash
-    Table}}) est un système permettant de retrouver une ressource rapidement
+    Table.}}) est un système permettant de retrouver une ressource rapidement
 dans un réseau superposé de nœuds. La ressource recherchée possède une clé
 permettant l'exploration efficace du réseau.
 
 Parmi les représentants des DHT on trouve Chord~\cite{stoica2001chord},
 CAN~\cite{ratnasamy2001scalable}, Pastry~\cite{rowstron2001pastry},
-Tapestry~\cite{zhao2006tapestry}, Kademlia~\cite{maymounkov2002kademlia}, ou
+Tapestry~\cite{zhao2006tapestry}, Kademlia~\cite{maymounkov2002kademlia} ou
 Kelips~\cite{gupta2003kelips}.  Ces approches font souvent état d'une vue
 partielle logarithmique.  Toutefois, tout comme pour les protocoles
 d'échantillonnage aléatoire de pairs dont la vue partielle est fixe, tel que
@@ -100,7 +101,7 @@ présentent un coût additionnel~\cite{ghinita2006adaptive}.
 \end{figure}
 
 Construire une DHT au dessus d'un protocole d'échantillonnage aléatoire de pairs
-apporte le double avantage d'une convergence rapide vers une topologie optimale,
+apporte le double avantage d'une convergence rapide vers une topologie optimale
 et d'une résilience aux fréquentes entrées et sorties de
 nœuds~\cite{krasikova2016distributed, montresor2005chord,
   voulgaris2013vicinity}.  Comme le montre la
@@ -110,7 +111,7 @@ de DHT -- ici Chord -- afin qu'ils s'accordent avec la vue partielle fournie par
 charge de la DHT possède lui aussi 3 voisins. Toutefois, ces derniers sont
 choisis selon la distance à laquelle ils se trouvent. Un premier voisin serait
 celui qui est le plus proche, le second voisin celui qui se trouve à la moitié
-de la distance maximum, et le troisième se trouverait à un tiers de la distance
+de la distance maximum et le troisième se trouverait à un tiers de la distance
 maximum. Un tel système permet de diriger les messages ciblant un nœud
 particulier très efficacement : de l'ordre de $\log |\mathcal{N}|$ sauts en
 moyenne, où $\mathcal{N}$ est l'ensemble des membres appartenant au réseau.
@@ -189,7 +190,7 @@ De nos jours, les navigateurs Web sont plus que de simples visualisateurs de
 contenu, ils sont presque devenus des systèmes d'exploitation. Ils comptent
 parmi les programmes les plus distribués de par le monde. Ils apparaissent dans
 un large éventail d'appareils aux diverses capacités tels que les mobiles, les
-tablettes, ou les ordinateurs de bureaux.
+tablettes ou les ordinateurs de bureaux.
 
 Développer une application Web, c'est développer pour une large audience
 hétérogène.  L'éditeur collaboratif temps réel \CRATE prouve qu'il est possible
