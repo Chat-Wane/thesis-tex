@@ -97,10 +97,10 @@ l'échelle~\cite{abdullahi1998garbage}.
  preguica2009commutative, weiss2009logoot}.} Les CRDTs tels que
 Logoot~\cite{weiss2009logoot} ne nécessitent pas de pierres tombales mais
 transportent des identifiants de taille variable. En fonction de la stratégie
-d'allocation, ces identifiants peuvent croître linéairement comparé au nombre
-d'insertions effectuées dans le document. Puisque chaque identifiant doit être
-envoyé à l'ensemble des répliques, la complexité en communication s'en trouve
-directement impactée. Pour équilibrer la structure \emph{a posteriori},
+d'allocation, ces identifiants peuvent croître linéairement par rapport au
+nombre d'insertions effectuées dans le document. Puisque chaque identifiant doit
+être envoyé à l'ensemble des répliques, la complexité en communication s'en
+trouve directement impactée. Pour équilibrer la structure \emph{a posteriori},
 l'exécution périodique d'un mécanisme de relocalisation~\cite{letia2009crdts}
 est nécessaire. Malheureusement, dans notre contexte, atteindre un tel consensus
 s'avère très coûteux~\cite{mostefaoui2015signature}.

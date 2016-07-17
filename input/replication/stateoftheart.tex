@@ -241,7 +241,7 @@ dimensions : nombre de répliques et nombre d'opérations.
 
 \paragraph{Répartition des temps d'exécution.} La génération d'une opération
 s'exécute en temps constant. Cependant, son intégration s'exécute en temps
-quadratique comparé au nombre d'opérations concurrentes à l'opération
+quadratique par rapport au nombre d'opérations concurrentes à l'opération
 intégrée. Cette répartition des coûts d'opération est malheureuse car 1
 opération locale efficace correspond à $N$ exécutions distantes potentiellement
 lentes, où $N$ est le nombre de répliques recevant l'opération.
@@ -392,7 +392,7 @@ structure répliquée sans mettre en danger l'ordre dense à préserver. Ainsi, 
 suppressions conservent tous les éléments, qu'ils soient supprimés ou non du
 document.  Un document peut être vide bien que la séquence répliquée possède des
 milliers d'éléments cachés. La mémoire consommée par ces approches croît au
-moins linéairement comparé au nombre d'insertions faites sur la séquence. Plus
+moins linéairement par rapport au nombre d'insertions faites dans la séquence. Plus
 problématique : cette croissance est monotone.  Les pierres tombales dégradent à
 jamais les performances de l'intégration des opérations où l'ordre des éléments
 doit être retrouvé.
@@ -518,7 +518,7 @@ de site et compteurs sont ignorés) augmente par pallier. De nombreuses séries
 d'insertions en tête se traduisent par l'ajout d'un niveau dans les chemins. Sur
 un petit document de moins de 200 lignes, un chemin alloué par Logoot atteint 16
 concaténations. Ici, chacune de ces concaténations pèse 16 bits.  La complexité
-spatiale de chaque identifiant est linéaire comparée au nombre d'insertions dans
+spatiale de chaque identifiant est linéaire par rapport au nombre d'insertions dans
 le document, et puisque chaque identifiant est disséminé aux autres répliques,
 la complexité en communication adopte cette progression. De plus, les valeurs
 choisies par Logoot dans les identifiants sont toujours comprises entre $0$ et
@@ -600,7 +600,7 @@ l'importance d'une stratégie d'allocation gérant l'édition de gauche à
 droite. Elles conduisent à proposer une heuristique selon laquelle des nœuds de
 l'arbre sont virtuellement créés en prévoyance des éditions à venir. Toutefois,
 de manière identique à Logoot, lorsque le comportement d'édition va à l'encontre
-de cette stratégie, les identifiants sont de taille linéaire comparée à la
+de cette stratégie, les identifiants sont de taille linéaire par rapport à la
 taille du document.
 
 

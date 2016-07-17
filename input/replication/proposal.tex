@@ -110,7 +110,7 @@ aussi simple que l'édition de droite à gauche doit impérativement être gér�
 
 L'allocation d'identifiants optimale suppose de connaître le nombre et la
 position des éditions successives. Avec cette connaissance, les identifiants
-auraient une croissance logarithmique comparée à la taille
+auraient une croissance logarithmique par rapport à la taille
 document. Malheureusement, aucune de ces deux informations n'est disponible dans
 l'édition collaborative en temps réel.
 
@@ -203,7 +203,7 @@ de gauche à droite, et pour l'édition de droite à gauche, pour les niveaux 1 
 2 respectivement. La figure~\ref{repl:fig:lseqtreeexampleA} montre le cas de
 l'édition de gauche à droite. Dans ce cas, le comportement d'édition attendu par
 la sous-fonction d'allocation est bon, et les chemins restent alloués au premier
-niveau de l'arbre. D'un autre coté, la figure~\ref{repl:fig:lseqtreeexampleB}
+niveau de l'arbre. D'un autre côté, la figure~\ref{repl:fig:lseqtreeexampleB}
 montre le cas de l'édition de droite à gauche. Dans ce cas, la sous-fonction
 d'allocation du premier niveau n'est pas adaptée. La profondeur de l'arbre
 augmente dès la seconde insertion. En revanche, puisque la sous-fonction

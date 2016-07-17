@@ -24,13 +24,13 @@ taille croît linéairement. Ces approches requièrent toutes un mécanisme
 additionnel afin de recouvrer de bonnes performances. Malheureusement, ces
 mécanismes sont inutilisables à large échelle. Nous proposons \LSEQ, une
 stratégie d'allocation d'identifiants dont les identifiants croissent de manière
-polylogarithmique comparé au nombre d'insertions effectuées sur la séquence. De
-plus, les éléments supprimés sont réellement détruit. Ainsi, cette approche
-reste performante à large échelle et ne nécessite aucun mécanisme additionnel.
-Nous fournissons l'analyse en complexité -- temporelle et spatiale -- et en
-validons les résultats grâce à des expérimentations. \LSEQ fait l'objet d'une
-implémentation JavaScript qui est utilisée dans un éditeur collaboratif temps
-réel décentralisé accessible dans les navigateurs Web.
+polylogarithmique par rapport au nombre d'insertions effectuées dans la
+séquence. De plus, les éléments supprimés sont réellement détruit. Ainsi, cette
+approche reste performante à large échelle et ne nécessite aucun mécanisme
+additionnel.  Nous fournissons l'analyse en complexité -- temporelle et spatiale
+-- et en validons les résultats grâce à des expérimentations. \LSEQ fait l'objet
+d'une implémentation JavaScript qui est utilisée dans un éditeur collaboratif
+temps réel décentralisé accessible dans les navigateurs Web.
 
 \paragraph{Communication.} Les protocoles d'échantillonnage de pairs constituent
 le cœur de nombreux systèmes répartis. Ces protocoles proposent à chaque pair

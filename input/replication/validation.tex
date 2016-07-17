@@ -75,7 +75,7 @@ espace, i.e. la profondeur de l'arbre augmente. L'augmentation reste linéaire.
 \end{figure}
 
 \paragraph{Objectif :} Montrer que l'utilisation d'un arbre exponentiel permet
-d'allouer des chemins dont la taille croît de manière polylogarithmique comparée
+d'allouer des chemins dont la taille croît de manière polylogarithmique par rapport
 au nombre d'insertions. Montrer que lorsque le comportement d'édition va à
 l'encontre de celui prévu, les identifiants alloués ont une croissance
 quadratique.
@@ -133,7 +133,7 @@ chemins croît de manière quadratique.
 \paragraph{Objectif :} Montrer que deux sous-fonctions d'allocation conçues avec
 des objectifs antagonistes et assignées à chaque profondeur de l'arbre
 permettent de gèrer les comportements d'édition triviaux. Montrer que la
-progression des identifiants reste linéaire comparée à la taille du document.
+progression des identifiants reste linéaire par rapport à la taille du document.
 
 \paragraph{Description :} La simulation concerne trois documents grossissant au
 rythme des opérations d'insertion effectuées respectivement de gauche à droite,
@@ -181,7 +181,7 @@ comportement d'édition courant.
 \paragraph{Objectif :} Montrer que l'utilisation combinée d'un arbre exponentiel
 et de sous-fonctions d'allocation permet de pallier leurs faiblesses respectives
 et d'obtenir une stratégie d'allocation sous-linéaire par rapport au nombre
-d'insertions effectuées sur le document.
+d'insertions effectuées dans le document.
 
 \paragraph{Description :} Trois documents chacun édité d'une façon différente :
 l'auteur du premier possède un comportement d'édition aléatoire; l'auteur du
@@ -196,7 +196,7 @@ niveau de l'arbre. Les mesures sont faites à 100, 1k, 5k, 10k, 50k, 100k, 500k,
 obtenus lors de cette expérimentation. Nous observons que la progression de la
 taille des identifiants lors du comportement d'édition aléatoire reste
 logarithmique. Lors des deux autres comportements d'édition monotone, la
-croissance des identifiants suit une progression polylogarithmique comparée au
+croissance des identifiants suit une progression polylogarithmique par rapport au
 nombre d'insertions effectuées dans la séquence. Cette observation confirme
 l'analyse en complexité spatiale des identifiants
 (cf. §\ref{repl:subsec:space}). Cependant, nous observons de petites
@@ -298,7 +298,7 @@ de droite à gauche. D'un autre côté, Logoot a conçu sa stratégie pour l'éd
 de gauche à droite. Dès lors, si le comportement suit cette hypothèse, les
 identifiants grossissent par palier -- linéairement certes, mais
 lentement. \LSEQ ne favorise aucun comportement d'édition et adapte la taille de
-ses identifiants à la taille du document. Ainsi, les deux types de documents
+ses identifiants à la taille du document. Ainsi, les deux types de document
 sont gérés : beaucoup d'insertions effectuées de gauche à droite; peu
 d'insertions effectuées de droite à gauche.
 
@@ -321,7 +321,7 @@ d'insertions effectuées de droite à gauche.
 alloués par les fonctions d'allocation Logoot, \LSEQ et Treedoc sur des
 documents synthétiques.
 
-\paragraph{Description :} Deux types de documents synthétiques sont créés. Tout
+\paragraph{Description :} Deux types de document synthétique sont créés. Tout
 d'abord, un premier document est créé grâce à des insertions à des positions
 aléatoires dans la séquence. Le second document est créé grâce à des insertions
 successives en fin de document. La fonction d'allocation des chemins de Logoot
@@ -341,10 +341,10 @@ Logoot et \LSEQ. Nous observons aussi que l'édition de gauche à droite entrain
 une croissance extrêmement rapide pour les identifiants alloués par Treedoc (la
 courbe est superposée à l'axe des ordonnées). De son côté, Logoot alloue des
 chemins dont la taille augmente moins rapidement. Malgré cela, la croissance
-reste linéaire comparée au nombre d'insertions dans la séquence. À terme,
+reste linéaire par rapport au nombre d'insertions dans la séquence. À terme,
 l'exécution d'un protocole de relocalisation des chemins devient nécessaire pour
 retrouver de bonnes performances. En revanche, \LSEQ alloue des identifiants
-dont la croissance est sous-linéaire comparée au nombre d'insertions. À terme,
+dont la croissance est sous-linéaire par rapport au nombre d'insertions. À terme,
 l'allocation de \LSEQ finit par surpasser celle de l'état de l'art.
 
 \paragraph{Explication :} Les fonctions d'allocation Logoot, \LSEQ et Treedoc
@@ -356,7 +356,7 @@ croissent logarithmiquement par rapport au nombre d'insertions. L'arité de
 l'arbre de Treedoc étant inférieure à l'arité de l'arbre de Logoot et \LSEQ,
 Treedoc propose de meilleurs identifiants. Dans le cadre de l'édition de gauche
 à droite, chaque nouvelle insertion dans Treedoc ajoute un bit au chemin
-généré. La croissance est linéaire comparée au nombre d'insertions dans la
+généré. La croissance est linéaire par rapport au nombre d'insertions dans la
 séquence.
 % et extrêmement rapide.
 La fonction d'allocation de Logoot est conçue pour gérer ce type
@@ -441,7 +441,7 @@ niveaux utilise la recherche dichotomique.
     \caption[Effet de la concurrence sur les identifiants]
     {\label{repl:img:latency}Effets de la concurrence sur la taille des
       identifiants. L'axe des abscisses montre le nombre d'insertions effectuées
-      sur le document. L'axe des ordonnées montre la taille des messages envoyés
+      dans le document. L'axe des ordonnées montre la taille des messages envoyés
       (en octets).}
   \end{center}
 \end{figure}
