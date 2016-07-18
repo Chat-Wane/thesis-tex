@@ -33,7 +33,7 @@ doublons restent peu nombreux. De ce fait, ils n'ont pas d'impact notable sur la
 connexité du réseau.
 
 Cette section se décompose en trois parties représentant le cycle de vie d'un
-nœud : le processus d'entrée (cf. §\ref{net:subsec:joining}), les mélanges
+nœud : la procédure d'entrée (cf. §\ref{net:subsec:joining}), les mélanges
 (cf. §\ref{net:subsec:shuffling}), la gestion des départs
 (cf. §\ref{net:subsec:leaving}).
 
@@ -56,12 +56,12 @@ nœud : le processus d'entrée (cf. §\ref{net:subsec:joining}), les mélanges
   [L'événement \textsc{onFwdSubs}($n_1$) est déclenché en $n_{3-6}$.
   Chacun de ces nœuds ajoute $n_1$ dans sa vue partielle.]
   {\input{./input/network/figjoiningexampleC.tex}}
-  \caption[Processus d'entrée dans \SPRAY]
-  {\label{net:fig:joiningexample} Exemple de processus d'entrée dans
+  \caption[Procédure d'entrée dans \SPRAY]
+  {\label{net:fig:joiningexample} Exemple de procédure d'entrée dans
     le réseau de \SPRAY.}
 \end{figure*}
 
-Le processus d'entrée d'un nœud dans le réseau est la seule manière d'introduire
+La procédure d'entrée d'un nœud dans le réseau est la seule manière d'introduire
 de nouveaux arcs. Afin de répondre à la première partie de l'énoncé du
 problème~\ref{net:problem:properties}, ce nombre d'arcs doit augmenter
 logarithmiquement par rapport à la taille du réseau. Tout comme dans \SCAMP, nous
@@ -77,7 +77,7 @@ graphes aléatoires~\cite{erdos1959random}.
 
 \begin{algorithm}[h]
   \input{input/network/algojoining.tex}
-  \caption[Processus d'entrée de \SPRAY] {\label{net:algo:joining}Processus
+  \caption[Procédure d'entrée de \SPRAY] {\label{net:algo:joining}Procédure
     d'entrée de \SPRAY.}
 \end{algorithm}
 
@@ -108,16 +108,16 @@ résultant est connexe.
 Malheureusement, les vues partielles des derniers arrivants sont clairement
 déséquilibrées comparées à celles des membres plus anciens. De ce fait, ils
 violent la première condition de l'énoncé du
-problème~\ref{net:problem:properties}. La section suivante décrit le processus
-de mélange dont l'objectif consiste à équilibrer les vues partielles.
+problème~\ref{net:problem:properties}. La section suivante décrit la procédure
+périodique de mélange dont l'objectif consiste à équilibrer les vues partielles.
 
 \subsection{Mélanger son voisinage}
 \label{net:subsec:shuffling}
 
 À la différence de \CYCLON, \SPRAY mélange des vues partielles dont les tailles
-peuvent être différentes. Ce processus a pour but d'équilibrer les tailles des
-vues partielles ainsi que de mélanger les adresses logiques à l'intérieur de
-celles-ci. Le nombre d'arcs reste constant durant ce processus.
+peuvent être différentes. Cette procédure a pour but d'équilibrer les tailles
+des vues partielles ainsi que de mélanger les adresses logiques à l'intérieur de
+celles-ci. Le nombre d'arcs reste constant durant cette procédure.
 
 Les deux nœuds impliqués dans le mélange s'envoient la moitié de leur vue
 partielle. Après l'intégration de ces nouvelles références, la taille de leur
@@ -127,13 +127,13 @@ un nœud reçoit un arc déjà connu, il le conserve en tant que doublon.  De ce
 façon, le nombre d'arcs reste globalement constant.
 
 Si les doublons ont un impact négatif sur les propriétés du réseau, la plupart
-disparaissent après le processus de mélange. La proportion de doublons devient
+disparaissent après la procédure de mélange. La proportion de doublons devient
 négligeable dès lors que le réseau grandit.
 
 \begin{algorithm}[h]
   \input{./input/network/algoshuffle.tex}
-  \caption[Processus périodique de mélange de \SPRAY]
-  {\label{net:algo:shuffle}Processus périodique de mélange de \SPRAY.}
+  \caption[Procédure périodique de mélange de \SPRAY]
+  {\label{net:algo:shuffle}Procédure périodique de mélange de \SPRAY.}
 \end{algorithm}
 
 L'algorithme~\ref{net:algo:shuffle} montre les instructions exécutées
@@ -201,8 +201,8 @@ d'intégrer celui qu'ils ont reçu.
   [Le nœud $n_6$ reçoit la réponse de $n_1$ et ajoute $\{n_2\}$ à sa vue
   partielle.]
   {\input{./input/network/figshuffleexampleC.tex}}
-  \caption[Processus de mélange périodique dans \SPRAY]
-  {\label{net:fig:cyclicexample}Exemple du processus de mélange dans \SPRAY.}
+  \caption[Procédure de mélange périodique dans \SPRAY]
+  {\label{net:fig:cyclicexample}Exemple d'exécution de la procédure de mélange dans \SPRAY.}
 \end{figure*}
 
 La figure~\ref{net:fig:cyclicexample} décrit le mécanisme périodique de
@@ -222,7 +222,7 @@ $\{n_2,\,n_7,\,n_8\}$.
 
 La procédure d'échange tend à réduire l'écart de taille des vues partielles. De
 plus, elle disperse les références des nœuds afin de supprimer les groupes trop
-denses dus au processus d'entrée dans le réseau.
+denses dus à la procédure d'entrée dans le réseau.
 
 En ce qui concerne le temps de convergence de l'algorithme de mélange, il existe
 une relation proche entre \SPRAY et le protocole d'agrégation proactif

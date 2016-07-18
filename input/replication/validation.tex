@@ -132,8 +132,9 @@ chemins croît de manière quadratique.
 
 \paragraph{Objectif :} Montrer que deux sous-fonctions d'allocation conçues avec
 des objectifs antagonistes et assignées à chaque profondeur de l'arbre
-permettent de gèrer les comportements d'édition triviaux. Montrer que la
-progression des identifiants reste linéaire par rapport à la taille du document.
+permettent de gèrer les comportements d'édition simples : monotones et
+aléatoire. Montrer que la progression des identifiants reste linéaire par
+rapport à la taille du document.
 
 \paragraph{Description :} La simulation concerne trois documents grossissant au
 rythme des opérations d'insertion effectuées respectivement de gauche à droite,
@@ -252,7 +253,7 @@ les soumet à Wikipédia. Deux issues possibles :
 Wikipédia garde l'historique des modifications apportées à tous les articles
 depuis leur création. Nous sommes alors à même de rejouer les éditions --
 nommées révisions -- dans l'ordre où elles ont été effectuées. Toutefois, toute
-trace de concurrence est effacée par le processus d'édition même. D'autre part,
+trace de concurrence est effacée par le protocole d'édition même. D'autre part,
 la granularité est fixée à la ligne et non au caractère. En cela, les
 simulations sur corpus Wikipédia diffèrent légèrement de la réalité.
 

@@ -626,12 +626,11 @@ Une solution consiste à relocaliser les identifiants. En d'autres termes, les
 identifiants sont modifiés au profit d'identifiants plus courts et conservant
 l'ordre dense des éléments de la séquence. Toutefois, supprimer puis réinsérer
 l'ensemble des éléments dans un document neuf ne suffit pas : le trafic engendré
-est élevé et un tel processus effectué en concurrence est susceptible de cloner
-les éléments. Il faut donc parvenir à prendre une décision globale sur la
-relocalisation ce qui revient à obtenir un consensus en contexte réparti. Les
-consensus sont coûteux à obtenir dans les systèmes à large échelle où le nombre
-de répliques est grand, et particulièrement lorsque ces répliques ne sont pas
-accessibles en permanence.
+est élevé et la concurrence est susceptible de cloner les éléments. Il faut donc
+parvenir à prendre une décision globale sur la relocalisation ce qui revient à
+obtenir un consensus en contexte réparti. Les consensus sont coûteux à obtenir
+dans les systèmes à large échelle où le nombre de répliques est grand, et
+particulièrement lorsque ces répliques ne sont pas accessibles en permanence.
 
 Afin d'éviter les baisses de performance ainsi que les mécanismes de
 relocalisation, une autre solution consiste à obtenir des identifiants
