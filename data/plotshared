@@ -14,11 +14,18 @@ set ylabel "taille moyenne des identifiants (bit)"
 
 set output 'logoot.eps'
 
+set label 1 "Référence" at 50000,300 font "Helvetica-Bold,26"
+set label 2 "- arbre arité fixe" at 50000,250 font ",18"
+set label 3 "- conçu pour l'édition\n   de gauche à droite" at 50000,225 font ",18"
+
+
 plot "logoot.dat" using 1:2 title "aléatoire" with linespoint pt 1 lt 1, \
      "logoot.dat" using 1:3 title "en fin" with linespoint pt 2 lt 1, \
      "logoot.dat" using 1:4 title "en tête" with linespoint pt 3 lt 1
 
 set output 'robin.eps'
+
+set label 1 "Sous-fonctions"
 
 plot "robin.dat" using 1:2 title "aléatoire" with linespoint pt 1 lt 1, \
      "robin.dat" using 1:3 title "en fin" with linespoint pt 2 lt 1, \
@@ -26,11 +33,15 @@ plot "robin.dat" using 1:2 title "aléatoire" with linespoint pt 1 lt 1, \
 
 set output 'double.eps'
 
+set label 1 "Arbre\nexponentiel" 
+
 plot "double.dat" using 1:2 title "aléatoire" with linespoint pt 1 lt 1, \
      "double.dat" using 1:3 title "en fin" with linespoint pt 2 lt 1, \
      "double.dat" using 1:4 title "en tête" with linespoint pt 3 lt 1
 
 set output 'lseq.eps'
+
+set label 1 "LSEQ"
 
 plot "lseq.dat" using 1:2 title "aléatoire" with linespoint pt 1 lt 1, \
      "lseq.dat" using 1:3 title "en fin" with linespoint pt 2 lt 1, \
