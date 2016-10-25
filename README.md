@@ -8,7 +8,7 @@ aléatoire de pairs.  </i>
 replicated structure for sequences, random peer sampling.  </i>
 
 LaTeX sources of my [Ph.D
-manuscript](https://github.com/Chat-Wane/thesis-tex/blob/master/paper.pdf) about
+manuscript](https://github.com/Chat-Wane/thesis-tex/blob/master/manuscript.pdf) about
 decentralized collaborative editing on the Web (written in French).
 
 ## Résumé
@@ -79,3 +79,12 @@ $ xelatex paper.tex
 $ bibtex paper
 $ xelatex paper.tex
 ```
+
+## Acknowledgments
+
+This work was partially funded by the French ANR project
+[ConcoRDanT](http://concordant.lip6.fr) (ANR-10-BLAN-0208), the French ANR
+project [SocioPlug](http://socioplug.univ-nantes.fr/) (ANR-13-INFR-0003), and by
+the [DeSceNt](http://www.descent.cominlabs.ueb.eu/) project granted by the Labex
+CominLabs excellence laboratory (ANR-10-LABX-07-01).
+
