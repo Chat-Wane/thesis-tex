@@ -303,14 +303,15 @@
 
 \global\let\@titre\@empty
 \def\titre#1{%
-   \ifx\@titre\@empty
-      \gdef\@titre{#1}
-   \else
-      \gdef\@titre{\textcolor{red}{Titre d\'efini plusieur fois}}
-      \ClassError{these-LUNAM-UBL}
-                 {Titre de la th`ese d'ej`a d'efini / Thesis title in french already defined}
-                 {}
-   \fi}
+%   \ifx\@titre\@empty
+   \gdef\@titre{#1}
+   % \else
+   %    \gdef\@titre{\textcolor{red}{Titre d\'efini plusieur fois}}
+   %    \ClassError{these-LUNAM-UBL}
+   %               {Titre de la th`ese d'ej`a d'efini / Thesis title in french already defined}
+   %               {}
+   % \fi
+ }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % Sous-titre en franc,ais
@@ -1267,9 +1268,9 @@
       {2.5\baselineskip}}
     \hspace{-0.45\textwidth}
   }
-  \renewcommand{\sfdefault}{phv}
-  \renewcommand{\rmdefault}{ptm}
-  \renewcommand{\ttdefault}{pcr}
+%  \renewcommand{\sfdefault}{phv}
+%  \renewcommand{\rmdefault}{ptm}
+%  \renewcommand{\ttdefault}{pcr}
   \sffamily
   \fontsize{12pt}{14pt}
   \selectfont
@@ -1299,21 +1300,64 @@
   \vspace{-15\baselineskip}
   \includegraphics[width=2.8cm]{logos/UBL}
   \hfill
-  \hfill
-  \hfill
-  \ifx\@cosupervisingforeigninstitution\@empty
-  \else
-  \raisebox{\@cosupervisingforeigninstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@cosupervisingforeigninstitutionlogowidth]{logos/\@cosupervisingforeigninstitutionlogo}}~
-  \hfill
-  \fi
-  \ifx\@coinstitution\@empty
-  \else
-  \raisebox{\@coinstitutionlogovoffset}[0pt][0pt]{\includegraphics[width=\@coinstitutionlogowidth]{logos/\@coinstitutionlogo}}~
-  \hfill
-  \fi
   \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
   \vspace{11\baselineskip}
 }
+
+
+\newcommand{\@drawbackgroundForth} { % Horizontal grey-green box
+  \noindent\raisebox{0pt}[0pt][0pt]
+  {\colorbox{@verticalgreen}
+    {\makebox[0.5\textwidth]
+      {\raisebox{-\textheight}
+        {~}}}}
+  
+  \vspace{4\baselineskip}{
+    \noindent\hspace{0.45\textwidth}
+    \raisebox{0pt}[0pt][0pt]
+    {\color{@horizontalgray}
+      \rule{0.55\textwidth}
+      {2.5\baselineskip}}
+    \hspace{-0.45\textwidth}
+  }
+%  \renewcommand{\sfdefault}{phv}
+%  \renewcommand{\rmdefault}{ptm}
+%  \renewcommand{\ttdefault}{pcr}
+  \sffamily
+  \fontsize{12pt}{14pt}
+  \selectfont
+  
+  \noindent\makebox[0.55\textwidth][r]
+  {\Hugecover\textbf{\textcolor{@doctoratcolor}
+      {Th\`ese de Doctorat}}}
+  
+  {
+    \noindent\color{@bandeaucolor}
+    \rule{0.55\textwidth}
+    {2.5\baselineskip}
+    \color{@horizontalgray}
+    \rule{0.45\textwidth}
+    {2.5\baselineskip}
+  }
+  
+  \vspace{3\baselineskip} {
+    \noindent\hspace{0.45\textwidth}
+    \raisebox{0pt}[0pt][0pt]
+    {\color{@horizontalgray}
+      \rule{0.55\textwidth}
+      {2.5\baselineskip}}
+    \hspace{-0.45\textwidth}
+  }
+  
+  % 15 -> 17 baselineskip to align
+  \vspace{-17\baselineskip}
+  \includegraphics[width=2.8cm]{logos/UBL}
+  \hfill
+  \raisebox{0pt}[0pt][0pt]{\includegraphics[width=\@institutionlogowidth]{logos/\@institutionlogo}}~
+  \vspace{11\baselineskip}
+}
+
+
 
 %%%%%%%%%%%%%%%%%%%%
 % 1re de couverture
@@ -1389,9 +1433,9 @@
       {
       \singlespacing
       \@drawbackground
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \fontsize{12pt}{14pt}
       \sffamily
       \selectfont
@@ -1505,25 +1549,25 @@
 \global\newcount\@startingPage
 
 \newcommand{\makecover}{%
+  \singlespacing
   \newgeometry{margin=1.5cm}
-   \cleardoublepage % go to odd page
-   \singlespacing
-   \phantom{placeholder} % doesn't appear on page
-   \newpage % on even page
-   \thispagestyle{empty} % no numbering
-   \@startingPage\thepage\relax{%
-     \newgeometry{margin=1.5cm}
-      \@drawbackground%
-      \vspace{-5.5\baselineskip}
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+  \cleardoublepage % go to odd page
+  \phantom{placeholder} % doesn't appear on page
+  \newpage % on even page
+  \thispagestyle{empty} % no numbering
+  \@startingPage\thepage\relax{
+    \singlespacing
+    \@drawbackgroundForth
+    \vspace{-5.5\baselineskip}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \sffamily
       \fontsize{12pt}{14pt}
       \selectfont
       \begin{quote}
          \begin{flushleft}
-            \textbf{\Largecover\textcolor{@textgray}{\@author}}
+            \Hugecover\textcolor{@textgray}{\@author}
          \end{flushleft}
          \ifx\@\@titre\@empty
             \ClassError{these-LUNAM-UBL}
@@ -1531,7 +1575,7 @@
                        {}
          \fi
          \begin{flushleft}
-            \textbf{\textcolor{@textgray}{\@titre}}
+            \Largecover\textcolor{@textgray}{\textbf{\@titre}}
             \ifx\@soustite\@empty
                \relax
             \else
@@ -1545,7 +1589,7 @@
                        {}
          \fi
          \begin{flushleft}
-            \textbf{\textcolor{@textgray}{\@title}}
+            \Largecover\textcolor{@textgray}{\textbf{\@title}}
             \ifx\@subtitle\@empty
                \relax
             \else
@@ -1614,9 +1658,9 @@
    {
    \newgeometry{margin=1.5cm}
    \begin{lrbox}{\@resumeBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \smallcover\sffamily
       \begin{minipage}{0.47\textwidth}
          \justify\footnotesize
@@ -1638,9 +1682,9 @@
 \newenvironment{abstract} {
    \newgeometry{margin=1.5cm}
    \begin{lrbox}{\@abstractBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \smallcover\sffamily
       \begin{minipage}{0.47\textwidth}
          \justify\footnotesize
@@ -1662,9 +1706,9 @@
 \newenvironment{keywords} {
    \newgeometry{margin=1.5cm}
    \begin{lrbox}{\@keywordsBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \smallcover\sffamily
       \begin{minipage}{0.47\textwidth}
          \justify\footnotesize
@@ -1687,9 +1731,9 @@
    {
    \newgeometry{margin=1.5cm}
    \begin{lrbox}{\@motsclesBox}%
-      \renewcommand{\sfdefault}{phv}
-      \renewcommand{\rmdefault}{ptm}
-      \renewcommand{\ttdefault}{pcr}
+%      \renewcommand{\sfdefault}{phv}
+%      \renewcommand{\rmdefault}{ptm}
+%      \renewcommand{\ttdefault}{pcr}
       \smallcover\sffamily
       \begin{minipage}{0.47\textwidth}
          \justify\footnotesize

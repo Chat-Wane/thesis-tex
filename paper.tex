@@ -7,6 +7,7 @@
 \usepackage{fontspec}
 \usepackage{lettrine}
 \usepackage{upgreek,textgreek}
+\usepackage{fix-cm}
 
 %\setmainfont{Crimson Text}
 \setmainfont{Crimson}
@@ -99,7 +100,7 @@
 \setcounter{minitocdepth}{1}
 
 %%\titre{Édition collaborative décentralisée}
-\titre{Édition collaborative décentralisée dans les navigateurs}
+\titre{Édition collaborative décentralisée\\dans les navigateurs}
 %%\soustitre{L'exemple de l'édition collaborative}
 \title{Decentralized Collaborative Editing in Web Browsers}
 %%\subtitle{The collaborative editing use-case}
@@ -189,6 +190,10 @@
 
 \bibliographystyle{plain}
 \bibliography{bibliographie}
+
+
+%% remove the \\ of the cover 
+\titre{Édition collaborative décentralisée dans les navigateurs}
 
 %\backmatter
 \end{document}
