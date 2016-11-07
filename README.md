@@ -70,6 +70,24 @@ Contributions of this thesis are threefold:
 </ol>
 
 
+## BibTeX
+
+```
+@phdthesis{nedelec:tel-01387581,
+  TITLE = {{Decentralized Collaborative Editing in Web Browsers}},
+  AUTHOR = {N{\'e}delec, Brice},
+  URL = {https://hal.archives-ouvertes.fr/tel-01387581},
+  SCHOOL = {{Universit{\'e} de Nantes}},
+  YEAR = {2016},
+  MONTH = Oct,
+  KEYWORDS = {collaborative editing ; decentralized ; real-time ; Web ; scalable ; replicated structure for sequences ; random peer sampling ; {\'e}dition collaborative ; d{\'e}centralis{\'e} ; temps-r{\'e}el ; passage {\`a} l'{\'e}chelle ; structure de donn{\'e}es r{\'e}partie pour s{\'e}quences ; {\'e}chantillonnage al{\'e}atoire de pairs},
+  TYPE = {Theses},
+  PDF = {https://hal.archives-ouvertes.fr/tel-01387581/file/manuscript.pdf},
+  HAL_ID = {tel-01387581},
+  HAL_VERSION = {v1},
+}
+```
+
 ## Compile
 
 It requires the font [Crimson](http://www.fontsquirrel.com/fonts/crimson).
