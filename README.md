@@ -1,4 +1,4 @@
-# thesis-tex
+# Édition collaborative décentralisée dans les navigateurs
 
 <i> Mots clés : Édition collaborative, décentralisé, temps réel, Web, passage à
 l'échelle, structure de données répartie pour séquences, échantillonnage
