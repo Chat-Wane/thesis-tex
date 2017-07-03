@@ -10,9 +10,6 @@ expérimentalement les analyses en complexité de \LSEQ faites en
 §\ref{repl:sec:complexity}.  Enfin, elle montre l'influence de la concurrence
 sur l'allocation d'identifiants.
 
-%% Dans toutes ces expérimentations, nous sommes
-%% plus intéressés par l'allure des résultats que par leurs valeurs absolues.
-
 \subsection{Référence}
 
 \begin{figure}
@@ -286,8 +283,6 @@ alloue des chemins dont la taille augmente extrêmement rapidement. Treedoc se
 comporte de manière similaire bien que les valeurs mesurées soient plus
 faibles. Les identifiants alloués par \LSEQ se stabilisent.
 
-%% Pour retrouvrer de bonnes performances, l'exécution d'un protocole de
-%% relocalisation des chemins devient nécessaire.
 
 \paragraph{Explication :} Dans les deux types d'édition, Treedoc et Logoot
 allouent des identifiants dont la complexité est linéaire. Ainsi, plus les
@@ -359,7 +354,6 @@ Treedoc propose de meilleurs identifiants. Dans le cadre de l'édition de gauche
 à droite, chaque nouvelle insertion dans Treedoc ajoute un bit au chemin
 généré. La croissance est linéaire par rapport au nombre d'insertions dans la
 séquence.
-% et extrêmement rapide.
 La fonction d'allocation de Logoot est conçue pour gérer ce type
 d'édition. Chaque niveau de l'arbre possède une branche remplie
 d'éléments. Toutefois, le nombre d'éléments accueillis par chaque branche reste
@@ -402,8 +396,6 @@ plusieurs reprises sur deux types de document. Tout d'abord, un document génér
 par un comportement d'édition aléatoire, i.e., l'arbre \LSEQ est
 équilibré. Ensuite, un document généré par un comportement d'édition monotone,
 i.e., une seule branche de l'arbre \LSEQ est remplie. 
-%Nous nous intéressons aux
-%tendances plutôt qu'aux valeurs absolues. En effet, 
 Le langage JavaScript opère de nombreuses optimisations à la volée. Afin
 de montrer la contribution réelle de chacune des opérations, ces optimisations
 ont été limitées au maximum. Les performances réelles des opérations sont donc

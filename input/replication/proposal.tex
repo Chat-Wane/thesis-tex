@@ -44,28 +44,8 @@ taille est sous-linéaire par rapport au nombre d'insertions dans la
 séquence. En revanche, utilisés simultanément, ils permettent à \LSEQ de
 résoudre ce problème.
 
-% L'idée générale de \LSEQ consiste à accepter la perte de niveaux des chemins
-% composants ses identifiants pour peu que les futures allocations compensent ces
-% pertes.
-
 Cette section détaille chacun de ces éléments avant de résumer le fonctionnement
 de \LSEQ au travers d'un exemple.
-
-% En résulte une allocation d'identifiants dont la borne supérieure sur la
-% taille est polylogarithmique comparé au nombre d'insertions effectuées dans le
-% document. 
-
-
-% (cf. §\ref{repl:subsec:suballocation}). Ainsi,
-% l'une est appropriée lorsque l'édition est principalement faite de gauche à
-% droite tandis que l'autre cible l'édition de droite à gauche. Elles seront
-% utilisées ensemble afin de pouvoir gérer la plupart des cas d'édition.
-
-% (cf.
-% §\ref{repl:subsec:allocationchoice}). % Cette fonction de choix doit fournir des
-% réponses similaires quelle que soit la réplique.
-
-%% \subsection{Allocation des chemins}
 
 
 \subsection{Arbre exponentiel}
@@ -103,7 +83,7 @@ progression quadratique en fonction de la profondeur rend essentielle la prise
 en charge des comportements d'édition conduisant au pire cas
 (cf. figure~\ref{repl:fig:allocpathexampleB}). En particulier, un comportement
 aussi simple que l'édition de droite à gauche doit impérativement être géré.
-% (cf. figure~\ref{repl:img:motivationsB}).
+
 
 \subsection{Sous-fonctions d'allocation}
 \label{repl:subsec:suballocation}
@@ -142,7 +122,6 @@ maximale de 256 fils à ce niveau. Lorsqu'une insertion est effectuée, un nombr
 aléatoire est tiré dans l'espace disponible avec une borne supérieure imposée
 (la \emph{boundary}). Cette borne permet de laisser un petit espace libre entre
 les identifiants des caractères.
-% afin de laisser du jeu pour les éventuelles corrections orthographiques.
 Comme le montre la figure~\ref{repl:fig:suballocationA}, si la borne commence
 proche du caractère précédent, alors la fonction d'allocation est adaptée à
 l'édition de gauche à droite car elle laisse un espace important pour les

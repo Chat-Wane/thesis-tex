@@ -18,28 +18,9 @@ document cessent d'exister lorsque tous les collaborateurs ferment leur
 localement. Si ceux-ci souhaitent préserver la session d'édition temps réel, ils
 doivent s'assurer qu'au moins un éditeur reste actif et accessible.
 
-% demander au Nuage d'héberger un éditeur collaboratif. Ainsi, le document
-% deviendrait persistant, et le poids de l'édition resterait réparti entre les
-% collaborateurs de l'édition. Par conséquent, le Nuage serait soulagé d'une
-% partie de sa charge.
-
 \CRATE démontre que l'édition collaborative temps réel est possible dans les
 navigateurs Web, sans l'intervention de tiers et sans limites quant aux
 dimensions du système.
-
-% Afin de passer à l'échelle, \CRATE utilise \SPRAY, un protocole
-% d'échantillonnage aléatoire de pairs permettant d'adapter les vues partielles de
-% chaque éditeur collaboratif à la taille de la session d'édition. De plus, pour
-% ne pas surcharger les messages, \CRATE contraint au minimum l'ordre
-% d'intégration des opérations. Enfin, \CRATE utilise \LSEQ, une fonction
-% d'allocation d'identifiants dont les identifiants ont une borne supérieures
-% sous-linéaire par rapport au nombre d'insertions effectuées dans le
-% document. Grâce à ces composants internes, \CRATE ajuste son trafic généré
-% logarithmiquement par rapport à la taille de la session d'édition, et
-% polylogarithmiquement par rapport au nombre d'insertions effectuées sur le
-% document. Par conséquent, \CRATE passe à l'échelle. Ces affirmations ont été
-% validées au travers d'expérimentations impliquant jusqu'à 601 navigateurs
-% écrivant en temps réel.
 
 Le chapitre~\ref{conclu:chap:conclusion} revient sur les précédentes
 contributions et présente les perspectives scientifiques ouvertes par celles-ci.

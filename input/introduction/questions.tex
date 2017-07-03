@@ -54,7 +54,6 @@ lors d'une modification, les éditeurs collaboratifs actuels suivent le principe
 de la réplication optimiste~\cite{saito2005optimistic}. Chaque éditeur
 collaboratif possède une copie locale d'un document -- pouvant être représenté
 simplement par une séquence
-%\footnote{ou liste, ou tableau, ou série.} 
 de caractères autorisant les deux opérations suivantes :
 \begin{inparaenum}[(a)]
 \item l'insertion d'un caractère à une position dans la séquence et
@@ -72,7 +71,6 @@ les modifications.
 
 Pour assurer la convergence des répliques, l'utilisation des structures de
 données \og classiques \fg n'est pas directement possible.
-% du fait de la latence entre les collaborateurs.
 Par exemple, la figure~\ref{intro:fig:ripconvergence} présente une situation où
 un auteur insère un caractère sur la réplique 1 en début de document pendant
 qu'un autre supprime un caractère sur la réplique 3 au même endroit. Le premier
@@ -114,7 +112,6 @@ nature des identifiants considérés :
 suppression de caractères se contente de cacher le caractère ciblé par
 l'utilisateur. La mémoire consommée par une réplique croît de manière monotone
 par rapport au nombre d'insertions.
-% Les performances d'intégration des opérations s'en trouvent diminuées.
 La structure répliquée d'un document vide peut contenir des milliers
 d'identifiants cachés correspondant à des caractères supprimés.  Afin d'y
 remédier, un protocole de ramasse-miettes réparti~\cite{abdullahi1998garbage}
@@ -127,7 +124,6 @@ identifiants sont des listes dont la taille est fixée à la
 génération. Cependant, la fonction de génération d'identifiants alloue des
 identifiants dont la taille peut dépendre linéairement du nombre d'insertions
 dans la séquence~\cite{weiss2009logoot}.
-% Cette croissance impacte négativement les performances du système.
 Puisque chaque identifiant doit être envoyé à toutes les autres répliques, le
 trafic généré peut augmenter rapidement.  Afin d'y remédier, un protocole de
 relocalisation des identifiants doit être exécuté
@@ -143,8 +139,6 @@ Afin d'assurer la convergence de toutes les répliques du document vers un état
 équivalent, les éditeurs collaboratifs font l'hypothèse d'une communication
 fiable : chacune des modifications doit être reçue par l'ensemble des éditeurs
 collaboratifs.
-%%Pour converger vers des documents identiques, tous les changements doivent
-%% parvenir à tous les éditeurs.
 Une manière efficace de mettre en place cette diffusion fiable et décentralisée
 consiste à suivre le principe de dissémination épidémique\footnote{ou propagation
   de rumeurs.}  où
@@ -155,36 +149,28 @@ consiste à suivre le principe de dissémination épidémique\footnote{ou propag
   sous-ensemble d'éditeurs auxquels faire suivre le message.
 \end{inparaenum}
 Les changements atteignent tous les éditeurs par transitivité.
-% Par conséquent, un réseau superposé doit être mis en place afin de permettre une
-% communication fiable d'un éditeur à l'autre.
 La figure~\ref{intro:img:world} montre que chaque éditeur collaboratif est
 connecté à d'autres éditeurs -- ses voisins -- possédant une réplique du
 document. Ici, l'éditeur localisé aux États-Unis communique avec les éditeurs
 canadien, français et malgache.
-% Chaque éditeur participe activement au bon fonctionnement
-%du système.
 Une opération émise par le premier peut transiter par l'éditeur localisé à
 Madagascar avant de parvenir à l'éditeur japonais. 
-% Les changements parviennent
-%à tous les éditeurs par transitivité~\cite{birman1999bimodal}.
+
 
 \noindent Notre contexte nous expose à deux contraintes :
 
 \begin{enumerate}[(i)]
-%\paragraph{Web.}
 \item L'éditeur collaboratif doit fonctionner dans les navigateurs Web sans
   installations d'aucune sorte (e.g. extensions). Depuis peu, les navigateurs
   sont capables de communiquer entre eux après avoir suivi d'une procédure de
   connexion complexe~\cite{webrtc}. L'éditeur doit donc supporter ce mode de
   connexion.
 
-%\paragraph{Dimensions et dynamisme.}
 \item L'éditeur collaboratif doit maintenir un voisinage dont la taille doit
   permettre de gérer aussi bien les petits groupes que les grands.  La taille de
   voisinage est déterminante puisque lorsqu'elle augmente, le trafic généré
   augmente au risque de dépasser les capacités d'émission des éditeurs;
   lorsqu'elle diminue,
-%% les changements risquent de ne plus parvenir à tous les éditeurs.
   le risque que les opérations ne parviennent plus à tous les éditeurs augmente.
   L'éditeur doit supporter les sessions d'édition où le nombre de participants
   fluctue fortement au cours du temps.
@@ -207,13 +193,6 @@ protocole permettant d'adapter automatiquement la taille du voisinage à la
 taille de la session d'édition se nomme \SCAMP~\cite{ganesh2003peer}. Toutefois,
 ce dernier est inadapté à la procédure complexe d'établissement de connexion
 disponible dans les navigateurs Web.
-
-% Malheureusement, celui-ci varie, que ce soit
-%pendant la durée de la collaboration, e.g., un cours de formation en ligne
-%(\emph{MOOC})~\cite{breslow2013studying} voit sa population fluctuer selon
-%l'intérêt qu'il suscite; ou entre deux documents, e.g., un document créé pour un
-%événement de grande ampleur n'a pas la même audience que celle d'un rapport de
-%projet écrit par des étudiants.
 
 Cela pose la seconde question de recherche : \textbf{Comment adapter
   efficacement le voisinage de chaque éditeur collaboratif Web au nombre

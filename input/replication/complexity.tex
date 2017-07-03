@@ -26,7 +26,6 @@ défavorable puisqu'il tend à déséquilibrer l'arbre stockant la séquence
 répliquée. Aussitôt que les participants commencent à éditer à différents
 endroits -- ce qui est plus proche d'un cas d'utilisation réel -- l'arbre
 commence à s'équilibrer.
-% et les opérations deviennent plus efficaces proportionnellement.
 L'analyse ne fait pas mention de cas moyen puisqu'il nécessite de connaître la
 distribution des positions des insertions effectuées par des être humains ce qui
 représente une tâche complexe. Enfin, l'analyse en complexité se concentre sur
@@ -301,76 +300,6 @@ est possible afin d'améliorer les performances des opérations au prix d'un usa
 mémoire plus important~\cite{weiss2009logoot}. La section suivante s'attache à
 valider ces analyses en complexité au travers d'expérimentations.
 
-
-% \subsubsection{indexOf}
-% \label{repl:subsec:indexof}
-
-% \begin{wrapfigure}{r}{0.6\textwidth}
-%   \vspace{-35pt} %% (ugly)
-%   \begin{minipage}[t]{0.6\textwidth}
-%     \begin{algorithm}[H]
-%       \input{input/replication/algoindexof.tex}
-%       \caption{\label{repl:algo:indexof} indexOf.}
-%     \end{algorithm}
-%   \end{minipage}
-%   \vspace{-15pt}
-% \end{wrapfigure}
-
-% L'algorithme~\ref{repl:algo:indexof} présente les instructions de la fonction
-% \textsc{indexOf}. Celle-ci sert essentiellement à placer les éléments réçus dans
-% la séquence perçue par l'utilisateur.  Celle-ci est divisée en trois :
-% \begin{inparaenum}[(i)]
-% \item La fonction \textsc{getIndexesOf} retourne les indices successifs dans les
-%   listes triées constituants les fils des nœuds de l'arbre. Celle-ci utilise la
-%   fonction \textsc{binaryIndexOf} possédant un complexité temporelle
-%   logarithmique comparée à la taille du tableau trié parcouru.
-% \item La fonction \textsc{getSum} parcours l'arbre afin d'en déduire l'indice de
-%   séquence correspondant. Afin de ne pas avoir à parcourir l'entièreté des
-%   branches, les nœuds sauvegardent le nombre de sous-branches qu'ils possèdent
-%   (similairement à l'algorithme~\ref{repl:algo:get}).  La
-%   ligne~\ref{repl:line:optimization} définit la façon dont l'arbre est
-%   parcouru. Un optimisation consiste à parcourir l'arbre à partir de la borne la
-%   plus proche de l'indice à la profondeur concernée.
-% \item La fonction \textsc{indexOf} est composée des deux fonctions
-%   susmentionnées.
-% \end{inparaenum}
-
-% \TODO{Figure explaining the operation.}
-
-% La complexité temporelle de cette fonction est proche de celle de la fonction
-% \textsc{get} car basée sur le même principe. La seule différence est le surcoût
-% logarithmique lié à la recherche dichotomique à chaque niveau de l'arbre. Encore
-% une fois, les complexités linéaires ne sont pas problématiques car ces
-% opérations peuvent être effectuées en arrière-plan. De plus, l'utilisateur
-% possède une vue partielle du document. Si les mises à jour ne tombent pas dans
-% cette fenêtre, la fonction peut arrêter son éxecution.
-
-
-% \subsection{Modification de la structure}
-
-% La structure d'arbre représentant le document réparti se modifie au rythme des
-% insertions et suppressions effectuées par les utilisateurs, qu'ils soient
-% distants ou non. 
-
-% \subsubsection{insert}
-
-
-% \begin{wrapfigure}{r}{0.6\textwidth}
-%   \vspace{-35pt} %% (ugly)
-%   \begin{minipage}[t]{0.6\textwidth}
-%     \begin{algorithm}[H]
-%       \input{input/replication/algoinsert.tex}
-%       \caption{\label{repl:algo:insert} Insert.}
-%     \end{algorithm}
-%   \end{minipage}
-%   \vspace{-15pt}
-% \end{wrapfigure}
-
-% L'algorithme~\ref{repl:algo:insert} présente les instructions de la fonction
-% d'insertion.
-
-
-% \subsubsection{delete}
 
 %%% Local Variables:
 %%% mode: latex

@@ -37,8 +37,6 @@ rapidement aux membres du réseau.
 \noindent Deux familles d'approches existent quant à la taille des vues partielles :
 \begin{inparaenum}[(i)]
 \item la famille d'approches dont la taille est fixée à la configuration
-  % Ainsi la taille des vues partielles ne change pas au cours du
-  % temps, même si la taille du réseau est susceptible de fluctuer
   (cf. §\ref{net:subsec:fixed});
 \item la famille d'approches dont les nœuds, lorsqu'ils rejoignent le réseau,
   contribuent à hauteur du logarithme de la taille du réseau
@@ -175,9 +173,6 @@ Les approches à taille fixe constituent le cœur de nombreux protocoles
 décentralisés~\cite{dabek2004vivaldi, folz2016cyclades, jelasity2009tman,
   krasikova2016distributed}. Malheureusement, leur manque d'adaptivité n'est pas
 compatible avec notre contexte.
-%\TODO{Maybe talk about estimators\ldots}
-%Afin de résoudre ces problèmes, un développeur pourrait se tourner vers un
-%protocoles d'échantillonnage aléatoire de pairs étant conçu pour être adaptatif.
 La section suivante introduit une autre famille de protocole d'échantillonnage
 aléatoire de pairs fournissant des vues partielles s'ajustant automatiquement à
 la taille du réseau.
@@ -290,8 +285,6 @@ l'origine et la destination de l'annonce, toute perte de message empêche
 l'établissement de la connexion. Cela s'avère particulièrement problématique
 lorsque l'établissement d'une connexion nécessite plusieurs allers-retours comme
 c'est le cas dans le contexte WebRTC~\cite{webrtc} :
-% \paragraph{WebRTC~\cite{webrtc}.} Acronyme de \emph{Web Real-Time
-%  Communication}.
 cette technologie permet l'établissement de canaux de communication d'un
 navigateur Web à l'autre, et ce, même en présence de configurations réseaux
 complexes impliquant pare-feu, proxy, ou NAT (\emph{Network Address
@@ -388,20 +381,6 @@ probabilité d'échec sur l'établissement d'une connexion a augmenté d'une cla
 de complexité.  Par conséquent, l'établissement d'une connexion suivant le
 protocole \SCAMP est particulièrement vulnérable aux défaillances. Le réseau
 perd rapidement sa connexité.
-
-
-% \paragraph{Dynamisme.} Le protocole est très peu dynamique au cours du temps. Si
-% la phase d'entrée dans le réseau permet d'obtenir un graphe dont les arcs sont
-% relativement bien répartis, \SCAMP doit renouveler les vues partielles afin de
-% mieux intégrer les nouveaux arrivants en peuplant leurs vues partielles et de
-% décharger les nœuds plus anciens. Ainsi, le mécanisme de bail (\emph{lease})
-% est introduit et consiste à rejoindre à nouveau le réseau après un certains
-% temps. La vue partielle sortante est conservée tandis que la vue partielle
-% entrante est réinitialisée avant d'être naturellement remplie lors de l'entrée
-% dans le réseau. Malheureusement, ce mécanisme tend à faire augmenter le nombre
-% d'arcs dans le réseau de manière non bornée. De plus, rejoindre à nouveau le
-% réseau confronte au premier problème susmentionné.
-
 
 
 %%% Local Variables:

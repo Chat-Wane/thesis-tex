@@ -2,8 +2,6 @@
 \section{Perspectives}
 \label{conclu:sec:perspectives}
 
-%Les travaux réalisés lors de cette thèse et présenté dans ce manuscrit offrent
-%de nombreuses perspectives de différente granularité. 
 Tout d'abord, chacun des composants de notre éditeur collaboratif peut être
 amélioré ou étendu. Ensuite, l'éditeur lui-même offre des opportunités
 inédites. Par exemple, son intégration, non en opposition, mais en complément
@@ -61,16 +59,6 @@ nombre d'arcs requis (à droite)?
 \end{problem}
 
 
-% Pour répondre à ce problème, chacun des nœuds appartenant aux réseaux impliqués
-% dans la fusion doit être capable de
-% \begin{inparaenum}[(i)]
-% \item détecter lorsqu'un nouveau réseau fusionne avec celui dans lequel il se
-%   trouve (cf. §\ref{net:subsec:detection}),
-% \item détecter lorsqu'il a glané suffisamment d'informations pour procéder à la
-%   fusion (cf. §\ref{net:subsec:activation}),
-% \item ajuster sa vue partielle en conséquence (cf. §\ref{net:subsec:merging}).
-% \end{inparaenum}
-
 \subsection{Table de hachage répartie}
 
 Une table de hachage répartie (\emph{DHT}\footnote{\emph{Distributed Hash
@@ -115,11 +103,6 @@ maximum. Un tel système permet de diriger les messages ciblant un nœud
 particulier très efficacement : de l'ordre de $\log |\mathcal{N}|$ sauts en
 moyenne, où $\mathcal{N}$ est l'ensemble des membres appartenant au réseau.
 
-% \subsection{Sécurité}
-
-% Les protocoles d'appartenance à un réseau font face à des problèmes de sécurités
-% inhérents aux protocoles ciblant de larges dimensions. 
-
 \subsection{Compromis causalité et concurrence}
 
 \CRATE comprend une couche dédiée à la détection de relations causales. La
@@ -149,39 +132,6 @@ L'idée serait alors d'allier
 \item un mécanisme d'anti-entropie afin que le système soit fiable : toutes les
   opérations parviennent à tous les participants.
 \end{inparaenum}
-
-% \subsection{Wiki réparti temps réel}
-
-% Les wikis sont des espaces de collaborations permettant à plusieurs participants
-% d'éditer des pages à tour de rôle, i.e., l'édition n'est pas effectuée en temps
-% réel. Le succès de l'encyclopédie \emph{Wikipédia}~\cite{wikipedia} n'est plus à
-% démontrer~\cite{giles2005internet}. Cependant, le modèle même d'édition provoque
-% l'apparition de conflits. Ces conflits ne concernent pas seulement des points de
-% vue divergents, mais aussi des éditions placées aux même endroit dans le
-% document au même moment. Les conflits doivent être résolus manuellement ce qui
-% constitue une tâche complexe à tel point que les discussions quant à
-% l'organisation de la rédaction ont énormément augmenté au cours du
-% temps~\cite{kittur2007he}.
-
-% Autoriser l'édition temps réel des pages de \emph{Wikipédia} permettrait à
-% différent utilisateurs de voir les modifications effectués par d'autres
-% collaborateurs afin d'agir en conséquence. Dans ce cas, les seuls conflits
-% restants seraient ceux d'ordre sémantique.  De plus, décentraliser ces sessions
-% d'édition temps réel permettrait de soulager le fournisseur du service des coûts
-% liés à l'édition. Les membres d'une session d'édition participeraient seuls au
-% bon fonctionnement de la session. Une fois le travail accompli, le document est
-% sauvegardé sur le serveur et versionné normalement. Seul la sauvegarde finale
-% reste de sa responsabilité.
-
-% Enfin, \CRATE permet de placer des liens à d'autres sessions d'édition dans le
-% document. Ce simple mécanisme permet de naviguer d'un document à l'autre, d'une
-% session d'édition à l'autre, et plus généralement d'un réseau à un autre. Il est
-% alors possible de naviguer très simplement parmi ces réseaux, pour peu qu'ils
-% soient encore vivants et accessibles.
-
-% Certains projets, comme \emph{The Fold}
-% bénéficient d'une foule de gens volontaires qui mettent leur machine à
-% disposition afin d'améliorer la puissance calculatoire du système.
 
 \subsection{O'Browser, Where Art Thou?}
 

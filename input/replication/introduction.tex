@@ -82,12 +82,9 @@ Deux classes de CRDTs conçues pour les séquences existent :
 conway2014language, grishchenko2010deep, oster2006data, roh2011replicated,
 weiss2007wooki, wu2010partial, yu2012stringwise}.} Les CRDTs tels que
 WOOT~\cite{oster2006data} transportent un identifiant de taille constante.  
-%La complexité en communication est donc excellente. 
 Toutefois, les éléments supprimés sont simplement cachés à l'utilisateur tout en
 restant présents dans la structure. La consommation en espace de la réplique
 croît inexorablement.
-%Les opérations deviennent moins performantes.
-%Pour alléger la réplique, il devient nécessaire de la purger de ses pierres tombales. 
 Pour réellement détruire les éléments supprimés, l'exécution périodique d'un
 ramasse-miettes réparti~\cite{abdullahi1998garbage} est
 nécessaire. Malheureusement, cela ne passe pas à
@@ -113,7 +110,6 @@ Ce chapitre présente \LSEQ~\cite{nedelec2013concurrency, nedelec2013lseq}, une
 fonction d'allocation d'identifiants dont la taille croît de manière
 polylogarithmique par rapport au nombre d'insertions dans la séquence. À ce
 titre, elle évite l'utilisation de protocoles de relocalisation.
-%% et, par conséquent, passe à l'échelle.
 
 La section~\ref{repl:sec:stateoftheart} présente l'état de l'art. Elle introduit
 le schéma de réplication optimiste des séquences avant d'en détailler les

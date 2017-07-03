@@ -12,23 +12,6 @@ distribution des arcs entrants, l'évolution du nombre d'arcs, les composantes
 connexes et la robustesse. À cela nous ajoutons une analyse sur les doublons
 d'arcs, spécificité de \SPRAY.
 
-% \TODO{Review this §.}
-% \CYCLON constitue l'approche à taille fixe avec laquelle nous comparerons les
-% résultats en lien avec l'adaptabilité. Les résultats attendus sont :
-% \begin{inparaenum}
-% \item des propriétés identiques pour les deux approches lorsque \CYCLON est
-%   configuré de manière optimale,
-% \item une meilleure efficacité de \SPRAY lorsque les vues partielles de \CYCLON
-%   sont trop grande par rapport à la taille du réseau,
-% \item une plus grande robustesse lorsque les vues partielles de \CYCLON sont
-%   trop petites par rapport à la taille du réseau.
-% \item Enfin, contrairement à \CYCLON, \SPRAY possède des doublons dans ses vues
-%   partielles. Toutefois, ce nombre de doublons est supposé négligeable.
-% \end{inparaenum}
-% \SCAMP constitue l'approche avec laquelle nous comparerons \SPRAY lorsque nous
-% examinerons les échecs dans l'établissement des connexions. Nous nous attendons
-% à ce que \SCAMP échoue à maintenir un réseau connecté, contrairement à \SPRAY.
-
 Les expérimentations ont été effectuées sur le simulateur
 \PEERSIM~\cite{montresor2009peersim}. Le code relatif aux protocoles
 d'échantillonnage \CYCLON, \SCAMP, et \SPRAY sont disponibles sur la
@@ -94,8 +77,6 @@ sont trop petites. Globalement, \SPRAY
 \item converge vers un coefficient d'agglomération stable
 \item reflétant les besoins dus à la taille du réseau.
 \end{inparaenum}
-%%  Cela a une influence sur l'équilibrage des charges et la robustesse par
-%%  rapport aux allées et venues de pairs.    
 \paragraph{Explication :} \CYCLON commence avec un coefficient d'agglomération
 plus faible. En effet, lorsqu'un nœud rejoint le réseau, il est annoncé au reste
 du réseau via une dissémination aléatoire. Ainsi, le réseau de départ est déjà
@@ -272,7 +253,6 @@ communiquer.
 \end{figure*}
 
 Un réseau est dynamique lorsque des nœuds peuvent le rejoindre et le quitter.
-% -- ce qui compose la plupart des cas en pratique.
 Le protocole d'échantillonnage doit être capable de gérer efficacement de tels
 changements. La variance d'un ensemble de valeurs permet de quantifier les
 différences qui existent entre les valeurs. Appliquée aux tailles de vues

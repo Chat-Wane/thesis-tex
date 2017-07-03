@@ -35,8 +35,7 @@ comme l'illustre la figure~\ref{repl:fig:optimisticsteps},
 \item est disséminé aux autres serveurs hébergeant une réplique.
 \item Le serveur exécute -- ou \emph{intègre} -- le résultat reçu.
 \end{inparaenum}
-% Grâce à $\textsc{insert}(Q, 0)$, un résultat est
-% produit puis disséminé aux deux autres répliques. L'intrégation de ce résultat
+
 
 \noindent La réplication optimiste fait l'hypothèse d'une dissémination fiable
 où tous les serveurs reçoivent toutes les modifications afin que toutes les
@@ -48,7 +47,7 @@ figure~\ref{repl:fig:optimisticsteps} contiennent la même séquence
 Sun et al.~\cite{sun1998achieving} déclarent que l'édition collaborative temps
 réel nécessite un système préservant les trois propriétés CCI :
 
-%\begin{itemize}
+
 \paragraph{Convergence.} Les répliques ayant reçues les mêmes opérations
 convergent vers un état identique. Par exemple, la
 figure~\ref{repl:fig:optimisticsteps} montre que les répliques peuvent avoir des
@@ -61,11 +60,7 @@ tels que la cohérence à terme~\cite{bailis2013eventual}, ou la cohérence fort
 terme~\cite{shapiro2011conflict}. Ces critères de cohérence sont très faibles
 mais ont beaucoup de succès ces dernières années avec, par exemple, les bases de
 données réparties~\cite{dynamo, riak, cassandra, mongodb}.
-% Malheureusement, ces critères sont trop expressifs : l'état de convergence
-% n'est pas spécifié. Par exemple, ils permettent aux répliques de converger
-% vers un état arbitraire n'ayant aucun lien avec les modifications apportées
-% par les participants. À ce titre, ces critères seuls sont insuffisants pour
-% l'édition collaborative.
+
 
 \begin{figure}
   \begin{center}
@@ -86,16 +81,6 @@ l'intégration de l'opération de suppression doit attendre l'arrivée de
 l'opération d'insertion pour supprimer le caractère \texttt{Q}.
 
 
-% C'est une manière de forcer l'exécution correcte de cette première opération
-% : le contexte d'exécution est le même que sur la réplique d'origine donc le
-% résultat est le même.  Malheureusement, capturer toutes les relations
-% causales s'avère coûteux~\cite{charronbost1991concerning}. Pour chaque
-% participant ayant jamais effectué une modification sur le document, une
-% valeur entière doit être conservée dans un vecteur. Ce vecteur indique les
-% opérations visibles lors de l'exécution de cette opération.  De même que
-% pour la convergence, baser l'édition collaborative seulement sur un ordre
-% causal ne fonctionne pas : les opérations concurrentes n'ont pas de
-% comportement défini.
 
 \paragraph{Intention.} L'effet observé sur le document lors de la génération
 d'une opération doit être également observé lors de son intégration.  Dans
@@ -104,9 +89,6 @@ suppression sur la réplique 2 est le caractère \texttt{Q}. Par conséquent, ce
 caractère doit être supprimé lors de l'intégration de l'opération, et nul autre
 caractère.
 
-% malgré l'
-% interférence d'opérations concurrentes.  Lorsque les définitions des
-% propriétés de convergence et de causalité font consensus,
 
 \noindent L'intention des opérations d'une séquence demeure difficile à
 formaliser dans le cas général. L'effet d'une opération doit respecter le plus
@@ -150,7 +132,7 @@ vers un ordre dense.
   \end{equation}
 \end{definition}
 
-%\end{itemize}
+
 
 Nous distinguons la complexité spatiale de la réplique, et la complexité en
 communication sur les messages, la complexité temporelle d'une opération
@@ -183,10 +165,6 @@ s'appliquent à l'état courant de la réplique malgré les opérations effectu�
 intégrées en concurrence. Cette phase d'intégration nécessite l'examen des
 opérations concurrentes afin d'en compenser les effets sur la séquence.
 
-% En d'autres termes, le résultat d'une opération locale est l'opération
-% elle-même. En revanche, son intégration nécessite l'examen des opérations
-% concurrentes afin de compenser les changements sur l'ordre des éléments lors de
-% son exécution locale.
 
 \begin{figure}
   \centering
@@ -211,17 +189,7 @@ l'argument de l'opération voit sa cible changée au second caractère :
 \texttt{W}.  Réciproquement, la réplique 3 intègre l'insertion de la réplique 1
 : l'insertion et la suppression sont détectées concurrentes, toutefois aucune
 transformation n'est nécessaire. À terme, les répliques convergent vers la
-séquence \texttt{QERTY}. % Sans transformation, la réplique 1 aurait obtenu la
-% séquence \texttt{WERTY} et la propriété de convergence du système aurait été
-% bafouée.
-
-% Dans le cadre de l'édition de textes, en plus des usuelles opérations
-% d'insertion et de suppression, OT fournit des opérations ciblant les chaînes de
-% caractères telles que le déplacement, ou le couper -- coller. Toutefois,
-% l'analyse de correction nécessite d'examiner chaque couple d'opérations ainsi
-% que leurs arguments. En conséquence, lors de l'écriture du
-% papier~\cite{imine2003proving}, peu d'approches étaient réellement
-% correctes. \TODO{Keep it or not?}
+séquence \texttt{QERTY}.
 
 Dans les approches OT décentralisées~\cite{sun2009contextbased}, chaque client
 est aussi un serveur hébergeant une réplique de la séquence. Deux problèmes
@@ -296,8 +264,6 @@ Une \og pierre tombale \fg est une marque laissée après la suppression d'un
 sont cachées à l'utilisateur : les caractères disparaissent du document mais
 existent toujours dans la structure répliquée.
 
-%% L'impact sur les performances à
-%% l'intégration des opérations en reste néanmoins présent.
 
 \paragraph{WOOT~\cite{oster2006data} :} WOOT est le premier représentant
 historique des CRDTs pour séquences suivi par deux extensions
@@ -311,7 +277,7 @@ qu'elles soient
 \item déjà intégrées et
 \item toujours présentes.
 \end{inparaenum}
-%D'où les suppressions réelles impossibles.
+
 
 \begin{figure}
   \centering
@@ -379,11 +345,6 @@ des éléments supprimés. La complexité spatiale de l'approche est monotone
 croissante et linéaire par rapport au nombre d'insertions et de
 subdivisions. Les performances des opérations en sont impactées négativement.
 
-% \paragraph{DiCE~\cite{conway2014language} :} Cet éditeur concentre
-% principalement ses efforts sur les garanties de confluence de la
-% séquence. Chaque identifiant référence le voisin qu'il précède à
-% l'insertion. L'ordre des éléments est alors fonction de ces relations de
-% positionnement relatif, et de causalité.
 
 Pour préserver l'ordre dense défini lors de l'exécution locale de l'insertion,
 toutes ces approches génèrent des identifiants qui référencent au moins l'un
@@ -441,12 +402,6 @@ convergence, et muni d'un ordre dense pour assurer l'intention. À ce titre, ces
 approches constituent une implémentation directe de notre spécification
 séquentielle des séquences.
 
-% Contrairement aux approches basées sur les pierres tombales, ces identifiants
-% sont indépendents : leur intégration ne dépend pas des autres identifiants. À ce
-% titre, les suppressions ne se contentent pas de masquer les éléments mais les
-% retirent entièrement de la structure. En revanche, la liste de valeurs
-% constituant les identifiants est susceptible de grandir, et par là même, de
-% diminuer les performances du système.
 
 \paragraph{Logoot~\cite{weiss2010collaborative, weiss2009logoot,
     weiss2010logootundo} :} Ce CRDT représente la séquence sous forme de liste
@@ -484,7 +439,6 @@ correspond implicitement à $\langle 0,\, -\infty ,\, -\infty \rangle$.  Entre
 $0$ et $1337$ de nombreuses valeurs sont disponibles.  Logoot doit choisir parmi
 toutes ces valeurs laquelle constituera définitivement le nouvel identifiant. Ce
 choix impactera également l'allocation des identifiants à venir.
-%% et ne doit pas être pris à la légère.
 Des observations effectuées sur un corpus de documents
 Wikipedia~\cite{wikipedia} suggère qu'allouer un identifiant proche de
 l'identifiant précédent est une meilleure stratégie afin de conserver des

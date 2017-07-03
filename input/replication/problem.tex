@@ -2,7 +2,7 @@
 \section{Définition du problème}
 \label{repl:sec:problem}
 
-% Cette section définit le problème et 
+
 Nous nous intéressons aux approches les plus proches de notre spécification des
 séquences : celles générant des identifiants dont la taille est variable et
 définie à la génération.
@@ -103,19 +103,6 @@ aurait été nécessaire. De plus, la complexité spatiale de ces désambiguateu
 est bornée par leur chemin respectif. Par conséquent, le reste de ce chapitre se
 concentre sur ces chemins.
 
-% Nous définissons le modèle suivant : le CRDT est un arbre $T$ initialisé vide
-% équippé des opérations d'insertion $\textsc{insert}$ et de suppression
-% $\textsc{delete}$. Un identifiant dans $\mathcal{I}$ contient un chemin dans
-% $\mathcal{P}$, un désambiguateur dans $\mathcal{D}$, et un élément dans
-% l'alphabet $\mathcal{A}$. L'union des identifiants non supprimés crée l'arbre
-% $T$ où chaque noeud possède au plus un élément.  En utilisant un ordre total
-% $(\mathcal{I},\, <_\mathcal{I})$, l'arbre est transformé en séquence d'éléments.
-
-% Un chemin est une liste d'entiers dont la taille borne celle du désambiguateur :
-% une liste constituée de paires avec l'identifiant unique du serveur hébergeant
-% la réplique, et un compteur local à cette réplique (cf. l'exemple des CRDTs pour
-% compteurs §\ref{repl:subsubsec:crdts}). La complexité de l'identifiant dépend donc
-% essentiellement de l'allocation du chemin dans l'arbre.
 
 \paragraph{Choisir le bon chemin.} La composante la plus critique des approches
 pour les séquences où les identifiants sont de taille variable consiste à

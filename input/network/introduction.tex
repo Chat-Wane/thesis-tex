@@ -11,11 +11,6 @@ compatible avec le Web est requis.
 Grâce à WebRTC~\cite{webrtc}, il est dorénavant possible d'établir des
 connexions de navigateur à navigateur et par conséquent d'implémenter un tel
 mécanisme de diffusion.
-% La récente introduction de \emph{WebRTC}~\cite{webrtc}, un protocole permettant
-% l'établissement de connexions d'un navigateur à l'autre, rend l'implémentation
-% d'un mécanisme de diffusion possible.
-% , permet de construire des éditeurs collaboratifs décentralisés fonctionnant
-% directement dans les navigateurs Web.
 Les mécanismes de diffusion se basent sur des protocoles d'échantillonnage de
 pairs. Toutefois, déployer ces protocoles avec WebRTC n'est pas sans poser de
 problèmes :
@@ -39,33 +34,6 @@ problèmes :
 \end{enumerate}
 
 
-% \paragraph{Un même réseau.} La taille d'un réseau fluctue au cours du temps. Par
-% exemple, lorsque les utilisateurs possèdent des habitudes identiques, il peut
-% alors y avoir des heures creuses où le réseau ne compte que peu de membres. À
-% l'inverse, lors d'événements particuliers, beaucoup d'entrées en très peu de
-% temps peuvent avoir lieu. Le Web amplifie ces fluctuations. En effet, le Web
-% favorise la diffusion d'idées. Par exemple, dans le cadre de l'édition
-% collaborative, un simple lien HTTP permet le partage d'un document. Un lien
-% \emph{tweeté} par une célébrité sur un événement particulier peut attirer des
-% milliers de participants en très peu de temps. Cette soudaine popularité retombe
-% lorsque l'événement s'achève.  Pour gérer ces cas, les approches fournissant des
-% vues dont la taille est configurée \emph{a priori} doivent être pessimistes :
-% les vues partielles sont surdimensionnées afin de supporter ces cas
-% éphémères. Les protocoles qui dépendent, tel que la dissémination de messages,
-% héritent de ce pessimisme qui les conduit à, par exemple, produire un trafic
-% excessif lorsque le réseau est plus modeste que prévu.
-
-
-% \paragraph{Plusieurs réseaux.} La taille des réseaux créés par une même
-% application varie. Par exemple, un document partagé pour un événement de grande
-% ampleur n'a pas la même audience qu'un document partagé avec quelques
-% amis. Malgré tout, le développeur d'application doit prévoir large afin de
-% supporter les grands groupes s'ils existent, au détriment des plus petits
-% groupes d'utilisateurs.
-
-
-
-
 Malheureusement, les protocoles d'échantillonnage actuels ne parviennent pas à
 répondre à l'ensemble de ces problématiques. D'un côté,
 \SCAMP~\cite{ganesh2001scamp, ganesh2003peer} propose une forme d'adaptation en
@@ -79,34 +47,6 @@ fait, le développeur est obligé de surdimensionner la taille des vues afin de
 gérer les possibles pics de popularités.
 
 
-
-% L'état de l'art des protocoles d'échantillonnage aléatoire de pairs se divise en
-% deux catégories selon les vues partielles fournies :
-% \begin{inparaenum}[(i)]
-% \item les approches fournissant des vues partielles de taille
-%   constante~\cite{eugster2003lightweight, leitao2007dependable,
-%     tolgyeski2009adaptive, voulgaris2005cyclon} qui doivent être configurées
-%   \emph{a priori}. Dans ce cas le développeur doit prévoir les dimensions des
-%   réseaux gérés par son application;
-%   %%Cela entraîne un  surdimensionnement des vues partielles.
-% \item les approches fournissant des vues partielles s'auto-ajustant pendant la
-%   vie du réseau~\cite{ganesh2001scamp, ganesh2003peer}. Malheureusement, ces
-%   approches ne sont pas adaptées aux réseaux dynamiques.
-% \end{inparaenum}
-
-% Les protocoles d'échantillonnages aléatoire de pairs sont au cœur de nombreuses
-% autres approches~\cite{folz2016cyclades, jelasity2009tman,
-%   krasikova2016distributed, voulgaris2013vicinity}. Entre autres, la propagation
-% de messages~\cite{birman1999bimodal, kermarrec2003probabilistic} d'un pair à
-% tous les autres (\emph{broadcast}) fait un usage intensif des vues
-% partielles. Un pair souhaitant propager un message choisit un ensemble de
-% voisins auquel il communique le message. A son tour, chaque pair recevant un tel
-% message en fait de même. Les messages parviennent à tous les pairs par
-% transitivité à la manière d'une épidémie.
-
-% Afin d'adapter le trafic généré par la transmission de messages, \textbf{comment
-% adapter efficacement le voisinage de chaque éditeur au nombre fluctuant de
- % collaborateurs ?}
 
 Ce chapitre présente \SPRAY~\cite{nedelec2015spray}, un protocole dont les pairs
 voient leur vue partielle s'ajuster à la taille du réseau, sans l'usage d'aucune

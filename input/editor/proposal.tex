@@ -119,8 +119,6 @@ la complexité en communication un facteur linéaire sur le nombre de
 participants. Si cela reste acceptable pour les petits groupes, le coût devient
 trop élevé pour les grands groupes.
 
-%la taille des messages confine l'utilisation de telles contraintes sur l'ordre
-%d'intégration à de petites sessions d'édition bien contrôlées.
 
 \CRATE ne contraint l'ordre d'intégration que pour les paires d'opérations liées
 sémantiquement : la suppression d'un élément suit toujours l'insertion de ce
@@ -235,13 +233,6 @@ communication d'un navigateur à l'autre en utilisant la récente technologie
 WebRTC~\cite{webrtc}. La zone de texte où l'utilisateur peut écrire est fournie
 grâce à l'éditeur JavaScript Ace~\cite{ace}.
 
-% Puisqu les CRDTs conçus pour les séquences fournissent des fonctions basées sur
-% les identifiants plutôt que sur les indices, \CRATE doit utiliser une fonction
-% \textsc{lookup} afin d'obtenir l'identifiant à l'indice voulu, et
-% inversement. \TODO{Moar.}
-
-% Les participants sont toujours en mesure de modifier le document lorsqu'ils le
-% souhaitent.
 
 \begin{figure}
   \begin{center}
@@ -268,20 +259,6 @@ La barre d'état nous indique que
 \item que l'utilisateur est bien connecté à d'autres collaborateurs via la
   planète verte.
 \end{inparaenum}
-
-% La barre d'état possède aussi des boutons tels que
-% \begin{inparaenum}[(i)]
-% \item la disquette qui enregistre sur le disque la réplique locale du
-%   document. En ouvrant ce fichier, l'éditeur est capable de se reconnecter à la
-%   session d'édition sans avoir à rattraper toutes les opérations qui lui manque
-%   depuis son départ;
-% \item l'œil sert à visualiser le texte écrit dans le langage
-%   Markdown~\cite{markdown}. Ainsi, le document n'est plus une simple suite de
-%   caractères mais est interprété afin de présenter un document structuré plus
-%   agréable à lire;
-% \item la chaîne sert à partager l'accès au document ou à le stopper;
-% \item les engrenages servent à la configuration.
-% \end{inparaenum}
 
 Le document lui-même peut contenir des URL référençant d'autres documents édités
 en temps réel. D'un simple clic, un participant peut naviguer d'une session
